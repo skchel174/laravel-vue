@@ -1,4 +1,8 @@
 version: '3'
+
+networks:
+  app:
+
 services:
   nginx:
     build:
@@ -9,8 +13,44 @@ services:
       - "8080:80"
     links:
       - php
+    networks:
+      - app
+
   php:
     build:
       context: docker/php
     volumes:
       - ./:/var/www
+    links:
+      - mysql
+    networks:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    platform: linux/x86_64
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - "33061:3306"
+    networks:
+      - app
+
+  node:
+    image: node:18.16-alpine
+    volumes:
+      - ./:/var/www
+    ports:
+      - "3000:3000"
+    working_dir: /var/www
+    tty: true
+    networks:
+      - app
+
+volumes:
+  mysql:
