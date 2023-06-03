@@ -9,5 +9,8 @@ down:
 build:
 	docker-compose build
 
+php-cli:
+	docker-compose exec php sh
+
 node-cli:
 	docker-compose exec node sh
