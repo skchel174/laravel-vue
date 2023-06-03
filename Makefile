@@ -1,8 +1,13 @@
-docker-up:
+run: down build up
+
+up:
 	docker-compose up -d
 
-docker-down:
+down:
 	docker-compose down --remove-orphans
 
-docker-build:
-	docker-compose up --build -d
+build:
+	docker-compose build
+
+node-cli:
+	docker-compose exec node sh
