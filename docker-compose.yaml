@@ -41,6 +41,19 @@ services:
     networks:
       - app
 
+  mysql-testing:
+    image: mysql:8.0
+    platform: linux/x86_64
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - "33062:3306"
+    networks:
+      - app
+
   node:
     image: node:18.16-alpine
     volumes:
