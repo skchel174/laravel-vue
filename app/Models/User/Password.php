@@ -13,7 +13,7 @@ class Password implements CastsAttributes
 {
     private string $hash;
 
-    public static function make(string $password): static
+    public static function create(string $password): static
     {
         $instance = new static();
         $instance->hash = Hash::make($password);

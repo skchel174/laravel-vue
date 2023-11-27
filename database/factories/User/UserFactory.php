@@ -1,41 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\User;
 
+use App\Models\User\Password;
+use App\Models\User\Status;
+use App\Models\User\VerifyToken;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User\User>
- */
 class UserFactory extends Factory
 {
-    protected static ?string $password;
+    const PASSWORD = 'secret';
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
             'name' => fake()->name(),
+            'about' => fake()->text(1000),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => Password::create(self::PASSWORD),
             'remember_token' => Str::random(10),
+            'status' => Status::Active,
+            'created_at' => $createdAt = $this->faker->dateTimeBetween('-1 year'),
+            'login_at' => $this->faker->dateTimeBetween($createdAt),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'verify_token' => VerifyToken::create(),
+            'status' => Status::Wait,
         ]);
     }
 }
