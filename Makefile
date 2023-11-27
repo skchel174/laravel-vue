@@ -1,4 +1,4 @@
-run: down build up composer-install
+run: down build up composer-install npm-install node-run-dev
 
 up:
 	docker-compose up -d
@@ -15,3 +15,16 @@ php-cli:
 
 composer-install:
 	docker-compose exec php composer install
+
+db-migrate:
+	docker-compose exec php php artisan migrate
+
+#Frontend
+node-cli:
+	docker-compose exec node sh
+
+npm-install:
+	docker-compose exec node npm install
+
+node-run-dev:
+	docker-compose exec node npm run dev
