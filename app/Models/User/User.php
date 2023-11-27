@@ -14,6 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $name
  * @property Status $status
  * @property Password $password
+ * @property VerifyToken $verify_token
  */
 class User extends Authenticatable
 {
@@ -33,6 +34,7 @@ class User extends Authenticatable
     protected $casts = [
         'status' => Status::class,
         'password' => Password::class,
+        'verify_token' => VerifyToken::class,
         'email_verified_at' => 'datetime',
     ];
 }
