@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\User;
 
+use App\Models\User\Exceptions\InvalidVerificationToken;
+use App\Models\User\Exceptions\RegistrationAlreadyVerified;
+use App\Models\User\Exceptions\VerificationNotRequested;
+use App\Models\User\Exceptions\VerificationTokenExpired;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
@@ -32,12 +36,15 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'name',
         'email',
         'about',
+        'status',
         'password',
+        'verify_token',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'verify_token',
     ];
 
     protected $casts = [
@@ -48,4 +55,41 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
         'login_at' => 'immutable_datetime:d-m-Y H:i:s',
     ];
+
+    public static function register(string $name, string $email, Password $password): static
+    {
+        return static::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'status' => Status::Wait,
+            'verify_token' => VerifyToken::create(),
+        ]);
+    }
+
+    public function verifyRegistration(string $token): void
+    {
+        if ($this->status->isActive()) {
+            throw new RegistrationAlreadyVerified();
+        }
+
+        if (!$this->verify_token) {
+            throw new VerificationNotRequested();
+        }
+
+        if (!$this->verify_token->isEquals($token)) {
+            throw new InvalidVerificationToken();
+        }
+
+        $timeout = config('auth.verification_timeout');
+
+        if ($this->verify_token->isExpired($timeout)) {
+            throw new VerificationTokenExpired();
+        }
+
+        $this->update([
+            'verify_token' => null,
+            'status' => Status::Active,
+        ]);
+    }
 }
