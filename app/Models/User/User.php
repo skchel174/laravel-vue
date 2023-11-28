@@ -38,6 +38,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'about',
         'status',
         'password',
+        'new_email',
         'verify_token',
     ];
 
@@ -90,6 +91,37 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         $this->update([
             'verify_token' => null,
             'status' => Status::Active,
+        ]);
+    }
+
+    public function changeEmail(string $email): void
+    {
+        $this->update([
+            'new_email' => $email,
+            'verify_token' => VerifyToken::create(),
+        ]);
+    }
+
+    public function verifyNewEmail(string $token): void
+    {
+        if (!$this->verify_token) {
+            throw new VerificationNotRequested();
+        }
+
+        if (!$this->verify_token->isEquals($token)) {
+            throw new InvalidVerificationToken();
+        }
+
+        $timeout = config('auth.verification_timeout');
+
+        if ($this->verify_token->isExpired($timeout)) {
+            throw new VerificationTokenExpired();
+        }
+
+        $this->update([
+            'email' => $this->new_email,
+            'new_email' => null,
+            'verify_token' => null,
         ]);
     }
 }

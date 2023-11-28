@@ -114,7 +114,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User registration confirmation timeout
+    | Registration and change email verification timeout
     |--------------------------------------------------------------------------
     */
 
