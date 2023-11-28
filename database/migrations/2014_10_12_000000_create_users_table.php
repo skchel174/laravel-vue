@@ -21,7 +21,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->string('verify_token', 100)->unique()->nullable();
             $table->timestamp('verify_token_created_at')->nullable();
-            $table->timestamp('login_at')->nullable();
+            $table->timestamp('login_at')->useCurrent();
             $table->timestamps();
         });
     }
