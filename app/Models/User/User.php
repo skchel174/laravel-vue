@@ -126,6 +126,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         ]);
     }
 
+    public function requestVerification(): void
+    {
+        $this->update([
+            'verify_token' => VerifyToken::create(),
+        ]);
+    }
+
     public function resetPassword(Password $password): void
     {
         if (!$this->verify_token) {
