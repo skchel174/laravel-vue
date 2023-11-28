@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Models\User\Exceptions\InvalidVerificationToken;
+use App\Models\User\Exceptions\PasswordResetNotRequested;
 use App\Models\User\Exceptions\RegistrationAlreadyVerified;
 use App\Models\User\Exceptions\VerificationNotRequested;
 use App\Models\User\Exceptions\VerificationTokenExpired;
@@ -121,6 +122,24 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         $this->update([
             'email' => $this->new_email,
             'new_email' => null,
+            'verify_token' => null,
+        ]);
+    }
+
+    public function resetPassword(Password $password): void
+    {
+        if (!$this->verify_token) {
+            throw new PasswordResetNotRequested();
+        }
+
+        $timeout = config('auth.password_timeout');
+
+        if ($this->verify_token->isExpired($timeout)) {
+            throw new VerificationTokenExpired();
+        }
+
+        $this->update([
+            'password' => $password,
             'verify_token' => null,
         ]);
     }
