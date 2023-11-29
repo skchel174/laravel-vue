@@ -7,17 +7,16 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property-read string $email
+ * @property-read string $token
  * @property-read string $password
- * @property-read bool $remember
  */
-class LoginRequest extends FormRequest
+class PasswordRecoveryRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'email' => 'required|string|exists:users',
-            'password' => 'required|string',
+            'token' => 'required|string|exists:users,verify_token',
+            'password' => 'required|confirmed|min:6',
         ];
     }
 }

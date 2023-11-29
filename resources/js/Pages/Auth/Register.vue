@@ -4,6 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {Head, Link, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 const form = useForm({
   name: '',
@@ -21,14 +22,14 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
-      <Head title="Register"/>
+    <Head title="Register"/>
 
+    <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
       <form
         class="p-4 sm:p-6 bg-white space-y-10 space-y-6"
         @submit.prevent="submit"
       >
-        <header class="mb-8 sm:mb-12">
+        <header class="mb-8 sm:mb-4">
           <h2 class="text-xl font-black">
             Registration
           </h2>
@@ -120,13 +121,13 @@ const submit = () => {
         </div>
 
         <div class="flex items-center justify-end !mt-12">
-          <button
-            class="w-full py-4 rounded-sm bg-sky-600 hover:bg-sky-700 active:bg-sky-800 flex justify-center text-white text-sm font-medium transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-sky-600"
+          <PrimaryButton
+            class="w-full !py-4 !text-sm"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
             Register
-          </button>
+          </PrimaryButton>
         </div>
       </form>
 
@@ -135,7 +136,7 @@ const submit = () => {
           Already registered?
 
           <Link
-            :href="route('register.form')"
+            :href="route('login.form')"
             class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200"
           >
             Login

@@ -48,10 +48,8 @@ class Kernel extends HttpKernel
         'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-//        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-
         'verified' => \App\Http\Middleware\EnsureRegistrationVerified::class,
         'unverified' => \App\Http\Middleware\EnsureRegistrationUnverified::class,
+        'login.limiter' => \App\Http\Middleware\LoginAttemptsLimiter::class,
     ];
 }

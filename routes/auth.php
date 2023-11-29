@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +23,7 @@ Route::prefix('/register')
                     ->name('register');
             });
 
-        Route::middleware(['auth', 'unverified'])
+        Route::middleware(['auth', 'auth.session', 'unverified'])
             ->group(function () {
                 Route::get('/prompt', [RegisterController::class, 'prompt'])
                     ->name('register.prompt');
@@ -40,24 +39,37 @@ Route::prefix('/register')
             });
     });
 
-Route::middleware('guest')->group(function () {
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+Route::prefix('/login')
+    ->middleware('guest')
+    ->group(function () {
+        Route::get('/', [LoginController::class, 'index'])
+            ->name('login.form');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+        Route::post('/', [LoginController::class, 'login'])
+            ->middleware('login.limiter')
+            ->name('login');
+    });
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-        ->name('password.request');
+Route::post('/logout', [LoginController::class, 'logout'])
+    ->middleware(['auth', 'auth.session'])
+    ->name('logout');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
+Route::prefix('/password')
+    ->middleware('guest')
+    ->group(function () {
+        Route::get('/forgot', [PasswordResetController::class, 'index'])
+            ->name('password.forgot');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('password.reset');
+        Route::post('/forgot', [PasswordResetController::class, 'email'])
+            ->middleware('throttle:6,1')
+            ->name('password.forgot.email');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
-});
+        Route::get('/reset/{token}', [PasswordResetController::class, 'form'])
+            ->name('password.reset.form');
+
+        Route::post('/reset', [PasswordResetController::class, 'reset'])
+            ->name('password.reset');
+    });
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
@@ -77,8 +89,5 @@ Route::middleware('auth')->group(function () {
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
 });
 
