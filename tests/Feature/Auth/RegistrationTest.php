@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Auth;
 
+use App\Models\User\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,23 +13,65 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_registration_screen_can_be_rendered(): void
+    public function testRegistrationScreenCanBeRendered(): void
     {
-        $response = $this->get('/register');
+        $response = $this->get(route('register.form'));
 
         $response->assertStatus(200);
     }
 
-    public function test_new_users_can_register(): void
+    public function testNewUsersCanRegister(): void
     {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+        $response = $this->post(route('register'), [
+            'name' => $this->faker->name(),
+            'email' => $this->faker->email(),
+            'password' => 'secret',
+            'password_confirmation' => 'secret',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+
+        $response->assertRedirect(route('register.prompt'));
+    }
+
+    public function testRegisterVerificationScreenCanBeRendered(): void
+    {
+        /** @var User $user */
+        $user = User::factory()
+            ->unverified()
+            ->create();
+
+        $response = $this->actingAs($user)
+            ->get(route('register.prompt'));
+
+        $response->assertStatus(200);
+    }
+
+    public function testRegisterVerificationNotificationCanBeResend(): void
+    {
+        /** @var User $user */
+        $user = User::factory()
+            ->unverified()
+            ->create();
+
+        $response = $this->actingAs($user)
+            ->get(route('register.email'));
+
+        $response->assertRedirect(route('register.prompt'));
+    }
+
+    public function testRegistrationCanBeVerified(): void
+    {
+        /** @var User $user */
+        $user = User::factory()
+            ->unverified()
+            ->create();
+
+        $response = $this->actingAs($user)
+            ->get(route('register.verify', [
+                'token' => $user->verify_token->getValue(),
+            ]));
+
+        $response->assertRedirect(RouteServiceProvider::HOME . '?verified=1');
     }
 }
