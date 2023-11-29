@@ -62,7 +62,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => \App\Models\User\User::class,
         ],
 
         // 'users' => [
@@ -112,4 +112,11 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Registration and change email verification timeout
+    |--------------------------------------------------------------------------
+    */
+
+    'verification_timeout' => 10800,
 ];
