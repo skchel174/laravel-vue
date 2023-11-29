@@ -150,4 +150,14 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'verify_token' => null,
         ]);
     }
+
+    /**
+     * Need for AuthenticateSession middleware
+     *
+     * @return string
+     */
+    public function getAuthPassword(): string
+    {
+        return $this->password->getHash();
+    }
 }
