@@ -1,18 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that is loaded on the first page visit.
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
     /**
@@ -30,11 +28,21 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user()
+            ? UserResource::make($request->user())
+            : null;
+
         return [
             ...parent::share($request),
-            'auth' => [
-                'user' => $request->user(),
+
+            'app' => [
+                'name' => config('app.name'),
             ],
+
+            'auth' => [
+                'user' => $user,
+            ],
+
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
