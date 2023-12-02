@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\Auth\ResetPasswordService;
 
 use App\Mail\ResetPassword;
-use App\Mail\VerifyRegistration;
 use App\Models\User\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Service\Auth\ResetPasswordService;
-use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -41,9 +40,9 @@ class SendVerificationEmailTest extends TestCase
 
         $dispatcher = $this->createMock(Dispatcher::class);
 
-        $guard = $this->createMock(SessionGuard::class);
+        $session = $this->createMock(Session::class);
 
-        $service = new ResetPasswordService($repository, $mailer, $dispatcher, $guard);
+        $service = new ResetPasswordService($repository, $mailer, $dispatcher, $session);
 
         $service->sendVerificationEmail($user->email);
     }

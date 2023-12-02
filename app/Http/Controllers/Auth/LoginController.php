@@ -10,7 +10,6 @@ use App\Providers\RouteServiceProvider;
 use App\Service\Auth\LoginService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,7 +20,7 @@ class LoginController extends Controller
     {
     }
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
         return Inertia::render('Auth/Login', [
             'status' => session('status'),
@@ -35,13 +34,7 @@ class LoginController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         try {
-            $this->service->login(
-                $request->email,
-                $request->password,
-                (bool)$request->remember
-            );
-
-            $request->session()->regenerate();
+            $this->service->login($request->email, $request->password, (bool)$request->remember);
         } catch (DomainException $e) {
             return redirect()
                 ->route('login.form')
@@ -51,13 +44,9 @@ class LoginController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-    public function logout(Request $request): RedirectResponse
+    public function logout(): RedirectResponse
     {
         $this->service->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
 
         return redirect()->route('main');
     }

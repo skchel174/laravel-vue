@@ -9,8 +9,8 @@ use App\Models\User\User;
 use App\Models\User\VerifyToken;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Service\Auth\ResetPasswordService;
-use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -41,12 +41,11 @@ class ChangePasswordTest extends TestCase
             ->method('dispatch')
             ->with($this->isInstanceOf(PasswordReset::class));
 
-        $guard = $this->createMock(SessionGuard::class);
-        $guard->expects($this->once())
-            ->method('logoutOtherDevices')
-            ->with($password);
+        $session = $this->createMock(Session::class);
+        $session->expects($this->once())
+            ->method('invalidate');
 
-        $service = new ResetPasswordService($repository, $mailer, $dispatcher, $guard);
+        $service = new ResetPasswordService($repository, $mailer, $dispatcher, $session);
 
         $service->changePassword($password, $user->verify_token->getValue());
 

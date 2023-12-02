@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Service\Auth\LoginService;
 use Database\Factories\User\UserFactory;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -34,7 +35,11 @@ class LoginTest extends TestCase
             ->method('login')
             ->with($user, $remember = false);
 
-        $service = new LoginService($repository, $auth);
+        $session = $this->createMock(Session::class);
+        $session->expects($this->once())
+            ->method('regenerate');
+
+        $service = new LoginService($repository, $auth, $session);
 
         $loggedUser = $service->login($user->email, UserFactory::PASSWORD, $remember);
 
@@ -57,7 +62,9 @@ class LoginTest extends TestCase
 
         $auth = $this->createMock(StatefulGuard::class);
 
-        $service = new LoginService($repository, $auth);
+        $session = $this->createMock(Session::class);
+
+        $service = new LoginService($repository, $auth, $session);
 
         $service->login($user->email, $this->faker->word(), false);
     }
@@ -79,7 +86,9 @@ class LoginTest extends TestCase
 
         $auth = $this->createMock(StatefulGuard::class);
 
-        $service = new LoginService($repository, $auth);
+        $session = $this->createMock(Session::class);
+
+        $service = new LoginService($repository, $auth, $session);
 
         $service->login($user->email, UserFactory::PASSWORD, false);
     }

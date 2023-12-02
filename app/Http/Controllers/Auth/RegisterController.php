@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\VerificationTokenExpired;
-use App\Models\User\User;
 use App\Providers\RouteServiceProvider;
 use App\Service\Auth\RegisterService;
 use Illuminate\Http\RedirectResponse;
@@ -43,10 +42,7 @@ class RegisterController extends Controller
 
     public function notify(Request $request): RedirectResponse
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        $this->service->sendVerificationEmail($user);
+        $this->service->sendVerificationEmail($request->user());
 
         return redirect()
             ->route('register.prompt')
@@ -55,12 +51,8 @@ class RegisterController extends Controller
 
     public function verify(Request $request): RedirectResponse
     {
-        /** @var User $user */
-        $user = $request->user();
-        $token = $request->route('token');
-
         try {
-            $this->service->verifyRegistration($user, $token);
+            $this->service->verifyRegistration($request->user(), $request->token);
         } catch (InvalidVerificationToken|VerificationTokenExpired $e) {
             return redirect()
                 ->route('register.prompt')
