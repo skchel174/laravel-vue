@@ -8,6 +8,7 @@ use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Validation\ValidationException;
 
 class LoginService
@@ -15,6 +16,7 @@ class LoginService
     public function __construct(
         private readonly UserRepositoryInterface $repository,
         private readonly StatefulGuard $auth,
+        private readonly Session $session,
     ) {
     }
 
@@ -37,11 +39,17 @@ class LoginService
 
         $this->auth->login($user, $remember);
 
+        $this->session->regenerate();
+
         return $user;
     }
 
     public function logout(): void
     {
         $this->auth->logout();
+
+        $this->session->invalidate();
+
+        $this->session->regenerateToken();
     }
 }

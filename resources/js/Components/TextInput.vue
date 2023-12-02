@@ -13,9 +13,8 @@ defineEmits([
 
 <template>
   <input
-    class="border-gray-300 focus:ring-0 focus:border-sky-500 rounded-sm transition duration-700"
+    class="border-gray-300 focus:ring-0 focus:border-sky-500/70 rounded-sm transition duration-700"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
-    ref="input"
   />
 </template>

@@ -16,10 +16,20 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 /**
  * @property-read int $id
  * @property string $name
  * @property string $email
+ * @property string $about
  * @property string|null $new_email
  * @property Status $status
  * @property Password $password
@@ -29,9 +39,9 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
  * @property CarbonImmutable $updated_at
  * @property CarbonImmutable $login_at
  */
-class User extends Model implements AuthenticatableInterface, AuthorizableInterface
+class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
 {
-    use HasFactory, Authenticatable, Authorizable;
+    use HasFactory, Authenticatable, Authorizable, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -57,6 +67,8 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
         'login_at' => 'immutable_datetime:d-m-Y H:i:s',
     ];
+
+    protected $with = ['media'];
 
     public static function register(string $name, string $email, Password $password): static
     {
@@ -159,5 +171,46 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     public function getAuthPassword(): string
     {
         return $this->password->getHash();
+    }
+
+    public function getAvatar(): ?Media
+    {
+        return $this->getFirstMedia('avatar');
+    }
+
+    /**
+     * @throws FileDoesNotExist|FileIsTooBig
+     */
+    public function setAvatar(?UploadedFile $file): void
+    {
+        $this->media()
+            ->where('collection_name', 'avatar')
+            ->delete();
+
+        if (!$file) {
+            return;
+        }
+
+        $name = Str::uuid() . '.' . $file->getClientOriginalExtension();
+
+        $this->addMedia($file)
+            ->usingFileName($name)
+            ->toMediaCollection('avatar');
+    }
+
+    /**
+     * @throws InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('md')
+            ->width(1200)
+            ->height(600)
+            ->nonQueued();
+
+        $this->addMediaConversion('sm')
+            ->width(900)
+            ->height(300)
+            ->nonQueued();
     }
 }
