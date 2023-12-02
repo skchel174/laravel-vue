@@ -6,8 +6,10 @@ namespace Database\Factories\User;
 
 use App\Models\User\Password;
 use App\Models\User\Status;
+use App\Models\User\User;
 use App\Models\User\VerifyToken;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
@@ -34,5 +36,12 @@ class UserFactory extends Factory
             'verify_token' => VerifyToken::create(),
             'status' => Status::Wait,
         ]);
+    }
+
+    public function withAvatar(): static
+    {
+        return $this->afterCreating(function (User $user) {
+           $user->setAvatar(UploadedFile::fake()->image('avatar.jpg'));
+        });
     }
 }
