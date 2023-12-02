@@ -6,7 +6,6 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\AuthManager;
-use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -36,11 +35,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->bind(StatefulGuard::class, function () {
             $manager = $this->app->get(AuthManager::class);
             return $manager->guard();
-        });
-
-        $this->app->bind(SessionGuard::class, function () {
-            $manager = $this->app->get(AuthManager::class);
-            return $manager->guard('web');
         });
     }
 }
