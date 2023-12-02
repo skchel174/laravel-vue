@@ -1,102 +1,143 @@
 <script setup>
+import {useForm, usePage} from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import InputLength from "@/Components/Form/InputLength.vue";
+import TextareaInput from "@/Components/Form/TextareaInput.vue";
+import ProfileAvatar from "@/Pages/Profile/Partials/ProfileAvatar.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 defineProps({
-    mustVerifyEmail: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
-    },
+  status: {
+    type: String,
+  },
 });
 
 const user = usePage().props.auth.user;
 
 const form = useForm({
-    name: user.name,
-    email: user.email,
+  _method: 'patch',
+  name: user.name ?? '',
+  about: user.about ?? '',
+  avatar: undefined,
 });
+
+const submit = () => {
+  form.post(route('profile.update'), {
+    onSuccess: () => document.location.reload(),
+  });
+};
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
+  <section>
+    <header class="flex space-x-4">
+      <div>
+        <div class="h-8 w-8 bg-green-600 flex items-center justify-center rounded-sm">
+          <span class="material-icons !text-base text-white">
+            manage_accounts
+          </span>
+        </div>
+      </div>
 
-            <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
+      <div>
+        <h2 class="text-lg font-medium text-gray-900 leading-none">
+          Profile Information
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600">
+          Update your account's profile information.
+        </p>
+      </div>
+    </header>
+
+    <form
+      class="mt-8 flex-1 flex flex-col lg:flex-row"
+      @submit.prevent="submit"
+    >
+      <ProfileAvatar
+        class="max-w-2xl order-1 lg:order-2 lg:ml-16 mb-8"
+        v-model="form.avatar"
+        :avatar="user.avatar"
+        :error="form.errors.avatar"
+      />
+
+      <div class="max-w-2xl w-full order-2 lg:order-1 space-y-6">
+        <div>
+          <div class="flex justify-between items-center">
+            <InputLabel
+              for="name"
+              value="Actual name"
+            />
+
+            <InputLength
+              :input="form.name"
+              :max-length="60"
+            />
+          </div>
+
+          <TextInput
+            id="name"
+            type="text"
+            class="mt-1 block w-full"
+            v-model="form.name"
+            required
+          />
+
+          <InputError
+            class="mt-2"
+            :message="form.errors.name"
+          />
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center">
+            <InputLabel
+              for="about"
+              value="Describe yourself"
+            />
+
+            <InputLength
+              :input="form.about"
+              :max-length="1000"
+            />
+          </div>
+
+          <TextareaInput
+            id="about"
+            type="text"
+            class="mt-1 w-full block"
+            v-model="form.about"
+            maxLength="1000"
+            rows="8"
+          />
+
+          <InputError
+            class="mt-2"
+            :message="form.errors.about"
+          />
+        </div>
+
+        <div class="mt-6 flex items-center">
+          <PrimaryButton :disabled="form.processing">
+            Save
+          </PrimaryButton>
+
+          <Transition
+            enter-from-class="opacity-0"
+            leave-to-class="opacity-0"
+            class="transition ease-in-out"
+          >
+            <p
+              v-if="form.recentlySuccessful"
+              class="ml-2 text-sm text-gray-600"
+            >
+              Saved.
             </p>
-        </header>
-
-        <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="name" value="Name" />
-
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
-
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="text-sm mt-2 text-gray-800">
-                    Your email address is unverified.
-                    <Link
-                        :href="route('verification.send')"
-                        method="post"
-                        as="button"
-                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Click here to re-send the verification email.
-                    </Link>
-                </p>
-
-                <div
-                    v-show="status === 'verification-link-sent'"
-                    class="mt-2 font-medium text-sm text-green-600"
-                >
-                    A new verification link has been sent to your email address.
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
-                </Transition>
-            </div>
-        </form>
-    </section>
+          </Transition>
+        </div>
+      </div>
+    </form>
+  </section>
 </template>

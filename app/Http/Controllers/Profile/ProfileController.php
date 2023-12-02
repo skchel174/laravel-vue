@@ -21,7 +21,7 @@ class ProfileController
 
     public function index(): Response
     {
-        return Inertia::render('Profile/Edit', [
+        return Inertia::render('Profile/ProfilePage', [
             'status' => session('status'),
             'error' => session('error'),
         ]);
