@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
  * @property string $name
  * @property string $slug
  * @property string $description
+ * @property string $icon
  * @property-read Category $category
  * @property-read Collection<Article> $articles
  * @property-read CarbonImmutable $created_at
@@ -28,17 +29,23 @@ class Topic extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name', 'slug', 'description', 'icon',
+    ];
+
     protected $casts = [
         'created_at' => 'immutable_datetime:d-m-Y H:i',
         'updated_at' => 'immutable_datetime:d-m-Y H:i',
     ];
 
-    public static function createNew(string $name, string $description, Category $category): static
+    public static function createNew(string $name, string $description, Category $category, ?string $icon = null): static
     {
-        $topic = new static();
-        $topic->name = $name;
-        $topic->slug = Str::slug($name);
-        $topic->description = $description;
+        $topic = static::make([
+            'name' => $name,
+            'slug' => Str::slug($name),
+            'description' => $description,
+            'icon' => $icon,
+        ]);
         $topic->category()->associate($category);
         $topic->save();
 
