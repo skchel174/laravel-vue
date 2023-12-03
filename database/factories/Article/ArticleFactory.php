@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Database\Factories\Article;
 
+use App\Models\Article\Article;
 use App\Models\Article\Status;
+use App\Models\Topic\Topic;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 
 class ArticleFactory extends Factory
 {
@@ -42,6 +45,17 @@ class ArticleFactory extends Factory
                 'status' => Status::Moderated,
                 'published_at' => null,
             ];
+        });
+    }
+
+    /**
+     * @param Collection<Topic> $topics
+     * @return ArticleFactory
+     */
+    public function withTopics(Collection $topics): ArticleFactory
+    {
+        return $this->afterCreating(function (Article $article) use ($topics) {
+            $article->topics()->attach($topics);
         });
     }
 }

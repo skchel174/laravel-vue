@@ -9,13 +9,17 @@ use App\Models\Article\Exceptions\ArticleModerated;
 use App\Models\Article\Exceptions\ArticleNotDeleted;
 use App\Models\Article\Exceptions\ArticlePublished;
 use App\Models\Article\Exceptions\ArticleWasNotModerated;
+use App\Models\Article\Exceptions\TopicAlreadyAttached;
+use App\Models\Category\Category;
 use App\Models\Tag\Tag;
+use App\Models\Topic\Topic;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -36,7 +40,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Status $status
  * @property int $views
  * @property User $author
- * @property-read Collection $tags
+ * @property-read Collection<Tag> $tags
+ * @property-read Collection<Topic> $topics
+ * @property-read Collection<Category> $categories
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
@@ -115,6 +121,25 @@ class Article extends Model implements HasMedia
             throw new ArticleHasTag($tag);
         });
         $this->tags()->sync($tags->pluck('id'));
+    }
+
+    public function topics(): BelongsToMany
+    {
+        return $this->belongsToMany(Topic::class);
+    }
+
+    public function attachTopic(Collection $topics): void
+    {
+        $articleTopics = $this->topics()->get();
+        $articleTopics->intersect($topics)->each(function (Topic $topic) {
+            throw new TopicAlreadyAttached($topic);
+        });
+        $this->topics()->sync($topics->pluck('id'));
+    }
+
+    public function categories(): HasManyThrough
+    {
+        return $this->hasManyThrough(Category::class, Topic::class);
     }
 
     public function author(): BelongsTo
