@@ -36,8 +36,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $user_id
  * @property string $title
  * @property string $text
- * @property string|null $summary
  * @property Status $status
+ * @property string|null $summary
+ * @property Difficulty|null $difficulty
  * @property int $views
  * @property User $author
  * @property-read Collection<Tag> $tags
@@ -51,32 +52,31 @@ class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'text',
-        'summary',
-        'status',
-        'published_at',
-    ];
+    protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'published_at'];
 
     protected $casts = [
         'status' => Status::class,
+        'difficulty' => Difficulty::class,
         'created_at' => 'immutable_datetime:d-m-Y H:i',
         'updated_at' => 'immutable_datetime:d-m-Y H:i',
         'published_at' => 'immutable_datetime:d-m-Y H:i',
     ];
 
-    protected $with = [
-        'author'
-    ];
+    protected $with = ['author'];
 
-    public static function createNew(User $author, string $title, string $text, ?string $summary = null): static
-    {
+    public static function createNew(
+        User $author,
+        string $title,
+        string $text,
+        ?string $summary = null,
+        ?Difficulty $difficulty = null,
+    ): static {
         $article = static::make([
             'title' => $title,
             'text' => $text,
             'summary' => $summary,
             'status' => Status::Draft,
+            'difficulty' => $difficulty,
         ]);
         $article->author()->associate($author);
         $article->save();

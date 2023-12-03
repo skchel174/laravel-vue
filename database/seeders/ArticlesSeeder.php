@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Article\Article;
+use App\Models\Article\Difficulty;
 use App\Models\Tag\Tag;
 use App\Models\Topic\Topic;
 use App\Models\User\User;
@@ -15,18 +16,18 @@ class ArticlesSeeder extends Seeder
 {
     public function run(): void
     {
-        /** @var Collection<User> $users */
         $users = User::get();
-
         $topics = Topic::get();
-
         $tags = Tag::get();
 
         foreach ($users as $user) {
             Article::factory(30)
                 ->hasAttached($topics->random(rand(1, 3)))
                 ->hasAttached($tags->random(rand(1, 10)))
-                ->create(['author_id' => $user]);
+                ->create([
+                    'author_id' => $user,
+                    'difficulty' => fn () => Collection::make([null, ...Difficulty::cases()])->random(),
+                ]);
         }
     }
 }

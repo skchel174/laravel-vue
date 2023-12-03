@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('title', 100);
             $table->text('text');
             $table->text('summary')->nullable();
+            $table->string('difficulty', 20)->nullable();
             $table->string('status', 50);
+            $table->integer('views')->unsigned()->default(0);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

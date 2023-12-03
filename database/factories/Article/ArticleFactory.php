@@ -22,6 +22,7 @@ class ArticleFactory extends Factory
             'text' => $this->faker->text(1000),
             'summary' => $this->faker->text(),
             'status' => Status::Published,
+            'views' => rand(0, 5000),
             'created_at' => $date = new CarbonImmutable($this->faker->dateTimeThisYear),
             'updated_at' => null,
             'published_at' => $date->addDay(),
