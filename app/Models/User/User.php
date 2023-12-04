@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\User;
 
+use App\Models\Article\Article;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\PasswordResetNotRequested;
 use App\Models\User\Exceptions\RegistrationAlreadyVerified;
@@ -15,6 +16,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -171,6 +173,11 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     public function getAuthPassword(): string
     {
         return $this->password->getHash();
+    }
+
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class);
     }
 
     public function getAvatar(): ?Media
