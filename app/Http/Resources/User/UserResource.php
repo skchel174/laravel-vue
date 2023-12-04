@@ -15,6 +15,8 @@ class UserResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $avatar = $this->resource->getAvatar();
+
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
@@ -23,7 +25,7 @@ class UserResource extends JsonResource
             'status' => $this->resource->status->value,
             'login_at' => $this->resource->login_at->format('d M Y'),
             'created_at' => $this->resource->created_at->format('d M Y'),
-            'avatar' => AvatarResource::make($this->resource->getAvatar())->toArray($request),
+            'avatar' => $avatar ? AvatarResource::make($avatar)->toArray($request) : null,
         ];
     }
 }

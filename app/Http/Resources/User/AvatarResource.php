@@ -16,9 +16,9 @@ class AvatarResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'xl' => $this->resource?->getUrl(),
-            'md' => $this->resource?->getUrl('md'),
-            'sm' => $this->resource?->getUrl('sm'),
+            'xl' => $this->resource->getUrl(),
+            'md' => $this->resource->getUrl('md'),
+            'sm' => $this->resource->getUrl('sm'),
         ];
     }
 }

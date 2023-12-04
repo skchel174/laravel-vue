@@ -9,7 +9,6 @@ import DangerOutlineButton from "@/Components/Buttons/DangerOutlineButton.vue";
 const props = defineProps({
   avatar: {
     type: Object,
-    required: true,
   },
 
   modelValue: {
@@ -25,7 +24,7 @@ const emit = defineEmits([
   'update:modelValue',
 ]);
 
-const image = ref(props.avatar.sm);
+const image = ref(props.avatar);
 const avatarEl = ref(null);
 const avatarInput = ref(null);
 const isAvatarUpdated = ref(false);
@@ -37,14 +36,15 @@ const triggerInput = () => {
 const selectImage = () => {
   isAvatarUpdated.value = true;
   const file = avatarInput.value.files[0];
-  image.value = URL.createObjectURL(file);
+  const objectUrl = URL.createObjectURL(file);
+  image.value = {sm: objectUrl, md: objectUrl, xl: objectUrl};
   emit('update:modelValue', file);
 };
 
 const resetImage = () => {
   isAvatarUpdated.value = false;
   avatarInput.value.value = '';
-  image.value = props.avatar.sm;
+  image.value = props.avatar;
   emit('update:modelValue', undefined);
 };
 
@@ -65,8 +65,7 @@ const deleteImage = () => {
         class="hidden lg:flex"
         size="lg"
         ref="avatarEl"
-        :image="image"
-        :full-image="avatar.xl"
+        :value="image"
       />
 
       <p class="text-xs text-gray-400 font-medium">
@@ -93,7 +92,7 @@ const deleteImage = () => {
         </NeutralButton>
 
         <DangerOutlineButton
-          v-if="avatar.sm"
+          v-if="avatar"
           @click.prevent="deleteImage"
         >
           Delete image
@@ -105,8 +104,7 @@ const deleteImage = () => {
       class="mt-4 flex lg:hidden"
       size="lg"
       ref="avatarEl"
-      :image="image"
-      :full-image="avatar.xl"
+      :value="image"
     />
 
     <input
