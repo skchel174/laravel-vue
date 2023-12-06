@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Cabinet\CabinetController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'auth.session', 'verified'])->name('dashboard');
+
+Route::get('/cabinet', [CabinetController::class, 'index'])
+    ->middleware(['auth', 'auth.session', 'verified'])
+    ->name('cabinet');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';
