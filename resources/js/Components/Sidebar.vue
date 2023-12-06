@@ -1,15 +1,18 @@
 <script setup>
-import {computed, onUnmounted, watch} from 'vue';
+import {onUnmounted, watch} from "vue";
 
 const props = defineProps({
   open: {
     type: Boolean,
-    default: false,
+    required: true,
   },
 
-  maxWidth: {
+  side: {
     type: String,
-    default: '2xl',
+    required: true,
+    validator: (value) => {
+      return ['left', 'right'].includes(value);
+    },
   },
 });
 
@@ -35,24 +38,18 @@ onUnmounted(() => {
   document.removeEventListener('keydown', closeOnEscape);
   document.body.style.overflow = null;
 });
-
-const maxWidthClass = computed(() => {
-  return {
-    sm: 'sm:max-w-sm',
-    md: 'sm:max-w-md',
-    lg: 'sm:max-w-lg',
-    xl: 'sm:max-w-xl',
-    '2xl': 'sm:max-w-2xl',
-  }[props.maxWidth];
-});
 </script>
 
 <template>
   <Teleport to="body">
-    <Transition leave-active-class="duration-200">
+    <Transition
+      enter-active-class="duration-200"
+      leave-active-class="delay-300"
+    >
       <div
         v-show="open"
-        class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50 flex justify-center items-center"
+        class="fixed inset-0 overflow-y-auto z-50 flex"
+        :class="side === 'left' ? 'justify-start' : 'justify-end'"
         scroll-region
       >
         <Transition
@@ -68,24 +65,23 @@ const maxWidthClass = computed(() => {
             class="fixed inset-0 transform transition-all"
             @click="$emit('update:open', false)"
           >
-            <div class="absolute inset-0 bg-gray-500 opacity-75"/>
+            <div class="absolute inset-0 bg-black opacity-50"/>
           </div>
         </Transition>
 
         <Transition
           enter-active-class="ease-out duration-300"
-          enter-from-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          enter-to-class="opacity-100 translate-y-0 sm:scale-100"
+          :enter-from-class="side === 'left' ? 'translate-x-[-100%]' : 'translate-x-[100%]'"
+          enter-to-class="translate-x-0"
           leave-active-class="ease-in duration-200"
-          leave-from-class="opacity-100 translate-y-0 sm:scale-100"
-          leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          leave-from-class="translate-x-0"
+          :leave-to-class="side === 'left' ? 'translate-x-[-100%]' : 'translate-x-[100%]'"
         >
           <div
-            v-show="open"
-            class="mb-6 bg-white rounded-sm overflow-hidden transform transition-all sm:w-full sm:mx-auto"
-            :class="maxWidthClass"
+            v-if="open"
+            class="w-9/12 h-screen max-w-[18rem] bg-white overflow-y-auto transform transition-all"
           >
-            <slot v-if="open"/>
+            <slot/>
           </div>
         </Transition>
       </div>
