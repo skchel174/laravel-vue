@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class CabinetController extends Controller
+class ProfileController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Cabinet/CabinetPage');
+        return Inertia::render('Cabinet/Profile/ProfilePage');
     }
 }

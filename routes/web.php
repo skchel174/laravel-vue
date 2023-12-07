@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Cabinet\CabinetController;
+use App\Http\Controllers\Cabinet\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'auth.session', 'verified'])->name('dashboard');
 
-Route::get('/cabinet', [CabinetController::class, 'index'])
+Route::get('/cabinet', [ProfileController::class, 'index'])
     ->middleware(['auth', 'auth.session', 'verified'])
     ->name('cabinet');
 

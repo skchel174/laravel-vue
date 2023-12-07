@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'about' => $this->resource->about,
             'email' => $this->resource->email,
             'status' => $this->resource->status->value,
-            'login_at' => $this->resource->login_at->format('d M Y'),
+            'login_at' => $this->resource->login_at->format('d-m-Y H:i'),
             'created_at' => $this->resource->created_at->format('d M Y'),
             'avatar' => $avatar ? AvatarResource::make($avatar)->toArray($request) : null,
         ];

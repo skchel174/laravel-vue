@@ -22,12 +22,12 @@ const currentTab = ref('profile');
 <template>
   <AppHeader/>
 
-  <main class="px-2 mx-auto w-full max-w-3xl lg:max-w-5xl h-full flex flex-col">
+  <main class="px-2 mx-auto w-full max-w-3xl lg:max-w-5xl flex flex-col">
     <div class="hidden lg:block h-4"/>
 
     <div class="w-full flex flex-col items-center lg:items-start lg:flex-row lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
       <div class="flex-1 w-full max-w-3xl">
-        <div class="bg-white">
+        <div class="relative z-10 bg-white">
           <ProfileCard
             class="p-4"
             :user="user"
