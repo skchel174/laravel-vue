@@ -205,6 +205,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             ->toMediaCollection('avatar');
     }
 
+    public function updateLastActivityTime(): void
+    {
+        if (CarbonImmutable::now() > $this->login_at->addHour()) {
+            $this->update(['login_at' => CarbonImmutable::now()]);
+        }
+    }
+
     /**
      * @throws InvalidManipulation
      */
