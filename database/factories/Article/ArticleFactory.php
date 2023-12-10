@@ -57,6 +57,10 @@ class ArticleFactory extends Factory
     {
         return $this->afterCreating(function (Article $article) use ($topics) {
             $article->topics()->attach($topics);
+
+            $topics->each(function (Topic $topic) {
+               $topic->increment('publications');
+            });
         });
     }
 }

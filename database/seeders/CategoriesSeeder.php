@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Article\Article;
 use App\Models\Category\Category;
 use App\Models\Topic\Topic;
+use App\Models\User\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -13,6 +15,9 @@ class CategoriesSeeder extends Seeder
 {
     public function run(): void
     {
+        $users = User::all();
+        $articles = Article::all();
+
         foreach ($this->getCategories() as $category => $topics) {
             $category = Category::factory()->create([
                 'name' => $category,
@@ -20,12 +25,33 @@ class CategoriesSeeder extends Seeder
             ]);
 
             foreach ($topics as $topic) {
-                Topic::factory()->create([
-                    'name' => $topic,
-                    'slug' => Str::slug($topic),
-                    'category_id' => $category,
-                ]);
+                $subscribers = $users->random(rand(1, $users->count()));
+                $topicArticles = $articles->random(rand(10, 30));
+
+                Topic::factory()
+                    ->withIcon($topic['icon'])
+                    ->hasAttached($subscribers, relationship: 'subscribers')
+                    ->hasAttached($topicArticles)
+                    ->create([
+                        'name' => $topic['name'],
+                        'slug' => Str::slug($topic['name']),
+                        'category_id' => $category,
+                        'subscribers_cnt' => $subscribers->count(),
+                        'publications_cnt' => $topicArticles->count(),
+                    ]);
             }
+        }
+
+        $articles = Article::query()
+            ->leftJoin('article_topic', 'articles.id', '=', 'article_topic.article_id')
+            ->whereNull('article_topic.article_id')
+            ->get();
+
+        if ($articles->isNotEmpty()) {
+            /** @var Topic $topic */
+            $topic = Topic::find(1);
+            $topic->articles()->attach($articles);
+            $topic->increment('publications_cnt', $articles->count());
         }
     }
 
@@ -33,27 +59,50 @@ class CategoriesSeeder extends Seeder
     {
         return [
             'Development' => [
-                'Programming', 'Information security', 'Machine learning', 'Game development', 'Algorithms',
+                ['name' => 'Programming', 'icon' => 'programming.png'],
+                ['name' => 'Information security', 'icon' => 'information-security.png'],
+                ['name' => 'Machine learning', 'icon' => 'machine-learning.png'],
+                ['name' => 'Game development', 'icon' => 'game-development.png'],
+                ['name' => 'Algorithms', 'icon' => 'algorithms.png'],
             ],
 
             'Admin' => [
-                'Network technologies', 'Configuring Linux', 'DevOps', 'Server administration', 'Database administration',
+                ['name' => 'Network technologies', 'icon' => 'network-technologies.png'],
+                ['name' => 'Configuring Linux', 'icon' => 'configuring-linux.png'],
+                ['name' => 'DevOps', 'icon' => 'devops.png'],
+                ['name' => 'Server administration', 'icon' => 'server-administration.png'],
+                ['name' => 'Database administration', 'icon' => 'database-administration.png'],
             ],
 
             'Design' => [
-                'Graphic design', 'Web design', 'Game design', 'Typography',
+                ['name' => 'Graphic design', 'icon' => 'graphic-design.png'],
+                ['name' => 'Web design', 'icon' => 'web-design.png'],
+                ['name' => 'Game design', 'icon' => 'game-design.png'],
+                ['name' => 'Typography', 'icon' => 'typography.png'],
             ],
 
             'Management' => [
-                'IT-companies', 'Project management', 'Product management', 'Business models', 'Freelance', 'Agile',
+                ['name' => 'IT-companies', 'icon' => 'it-companies.png'],
+                ['name' => 'Project management', 'icon' => 'project-management.png'],
+                ['name' => 'Product management', 'icon' => 'product-management.png'],
+                ['name' => 'Business models', 'icon' => 'business-models.png'],
+                ['name' => 'Freelance', 'icon' => 'freelance.png'],
+                ['name' => 'Agile', 'icon' => 'agile.png'],
             ],
 
             'Marketing' => [
-                'Web analytics', 'Content marketing', 'Branding', 'IT systems monetization',
+                ['name' => 'Web analytics', 'icon' => 'web-analytics.png'],
+                ['name' => 'Content marketing', 'icon' => 'content-analytics.png'],
+                ['name' => 'Branding', 'icon' => 'branding.png'],
+                ['name' => 'IT systems monetization', 'icon' => 'it-monetization.png'],
             ],
 
             'PopSci' => [
-                'Old hardware', 'History of IT', 'Software', 'CPU', 'Games and game consoles',
+                ['name' => 'Old hardware', 'icon' => 'old-hardware.png'],
+                ['name' => 'History of IT', 'icon' => 'it-history.png'],
+                ['name' => 'Software', 'icon' => 'software.png'],
+                ['name' => 'CPU', 'icon' => 'cpu.png'],
+                ['name' => 'Games and game consoles', 'icon' => 'games.png'],
             ],
         ];
     }

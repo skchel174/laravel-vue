@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories\Topic;
 
 use App\Models\Category\Category;
+use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -20,5 +21,14 @@ class TopicFactory extends Factory
             'description' => $this->faker->sentence(),
             'category_id' => Category::factory(),
         ];
+    }
+
+    public function withIcon(string $icon): TopicFactory
+    {
+        return $this->afterCreating(function (Topic $topic) use ($icon) {
+            $topic->addMediaFromDisk('/topics/' . $icon, 'assets')
+                ->preservingOriginal()
+                ->toMediaCollection('icon');
+        });
     }
 }
