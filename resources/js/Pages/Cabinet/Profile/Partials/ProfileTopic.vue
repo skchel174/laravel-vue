@@ -11,6 +11,8 @@ defineProps({
   },
 });
 
+defineEmits(['unsubscribe']);
+
 const topicEl = ref(null);
 
 const isPopoverOpen = ref(false);
@@ -47,8 +49,8 @@ const isPopoverOpen = ref(false);
           <p class="text-sm text-gray-500 font-medium break-words">
             {{ topic.description }}
           </p>
-          <!-- TODO: add unsubscribe request -->
-          <PrimaryButton>
+
+          <PrimaryButton @click="$emit('unsubscribe', topic)">
             Unsubscribe
           </PrimaryButton>
         </div>

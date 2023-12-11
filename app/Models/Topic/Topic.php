@@ -70,9 +70,6 @@ class Topic extends Model implements HasMedia
             ->exists();
     }
 
-    /**
-     * @throws Throwable
-     */
     public function subscribe(User $user): void
     {
         if ($this->isSubscribed($user)) {
@@ -82,9 +79,6 @@ class Topic extends Model implements HasMedia
         $this->subscribers()->attach($user);
     }
 
-    /**
-     * @throws Throwable
-     */
     public function unsubscribe(User $user): void
     {
         if (!$this->isSubscribed($user)) {
