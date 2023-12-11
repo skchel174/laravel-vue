@@ -22,8 +22,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string $name
  * @property string $slug
  * @property string $description
- * @property int $subscribers_cnt
- * @property int $publications_cnt
  * @property-read Category $category
  * @property-read Collection<Article> $articles
  * @property-read Collection<User> $subscribers
@@ -38,8 +36,6 @@ class Topic extends Model implements HasMedia
         'name',
         'slug',
         'description',
-        'subscribers_cnt',
-        'publications_cnt',
     ];
 
     protected $casts = [

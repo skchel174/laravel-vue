@@ -30,14 +30,12 @@ class CategoriesSeeder extends Seeder
 
                 Topic::factory()
                     ->withIcon($topic['icon'])
-                    ->hasAttached($subscribers, relationship: 'subscribers')
                     ->hasAttached($topicArticles)
+                    ->hasAttached($subscribers, relationship: 'subscribers')
                     ->create([
                         'name' => $topic['name'],
                         'slug' => Str::slug($topic['name']),
                         'category_id' => $category,
-                        'subscribers_cnt' => $subscribers->count(),
-                        'publications_cnt' => $topicArticles->count(),
                     ]);
             }
         }
@@ -51,7 +49,6 @@ class CategoriesSeeder extends Seeder
             /** @var Topic $topic */
             $topic = Topic::find(1);
             $topic->articles()->attach($articles);
-            $topic->increment('publications_cnt', $articles->count());
         }
     }
 

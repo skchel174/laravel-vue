@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\Article;
 
-use App\Models\Article\Exceptions\ArticleHasTag;
 use App\Models\Article\Exceptions\ArticleModerated;
 use App\Models\Article\Exceptions\ArticleNotDeleted;
 use App\Models\Article\Exceptions\ArticlePublished;
 use App\Models\Article\Exceptions\ArticleWasNotModerated;
-use App\Models\Article\Exceptions\TopicAlreadyAttached;
 use App\Models\Category\Category;
 use App\Models\Tag\Tag;
 use App\Models\Topic\Topic;
@@ -30,6 +28,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Throwable;
 
 /**
  * @property-read int $id
@@ -70,7 +69,8 @@ class Article extends Model implements HasMedia
         string $text,
         ?string $summary = null,
         ?Difficulty $difficulty = null,
-    ): static {
+    ): static
+    {
         $article = static::make([
             'title' => $title,
             'text' => $text,
@@ -93,6 +93,9 @@ class Article extends Model implements HasMedia
         $this->update(['status' => Status::Moderated]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function publish(): void
     {
         if ($this->status->isPublished()) {
@@ -114,27 +117,9 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(Tag::class);
     }
 
-    public function attachTags(Collection $tags): void
-    {
-        $articleTags = $this->tags()->get();
-        $articleTags->intersect($tags)->each(function (Tag $tag) {
-            throw new ArticleHasTag($tag);
-        });
-        $this->tags()->sync($tags->pluck('id'));
-    }
-
     public function topics(): BelongsToMany
     {
         return $this->belongsToMany(Topic::class);
-    }
-
-    public function attachTopic(Collection $topics): void
-    {
-        $articleTopics = $this->topics()->get();
-        $articleTopics->intersect($topics)->each(function (Topic $topic) {
-            throw new TopicAlreadyAttached($topic);
-        });
-        $this->topics()->sync($topics->pluck('id'));
     }
 
     public function categories(): HasManyThrough
