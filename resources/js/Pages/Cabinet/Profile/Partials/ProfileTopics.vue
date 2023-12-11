@@ -1,10 +1,13 @@
 <script setup>
+import ProfileTopic from "@/Pages/Cabinet/Profile/Partials/ProfileTopic.vue";
+
 defineProps({
   topics: {
     type: Array,
     required: true,
   },
 });
+
 </script>
 
 <template>
@@ -13,14 +16,22 @@ defineProps({
       Belongs to topics
     </h5>
 
-    <div class="flex flex-wrap">
-      <div
-        class="mb-2 mr-2 px-2 py-0.5 bg-lime-500/60 rounded-sm text-sm text-gray-500 font-medium cursor-pointer hover:text-sky-600 transition duration-400"
+    <div
+      class="flex flex-wrap"
+      v-if="topics.length > 0"
+    >
+      <ProfileTopic
         v-for="topic in topics"
         :key="topic"
-      >
-        {{ topic }}
-      </div>
+        :topic="topic"
+      />
+    </div>
+
+    <div
+      class=" text-gray-400 font-medium"
+      v-else
+    >
+      No topic subscriptions
     </div>
   </div>
 </template>

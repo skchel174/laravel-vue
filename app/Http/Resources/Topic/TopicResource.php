@@ -20,8 +20,8 @@ class TopicResource extends JsonResource
             'name' => $this->resource->name,
             'slug' => $this->resource->slug,
             'description' => $this->resource->description,
-            'subscribers_cnt' => $this->resource->subscribers_cnt,
-            'publications_cnt' => $this->resource->publications_cnt,
+            'subscribers_count' => $this->resource->subscribers_count,
+            'articles_count' => $this->resource->articles_count,
             'icon' => $this->resource->getFirstMedia('icon')->getUrl(),
         ];
     }
