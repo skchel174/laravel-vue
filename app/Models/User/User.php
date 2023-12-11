@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Models\Article\Article;
+use App\Models\Topic\Topic;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\PasswordResetNotRequested;
 use App\Models\User\Exceptions\RegistrationAlreadyVerified;
@@ -16,9 +17,11 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
@@ -40,6 +43,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read CarbonImmutable $created_at
  * @property CarbonImmutable $updated_at
  * @property CarbonImmutable $login_at
+ * @property-read Collection<Article> $articles
+ * @property-read Collection<Topic> $topics
  */
 class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
 {
@@ -178,6 +183,11 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function topics(): BelongsToMany
+    {
+        return $this->belongsToMany(Topic::class);
     }
 
     public function getAvatar(): ?Media
