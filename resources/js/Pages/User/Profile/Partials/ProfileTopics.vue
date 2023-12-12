@@ -1,10 +1,20 @@
 <script setup>
 import {ref} from "vue";
-import ProfileTopic from "@/Pages/Cabinet/Profile/Partials/ProfileTopic.vue";
+import ProfileTopic from "@/Pages/User/Profile/Partials/ProfileTopic.vue";
 
 const props = defineProps({
   topics: {
     type: Array,
+    required: true,
+  },
+
+  auth: {
+    type: Object,
+    required: true,
+  },
+
+  user: {
+    type: Object,
     required: true,
   },
 });
@@ -31,6 +41,7 @@ const unsubscribe = (topic) => {
         v-for="topic in topics"
         :key="topic"
         :topic="topic"
+        :authorized="auth.user?.id === user.id"
         @unsubscribe="unsubscribe"
       />
     </div>

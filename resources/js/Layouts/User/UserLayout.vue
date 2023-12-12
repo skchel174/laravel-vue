@@ -1,22 +1,29 @@
 <script setup>
-import {ref} from "vue";
-import {usePage} from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import Tab from "@/Components/Tabs/Tab.vue";
 import Tabs from "@/Components/Tabs/Tabs.vue";
 import Divider from "@/Components/Divider.vue";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
-import ProfileInfo from "@/Layouts/Cabinet/Partials/ProfileInfo.vue";
-import ProfileCard from "@/Layouts/Cabinet/Partials/ProfileCard.vue";
+import UserInfo from "@/Layouts/User/Partials/UserInfo.vue";
+import UserCard from "@/Layouts/User/Partials/UserCard.vue";
 
-const user = usePage().props.auth.user;
+const props = defineProps({
+  currentTab: {
+    type: String,
+    required: true,
+  },
+
+  user: {
+    type: Object,
+    required: true,
+  },
+});
 
 const tabs = {
-  profile: route('cabinet'),
-  publications: route('cabinet'),
-  bookmarks: route('cabinet'),
+  profile: route('user', {user: props.user.id}),
+  articles: route('user', {user: props.user.id}),
+  bookmarks: route('user', {user: props.user.id}),
 };
-
-const currentTab = ref('profile');
 </script>
 
 <template>
@@ -28,7 +35,7 @@ const currentTab = ref('profile');
     <div class="w-full flex flex-col items-center lg:items-start lg:flex-row lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
       <div class="flex-1 w-full max-w-3xl">
         <div class="relative z-10 bg-white">
-          <ProfileCard
+          <UserCard
             class="p-4"
             :user="user"
           />
@@ -40,7 +47,9 @@ const currentTab = ref('profile');
               :selected="currentTab === tab"
               @click="currentTab = tab"
             >
-              {{ tab }}
+              <Link :href="tabs[tab]">
+                {{ tab }}
+              </Link>
             </Tab>
           </Tabs>
         </div>
@@ -55,7 +64,7 @@ const currentTab = ref('profile');
 
         <Divider class="my-4"/>
 
-        <ProfileInfo :user="user"/>
+        <UserInfo :user="user"/>
       </div>
     </div>
   </main>

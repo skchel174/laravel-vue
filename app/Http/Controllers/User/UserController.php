@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Cabinet;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Topic\TopicResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\User\User;
 use App\Repositories\Interfaces\TopicRepositoryInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController extends Controller
+class UserController extends Controller
 {
     public function __construct(private readonly TopicRepositoryInterface $topicRepository)
     {
     }
 
-    public function index(Request $request): Response
+    public function profile(Request $request, User $user): Response
     {
-        /** @var User $user */
-        $user = $request->user();
         $topics = $this->topicRepository->getByUser($user);
 
-        return Inertia::render('Cabinet/Profile/ProfilePage', [
+        return Inertia::render('User/Profile/ProfilePage', [
+            'user' => UserResource::make($user),
             'topics' => TopicResource::collection($topics),
         ]);
     }

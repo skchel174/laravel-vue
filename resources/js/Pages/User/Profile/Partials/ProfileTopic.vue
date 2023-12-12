@@ -9,6 +9,11 @@ defineProps({
     type: Object,
     required: true,
   },
+
+  authorized: {
+    type: Boolean,
+    required: true,
+  }
 });
 
 defineEmits(['unsubscribe']);
@@ -50,7 +55,10 @@ const isPopoverOpen = ref(false);
             {{ topic.description }}
           </p>
 
-          <PrimaryButton @click="$emit('unsubscribe', topic)">
+          <PrimaryButton
+            v-if="authorized"
+            @click="$emit('unsubscribe', topic)"
+          >
             Unsubscribe
           </PrimaryButton>
         </div>
