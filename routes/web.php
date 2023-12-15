@@ -34,5 +34,8 @@ Route::get('/dashboard', function () {
 Route::get('/users/{user}', [UserController::class, 'profile'])
     ->name('user');
 
+Route::get('/users/{user}/articles/{status?}', [UserController::class, 'articles'])
+    ->name('user.articles');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

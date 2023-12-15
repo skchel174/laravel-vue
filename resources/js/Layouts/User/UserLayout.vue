@@ -20,16 +20,24 @@ const props = defineProps({
 });
 
 const tabs = {
-  profile: route('user', {user: props.user.id}),
-  articles: route('user', {user: props.user.id}),
-  bookmarks: route('user', {user: props.user.id}),
+  profile: route('user', {
+    user: props.user.id,
+  }),
+
+  articles: route('user.articles', {
+    user: props.user.id,
+  }),
+
+  bookmarks: route('user', {
+    user: props.user.id,
+  }),
 };
 </script>
 
 <template>
   <AppHeader/>
 
-  <main class="px-2 mx-auto w-full max-w-3xl lg:max-w-5xl flex flex-col">
+  <main class="sm:px-2 mx-auto w-full max-w-3xl lg:max-w-5xl flex flex-col">
     <div class="hidden lg:block h-4"/>
 
     <div class="w-full flex flex-col items-center lg:items-start lg:flex-row lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
