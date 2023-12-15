@@ -129,7 +129,7 @@ class Article extends Model implements HasMedia
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function getCardImage(): ?Media

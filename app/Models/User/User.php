@@ -182,7 +182,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
     public function articles(): HasMany
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany(Article::class, 'author_id');
     }
 
     public function topics(): BelongsToMany
