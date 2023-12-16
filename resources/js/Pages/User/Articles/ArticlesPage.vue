@@ -45,7 +45,7 @@ const toggleStatuses = () => {
 const selectStatus = (value) => {
   status.value = value;
   statusesOpen.value = false;
-  router.get(route('user.articles', {user: props.user, status: value}));
+  router.get(route('user.articles', {author: props.user.id, status: value}));
 };
 
 const isTablet = useMedia('(max-width: 1024px)');
@@ -120,7 +120,7 @@ const isTablet = useMedia('(max-width: 1024px)');
               :total-pages="articles.totalPages"
               :current-page="articles.currentPage"
               route-name="user.articles"
-              :queryParams="{user, status}"
+              :queryParams="{author: user.id, status}"
             />
           </div>
 

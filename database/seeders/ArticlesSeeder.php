@@ -26,5 +26,13 @@ class ArticlesSeeder extends Seeder
                     'difficulty' => fn() => Collection::make([null, ...Difficulty::cases()])->random(),
                 ]);
         }
+
+        $articles = Article::all();
+
+        foreach ($users as $user) {
+            /** @var User $user */
+            $user->bookmarkedArticles()
+                ->attach($articles->random(rand(0, 20)));
+        }
     }
 }

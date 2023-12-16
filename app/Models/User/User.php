@@ -185,6 +185,11 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         return $this->hasMany(Article::class, 'author_id');
     }
 
+    public function bookmarkedArticles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'bookmarked_articles');
+    }
+
     public function topics(): BelongsToMany
     {
         return $this->belongsToMany(Topic::class);

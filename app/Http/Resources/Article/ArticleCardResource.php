@@ -16,11 +16,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class ArticleCardResource extends JsonResource
 {
+    public function __construct(Article $resource)
+    {
+        parent::__construct($resource);
+    }
+
     public function toArray(Request $request): array
     {
-        $image = $this->resource->getCardImage()
-            ? ArticleImageResource::make($this->resource->getCardImage())
-            : null;
+        if ($image = $this->resource->getCardImage()) {
+            $imageResource = $image && ArticleImageResource::make($image);
+        } else {
+            $imageResource = null;
+        }
 
         $publishedDate = $this->resource->published_at
             ? $this->formatDate($this->resource->published_at)
@@ -33,10 +40,10 @@ class ArticleCardResource extends JsonResource
             'difficulty' => $this->resource->difficulty?->value,
             'summary' => $this->resource->summary,
             'views' => $this->resource->views,
-            'is_bookmarked' => false,
+            'is_bookmarked' => $this->resource->is_bookmarked,
             'likes_count' => rand(0, 5000),
             'comments_count' => rand(0, 100),
-            'image' => $image,
+            'image' => $imageResource,
             'publish_date' => $publishedDate,
             'created_date' => $this->formatDate($this->resource->created_at),
             'author' => UserResource::make($this->resource->author),

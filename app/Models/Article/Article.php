@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -50,6 +51,8 @@ use Throwable;
 class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
+
+    public bool $is_bookmarked = false;
 
     protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'published_at'];
 
@@ -132,9 +135,21 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    public function usersBookmarked(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'bookmarked_articles');
+    }
+
+    public function cardImage(): MorphMany
+    {
+        return $this->media()->where('collection_name', 'card_image');
+    }
+
     public function getCardImage(): ?Media
     {
-        return $this->getFirstMedia('card_image');
+        /** @var Media|null $image */
+        $image = $this->cardImage->first();
+        return $image;
     }
 
     /**

@@ -77,11 +77,11 @@ const emit = defineEmits(['open']);
     </div>
 
     <div
-      class="mb-4 flex flex-wrap space-x-2"
+      class="mb-4 flex flex-wrap"
       v-if="article.topics.length > 0"
     >
       <Link
-        class="text-sm text-gray-500 font-bold hover:text-sky-600 transition"
+        class="mr-2 text-sm text-gray-500 font-medium hover:text-sky-600 transition after:content-[','] after:last:content-['']"
         v-for="topic in article.topics"
         :key="topic.id"
         href="#"

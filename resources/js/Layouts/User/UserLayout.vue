@@ -25,7 +25,7 @@ const tabs = {
   }),
 
   articles: route('user.articles', {
-    user: props.user.id,
+    author: props.user.id,
   }),
 
   bookmarks: route('user', {
