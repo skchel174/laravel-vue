@@ -1,4 +1,5 @@
 <script setup>
+import axios from "axios";
 import {Link} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 import ViewsIcon from "@/Components/Icons/ViewsIcon.vue";
@@ -30,14 +31,26 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['open']);
+const emit = defineEmits(['notify']);
+
+const toggleBookmark = (value) => {
+  if (!props.auth.user) {
+    emit('notify', 'error', 'Log in to bookmark this article');
+    return;
+  }
+
+  axios({
+    method: value ? 'post' : 'delete',
+    url: route('api.articles.bookmark', {article: props.article}),
+  });
+};
 </script>
 
 <template>
   <article class="p-4 sm:p-6 bg-white flex flex-col items-start">
     <header class="mb-2 w-full flex flex-wrap items-center justify-between">
       <div class="order-2 sm:order-1 flex items-center space-x-2">
-        <Avatar class="" :value="article.avatar"/>
+        <Avatar :value="article.avatar"/>
 
         <div class="flex flex-wrap items-center">
           <p class="text-sm text-gray-600 font-semibold !leading-4 mr-2">
@@ -126,6 +139,7 @@ const emit = defineEmits(['open']);
       <BookmarkIcon
         :disabled="!readable"
         :is-bookmarked="article.is_bookmarked"
+        @bookmark="toggleBookmark"
       />
 
       <ShareIcon v-if="readable"/>

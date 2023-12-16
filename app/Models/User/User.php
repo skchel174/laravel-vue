@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Models\Article\Article;
+use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\Post\Post;
 use App\Models\Topic\Topic;
+use App\Models\User\Exceptions\ArticleAlreadyBookmarked;
+use App\Models\User\Exceptions\ArticleNotBookmarked;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\PasswordResetNotRequested;
+use App\Models\User\Exceptions\PostNotBookmarked;
 use App\Models\User\Exceptions\RegistrationAlreadyVerified;
 use App\Models\User\Exceptions\VerificationNotRequested;
 use App\Models\User\Exceptions\VerificationTokenExpired;
@@ -168,6 +173,35 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'password' => $password,
             'verify_token' => null,
         ]);
+    }
+
+    public function isArticleBookmarked(Article $article): bool
+    {
+        return $this->bookmarkedArticles()
+            ->where('id', $article->id)
+            ->exists();
+    }
+
+    public function makeArticleBookmark(Article $article)
+    {
+        if (!$article->status->isPublished()) {
+            throw new ArticleNotPublished();
+        }
+
+        if ($this->isArticleBookmarked($article)) {
+            throw new ArticleAlreadyBookmarked();
+        }
+
+        $this->bookmarkedArticles()->attach($article);
+    }
+
+    public function removeArticleBookmark(Article $article): void
+    {
+        if (!$this->isArticleBookmarked($article)) {
+            throw new ArticleNotBookmarked();
+        }
+
+        $this->bookmarkedArticles()->detach($article);
     }
 
     /**
