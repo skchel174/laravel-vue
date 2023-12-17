@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,15 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'auth.session', 'verified'])->name('dashboard');
+
+Route::get('/users/{user}', [UserController::class, 'profile'])
+    ->name('user');
+
+Route::get('/users/{user}/articles/{status?}', [UserController::class, 'articles'])
+    ->name('user.articles');
+
+Route::get('/users/{user}/bookmarks/articles', [UserController::class, 'bookmarkedArticles'])
+    ->name('user.bookmarks.articles');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

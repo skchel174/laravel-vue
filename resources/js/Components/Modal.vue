@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, onUnmounted, watch} from 'vue';
+import {computed, onUnmounted, watch} from 'vue';
 
 const props = defineProps({
   open: {
@@ -13,13 +13,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
-  'update:open'
-]);
-
-watch(() => props.open, () => {
-  document.body.style.overflow = props.open ? 'hidden' : null;
-});
+const emit = defineEmits(['update:open']);
 
 const closeOnEscape = (e) => {
   if (e.key === 'Escape' && props.open) {
@@ -27,8 +21,14 @@ const closeOnEscape = (e) => {
   }
 };
 
-onMounted(() => {
-  document.addEventListener('keydown', closeOnEscape);
+watch(() => props.open, (open) => {
+  if (open) {
+    document.addEventListener('keydown', closeOnEscape);
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.removeEventListener('keydown', closeOnEscape);
+    document.body.style.overflow = null;
+  }
 });
 
 onUnmounted(() => {

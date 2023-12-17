@@ -1,16 +1,19 @@
 <script setup>
+import avatar from 'img/avatar.png';
+
 const props = defineProps({
   size: {
     type: String,
     default: 'sm',
   },
 
-  image: {
-    type: String,
+  value: {
+    type: Object,
   },
 
-  fullImage: {
-    type: String,
+  clickable: {
+    type: Boolean,
+    default: false,
   },
 
   alt: {
@@ -20,32 +23,22 @@ const props = defineProps({
 });
 
 const open = () => {
-  if (props.fullImage) {
-    window.open(props.fullImage);
+  if (props.clickable) {
+    window.open(props.value.xl);
   }
 };
 </script>
 
 <template>
-  <div
-    class="flex justify-center items-center overflow-hidden rounded-sm"
+  <img
+    class="flex flex-none justify-center items-center overflow-hidden rounded cursor-pointer"
     :class="{
-      'w-10 h-10 text-3xl' : size === 'sm',
-      'w-14 h-14 text-4xl': size === 'md',
-      'w-20 h-20 text-5xl': size === 'lg',
-      'border opacity-75 border-sky-600/70': !image,
+      'w-9 h-9' : size === 'sm',
+      'w-14 h-14': size === 'md',
+      'w-20 h-20': size === 'lg',
     }"
+    :src="value ? value.sm : avatar"
+    :alt="alt"
+    @click="open"
   >
-    <img
-      class="cursor-pointer"
-      v-if="image"
-      :src="image"
-      :alt="alt"
-      @click="open"
-    >
-
-    <span v-else class="material-icons !text-[1em] !text-sky-600">
-      person
-    </span>
-  </div>
 </template>

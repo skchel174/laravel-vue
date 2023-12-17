@@ -2,10 +2,12 @@ import './bootstrap';
 import '../css/app.css';
 import 'material-design-icons-iconfont';
 
-import {createSSRApp, h} from 'vue';
+import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
+import formatDate from "../Plugins/formatDate.js";
+import formatCount from "../Plugins/formatCount.js";
 
 createInertiaApp({
   title(title) {
@@ -24,9 +26,11 @@ createInertiaApp({
       render: () => h(App, props)
     };
 
-    return createSSRApp(rootComponent)
+    return createApp(rootComponent)
       .use(plugin)
       .use(ZiggyVue, Ziggy)
+      .use(formatDate)
+      .use(formatCount)
       .mount(el);
   },
 

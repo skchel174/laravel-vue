@@ -5,28 +5,30 @@ function useNotification() {
     type: 'info',
     message: null,
     visible: false,
+    duration: 5000,
   });
 
-  const showNotification = (message, type) => {
+  const showNotification = (type, message, duration = 5000) => {
     notice.type = type;
     notice.message = message;
+    notice.duration = duration;
     notice.visible = true;
   };
 
-  const showInfo = (message) => {
-    showNotification(message, 'info');
+  const showInfo = (message, duration = 5000) => {
+    showNotification('info', message, duration);
   };
 
-  const showError = (message) => {
-    showNotification(message, 'error');
+  const showError = (message, duration = 5000) => {
+    showNotification('error', message, duration);
   };
 
-  const showSuccess = (message) => {
-    showNotification(message, 'success');
+  const showSuccess = (message, duration = 5000) => {
+    showNotification('success', message, duration);
   };
 
-  const showWarning = (message) => {
-    showNotification(message, 'warning');
+  const showWarning = (message, duration = 5000) => {
+    showNotification('warning', message, duration);
   };
 
   return {
@@ -35,6 +37,7 @@ function useNotification() {
     showError,
     showSuccess,
     showWarning,
+    showNotification,
   };
 }
 

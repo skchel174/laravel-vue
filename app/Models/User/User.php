@@ -5,8 +5,14 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Models\Article\Article;
+use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\Post\Post;
+use App\Models\Topic\Topic;
+use App\Models\User\Exceptions\ArticleAlreadyBookmarked;
+use App\Models\User\Exceptions\ArticleNotBookmarked;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\PasswordResetNotRequested;
+use App\Models\User\Exceptions\PostNotBookmarked;
 use App\Models\User\Exceptions\RegistrationAlreadyVerified;
 use App\Models\User\Exceptions\VerificationNotRequested;
 use App\Models\User\Exceptions\VerificationTokenExpired;
@@ -16,9 +22,11 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
@@ -40,6 +48,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read CarbonImmutable $created_at
  * @property CarbonImmutable $updated_at
  * @property CarbonImmutable $login_at
+ * @property-read Collection<Article> $articles
+ * @property-read Collection<Topic> $topics
  */
 class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
 {
@@ -165,6 +175,35 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         ]);
     }
 
+    public function isArticleBookmarked(Article $article): bool
+    {
+        return $this->bookmarkedArticles()
+            ->where('id', $article->id)
+            ->exists();
+    }
+
+    public function makeArticleBookmark(Article $article)
+    {
+        if (!$article->status->isPublished()) {
+            throw new ArticleNotPublished();
+        }
+
+        if ($this->isArticleBookmarked($article)) {
+            throw new ArticleAlreadyBookmarked();
+        }
+
+        $this->bookmarkedArticles()->attach($article);
+    }
+
+    public function removeArticleBookmark(Article $article): void
+    {
+        if (!$this->isArticleBookmarked($article)) {
+            throw new ArticleNotBookmarked();
+        }
+
+        $this->bookmarkedArticles()->detach($article);
+    }
+
     /**
      * Need for AuthenticateSession middleware
      *
@@ -177,7 +216,17 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
     public function articles(): HasMany
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany(Article::class, 'author_id');
+    }
+
+    public function bookmarkedArticles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'bookmarked_articles');
+    }
+
+    public function topics(): BelongsToMany
+    {
+        return $this->belongsToMany(Topic::class);
     }
 
     public function getAvatar(): ?Media
@@ -203,6 +252,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         $this->addMedia($file)
             ->usingFileName($name)
             ->toMediaCollection('avatar');
+    }
+
+    public function updateLastActivityTime(): void
+    {
+        if (CarbonImmutable::now() > $this->login_at->addHour()) {
+            $this->update(['login_at' => CarbonImmutable::now()]);
+        }
     }
 
     /**

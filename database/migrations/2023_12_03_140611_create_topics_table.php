@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('description');
-            $table->string('icon')->nullable();
             $table->timestamps();
 
             $table->foreign('category_id')
@@ -23,26 +22,10 @@ return new class extends Migration {
                 ->on('categories')
                 ->onDelete('CASCADE');
         });
-
-        Schema::create('article_topic', function (Blueprint $table) {
-            $table->foreignId('article_id');
-            $table->foreignId('topic_id');
-
-            $table->foreign('article_id')
-                ->references('id')
-                ->on('articles')
-                ->onDelete('CASCADE');
-
-            $table->foreign('topic_id')
-                ->references('id')
-                ->on('topics')
-                ->onDelete('CASCADE');
-        });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('article_topic');
         Schema::dropIfExists('topics');
     }
 };
