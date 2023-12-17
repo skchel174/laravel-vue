@@ -35,14 +35,12 @@ Route::prefix('/register')
     });
 
 Route::prefix('/login')
+    ->name('login')
     ->middleware('guest')
     ->group(function () {
-        Route::get('/', [LoginController::class, 'index'])
-            ->name('login.form');
-
+        Route::get('/', [LoginController::class, 'index']);
         Route::post('/', [LoginController::class, 'login'])
-            ->middleware('login.limiter')
-            ->name('login');
+            ->middleware('login.limiter');
     });
 
 Route::get('/logout', [LoginController::class, 'logout'])

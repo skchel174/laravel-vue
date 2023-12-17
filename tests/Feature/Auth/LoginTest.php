@@ -16,7 +16,7 @@ class LoginTest extends TestCase
 
     public function testLoginScreenCanBeRendered(): void
     {
-        $response = $this->get(route('login.form'));
+        $response = $this->get(route('login'));
 
         $response->assertStatus(200);
     }

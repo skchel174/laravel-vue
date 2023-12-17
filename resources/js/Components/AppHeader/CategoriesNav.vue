@@ -1,12 +1,5 @@
 <script setup>
 import CategoriesNavLink from "@/Components/AppHeader/CategoriesNavLink.vue";
-
-defineProps({
-  categories: {
-    type: Array,
-    required: true,
-  },
-});
 </script>
 
 <template>
@@ -20,7 +13,7 @@ defineProps({
     </CategoriesNavLink>
 
     <CategoriesNavLink
-      v-for="category in categories"
+      v-for="category in $page.props.app.categories"
       :key="category.id"
       href="#"
     >

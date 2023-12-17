@@ -136,7 +136,7 @@ const submit = () => {
           Already registered?
 
           <Link
-            :href="route('login.form')"
+            :href="route('login')"
             class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200"
           >
             Login

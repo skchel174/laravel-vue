@@ -37,7 +37,7 @@ class LoginController extends Controller
             $this->service->login($request->email, $request->password, (bool)$request->remember);
         } catch (DomainException $e) {
             return redirect()
-                ->route('login.form')
+                ->route('login')
                 ->with('error', $e->getMessage());
         }
 

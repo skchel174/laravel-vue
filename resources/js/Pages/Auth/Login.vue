@@ -127,7 +127,7 @@ const submit = () => {
 
       <div class="w-full max-w-lg bg-white p-6 flex justify-center">
         <p class="font-medium text-xs sm:text-sm text-gray-600">
-          Already registered?
+          Have no account yet?
 
           <Link
             :href="route('register.form')"

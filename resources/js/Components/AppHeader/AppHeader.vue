@@ -1,6 +1,5 @@
 <script setup>
 import {ref} from "vue";
-import {usePage} from "@inertiajs/vue3";
 import useMedia from "@/Hooks/useMedia.js";
 import Sidebar from "@/Components/Sidebar.vue";
 import CategoriesMenu from "@/Components/AppHeader/CategoriesMenu.vue";
@@ -8,12 +7,7 @@ import CategoriesNav from "@/Components/AppHeader/CategoriesNav.vue";
 import AppHeading from "@/Components/AppHeader/AppHeading.vue";
 import ProfileMenu from "@/Components/AppHeader/ProfileMenu.vue";
 
-const page = usePage();
-const user = page.props.auth.user;
-const categories = page.props.app.categories;
-
 const isMenuOpen = ref(false);
-
 const isTablet = useMedia('(max-width: 1024px)');
 </script>
 
@@ -34,23 +28,16 @@ const isTablet = useMedia('(max-width: 1024px)');
 
         <ProfileMenu
           class="!text-gray-200"
-          v-if="isTablet && user"
-          :user="user"
+          v-if="isTablet"
         />
       </div>
     </div>
 
     <nav class="hidden md:flex justify-center bg-white">
       <div class="w-full max-w-3xl lg:max-w-5xl h-12 px-4 flex justify-center lg:justify-between items-center">
-        <CategoriesNav
-          class="flex-1"
-          :categories="categories"
-        />
+        <CategoriesNav class="flex-1"/>
 
-        <ProfileMenu
-          v-if="!isTablet && user"
-          :user="user"
-        />
+        <ProfileMenu v-if="!isTablet"/>
       </div>
     </nav>
 
@@ -58,7 +45,7 @@ const isTablet = useMedia('(max-width: 1024px)');
       side="left"
       v-model:open="isMenuOpen"
     >
-      <CategoriesMenu :categories="categories"/>
+      <CategoriesMenu/>
     </Sidebar>
   </header>
 </template>
