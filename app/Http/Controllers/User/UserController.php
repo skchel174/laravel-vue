@@ -37,14 +37,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function articles(User $author, Status $status = Status::Published): Response
+    public function articles(User $user, Status $status = Status::Published): Response
     {
-        $articles = $this->articleRepository->getByAuthor($author, $status);
+        $articles = $this->articleRepository->getByAuthor($user, $status);
 
-        /** @var User|null $user */
-        if ($user = $this->authService->user()) {
+        /** @var User|null $authUser */
+        if ($authUser = $this->authService->user()) {
             $articlesIds = Arr::pluck($articles->items(), 'id');
-            $bookmarksIds = $this->articleRepository->getBookmarksIds($user, $articlesIds);
+            $bookmarksIds = $this->articleRepository->getBookmarksIds($authUser, $articlesIds);
             foreach ($articles->items() as $article) {
                 /** @var Article $article */
                 $article->is_bookmarked = $bookmarksIds->contains($article->id);
@@ -55,7 +55,7 @@ class UserController extends Controller
             'articles' => new ArticleListResource($articles),
             'statuses' => Status::cases(),
             'status' => $status->value,
-            'user' => $author,
+            'user' => $user,
         ]);
     }
 

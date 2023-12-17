@@ -34,7 +34,7 @@ Route::get('/dashboard', function () {
 Route::get('/users/{user}', [UserController::class, 'profile'])
     ->name('user');
 
-Route::get('/users/{author}/articles/{status?}', [UserController::class, 'articles'])
+Route::get('/users/{user}/articles/{status?}', [UserController::class, 'articles'])
     ->name('user.articles');
 
 Route::get('/users/{user}/bookmarks/articles', [UserController::class, 'bookmarkedArticles'])

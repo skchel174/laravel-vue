@@ -1,5 +1,4 @@
 <script setup>
-import {usePage} from "@inertiajs/vue3";
 import UserLayout from "@/Layouts/User/UserLayout.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
@@ -16,8 +15,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const auth = usePage().props.auth;
 </script>
 
 <template>
@@ -34,7 +31,6 @@ const auth = usePage().props.auth;
           v-for="article in bookmarks.items"
           :key="article.id"
           :article="article"
-          :auth="auth"
         />
 
         <Pagination

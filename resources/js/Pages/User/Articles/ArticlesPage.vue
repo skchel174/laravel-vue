@@ -45,7 +45,7 @@ const toggleStatuses = () => {
 const selectStatus = (value) => {
   status.value = value;
   statusesOpen.value = false;
-  router.get(route('user.articles', {author: props.user.id, status: value}));
+  router.get(route('user.articles', {user: props.user.id, status: value}));
 };
 
 const isTablet = useMedia('(max-width: 1024px)');
@@ -111,7 +111,6 @@ const isTablet = useMedia('(max-width: 1024px)');
               :key="article.id"
               :article="article"
               :readable="status === 'published'"
-              :auth="auth"
             />
 
             <Pagination
@@ -120,7 +119,7 @@ const isTablet = useMedia('(max-width: 1024px)');
               :total-pages="articles.totalPages"
               :current-page="articles.currentPage"
               route-name="user.articles"
-              :queryParams="{author: user.id, status}"
+              :queryParams="{user: user.id, status}"
             />
           </div>
 

@@ -1,7 +1,7 @@
 <script setup>
 import axios from "axios";
 import {inject} from "vue";
-import {Link} from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 import ViewsIcon from "@/Components/Icons/ViewsIcon.vue";
 import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
@@ -21,11 +21,6 @@ const props = defineProps({
     required: true,
   },
 
-  auth: {
-    type: Object,
-    required: true,
-  },
-
   readable: {
     type: Boolean,
     default: true,
@@ -34,8 +29,10 @@ const props = defineProps({
 
 const notify = inject('notify');
 
+const user = usePage().props.auth.user;
+
 const toggleBookmark = (value) => {
-  if (!props.auth.user) {
+  if (!user) {
     notify('error', 'Log in to bookmark this article');
     return;
   }
@@ -66,7 +63,7 @@ const toggleBookmark = (value) => {
 
       <div
         class="order-1 sm:order-2 w-full sm:w-auto space-x-2 flex justify-end"
-        v-if="auth.user?.id === article.author.id"
+        v-if="user?.id === article.author.id"
       >
         <EditIcon v-if="article.status !== 'deleted'"/>
         <RestoreIcon v-else/>
