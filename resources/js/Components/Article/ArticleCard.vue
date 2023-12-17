@@ -36,7 +36,7 @@ const notify = inject('notify');
 
 const toggleBookmark = (value) => {
   if (!props.auth.user) {
-    notify('Log in to bookmark this article', 'error');
+    notify('error', 'Log in to bookmark this article');
     return;
   }
 
