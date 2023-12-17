@@ -48,7 +48,7 @@ const menu = [
 
       <ProfileMenuLink
         class="text-red-600 hover:bg-red-50 active:bg-red-100 hover:text-red-700"
-        href="#"
+        :href="route('logout')"
       >
         <span class="material-icons">logout</span>
         <span>Log out</span>

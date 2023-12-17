@@ -45,7 +45,7 @@ Route::prefix('/login')
             ->name('login');
     });
 
-Route::post('/logout', [LoginController::class, 'logout'])
+Route::get('/logout', [LoginController::class, 'logout'])
     ->middleware(['auth', 'auth.session'])
     ->name('logout');
 
