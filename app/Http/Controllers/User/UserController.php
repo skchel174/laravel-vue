@@ -45,7 +45,6 @@ class UserController extends Controller
         if ($user = $this->authService->user()) {
             $articlesIds = Arr::pluck($articles->items(), 'id');
             $bookmarksIds = $this->articleRepository->getBookmarksIds($user, $articlesIds);
-
             foreach ($articles->items() as $article) {
                 /** @var Article $article */
                 $article->is_bookmarked = $bookmarksIds->contains($article->id);
@@ -57,6 +56,21 @@ class UserController extends Controller
             'statuses' => Status::cases(),
             'status' => $status->value,
             'user' => $author,
+        ]);
+    }
+
+    public function bookmarkedArticles(User $user): Response
+    {
+        $bookmarks = $this->articleRepository->getBookmarks($user);
+
+        foreach ($bookmarks->items() as $article) {
+            /** @var Article $article */
+            $article->is_bookmarked = true;
+        }
+
+        return Inertia::render('User/Bookmarks/ArticlesPage', [
+            'bookmarks' => new ArticleListResource($bookmarks),
+            'user' => $user,
         ]);
     }
 }

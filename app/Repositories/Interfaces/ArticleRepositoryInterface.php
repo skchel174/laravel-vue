@@ -12,5 +12,6 @@ use Illuminate\Support\Collection;
 interface ArticleRepositoryInterface
 {
     public function getByAuthor(User $author, Status $status): LengthAwarePaginator;
+    public function getBookmarks(User $user): LengthAwarePaginator;
     public function getBookmarksIds(User $user, array $articlesIds = []): Collection;
 }

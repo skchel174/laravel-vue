@@ -37,5 +37,8 @@ Route::get('/users/{user}', [UserController::class, 'profile'])
 Route::get('/users/{author}/articles/{status?}', [UserController::class, 'articles'])
     ->name('user.articles');
 
+Route::get('/users/{user}/bookmarks/articles', [UserController::class, 'bookmarkedArticles'])
+    ->name('user.bookmarks.articles');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

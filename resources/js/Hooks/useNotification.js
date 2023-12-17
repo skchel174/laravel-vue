@@ -35,6 +35,7 @@ function useNotification() {
     showError,
     showSuccess,
     showWarning,
+    showNotification,
   };
 }
 

@@ -24,6 +24,15 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->withQueryString();
     }
 
+    public function getBookmarks(User $user): LengthAwarePaginator
+    {
+        return $user->bookmarkedArticles()
+            ->where('status', Status::Published)
+            ->orderBy('id', 'desc')
+            ->paginate()
+            ->withQueryString();
+    }
+
     public function getBookmarksIds(User $user, array|Arrayable $articlesIds = []): Collection
     {
         $query = $user->bookmarkedArticles();
@@ -32,6 +41,8 @@ class ArticleRepository implements ArticleRepositoryInterface
             $query->whereIn('id', $articlesIds);
         }
 
-        return $query->pluck('id');
+        return $query
+            ->where('status', Status::Published)
+            ->pluck('id');
     }
 }

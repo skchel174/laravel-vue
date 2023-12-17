@@ -1,5 +1,6 @@
 <script setup>
 import axios from "axios";
+import {inject} from "vue";
 import {Link} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 import ViewsIcon from "@/Components/Icons/ViewsIcon.vue";
@@ -31,11 +32,11 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['notify']);
+const notify = inject('notify');
 
 const toggleBookmark = (value) => {
   if (!props.auth.user) {
-    emit('notify', 'error', 'Log in to bookmark this article');
+    notify('Log in to bookmark this article', 'error');
     return;
   }
 

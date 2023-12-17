@@ -70,7 +70,7 @@ watch(notificationRef, () => {
       <div
         v-if="visible"
         ref="notificationRef"
-        class="fixed top-6 px-4 min-w-[24rem] max-w-xl z-50"
+        class="fixed top-4 px-4 min-w-[24rem] max-w-xl z-50"
       >
         <div
           class="rounded shadow-md p-4 text-sm font-medium flex flex-col justify-center items-center"
