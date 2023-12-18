@@ -21,7 +21,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => 'string|max:60',
-            'about' => 'string|max:1000',
+            'about' => 'nullable|string|max:1000',
             'avatar' => 'nullable|file|mimes:jpg,bmp,png|max:10240', // max 10MB
         ];
     }
@@ -30,7 +30,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return new ProfileInfoDto(
             $this->name,
-            $this->about,
+            (string) $this->about,
             $this->avatar,
             $this->has('avatar'),
         );

@@ -12,7 +12,9 @@ use App\Models\User\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Filesystem\Factory as Filesystem;
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Support\Arr;
 
 class RegisterService
 {
@@ -20,12 +22,17 @@ class RegisterService
         private readonly Mailer $mailer,
         private readonly Dispatcher $eventDispatcher,
         private readonly StatefulGuard $auth,
+        private readonly Filesystem $filesystem,
     ) {
     }
 
     public function register(string $name, string $email, string $password): User
     {
-        $user = User::register($name, $email, Password::create($password));
+        $avatars = $this->filesystem
+            ->disk(config('filesystems.avatar_mask.disk'))
+            ->files(config('filesystems.avatar_mask.directory'));
+
+        $user = User::register($name, $email, Password::create($password), Arr::random($avatars));
 
         $this->sendVerificationEmail($user);
 

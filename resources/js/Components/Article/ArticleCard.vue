@@ -48,7 +48,7 @@ const toggleBookmark = (value) => {
   <article class="p-4 sm:p-6 bg-white flex flex-col items-start">
     <header class="mb-2 w-full flex flex-wrap items-center justify-between">
       <div class="order-2 sm:order-1 flex items-center space-x-2">
-        <Avatar :value="article.avatar"/>
+        <Avatar :value="article.author.avatar"/>
 
         <div class="flex flex-wrap items-center">
           <p class="text-sm text-gray-600 font-semibold !leading-4 mr-2">
