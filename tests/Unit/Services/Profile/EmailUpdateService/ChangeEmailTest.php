@@ -7,6 +7,7 @@ namespace Tests\Unit\Services\Profile\EmailUpdateService;
 use App\Mail\VerifyEmail;
 use App\Models\User\User;
 use App\Service\Profile\EmailUpdateService;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,6 +24,20 @@ class ChangeEmailTest extends TestCase
 
         $newEmail = $this->faker->email();
 
+        $mailer = $this->createMailer($newEmail);
+        $auth = $this->createAuthService($user);
+        $dispatcher = $this->createMock(Dispatcher::class);
+
+        $service = new EmailUpdateService($mailer, $dispatcher, $auth);
+
+        $service->changeEmail($newEmail);
+
+        $this->assertNotNull($user->verify_token);
+        $this->assertEquals($newEmail, $user->new_email);
+    }
+
+    private function createMailer(string $newEmail): Mailer
+    {
         $mailer = $this->createMock(Mailer::class);
         $mailer->expects($this->once())
             ->method('to')
@@ -32,13 +47,16 @@ class ChangeEmailTest extends TestCase
             ->method('send')
             ->with($this->isInstanceOf(VerifyEmail::class));
 
-        $dispatcher = $this->createMock(Dispatcher::class);
+        return $mailer;
+    }
 
-        $service = new EmailUpdateService($mailer, $dispatcher);
+    private function createAuthService(User $user): StatefulGuard
+    {
+        $service = $this->createMock(StatefulGuard::class);
+        $service->expects($this->once())
+            ->method('user')
+            ->willReturn($user);
 
-        $service->changeEmail($user, $newEmail);
-
-        $this->assertNotNull($user->verify_token);
-        $this->assertEquals($newEmail, $user->new_email);
+        return $service;
     }
 }
