@@ -17,7 +17,7 @@ class ChangePasswordController extends Controller
 
     public function __invoke(ChangePasswordRequest $request): RedirectResponse
     {
-        $this->service->changePassword($request->user(), $request->password);
+        $this->service->changePassword($request->password);
 
         return redirect()
             ->route('login')
