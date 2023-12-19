@@ -32,7 +32,7 @@ class ProfileController
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $this->service->updateProfileInfo($request->user(), $request->getDto());
+        $this->service->updateProfileInfo($request->getDto());
 
         return redirect()
             ->route('profile')
@@ -41,7 +41,7 @@ class ProfileController
 
     public function delete(ProfileDeleteRequest $request): RedirectResponse
     {
-        $this->service->deleteProfile($request->user());
+        $this->service->deleteProfile();
 
         return redirect()->route('main');
     }

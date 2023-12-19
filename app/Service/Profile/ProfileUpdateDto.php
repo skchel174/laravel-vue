@@ -6,9 +6,10 @@ namespace App\Service\Profile;
 
 use Illuminate\Http\UploadedFile;
 
-class ProfileInfoDto
+class ProfileUpdateDto
 {
     public function __construct(
+        public readonly string $login,
         public readonly string $name,
         public readonly string $about,
         public readonly ?UploadedFile $avatar,

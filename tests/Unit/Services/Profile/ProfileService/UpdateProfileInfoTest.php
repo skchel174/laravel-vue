@@ -6,7 +6,7 @@ namespace Tests\Unit\Services\Profile\ProfileService;
 
 use App\Events\User\ProfileUpdated;
 use App\Models\User\User;
-use App\Service\Profile\ProfileInfoDto;
+use App\Service\Profile\ProfileUpdateDto;
 use App\Service\Profile\ProfileService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -33,25 +33,23 @@ class UpdateProfileInfoTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $dto = new ProfileInfoDto(
+        $dto = new ProfileUpdateDto(
+            $this->faker->word(),
             $this->faker->name(),
             $this->faker->text(),
             UploadedFile::fake()->image('avatar.jpg'),
             true,
         );
 
-        $dispatcher = $this->createMock(Dispatcher::class);
-        $dispatcher->expects($this->once())
-            ->method('dispatch')
-            ->with($this->isInstanceOf(ProfileUpdated::class));
-
+        $dispatcher = $this->createDispatcher();
+        $auth = $this->createAuthService($user);
         $session = $this->createMock(Session::class);
-        $auth = $this->createMock(StatefulGuard::class);
 
         $service = new ProfileService($dispatcher, $session, $auth);
 
-        $service->updateProfileInfo($user, $dto);
+        $service->updateProfileInfo($dto);
 
+        $this->assertEquals($user->login, $dto->login);
         $this->assertEquals($user->name, $dto->name);
         $this->assertEquals($user->about, $dto->about);
         $this->assertInstanceOf(Media::class, $user->getAvatar());
@@ -65,20 +63,21 @@ class UpdateProfileInfoTest extends TestCase
             ->withAvatar()
             ->create();
 
-        $dto = new ProfileInfoDto(
+        $dto = new ProfileUpdateDto(
+            $this->faker->word(),
             $this->faker->name(),
             $this->faker->text(),
             null,
             true,
         );
 
-        $dispatcher = $this->createMock(Dispatcher::class);
+        $dispatcher = $this->createDispatcher();
+        $auth = $this->createAuthService($user);
         $session = $this->createMock(Session::class);
-        $auth = $this->createMock(StatefulGuard::class);
 
         $service = new ProfileService($dispatcher, $session, $auth);
 
-        $service->updateProfileInfo($user, $dto);
+        $service->updateProfileInfo($dto);
 
         $this->assertNull($user->getAvatar());
     }
@@ -92,22 +91,43 @@ class UpdateProfileInfoTest extends TestCase
 
         $avatar = $user->getAvatar();
 
-        $dto = new ProfileInfoDto(
+        $dto = new ProfileUpdateDto(
+            $this->faker->word(),
             $this->faker->name(),
             $this->faker->text(),
             null,
             false,
         );
 
-        $dispatcher = $this->createMock(Dispatcher::class);
+        $dispatcher = $this->createDispatcher();
+        $auth = $this->createAuthService($user);
         $session = $this->createMock(Session::class);
-        $auth = $this->createMock(StatefulGuard::class);
 
         $service = new ProfileService($dispatcher, $session, $auth);
 
-        $service->updateProfileInfo($user, $dto);
+        $service->updateProfileInfo($dto);
 
         $this->assertInstanceOf(Media::class, $user->getAvatar());
         $this->assertTrue($avatar->is($user->getAvatar()));
+    }
+
+    private function createAuthService(User $user): StatefulGuard
+    {
+        $service = $this->createMock(StatefulGuard::class);
+        $service->expects($this->once())
+            ->method('user')
+            ->willReturn($user);
+
+        return $service;
+    }
+
+    private function createDispatcher(): Dispatcher
+    {
+        $dispatcher = $this->createMock(Dispatcher::class);
+        $dispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with($this->isInstanceOf(ProfileUpdated::class));
+
+        return $dispatcher;
     }
 }
