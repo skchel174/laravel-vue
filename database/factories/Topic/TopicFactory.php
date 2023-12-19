@@ -19,16 +19,8 @@ class TopicFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name),
             'description' => $this->faker->sentence(),
+            'icon' => $this->faker->filePath(),
             'category_id' => Category::factory(),
         ];
-    }
-
-    public function withIcon(string $icon): TopicFactory
-    {
-        return $this->afterCreating(function (Topic $topic) use ($icon) {
-            $topic->addMediaFromDisk('/topics/' . $icon, 'assets')
-                ->preservingOriginal()
-                ->toMediaCollection('icon');
-        });
     }
 }
