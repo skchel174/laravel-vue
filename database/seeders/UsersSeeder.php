@@ -17,6 +17,7 @@ class UsersSeeder extends Seeder
             ->files($config['directory']);
 
         User::factory()->create([
+            'login' => 'user',
             'email' => 'user@mail.demo',
             'avatar_mask' => array_pop($avatars),
         ]);

@@ -26,8 +26,8 @@ class LoginTest extends TestCase
 
         $repository = $this->createMock(UserRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getByEmail')
-            ->with($user->email)
+            ->method('getByLogin')
+            ->with($user->login)
             ->willReturn($user);
 
         $auth = $this->createMock(StatefulGuard::class);
@@ -41,7 +41,7 @@ class LoginTest extends TestCase
 
         $service = new LoginService($repository, $auth, $session);
 
-        $loggedUser = $service->login($user->email, UserFactory::PASSWORD, $remember);
+        $loggedUser = $service->login($user->login, UserFactory::PASSWORD, $remember);
 
         $this->assertInstanceOf(User::class, $loggedUser);
         $this->assertTrue($loggedUser->is($user));
@@ -56,8 +56,8 @@ class LoginTest extends TestCase
 
         $repository = $this->createMock(UserRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getByEmail')
-            ->with($user->email)
+            ->method('getByLogin')
+            ->with($user->login)
             ->willReturn($user);
 
         $auth = $this->createMock(StatefulGuard::class);
@@ -66,7 +66,7 @@ class LoginTest extends TestCase
 
         $service = new LoginService($repository, $auth, $session);
 
-        $service->login($user->email, $this->faker->word(), false);
+        $service->login($user->login, $this->faker->word(), false);
     }
 
     public function testLoginNotActiveUser(): void
@@ -80,8 +80,8 @@ class LoginTest extends TestCase
 
         $repository = $this->createMock(UserRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getByEmail')
-            ->with($user->email)
+            ->method('getByLogin')
+            ->with($user->login)
             ->willReturn($user);
 
         $auth = $this->createMock(StatefulGuard::class);
@@ -90,6 +90,6 @@ class LoginTest extends TestCase
 
         $service = new LoginService($repository, $auth, $session);
 
-        $service->login($user->email, UserFactory::PASSWORD, false);
+        $service->login($user->login, UserFactory::PASSWORD, false);
     }
 }
