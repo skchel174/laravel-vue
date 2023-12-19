@@ -27,6 +27,7 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getBookmarks(User $user): LengthAwarePaginator
     {
         return $user->bookmarkedArticles()
+            ->with(['topics', 'cardImage'])
             ->where('status', Status::Published)
             ->orderBy('id', 'desc')
             ->paginate()
