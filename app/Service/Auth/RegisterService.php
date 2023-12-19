@@ -26,36 +26,41 @@ class RegisterService
     ) {
     }
 
-    public function register(string $name, string $email, string $password): User
+    public function register(string $login, string $email, string $password): User
     {
         $avatars = $this->filesystem
             ->disk(config('filesystems.avatar_mask.disk'))
             ->files(config('filesystems.avatar_mask.directory'));
 
-        $user = User::register($name, $email, Password::create($password), Arr::random($avatars));
+        $user = User::register($login, $email, Password::create($password), Arr::random($avatars));
 
-        $this->sendVerificationEmail($user);
+        $this->mailer->to($user->email)
+            ->send(new VerifyRegistration($user));
 
         $this->eventDispatcher->dispatch(new Registered($user));
 
         $this->auth->login($user);
-
         return $user;
     }
-
-    public function sendVerificationEmail(User $user): void
+    
+    public function sendVerificationEmail(): void
     {
+        /** @var User $user */
+        $user = $this->auth->user();
+
         if ($user->verify_token === null) {
             throw new VerificationNotRequested();
         }
 
-        $this->mailer
-            ->to($user->email)
+        $this->mailer->to($user->email)
             ->send(new VerifyRegistration($user));
     }
 
-    public function verifyRegistration(User $user, string $token): void
+    public function verifyRegistration(string $token): void
     {
+        /** @var User $user */
+        $user = $this->auth->user();
+
         $user->verifyRegistration($token);
 
         $this->eventDispatcher->dispatch(new Verified($user));

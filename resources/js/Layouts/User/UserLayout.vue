@@ -23,15 +23,15 @@ const props = defineProps({
 
 const tabs = {
   profile: route('user', {
-    user: props.user.id,
+    user: props.user.login,
   }),
 
   articles: route('user.articles', {
-    user: props.user.id,
+    user: props.user.login,
   }),
 
   bookmarks: route('user.bookmarks.articles', {
-    user: props.user.id,
+    user: props.user.login,
   }),
 };
 

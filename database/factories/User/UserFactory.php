@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Factories\User;
 
-use App\Models\User\AvatarMask;
 use App\Models\User\Password;
 use App\Models\User\Status;
 use App\Models\User\User;
@@ -20,10 +19,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'about' => fake()->text(1000),
+            'login' => fake()->unique()->word(),
             'email' => fake()->unique()->safeEmail(),
             'password' => Password::create(self::PASSWORD),
+            'name' => fake()->name(),
+            'about' => fake()->text(1000),
             'avatar_mask' => fake()->filePath(),
             'remember_token' => Str::random(10),
             'status' => Status::Active,

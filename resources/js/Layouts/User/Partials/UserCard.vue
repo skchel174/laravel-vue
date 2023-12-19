@@ -18,10 +18,10 @@ defineProps({
     />
 
     <h3 class="mt-2 text-base sm:text-lg font-medium text-sky-600">
-      {{ user.name }}
+      @{{ user.login }}
     </h3>
 
-    <p class="mt-1 text-sm text-gray-600 font-medium capitalize">
+    <p class="mt-1 text-sm text-gray-500 font-medium capitalize">
       user
     </p>
   </div>

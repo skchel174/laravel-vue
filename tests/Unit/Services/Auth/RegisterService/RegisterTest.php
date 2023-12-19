@@ -30,7 +30,7 @@ class RegisterTest extends TestCase
 
     public function testRegisterUser(): void
     {
-        $name = $this->faker->name();
+        $login = $this->faker->word();
         $email = $this->faker->email();
         $password = $this->faker->word();
         $avatar = $this->faker->filePath();
@@ -42,10 +42,10 @@ class RegisterTest extends TestCase
 
         $service = new RegisterService($mailer, $dispatcher, $guard, $filesystem);
 
-        $user = $service->register($name, $email, $password);
+        $user = $service->register($login, $email, $password);
 
         $this->assertInstanceOf(User::class, $user);
-        $this->assertEquals($name, $user->name);
+        $this->assertEquals($login, $user->login);
         $this->assertEquals($email, $user->email);
         $this->assertEquals($avatar, $user->avatar_mask);
         $this->assertTrue($user->password->isEquals($password));

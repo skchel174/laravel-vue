@@ -32,7 +32,7 @@ const menu = [
         class="text-sm text-sky-500 font-medium cursor-pointer hover:text-sky-600 transition duration-300"
         :href="route('user', {user})"
       >
-        {{ user.name }}
+        @{{ user.login }}
       </Link>
     </div>
 

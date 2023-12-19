@@ -23,7 +23,7 @@ class RegistrationTest extends TestCase
     public function testNewUsersCanRegister(): void
     {
         $response = $this->post(route('register'), [
-            'name' => $this->faker->name(),
+            'login' => $this->faker->word(),
             'email' => $this->faker->email(),
             'password' => 'secret',
             'password_confirmation' => 'secret',

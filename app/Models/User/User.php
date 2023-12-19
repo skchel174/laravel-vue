@@ -34,9 +34,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property-read int $id
- * @property string $name
+ * @property string $login
  * @property string $email
- * @property string $about
+ * @property string|null $name
+ * @property string|null $about
  * @property string|null $new_email
  * @property Status $status
  * @property Password $password
@@ -54,7 +55,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     use HasFactory, Authenticatable, Authorizable, InteractsWithMedia;
 
     protected $fillable = [
-        'name', 'email', 'about', 'status', 'password', 'new_email', 'avatar_mask', 'verify_token',
+        'login', 'email', 'name', 'about', 'status', 'password', 'new_email', 'avatar_mask', 'verify_token',
     ];
 
     protected $hidden = [
@@ -72,10 +73,10 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
     protected $with = ['media'];
 
-    public static function register(string $name, string $email, Password $password, string $avatar): static
+    public static function register(string $login, string $email, Password $password, string $avatar): static
     {
         return static::create([
-            'name' => $name,
+            'login' => $login,
             'email' => $email,
             'password' => $password,
             'avatar_mask' => $avatar,

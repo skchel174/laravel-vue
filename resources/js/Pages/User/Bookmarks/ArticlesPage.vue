@@ -39,7 +39,7 @@ const props = defineProps({
           :total-pages="bookmarks.totalPages"
           :current-page="bookmarks.currentPage"
           route-name="user.bookmarks.articles"
-          :queryParams="{user: user.id}"
+          :queryParams="{user: user.login}"
         />
       </div>
 

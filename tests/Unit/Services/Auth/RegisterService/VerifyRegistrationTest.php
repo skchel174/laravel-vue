@@ -25,19 +25,35 @@ class VerifyRegistrationTest extends TestCase
             ->unverified()
             ->create();
 
+        $dispatcher = $this->createDispatcher();
+        $guard = $this->createAuthService($user);
+        $mailer = $this->createMock(Mailer::class);
+        $filesystem = $this->createMock(Factory::class);
+
+        $service = new RegisterService($mailer, $dispatcher, $guard, $filesystem);
+
+        $service->verifyRegistration($user->verify_token->getValue());
+
+        $this->assertNull($user->verify_token);
+    }
+
+    private function createDispatcher(): Dispatcher
+    {
         $dispatcher = $this->createMock(Dispatcher::class);
         $dispatcher->expects($this->once())
             ->method('dispatch')
             ->with($this->isInstanceOf(Verified::class));
 
-        $mailer = $this->createMock(Mailer::class);
+        return $dispatcher;
+    }
+
+    private function createAuthService(User $user): StatefulGuard
+    {
         $guard = $this->createMock(StatefulGuard::class);
-        $filesystem = $this->createMock(Factory::class);
+        $guard->expects($this->once())
+            ->method('user')
+            ->willReturn($user);
 
-        $service = new RegisterService($mailer, $dispatcher, $guard, $filesystem);
-
-        $service->verifyRegistration($user, $user->verify_token->getValue());
-
-        $this->assertNull($user->verify_token);
+        return $guard;
     }
 }

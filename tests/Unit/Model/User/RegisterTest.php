@@ -18,14 +18,14 @@ class RegisterTest extends TestCase
     public function testRegisterNewUser(): void
     {
         $user = User::register(
-            $name = $this->faker->name(),
+            $login = $this->faker->word(),
             $email = $this->faker->email(),
             Password::create($password = 'secret'),
-            $avatar = $this->faker->file(),
+            $avatar = $this->faker->filePath(),
         );
 
         $this->assertInstanceOf(User::class, $user);
-        $this->assertEquals($user->name, $name);
+        $this->assertEquals($user->login, $login);
         $this->assertEquals($user->email, $email);
         $this->assertTrue(Hash::check($password, $user->password));
         $this->assertEquals(Status::Wait, $user->status);
