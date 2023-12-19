@@ -6,22 +6,33 @@ namespace App\Http\Controllers\Api\Topics;
 
 use App\Http\Controllers\Controller;
 use App\Models\Topic\Topic;
+use App\Models\User\User;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SubscriptionController extends Controller
 {
-    public function make(Request $request, Topic $topic): JsonResponse
+    public function __construct(private readonly StatefulGuard $auth)
     {
-        $topic->subscribe($request->user());
+    }
+
+    public function make(Topic $topic): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->auth->user();
+
+        $topic->subscribe($user);
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 
-    public function remove(Request $request, Topic $topic): JsonResponse
+    public function remove(Topic $topic): JsonResponse
     {
-        $topic->unsubscribe($request->user());
+        /** @var User $user */
+        $user = $this->auth->user();
+
+        $topic->unsubscribe($user);
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
