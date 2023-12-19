@@ -6,7 +6,8 @@ import Tabs from "@/Components/Tabs/Tabs.vue";
 import Avatar from "@/Components/Avatar.vue";
 import Divider from "@/Components/Divider.vue";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
-import NotificationWrapper from "@/Layouts/NotificationWrapper.vue";
+import MainWrapper from "@/Components/MainWrapper.vue";
+import NotificationWrapper from "@/Components/NotificationWrapper.vue";
 
 const props = defineProps({
   currentTab: {
@@ -46,9 +47,7 @@ const selectTab = (tab) => {
   <NotificationWrapper>
     <AppHeader/>
 
-    <main class="sm:px-2 mx-auto w-full max-w-3xl lg:max-w-5xl flex flex-col">
-      <div class="hidden lg:block h-4"/>
-
+    <MainWrapper>
       <div
         class="w-full flex flex-col items-center lg:items-start lg:flex-row lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
         <div class="flex-1 w-full max-w-3xl">
@@ -111,6 +110,6 @@ const selectTab = (tab) => {
           </table>
         </div>
       </div>
-    </main>
+    </MainWrapper>
   </NotificationWrapper>
 </template>
