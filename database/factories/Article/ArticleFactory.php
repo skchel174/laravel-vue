@@ -45,4 +45,14 @@ class ArticleFactory extends Factory
             ];
         });
     }
+
+    public function bookmarkedBy(User $user): ArticleFactory
+    {
+        return $this->hasAttached($user, relationship: 'usersBookmarked');
+    }
+
+    public function likedBy(User $user): ArticleFactory
+    {
+        return $this->hasAttached($user, relationship: 'usersLiked');
+    }
 }

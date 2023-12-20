@@ -48,6 +48,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property CarbonImmutable $updated_at
  * @property CarbonImmutable $login_at
  * @property-read Collection<Article> $articles
+ * @property-read Collection<Article> $bookmarkedArticles
+ * @property-read Collection<Article> $likedArticles
  * @property-read Collection<Topic> $topics
  */
 class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
@@ -221,6 +223,11 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     public function bookmarkedArticles(): BelongsToMany
     {
         return $this->belongsToMany(Article::class, 'bookmarked_articles');
+    }
+
+    public function likedArticles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'liked_articles');
     }
 
     public function topics(): BelongsToMany

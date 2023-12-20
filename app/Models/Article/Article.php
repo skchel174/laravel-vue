@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\Article;
 
+use App\Models\Article\Exceptions\ArticleAlreadyLiked;
 use App\Models\Article\Exceptions\ArticleModerated;
 use App\Models\Article\Exceptions\ArticleNotDeleted;
+use App\Models\Article\Exceptions\ArticleNotLiked;
 use App\Models\Article\Exceptions\ArticlePublished;
 use App\Models\Article\Exceptions\ArticleWasNotModerated;
 use App\Models\Category\Category;
@@ -41,9 +43,11 @@ use Throwable;
  * @property Difficulty|null $difficulty
  * @property int $views
  * @property User $author
+ * @property-read Collection<Media> $cardImage
  * @property-read Collection<Tag> $tags
  * @property-read Collection<Topic> $topics
  * @property-read Collection<Category> $categories
+ * @property-read int $likes_count
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
@@ -52,6 +56,7 @@ class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
 
+    public bool $is_liked = false;
     public bool $is_bookmarked = false;
 
     protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'published_at'];
@@ -115,6 +120,31 @@ class Article extends Model implements HasMedia
         ]);
     }
 
+    public function isLiked(User $user): bool
+    {
+        return $this->usersLiked()
+            ->where('id', $user->id)
+            ->exists();
+    }
+
+    public function addLike(User $user): void
+    {
+        if ($this->isLiked($user)) {
+            throw new ArticleAlreadyLiked();
+        }
+
+        $this->usersLiked()->attach($user);
+    }
+
+    public function removeLike(User $user): void
+    {
+        if (!$this->isLiked($user)) {
+            throw new ArticleNotLiked();
+        }
+
+        $this->usersLiked()->detach($user);
+    }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
@@ -138,6 +168,11 @@ class Article extends Model implements HasMedia
     public function usersBookmarked(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'bookmarked_articles');
+    }
+
+    public function usersLiked(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'liked_articles');
     }
 
     public function cardImage(): MorphMany
