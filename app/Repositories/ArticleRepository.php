@@ -17,6 +17,7 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $author->articles()
             ->with(['topics', 'cardImage'])
+            ->withCount(['usersLiked as likes_count'])
             ->withTrashed($status === Status::Deleted)
             ->where('status', $status)
             ->orderBy('id', 'desc')
@@ -28,21 +29,25 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $user->bookmarkedArticles()
             ->with(['topics', 'cardImage'])
+            ->withCount(['usersLiked as likes_count'])
             ->where('status', Status::Published)
             ->orderBy('id', 'desc')
             ->paginate()
             ->withQueryString();
     }
 
-    public function getBookmarksIds(User $user, array|Arrayable $articlesIds = []): Collection
+    public function getBookmarksIds(User $user, array|Arrayable $articlesIds): Collection
     {
-        $query = $user->bookmarkedArticles();
+        return $user->bookmarkedArticles()
+            ->whereIn('id', $articlesIds)
+            ->where('status', Status::Published)
+            ->pluck('id');
+    }
 
-        if ($articlesIds) {
-            $query->whereIn('id', $articlesIds);
-        }
-
-        return $query
+    public function getLikesIds(User $user, array|Arrayable $articlesIds = []): Collection
+    {
+        return $user->likedArticles()
+            ->whereIn('id', $articlesIds)
             ->where('status', Status::Published)
             ->pluck('id');
     }

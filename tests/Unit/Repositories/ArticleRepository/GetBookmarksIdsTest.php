@@ -14,25 +14,6 @@ class GetBookmarksIdsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testGetBookmarkedArticlesIds(): void
-    {
-        /** @var User $user */
-        $user = User::factory()
-            ->create();
-
-        $bookmarkedArticles = Article::factory($cnt = 3)
-            ->hasAttached($user, relationship: 'usersBookmarked')
-            ->create();
-
-        $repository = new ArticleRepository();
-
-        $bookmarksIds = $repository->getBookmarksIds($user);
-
-        $this->assertNotEmpty($bookmarksIds);
-        $this->assertCount($cnt, $bookmarksIds);
-        $this->assertEmpty($bookmarksIds->diff($bookmarkedArticles->pluck('id')));
-    }
-
     public function testGetBookmarksIdsFromArticlesList(): void
     {
         /** @var User $user */
