@@ -32,7 +32,10 @@ class ArticlesSeeder extends Seeder
         foreach ($users as $user) {
             /** @var User $user */
             $user->bookmarkedArticles()
-                ->attach($articles->random(rand(0, 20)));
+                ->attach($articles->random(rand(5, 20)));
+
+            $user->likedArticles()
+                ->attach($articles->random(rand(10, $articles->count())));
         }
     }
 }

@@ -8,20 +8,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Article\ArticleListResource;
 use App\Http\Resources\Topic\TopicResource;
 use App\Http\Resources\User\UserResource;
-use App\Models\Article\Article;
 use App\Models\Article\Status;
 use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\TopicRepositoryInterface;
+use App\Service\ArticleService;
 use Illuminate\Contracts\Auth\StatefulGuard;
-use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
+use phpDocumentor\Reflection\Types\Collection;
 
 class UserController extends Controller
 {
     public function __construct(
         private readonly StatefulGuard $authService,
+        private readonly ArticleService $articleService,
         private readonly TopicRepositoryInterface $topicRepository,
         private readonly ArticleRepositoryInterface $articleRepository,
     ) {
@@ -43,12 +44,7 @@ class UserController extends Controller
 
         /** @var User|null $authUser */
         if ($authUser = $this->authService->user()) {
-            $articlesIds = Arr::pluck($articles->items(), 'id');
-            $bookmarksIds = $this->articleRepository->getBookmarksIds($authUser, $articlesIds);
-            foreach ($articles->items() as $article) {
-                /** @var Article $article */
-                $article->is_bookmarked = $bookmarksIds->contains($article->id);
-            }
+            $this->articleService->markReactionForUser($authUser, $articles->items());
         }
 
         return Inertia::render('User/Articles/ArticlesPage', [
@@ -63,9 +59,9 @@ class UserController extends Controller
     {
         $bookmarks = $this->articleRepository->getBookmarks($user);
 
-        foreach ($bookmarks->items() as $article) {
-            /** @var Article $article */
-            $article->is_bookmarked = true;
+        /** @var User|null $authUser */
+        if ($authUser = $this->authService->user()) {
+            $this->articleService->markReactionForUser($authUser, $bookmarks->items());
         }
 
         return Inertia::render('User/Bookmarks/ArticlesPage', [

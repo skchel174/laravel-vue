@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Articles\BookmarkController;
+use App\Http\Controllers\Api\Articles\LikesController;
 use App\Http\Controllers\Api\Topics\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,18 +18,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/topics/{topic}/subscription')
-    ->name('api.topics.subscription')
-    ->middleware(['auth:sanctum', 'throttle:30,1'])
-    ->group(function () {
-        Route::post('/', [SubscriptionController::class, 'make']);
-        Route::delete('/', [SubscriptionController::class, 'remove']);
-    });
+Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
+    Route::prefix('/topics/{topic}/subscription')
+        ->name('api.topics.subscription')
+        ->group(function () {
+            Route::post('', [SubscriptionController::class, 'make']);
+            Route::delete('', [SubscriptionController::class, 'remove']);
+        });
 
-Route::prefix('/articles/{article}/bookmark')
-    ->name('api.articles.bookmark')
-    ->middleware(['auth:sanctum', 'throttle:30,1'])
-    ->group(function () {
-        Route::post('', [BookmarkController::class, 'make']);
-        Route::delete('', [BookmarkController::class, 'remove']);
+    Route::prefix('/articles/{article}')->group(function () {
+        Route::prefix('/bookmark')
+            ->name('api.articles.bookmark')
+            ->group(function () {
+                Route::post('', [BookmarkController::class, 'make']);
+                Route::delete('', [BookmarkController::class, 'remove']);
+            });
+
+        Route::prefix('/like')
+            ->name('api.articles.like')
+            ->group(function () {
+                Route::post('', [LikesController::class, 'add']);
+                Route::delete('', [LikesController::class, 'remove']);
+            });
     });
+});
