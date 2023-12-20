@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import {inject} from "vue";
+import {inject, ref} from "vue";
 import {Link, usePage} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 import ViewsIcon from "@/Components/Icons/ViewsIcon.vue";
@@ -31,14 +31,36 @@ const notify = inject('notify');
 
 const user = usePage().props.auth.user;
 
-const toggleBookmark = (value) => {
+const isLiked = ref(props.article.is_liked);
+const likesCount = ref(props.article.likes_count);
+
+const toggleLike = (value) => {
   if (!user) {
-    notify('error', 'Log in to bookmark this article');
+    notify('error', 'Login to like this article');
     return;
   }
 
+  isLiked.value = !isLiked.value;
+  likesCount.value += isLiked.value ? 1 : -1;
+
   axios({
-    method: value ? 'post' : 'delete',
+    method: isLiked.value ? 'post' : 'delete',
+    url: route('api.articles.like', {article: props.article}),
+  });
+};
+
+const isBookmarked = ref(props.article.is_bookmarked);
+
+const toggleBookmark = () => {
+  if (!user) {
+    notify('error', 'Login to bookmark this article');
+    return;
+  }
+
+  isBookmarked.value = !isBookmarked.value;
+
+  axios({
+    method: isBookmarked.value ? 'post' : 'delete',
     url: route('api.articles.bookmark', {article: props.article}),
   });
 };
@@ -127,17 +149,16 @@ const toggleBookmark = (value) => {
 
     <footer class="w-full w-full flex text-gray-400 justify-between sm:justify-start sm:space-x-8">
       <LikesIcon
-        :disabled="!readable"
-        :is-liked="article.is_liked ?? false"
-        :count="article.likes ?? 898"
+        :is-liked="isLiked"
+        :count="likesCount"
+        @toggle="toggleLike"
       />
 
       <CommentsIcon :count="article.comments ?? 345"/>
 
       <BookmarkIcon
-        :disabled="!readable"
-        :is-bookmarked="article.is_bookmarked"
-        @bookmark="toggleBookmark"
+        :is-bookmarked="isBookmarked"
+        @toggle="toggleBookmark"
       />
 
       <ShareIcon v-if="readable"/>
