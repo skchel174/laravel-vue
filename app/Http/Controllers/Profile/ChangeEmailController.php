@@ -19,7 +19,7 @@ class ChangeEmailController extends Controller
 
     public function change(ChangeEmailRequest $request): RedirectResponse
     {
-        $this->service->changeEmail($request->user(), $request->email);
+        $this->service->changeEmail($request->email);
 
         return redirect()
             ->route('profile')
@@ -29,7 +29,7 @@ class ChangeEmailController extends Controller
     public function verify(Request $request): RedirectResponse
     {
         try {
-            $this->service->verifyEmail($request->user(), $request->token);
+            $this->service->verifyEmail($request->token);
         } catch (DomainException $e) {
             return redirect()
                 ->route('profile')

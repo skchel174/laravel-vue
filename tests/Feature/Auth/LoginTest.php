@@ -16,7 +16,7 @@ class LoginTest extends TestCase
 
     public function testLoginScreenCanBeRendered(): void
     {
-        $response = $this->get(route('login.form'));
+        $response = $this->get(route('login'));
 
         $response->assertStatus(200);
     }
@@ -27,7 +27,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->post(route('login'), [
-            'email' => $user->email,
+            'login' => $user->login,
             'password' => UserFactory::PASSWORD,
         ]);
 
@@ -41,7 +41,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create();
 
         $this->post(route('login'), [
-            'email' => $user->email,
+            'login' => $user->login,
             'password' => $this->faker->word(),
         ]);
 
@@ -54,7 +54,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-            ->post(route('logout'));
+            ->get(route('logout'));
 
         $this->assertGuest();
         $response->assertRedirect(route('main'));

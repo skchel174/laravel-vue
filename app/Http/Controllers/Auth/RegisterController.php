@@ -28,7 +28,7 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request): RedirectResponse
     {
-        $this->service->register($request->name, $request->email, $request->password);
+        $this->service->register($request->login, $request->email, $request->password);
 
         return redirect()->route('register.prompt');
     }
@@ -40,9 +40,9 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function notify(Request $request): RedirectResponse
+    public function notify(): RedirectResponse
     {
-        $this->service->sendVerificationEmail($request->user());
+        $this->service->sendVerificationEmail();
 
         return redirect()
             ->route('register.prompt')
@@ -52,7 +52,7 @@ class RegisterController extends Controller
     public function verify(Request $request): RedirectResponse
     {
         try {
-            $this->service->verifyRegistration($request->user(), $request->token);
+            $this->service->verifyRegistration($request->token);
         } catch (InvalidVerificationToken|VerificationTokenExpired $e) {
             return redirect()
                 ->route('register.prompt')

@@ -15,17 +15,27 @@ class UserResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $avatar = $this->resource->getAvatar();
-
         return [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
+            'login' => $this->resource->login,
             'about' => $this->resource->about,
+            'name' => $this->resource->name,
             'email' => $this->resource->email,
             'status' => $this->resource->status->value,
             'login_at' => $this->resource->login_at->format('d-m-Y H:i'),
             'created_at' => $this->resource->created_at->format('d M Y'),
-            'avatar' => $avatar ? AvatarResource::make($avatar)->toArray($request) : null,
+            'avatar' => $this->createAvatarResource(),
+        ];
+    }
+
+    private function createAvatarResource(): array
+    {
+        $avatar = $this->resource->getAvatar();
+
+        return [
+            'default' => $avatar?->getUrl(),
+            'thumb' => $avatar?->getUrl('thumb'),
+            'mask' => asset(sprintf('storage/%s', $this->resource->avatar_mask)),
         ];
     }
 }

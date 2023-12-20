@@ -18,6 +18,7 @@ const user = usePage().props.auth.user;
 
 const form = useForm({
   _method: 'patch',
+  login: user.login ?? '',
   name: user.name ?? '',
   about: user.about ?? '',
   avatar: undefined,
@@ -64,6 +65,33 @@ const submit = () => {
       />
 
       <div class="max-w-2xl w-full order-2 lg:order-1 space-y-6">
+        <div>
+          <div class="flex justify-between items-center">
+            <InputLabel
+              for="login"
+              value="Login"
+            />
+
+            <InputLength
+              :input="form.login"
+              :max-length="25"
+            />
+          </div>
+
+          <TextInput
+            id="login"
+            type="text"
+            class="mt-1 block w-full"
+            v-model="form.login"
+            required
+          />
+
+          <InputError
+            class="mt-2"
+            :message="form.errors.login"
+          />
+        </div>
+
         <div>
           <div class="flex justify-between items-center">
             <InputLabel

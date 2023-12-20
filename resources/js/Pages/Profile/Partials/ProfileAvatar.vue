@@ -37,7 +37,7 @@ const selectImage = () => {
   isAvatarUpdated.value = true;
   const file = avatarInput.value.files[0];
   const objectUrl = URL.createObjectURL(file);
-  image.value = {sm: objectUrl, md: objectUrl, xl: objectUrl};
+  image.value = {thumb: objectUrl, default: objectUrl};
   emit('update:modelValue', file);
 };
 
@@ -51,7 +51,7 @@ const resetImage = () => {
 const deleteImage = () => {
   isAvatarUpdated.value = true;
   avatarInput.value.value = '';
-  image.value = null;
+  image.value = {mask: props.avatar.mask};
   emit('update:modelValue', null);
 };
 </script>
@@ -66,6 +66,7 @@ const deleteImage = () => {
         size="lg"
         ref="avatarEl"
         :value="image"
+        clickable
       />
 
       <p class="text-xs text-gray-400 font-medium">
@@ -105,6 +106,7 @@ const deleteImage = () => {
       size="lg"
       ref="avatarEl"
       :value="image"
+      clickable
     />
 
     <input

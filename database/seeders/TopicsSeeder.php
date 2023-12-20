@@ -11,7 +11,7 @@ use App\Models\User\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class CategoriesSeeder extends Seeder
+class TopicsSeeder extends Seeder
 {
     public function run(): void
     {
@@ -29,12 +29,12 @@ class CategoriesSeeder extends Seeder
                 $topicArticles = $articles->random(rand(10, 30));
 
                 Topic::factory()
-                    ->withIcon($topic['icon'])
                     ->hasAttached($topicArticles)
                     ->hasAttached($subscribers, relationship: 'subscribers')
                     ->create([
                         'name' => $topic['name'],
                         'slug' => Str::slug($topic['name']),
+                        'icon' => 'topic/' . $topic['icon'],
                         'category_id' => $category,
                     ]);
             }

@@ -31,11 +31,14 @@ class DeleteProfileTest extends TestCase
 
         $auth = $this->createMock(StatefulGuard::class);
         $auth->expects($this->once())
+            ->method('user')
+            ->willReturn($user);
+        $auth->expects($this->once())
             ->method('logout');
 
         $service = new ProfileService($dispatcher, $session, $auth);
 
-        $service->deleteProfile($user);
+        $service->deleteProfile();
 
         $this->assertFalse($user->exists());
     }

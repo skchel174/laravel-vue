@@ -1,13 +1,13 @@
 <script setup>
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
-import {Head, Link, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 const form = useForm({
-  name: '',
+  login: '',
   email: '',
   password: '',
   password_confirmation: '',
@@ -37,23 +37,22 @@ const submit = () => {
 
         <div>
           <InputLabel
-            for="name"
-            value="Name"
+            for="login"
+            value="Login"
           />
 
           <TextInput
-            id="name"
+            id="login"
             type="text"
             class="mt-1 block w-full"
-            v-model="form.name"
+            v-model="form.login"
             required
             autofocus
-            autocomplete="name"
           />
 
           <InputError
             class="mt-2"
-            :message="form.errors.name"
+            :message="form.errors.login"
           />
         </div>
 
@@ -69,7 +68,6 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.email"
             required
-            autocomplete="username"
           />
 
           <InputError
@@ -90,7 +88,6 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.password"
             required
-            autocomplete="new-password"
           />
 
           <InputError
@@ -111,7 +108,6 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.password_confirmation"
             required
-            autocomplete="new-password"
           />
 
           <InputError
@@ -136,7 +132,7 @@ const submit = () => {
           Already registered?
 
           <Link
-            :href="route('login.form')"
+            :href="route('login')"
             class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200"
           >
             Login

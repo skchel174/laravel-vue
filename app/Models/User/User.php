@@ -6,13 +6,11 @@ namespace App\Models\User;
 
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
-use App\Models\Post\Post;
 use App\Models\Topic\Topic;
 use App\Models\User\Exceptions\ArticleAlreadyBookmarked;
 use App\Models\User\Exceptions\ArticleNotBookmarked;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\PasswordResetNotRequested;
-use App\Models\User\Exceptions\PostNotBookmarked;
 use App\Models\User\Exceptions\RegistrationAlreadyVerified;
 use App\Models\User\Exceptions\VerificationNotRequested;
 use App\Models\User\Exceptions\VerificationTokenExpired;
@@ -28,7 +26,6 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
@@ -37,12 +34,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property-read int $id
- * @property string $name
+ * @property string $login
  * @property string $email
- * @property string $about
+ * @property string|null $name
+ * @property string|null $about
  * @property string|null $new_email
  * @property Status $status
  * @property Password $password
+ * @property string $avatar_mask
  * @property string $remember_token
  * @property VerifyToken $verify_token
  * @property-read CarbonImmutable $created_at
@@ -56,19 +55,11 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     use HasFactory, Authenticatable, Authorizable, InteractsWithMedia;
 
     protected $fillable = [
-        'name',
-        'email',
-        'about',
-        'status',
-        'password',
-        'new_email',
-        'verify_token',
+        'login', 'email', 'name', 'about', 'status', 'password', 'new_email', 'avatar_mask', 'verify_token',
     ];
 
     protected $hidden = [
-        'password',
-        'remember_token',
-        'verify_token',
+        'password', 'remember_token', 'verify_token',
     ];
 
     protected $casts = [
@@ -82,12 +73,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
     protected $with = ['media'];
 
-    public static function register(string $name, string $email, Password $password): static
+    public static function register(string $login, string $email, Password $password, string $avatar): static
     {
         return static::create([
-            'name' => $name,
+            'login' => $login,
             'email' => $email,
             'password' => $password,
+            'avatar_mask' => $avatar,
             'status' => Status::Wait,
             'verify_token' => VerifyToken::create(),
         ]);
@@ -204,6 +196,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         $this->bookmarkedArticles()->detach($article);
     }
 
+    public function updateLastActivityTime(): void
+    {
+        if (CarbonImmutable::now() > $this->login_at->addHour()) {
+            $this->update(['login_at' => CarbonImmutable::now()]);
+        }
+    }
+
     /**
      * Need for AuthenticateSession middleware
      *
@@ -247,33 +246,18 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             return;
         }
 
-        $name = Str::uuid() . '.' . $file->getClientOriginalExtension();
-
         $this->addMedia($file)
-            ->usingFileName($name)
+            ->usingFileName(sprintf('%s.%s', Str::uuid(), $file->guessExtension()))
             ->toMediaCollection('avatar');
     }
 
-    public function updateLastActivityTime(): void
+    public function registerMediaCollections(): void
     {
-        if (CarbonImmutable::now() > $this->login_at->addHour()) {
-            $this->update(['login_at' => CarbonImmutable::now()]);
-        }
-    }
-
-    /**
-     * @throws InvalidManipulation
-     */
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('md')
-            ->width(1200)
-            ->height(600)
-            ->nonQueued();
-
-        $this->addMediaConversion('sm')
-            ->width(900)
-            ->height(300)
-            ->nonQueued();
+        $this->addMediaCollection('avatar')
+            ->registerMediaConversions(function (Media $media) {
+                $this->addMediaConversion('thumb')
+                    ->width(300)
+                    ->height(300);
+            });
     }
 }

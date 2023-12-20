@@ -10,7 +10,6 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property-read string $current_password
  * @property-read string $password
- * @method User user()
  */
 class ChangePasswordRequest extends FormRequest
 {

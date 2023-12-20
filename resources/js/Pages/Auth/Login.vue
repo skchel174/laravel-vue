@@ -22,7 +22,7 @@ defineProps({
 });
 
 const form = useForm({
-  email: '',
+  login: '',
   password: '',
   remember: false,
 });
@@ -64,19 +64,17 @@ const submit = () => {
         </div>
 
         <div>
-          <InputLabel for="email" value="Email"/>
+          <InputLabel for="login" value="Login"/>
 
           <TextInput
-            id="email"
-            type="email"
+            id="login"
+            type="text"
             class="mt-1 block w-full"
-            v-model="form.email"
+            v-model="form.login"
             required
-            autofocus
-            autocomplete="username"
           />
 
-          <InputError class="mt-2" :message="form.errors.email"/>
+          <InputError class="mt-2" :message="form.errors.login"/>
         </div>
 
         <div>
@@ -88,7 +86,6 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.password"
             required
-            autocomplete="current-password"
           />
 
           <InputError class="mt-2" :message="form.errors.password"/>
@@ -127,7 +124,7 @@ const submit = () => {
 
       <div class="w-full max-w-lg bg-white p-6 flex justify-center">
         <p class="font-medium text-xs sm:text-sm text-gray-600">
-          Already registered?
+          Have no account yet?
 
           <Link
             :href="route('register.form')"

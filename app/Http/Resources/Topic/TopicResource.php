@@ -22,7 +22,7 @@ class TopicResource extends JsonResource
             'description' => $this->resource->description,
             'subscribers_count' => $this->resource->subscribers_count,
             'articles_count' => $this->resource->articles_count,
-            'icon' => $this->resource->getFirstMedia('icon')->getUrl(),
+            'icon' => asset(sprintf('storage/%s', $this->resource->icon)),
         ];
     }
 }

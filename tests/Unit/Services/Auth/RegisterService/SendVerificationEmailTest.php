@@ -10,6 +10,7 @@ use App\Models\User\User;
 use App\Service\Auth\RegisterService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -25,21 +26,15 @@ class SendVerificationEmailTest extends TestCase
             ->unverified()
             ->create();
 
-        $mailer = $this->createMock(Mailer::class);
-        $mailer->expects($this->once())
-            ->method('to')
-            ->with($user->email)
-            ->willReturn($mailer);
-        $mailer->expects($this->once())
-            ->method('send')
-            ->with($this->isInstanceOf(VerifyRegistration::class));
+        $guard = $this->createAuthService($user);
 
+        $mailer = $this->createMailer($user);
         $dispatcher = $this->createMock(Dispatcher::class);
-        $guard = $this->createMock(StatefulGuard::class);
+        $filesystem = $this->createMock(Factory::class);
 
-        $service = new RegisterService($mailer, $dispatcher, $guard);
+        $service = new RegisterService($mailer, $dispatcher, $guard, $filesystem);
 
-        $service->sendVerificationEmail($user);
+        $service->sendVerificationEmail();
     }
 
     public function testSendEmailWhenVerificationNotRequested(): void
@@ -49,12 +44,37 @@ class SendVerificationEmailTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
+        $guard = $this->createAuthService($user);
         $mailer = $this->createMock(Mailer::class);
         $dispatcher = $this->createMock(Dispatcher::class);
+        $filesystem = $this->createMock(Factory::class);
+
+        $service = new RegisterService($mailer, $dispatcher, $guard, $filesystem);
+
+        $service->sendVerificationEmail();
+    }
+
+    private function createMailer(User $user): Mailer
+    {
+        $mailer = $this->createMock(Mailer::class);
+        $mailer->expects($this->once())
+            ->method('to')
+            ->with($user->email)
+            ->willReturn($mailer);
+        $mailer->expects($this->once())
+            ->method('send')
+            ->with($this->isInstanceOf(VerifyRegistration::class));
+
+        return $mailer;
+    }
+
+    private function createAuthService(User $user): StatefulGuard
+    {
         $guard = $this->createMock(StatefulGuard::class);
+        $guard->expects($this->once())
+            ->method('user')
+            ->willReturn($user);
 
-        $service = new RegisterService($mailer, $dispatcher, $guard);
-
-        $service->sendVerificationEmail($user);
+        return $guard;
     }
 }

@@ -34,10 +34,10 @@ class LoginController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         try {
-            $this->service->login($request->email, $request->password, (bool)$request->remember);
+            $this->service->login($request->login, $request->password, (bool)$request->remember);
         } catch (DomainException $e) {
             return redirect()
-                ->route('login.form')
+                ->route('login')
                 ->with('error', $e->getMessage());
         }
 

@@ -32,7 +32,7 @@ class UserController extends Controller
         $topics = $this->topicRepository->getByUser($user);
 
         return Inertia::render('User/Profile/ProfilePage', [
-            'user' => UserResource::make($user),
+            'user' => new UserResource($user),
             'topics' => TopicResource::collection($topics),
         ]);
     }
@@ -55,7 +55,7 @@ class UserController extends Controller
             'articles' => new ArticleListResource($articles),
             'statuses' => Status::cases(),
             'status' => $status->value,
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
     }
 
@@ -70,7 +70,7 @@ class UserController extends Controller
 
         return Inertia::render('User/Bookmarks/ArticlesPage', [
             'bookmarks' => new ArticleListResource($bookmarks),
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
     }
 }

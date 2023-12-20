@@ -16,15 +16,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Throwable;
 
 /**
  * @property-read int $id
  * @property string $name
  * @property string $slug
  * @property string $description
+ * @property string $icon
  * @property-read int|null $subscribers_count
  * @property-read int|null $articles_count
  * @property-read Category $category
@@ -33,14 +31,12 @@ use Throwable;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  */
-class Topic extends Model implements HasMedia
+class Topic extends Model
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
 
     protected $fillable = [
-        'name',
-        'slug',
-        'description',
+        'name', 'slug', 'description', 'icon',
     ];
 
     protected $casts = [
@@ -48,14 +44,13 @@ class Topic extends Model implements HasMedia
         'updated_at' => 'immutable_datetime:d-m-Y H:i',
     ];
 
-    protected $with = ['media'];
-
-    public static function createNew(string $name, string $description, Category $category): static
+    public static function createNew(string $name, string $description, string $icon, Category $category): static
     {
         $topic = static::make([
             'name' => $name,
             'slug' => Str::slug($name),
             'description' => $description,
+            'icon' => $icon,
         ]);
         $topic->category()->associate($category);
         $topic->save();

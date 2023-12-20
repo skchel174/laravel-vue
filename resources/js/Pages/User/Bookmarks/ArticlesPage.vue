@@ -1,8 +1,8 @@
 <script setup>
-import UserLayout from "@/Layouts/User/UserLayout.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import ArticlesPlaceholder from "@/Pages/User/Articles/Partials/ArticlesPlaceholder.vue";
+import UserLayout from "@/Layouts/UserLayout.vue";
 
 const props = defineProps({
   bookmarks: {
@@ -39,7 +39,7 @@ const props = defineProps({
           :total-pages="bookmarks.totalPages"
           :current-page="bookmarks.currentPage"
           route-name="user.bookmarks.articles"
-          :queryParams="{user: user.id}"
+          :queryParams="{user: user.login}"
         />
       </div>
 

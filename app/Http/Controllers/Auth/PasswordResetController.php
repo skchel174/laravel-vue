@@ -33,7 +33,7 @@ class PasswordResetController extends Controller
         $this->service->sendVerificationEmail($request->email);
 
         return redirect()
-            ->route('login.form')
+            ->route('login')
             ->with('status', 'We have emailed your password reset link');
     }
 
@@ -50,12 +50,12 @@ class PasswordResetController extends Controller
             $this->service->changePassword($request->password, $request->token);
         } catch (PasswordResetNotRequested|VerificationTokenExpired $e) {
             return redirect()
-                ->route('login.form')
+                ->route('login')
                 ->with('error', $e->getMessage());
         }
 
         return redirect()
-            ->route('login.form')
+            ->route('login')
             ->with('status', 'Your password has been reset');
     }
 }

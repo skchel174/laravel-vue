@@ -1,20 +1,17 @@
 <script setup>
 import {ref} from "vue";
+import {router, usePage} from "@inertiajs/vue3";
 import useMedia from "@/Hooks/useMedia.js";
 import Avatar from "@/Components/Avatar.vue";
 import Sidebar from "@/Components/Sidebar.vue";
 import Popover from "@/Components/Popover.vue";
 import ProfileMenuItems from "@/Components/AppHeader/ProfileMenuItems.vue";
 import ProfileMenuIcon from "@/Components/AppHeader/ProfileMenuIcon.vue";
-
-defineProps({
-  user: {
-    type: Object,
-    required: true,
-  },
-});
+import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
 
 defineEmits(['toggleMenu']);
+
+const user = usePage().props.auth.user;
 
 const isMenuOpen = ref(false);
 
@@ -27,34 +24,47 @@ const isTablet = useMedia('(max-width: 1024px)');
       search
     </ProfileMenuIcon>
 
-    <ProfileMenuIcon>
-      notifications_none
-    </ProfileMenuIcon>
-
-    <ProfileMenuIcon>
-      post_add
-    </ProfileMenuIcon>
-
-    <Avatar
-      v-if="user"
-      :value="user.avatar"
-      @click.stop="isMenuOpen = !isMenuOpen"
-    />
-
-    <Sidebar
-      v-if="isTablet"
-      side="right"
-      v-model:open="isMenuOpen"
+    <PrimaryOutlineButton
+      class="!py-1.25"
+      v-if="!user"
+      @click="router.get(route('login'))"
     >
-      <ProfileMenuItems :user="user"/>
-    </Sidebar>
+      Login
+    </PrimaryOutlineButton>
 
-    <Popover
+    <div
+      class="flex items-center space-x-3"
       v-else
-      class="top-10 right-0 w-[18rem]"
-      v-model:open="isMenuOpen"
     >
-      <ProfileMenuItems :user="user"/>
-    </Popover>
+      <ProfileMenuIcon>
+        notifications_none
+      </ProfileMenuIcon>
+
+      <ProfileMenuIcon>
+        post_add
+      </ProfileMenuIcon>
+
+      <Avatar
+        v-if="user"
+        :value="user.avatar"
+        @click.stop="isMenuOpen = !isMenuOpen"
+      />
+
+      <Sidebar
+        v-if="isTablet"
+        side="right"
+        v-model:open="isMenuOpen"
+      >
+        <ProfileMenuItems :user="user"/>
+      </Sidebar>
+
+      <Popover
+        v-else
+        class="top-10 right-0 w-[18rem]"
+        v-model:open="isMenuOpen"
+      >
+        <ProfileMenuItems :user="user"/>
+      </Popover>
+    </div>
   </div>
 </template>

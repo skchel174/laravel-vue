@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/topics/{topic}/subscription')
     ->name('api.topics.subscription')
-    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->middleware(['auth:sanctum', 'throttle:30,1'])
     ->group(function () {
         Route::post('/', [SubscriptionController::class, 'make']);
         Route::delete('/', [SubscriptionController::class, 'remove']);
@@ -27,7 +27,7 @@ Route::prefix('/topics/{topic}/subscription')
 
 Route::prefix('/articles/{article}/bookmark')
     ->name('api.articles.bookmark')
-    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->middleware(['auth:sanctum', 'throttle:30,1'])
     ->group(function () {
         Route::post('', [BookmarkController::class, 'make']);
         Route::delete('', [BookmarkController::class, 'remove']);

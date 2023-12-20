@@ -9,6 +9,11 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
+    public function getByLogin(string $login): User
+    {
+        return User::where('login', $login)->firstOrFail();
+    }
+
     public function getByEmail(string $email): User
     {
         return User::where('email', $email)->firstOrFail();

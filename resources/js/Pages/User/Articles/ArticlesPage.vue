@@ -3,12 +3,12 @@ import {ref} from "vue";
 import useMedia from "@/Hooks/useMedia.js";
 import {router, usePage} from "@inertiajs/vue3";
 import Popover from "@/Components/Popover.vue";
-import UserLayout from "@/Layouts/User/UserLayout.vue";
 import StatusSelect from "@/Pages/User/Articles/Partials/StatusSelect.vue";
 import StatusSelectButton from "@/Pages/User/Articles/Partials/StatusSelectButton.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticlesPlaceholder from "@/Pages/User/Articles/Partials/ArticlesPlaceholder.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
+import UserLayout from "@/Layouts/UserLayout.vue";
 
 const props = defineProps({
   status: {
@@ -45,7 +45,7 @@ const toggleStatuses = () => {
 const selectStatus = (value) => {
   status.value = value;
   statusesOpen.value = false;
-  router.get(route('user.articles', {user: props.user.id, status: value}));
+  router.get(route('user.articles', {user: props.user.login, status: value}));
 };
 
 const isTablet = useMedia('(max-width: 1024px)');
@@ -119,7 +119,7 @@ const isTablet = useMedia('(max-width: 1024px)');
               :total-pages="articles.totalPages"
               :current-page="articles.currentPage"
               route-name="user.articles"
-              :queryParams="{user: user.id, status}"
+              :queryParams="{user: user.login, status}"
             />
           </div>
 

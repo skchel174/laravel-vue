@@ -19,10 +19,12 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'about' => fake()->text(1000),
+            'login' => fake()->unique()->word(),
             'email' => fake()->unique()->safeEmail(),
             'password' => Password::create(self::PASSWORD),
+            'name' => fake()->name(),
+            'about' => fake()->text(1000),
+            'avatar_mask' => fake()->filePath(),
             'remember_token' => Str::random(10),
             'status' => Status::Active,
             'created_at' => $createdAt = $this->faker->dateTimeBetween('-1 year'),

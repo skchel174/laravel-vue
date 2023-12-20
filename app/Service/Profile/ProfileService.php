@@ -24,9 +24,13 @@ class ProfileService
     /**
      * @throws FileIsTooBig|FileDoesNotExist
      */
-    public function updateProfileInfo(User $user, ProfileInfoDto $data): void
+    public function updateProfileInfo(ProfileUpdateDto $data): void
     {
+        /** @var User $user */
+        $user = $this->auth->user();
+
         $user->update([
+            'login' => $data->login,
             'name' => $data->name,
             'about' => $data->about,
         ]);
@@ -38,8 +42,11 @@ class ProfileService
         $this->dispatcher->dispatch(new ProfileUpdated($user));
     }
 
-    public function deleteProfile(User $user): void
+    public function deleteProfile(): void
     {
+        /** @var User $user */
+        $user = $this->auth->user();
+
         $this->auth->logout();
 
         $user->delete();

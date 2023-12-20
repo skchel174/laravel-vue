@@ -23,9 +23,9 @@ class LoginService
     /**
      * @throws ValidationException
      */
-    public function login(string $email, string $password, bool $remember): User
+    public function login(string $login, string $password, bool $remember): User
     {
-        $user = $this->repository->getByEmail($email);
+        $user = $this->repository->getByLogin($login);
 
         if (!$user->password->isEquals($password)) {
             throw ValidationException::withMessages([
