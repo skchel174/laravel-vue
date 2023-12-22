@@ -1,19 +1,10 @@
 <script setup>
-import axios from "axios";
-import {inject, ref} from "vue";
-import {Link, usePage} from "@inertiajs/vue3";
-import Avatar from "@/Components/Avatar.vue";
-import ViewsIcon from "@/Components/Icons/ViewsIcon.vue";
+import {router} from "@inertiajs/vue3";
 import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
-import DifficultyIcon from "@/Components/Icons/DifficultyIcon.vue";
-import DurationIcon from "@/Components/Icons/DurationIcon.vue";
-import EditIcon from "@/Components/Icons/EditIcon.vue";
-import RestoreIcon from "@/Components/Icons/RestoreIcon.vue";
-import DeleteIcon from "@/Components/Icons/DeleteIcon.vue";
-import LikesIcon from "@/Components/Icons/LikesIcon.vue";
-import CommentsIcon from "@/Components/Icons/CommentsIcon.vue";
-import BookmarkIcon from "@/Components/Icons/BookmarkIcon.vue";
-import ShareIcon from "@/Components/Icons/ShareIcon.vue";
+import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
+import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
+import ArticleInfo from "@/Components/Article/ArticleInfo.vue";
+import ArticleTopics from "@/Components/Article/ArticleTopics.vue";
 
 const props = defineProps({
   article: {
@@ -27,101 +18,42 @@ const props = defineProps({
   },
 });
 
-const notify = inject('notify');
-
-const user = usePage().props.auth.user;
-
-const isLiked = ref(props.article.is_liked);
-const likesCount = ref(props.article.likes_count);
-
-const toggleLike = (value) => {
-  if (!user) {
-    notify('error', 'Login to like this article');
-    return;
+const openArticle = () => {
+  if (props.readable) {
+    router.get(route('article', {id: props.article.id}));
   }
-
-  isLiked.value = !isLiked.value;
-  likesCount.value += isLiked.value ? 1 : -1;
-
-  axios({
-    method: isLiked.value ? 'post' : 'delete',
-    url: route('api.articles.like', {article: props.article}),
-  });
-};
-
-const isBookmarked = ref(props.article.is_bookmarked);
-
-const toggleBookmark = () => {
-  if (!user) {
-    notify('error', 'Login to bookmark this article');
-    return;
-  }
-
-  isBookmarked.value = !isBookmarked.value;
-
-  axios({
-    method: isBookmarked.value ? 'post' : 'delete',
-    url: route('api.articles.bookmark', {article: props.article}),
-  });
 };
 </script>
 
 <template>
   <article class="p-4 sm:p-6 bg-white flex flex-col items-start">
-    <header class="mb-2 w-full flex flex-wrap items-center justify-between">
-      <div class="order-2 sm:order-1 flex items-center space-x-2">
-        <Avatar :value="article.author.avatar"/>
-
-        <div class="flex flex-wrap items-center">
-          <p class="text-sm text-gray-600 font-semibold !leading-4 mr-2">
-            {{ article.author.name }}
-          </p>
-
-          <p class="text-xs text-gray-400 font-bold">
-            {{ article.publish_date ? $formatDate(article.publish_date, 'MMM D YYYY [at] kk:mm') : article.status }}
-          </p>
-        </div>
-      </div>
-
-      <div
-        class="order-1 sm:order-2 w-full sm:w-auto space-x-2 flex justify-end"
-        v-if="user?.id === article.author.id"
-      >
-        <EditIcon v-if="article.status !== 'deleted'"/>
-        <RestoreIcon v-else/>
-        <DeleteIcon @click="$emit('delete', article)"/>
-      </div>
-    </header>
+    <ArticleAuthor
+      class="mb-2"
+      :article-id="article.id"
+      :status="article.status"
+      :author="article.author"
+      :publish-date="article.publish_date"
+    />
 
     <h2
       class="mb-1 text-lg sm:text-xl text-gray-700 font-black"
       :class="{'hover:text-sky-600 transition duration-200 cursor-pointer': readable}"
+      @click="openArticle"
     >
       {{ article.title }}
     </h2>
 
-    <div class="mb-1 flex items-center space-x-4">
-      <DifficultyIcon
-        v-if="article.difficulty"
-        :value="article.difficulty"
-      />
-      <DurationIcon value="20"/>
-      <ViewsIcon :count="article.views ?? 4352"/>
-    </div>
+    <ArticleInfo
+      class="mb-1"
+      :views-count="article.views ?? 4352"
+      :duration="20"
+      :difficulty="article.difficulty"
+    />
 
-    <div
-      class="mb-4 flex flex-wrap"
-      v-if="article.topics.length > 0"
-    >
-      <Link
-        class="mr-2 text-sm text-gray-500 font-medium hover:text-sky-600 transition after:content-[','] after:last:content-['']"
-        v-for="topic in article.topics"
-        :key="topic.id"
-        href="#"
-      >
-        {{ topic.name }}
-      </Link>
-    </div>
+    <ArticleTopics
+      class="mb-4"
+      :topics="article.topics"
+    />
 
     <img
       class="mb-2 w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm cursor-pointer"
@@ -139,7 +71,7 @@ const toggleBookmark = () => {
     <PrimaryOutlineButton
       class="mb-6 inline-block"
       v-if="readable"
-      @click="$emit('open', article)"
+      @click="openArticle"
     >
       <span>Read more</span>
       <span class="material-icons ml-2">
@@ -148,20 +80,13 @@ const toggleBookmark = () => {
     </PrimaryOutlineButton>
 
     <footer class="w-full w-full flex text-gray-400 justify-between sm:justify-start sm:space-x-8">
-      <LikesIcon
-        :is-liked="isLiked"
-        :count="likesCount"
-        @toggle="toggleLike"
+      <ArticleReaction
+        :article-id="article.id"
+        :is-liked="article.is_liked"
+        :likes-count="article.likes_count"
+        :is-bookmarked="article.is_bookmarked"
+        :comments-count="article.commnets_count ?? 345"
       />
-
-      <CommentsIcon :count="article.comments ?? 345"/>
-
-      <BookmarkIcon
-        :is-bookmarked="isBookmarked"
-        @toggle="toggleBookmark"
-      />
-
-      <ShareIcon v-if="readable"/>
     </footer>
   </article>
 </template>

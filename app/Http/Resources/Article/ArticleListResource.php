@@ -31,7 +31,7 @@ class ArticleListResource extends JsonResource
             'perPage' => $this->resource->perPage(),
             'currentPage' => $this->resource->currentPage(),
             'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
-            'items' => ArticleCardResource::collection($this->resource->items()),
+            'items' => ArticleResource::collection($this->resource->items()),
         ];
     }
 }
