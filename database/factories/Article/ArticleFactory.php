@@ -16,7 +16,7 @@ class ArticleFactory extends Factory
         return [
             'author_id' => User::factory(),
             'title' => $this->faker->sentence(3),
-            'text' => $this->faker->text(1000),
+            'text' => $this->faker->text(5000),
             'summary' => $this->faker->text(),
             'status' => Status::Published,
             'views' => rand(0, 5000),

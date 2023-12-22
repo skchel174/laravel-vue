@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Article\ArticleController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,9 @@ Route::get('/users/{user:login}/articles/{status?}', [UserController::class, 'ar
 
 Route::get('/users/{user:login}/bookmarks/articles', [UserController::class, 'bookmarkedArticles'])
     ->name('user.bookmarks.articles');
+
+Route::get('/articles/{id}', [ArticleController::class, 'index'])
+    ->name('article');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';
