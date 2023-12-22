@@ -34,14 +34,12 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onWindowScroll);
-  observer.unobserve(intersectObservable.value);
+  observer.disconnect();
 });
 </script>
 
 <template>
-  <div
-    ref="intersectObservable"
-  />
+  <div ref="intersectObservable"/>
 
   <Transition
     enter-from-class="!bottom-[-3rem]"

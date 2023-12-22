@@ -31,6 +31,7 @@ const props = defineProps({
         <div class="bg-white">
           <div class="p-4">
             <ArticleAuthor
+              class="mb-4"
               :article-id="article.id"
               :status="article.status"
               :author="article.author"

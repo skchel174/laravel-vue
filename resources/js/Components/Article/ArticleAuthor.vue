@@ -27,7 +27,7 @@ defineProps({
 </script>
 
 <template>
-  <header class="mb-4 w-full flex flex-wrap items-center justify-between">
+  <header class="w-full flex flex-wrap items-center justify-between">
     <div class="order-2 sm:order-1 flex items-center space-x-2">
       <Avatar :value="author.avatar"/>
 
