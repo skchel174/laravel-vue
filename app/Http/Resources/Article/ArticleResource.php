@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Article;
 
+use App\Http\Resources\Tag\TagResource;
 use App\Http\Resources\Topic\TopicResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Article\Article;
@@ -14,7 +15,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property-read Article $resource
  */
-class ArticleCardResource extends JsonResource
+class ArticleResource extends JsonResource
 {
     public function __construct(Article $resource)
     {
@@ -39,6 +40,7 @@ class ArticleCardResource extends JsonResource
             'status' => $this->resource->status->value,
             'difficulty' => $this->resource->difficulty?->value,
             'summary' => $this->resource->summary,
+            'text' => $this->resource->text,
             'views' => $this->resource->views,
             'is_bookmarked' => $this->resource->is_bookmarked,
             'is_liked' => $this->resource->is_liked,
@@ -49,6 +51,7 @@ class ArticleCardResource extends JsonResource
             'created_date' => $this->formatDate($this->resource->created_at),
             'author' => UserResource::make($this->resource->author),
             'topics' => TopicResource::collection($this->resource->topics),
+            'tags' => TagResource::collection($this->resource->tags),
         ];
     }
 
