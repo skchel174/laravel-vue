@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Models\Article\Article;
 use App\Models\Article\Status;
 use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
@@ -50,5 +51,16 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->whereIn('id', $articlesIds)
             ->where('status', Status::Published)
             ->pluck('id');
+    }
+
+    public function getById(int $id): Article
+    {
+        /** @var Article $article */
+        $article = Article::with(['topics', 'tags', 'cardImage'])
+            ->withCount(['usersLiked as likes_count'])
+            ->where('status', Status::Published)
+            ->findOrFail($id);
+
+        return $article;
     }
 }
