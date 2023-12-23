@@ -27,6 +27,7 @@ const open = () => {
   <img
     class="flex flex-none justify-center items-center overflow-hidden rounded-full cursor-pointer"
     :class="{
+      'w-7 h-7': size === 'xs',
       'w-9 h-9' : size === 'sm',
       'w-14 h-14': size === 'md',
       'w-20 h-20': size === 'lg',
