@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Article;
 
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Tag\TagResource;
 use App\Http\Resources\Topic\TopicResource;
 use App\Http\Resources\User\UserResource;
@@ -45,13 +46,15 @@ class ArticleResource extends JsonResource
             'is_bookmarked' => $this->resource->is_bookmarked,
             'is_liked' => $this->resource->is_liked,
             'likes_count' => $this->resource->likes_count,
-            'comments_count' => rand(0, 100),
+            'comments_count' => $this->resource->comments_count,
             'image' => $imageResource,
             'publish_date' => $publishedDate,
             'created_date' => $this->formatDate($this->resource->created_at),
             'author' => UserResource::make($this->resource->author),
             'topics' => TopicResource::collection($this->resource->topics),
             'tags' => TagResource::collection($this->resource->tags),
+            'comments' => CommentResource::collection($this->resource->comments),
+            'total_comments' => $this->resource->getTotalCommentsCount(),
         ];
     }
 
