@@ -10,6 +10,7 @@ use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 
 class ArticleRepository implements ArticleRepositoryInterface
@@ -18,7 +19,7 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $author->articles()
             ->with(['topics', 'cardImage'])
-            ->withCount(['usersLiked as likes_count'])
+            ->withCount(['usersLiked as likes_count', 'comments'])
             ->withTrashed($status === Status::Deleted)
             ->where('status', $status)
             ->orderBy('id', 'desc')
@@ -30,7 +31,7 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $user->bookmarkedArticles()
             ->with(['topics', 'cardImage'])
-            ->withCount(['usersLiked as likes_count'])
+            ->withCount(['usersLiked as likes_count', 'comments'])
             ->where('status', Status::Published)
             ->orderBy('id', 'desc')
             ->paginate()
@@ -56,7 +57,15 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getById(int $id): Article
     {
         /** @var Article $article */
-        $article = Article::with(['topics', 'tags', 'cardImage'])
+        $article = Article::query()
+            ->with([
+                'topics',
+                'tags',
+                'cardImage',
+                'comments' => function (MorphMany $query) {
+                    $query->withCount(['comments']);
+                },
+            ])
             ->withCount(['usersLiked as likes_count'])
             ->where('status', Status::Published)
             ->findOrFail($id);
