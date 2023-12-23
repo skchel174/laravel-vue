@@ -11,6 +11,7 @@ use App\Models\Article\Exceptions\ArticleNotLiked;
 use App\Models\Article\Exceptions\ArticlePublished;
 use App\Models\Article\Exceptions\ArticleWasNotModerated;
 use App\Models\Category\Category;
+use App\Models\Comment\Comment;
 use App\Models\Tag\Tag;
 use App\Models\Topic\Topic;
 use App\Models\User\User;
@@ -47,6 +48,8 @@ use Throwable;
  * @property-read Collection<Tag> $tags
  * @property-read Collection<Topic> $topics
  * @property-read Collection<Category> $categories
+ * @property-read Collection<Comment> $comments
+ * @property-read int $comments_count
  * @property-read int $likes_count
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
@@ -145,6 +148,16 @@ class Article extends Model implements HasMedia
         $this->usersLiked()->detach($user);
     }
 
+    public function getTotalCommentsCount(): int
+    {
+        /** @var int $count */
+        $count = $this->comments->reduce(function (int $sum, Comment $comment) {
+            return $sum + $comment->getTotalCommentsCount();
+        }, 0);
+
+        return $count;
+    }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
@@ -158,6 +171,11 @@ class Article extends Model implements HasMedia
     public function categories(): HasManyThrough
     {
         return $this->hasManyThrough(Category::class, Topic::class);
+    }
+
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
     public function author(): BelongsTo
