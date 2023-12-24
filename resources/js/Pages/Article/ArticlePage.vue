@@ -87,7 +87,10 @@ defineProps({
           </ArticleFooter>
         </div>
 
-        <div class="mt-4 bg-white">
+        <div
+          id="comments"
+          class="mt-4 bg-white"
+        >
           <div>
             <h3 class="p-4 text-lg text-gray-700 font-bold">
               Comments

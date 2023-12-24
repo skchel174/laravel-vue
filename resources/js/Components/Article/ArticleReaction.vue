@@ -1,12 +1,12 @@
 <script setup>
+import {inject} from "vue";
+import useLike from "@/Hooks/useLike.js";
+import {router, usePage} from "@inertiajs/vue3";
+import useBookmark from "@/Hooks/useBookmark.js";
 import LikesIcon from "@/Components/Icons/LikesIcon.vue";
 import CommentsIcon from "@/Components/Icons/CommentsIcon.vue";
 import BookmarkIcon from "@/Components/Icons/BookmarkIcon.vue";
 import ShareIcon from "@/Components/Icons/ShareIcon.vue";
-import useLike from "@/Hooks/useLike.js";
-import useBookmark from "@/Hooks/useBookmark.js";
-import {usePage} from "@inertiajs/vue3";
-import {inject} from "vue";
 
 const props = defineProps({
   articleId: {
@@ -64,6 +64,11 @@ const onBookmarked = () => {
     article: props.articleId,
   }));
 };
+
+const openComments = () => {
+  const url = route('article', {id: props.articleId});
+  router.get(url + '#comments');
+};
 </script>
 
 <template>
@@ -74,7 +79,10 @@ const onBookmarked = () => {
       @toggle="onLike"
     />
 
-    <CommentsIcon :count="commentsCount"/>
+    <CommentsIcon
+      :count="commentsCount"
+      @click="openComments"
+    />
 
     <BookmarkIcon
       :is-bookmarked="isBookmarked"
