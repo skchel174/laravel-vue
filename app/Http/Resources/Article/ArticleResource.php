@@ -54,7 +54,6 @@ class ArticleResource extends JsonResource
             'topics' => TopicResource::collection($this->resource->topics),
             'tags' => TagResource::collection($this->resource->tags),
             'comments' => CommentResource::collection($this->resource->comments),
-            'total_comments' => $this->resource->getTotalCommentsCount(),
         ];
     }
 

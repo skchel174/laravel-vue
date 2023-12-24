@@ -17,27 +17,12 @@ class CommentsSeeder extends Seeder
         $articles = Article::all();
 
         foreach ($articles as $article) {
-            $randomUsers = $users->random(rand($users->count() / 2, $users->count()));
+            $randomUsers = $users->random(rand(1, $users->count() / 2));
 
             foreach ($randomUsers as $user) {
                 Comment::factory()
                     ->withAuthor($user)
-                    ->forCommentable($article)
-                    ->create();
-            }
-        }
-
-        $comments = Comment::all();
-        $commentsCnt = $comments->count();
-        $randomComments = $comments->random(rand($commentsCnt / 2, $commentsCnt));
-
-        foreach ($randomComments as $comment) {
-            $randomUsers = $users->random(rand($users->count() / 2, $users->count()));
-
-            foreach ($randomUsers as $user) {
-                Comment::factory()
-                    ->withAuthor($user)
-                    ->forCommentable($comment)
+                    ->forArticle($article)
                     ->create();
             }
         }

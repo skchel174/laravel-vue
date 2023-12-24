@@ -41,12 +41,12 @@ Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
                 Route::post('', [LikesController::class, 'add']);
                 Route::delete('', [LikesController::class, 'remove']);
             });
-    });
 
-    Route::prefix('/comments/{comment}/bookmark')
-        ->name('api.comments.bookmark')
-        ->group(function () {
-            Route::post('', [CommentBookmarkController::class, 'make']);
-            Route::delete('', [CommentBookmarkController::class, 'remove']);
-        });
+        Route::prefix('/comments/{comment}/bookmark')
+            ->name('api.comments.bookmark')
+            ->group(function () {
+                Route::post('', [CommentBookmarkController::class, 'make']);
+                Route::delete('', [CommentBookmarkController::class, 'remove']);
+            });
+    });
 });

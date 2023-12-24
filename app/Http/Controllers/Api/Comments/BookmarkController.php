@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Comments;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article\Article;
 use App\Models\Comment\Comment;
 use App\Models\User\User;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -17,7 +18,7 @@ class BookmarkController extends Controller
     {
     }
 
-    public function make(Comment $comment): JsonResponse
+    public function make(Article $article, Comment $comment): JsonResponse
     {
         /** @var User $user */
         $user = $this->authService->user();
@@ -27,7 +28,7 @@ class BookmarkController extends Controller
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 
-    public function remove(Comment $comment): JsonResponse
+    public function remove(Article $article, Comment $comment): JsonResponse
     {
         /** @var User $user */
         $user = $this->authService->user();

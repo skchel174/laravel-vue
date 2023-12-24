@@ -13,13 +13,19 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('author_id');
-            $table->text('text');
+            $table->foreignId('article_id');
             $table->morphs('commentable');
+            $table->text('text');
             $table->timestamps();
 
             $table->foreign('author_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('CASCADE');
+
+            $table->foreign('article_id')
+                ->references('id')
+                ->on('articles')
                 ->onDelete('CASCADE');
         });
     }

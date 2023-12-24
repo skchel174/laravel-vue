@@ -26,13 +26,20 @@ class CommentFactory extends Factory
         ]);
     }
 
-    public function forCommentable(Article|Comment $commentable): CommentFactory
+    public function forArticle(Article $article): CommentFactory
     {
-        $this->state([
-           'created_at' => $this->faker->dateTimeBetween($commentable->created_at),
-        ]);
+        return $this->state([
+            'article_id' => $article->id,
+            'created_at' => $this->faker->dateTimeBetween($article->created_at),
+        ])->for($article, 'commentable');
+    }
 
-        return $this->for($commentable, 'commentable');
+    public function forComment(Comment $comment): CommentFactory
+    {
+        return $this->state([
+            'article_id' => Article::factory(),
+            'created_at' => $this->faker->dateTimeBetween($comment->created_at),
+        ])->for($comment, 'commentable');
     }
 
     public function bookmarkedBy(User $user): CommentFactory

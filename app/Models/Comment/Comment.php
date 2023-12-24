@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
  * @property-read int $id
  * @property string $text
  * @property User $author
+ * @property-read Article $article
  * @property-read Article|Comment $commentable
  * @property-read Collection<Comment> $comments
  * @property-read CarbonImmutable $created_at
@@ -29,23 +30,35 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = ['text'];
-    protected $with = ['author', 'comments'];
-    private ?int $totalComments = null;
 
-    public function getTotalCommentsCount(): int
+    protected $with = ['author', 'comments'];
+
+    private array $commentsIds = [];
+
+    public function getCommentsCount(): int
     {
-        if ($this->totalComments === null) {
-            $this->totalComments = $this->comments->reduce(function (int $sum, Comment $comment) {
-                return $sum + $comment->getTotalCommentsCount();
-            }, 1);
+        return count($this->getCommentsIds());
+    }
+
+    public function getCommentsIds(): array
+    {
+        if (!$this->commentsIds) {
+            $this->commentsIds = $this->comments->reduce(function (array $ids, Comment $comment) {
+                return array_merge($ids, [$comment->id], $comment->getCommentsIds());
+            }, []);
         }
 
-        return $this->totalComments;
+        return $this->commentsIds;
     }
 
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function article(): BelongsTo
+    {
+        return $this->belongsTo(Article::class);
     }
 
     public function commentable(): MorphTo

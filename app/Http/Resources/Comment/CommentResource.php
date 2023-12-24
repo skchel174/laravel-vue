@@ -22,7 +22,7 @@ class CommentResource extends JsonResource
             'author' => UserResource::make($this->resource->author),
             'created_date' => $this->resource->created_at->format('d-m-Y H:i'),
             'comments' => CommentResource::collection($this->resource->comments),
-            'total_comments' => $this->resource->getTotalCommentsCount(),
+            'total_comments' => $this->resource->getCommentsCount(),
         ];
     }
 }

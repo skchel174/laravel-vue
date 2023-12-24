@@ -18,6 +18,11 @@ defineProps({
     type: Object,
     required: true,
   },
+
+  bookmarkedComments: {
+    type: Array,
+    required: true,
+  },
 });
 </script>
 
@@ -88,7 +93,7 @@ defineProps({
               Comments
 
               <span class="ml-2 text-sky-600">
-                {{ article.total_comments }}
+                {{ article.comments_count }}
               </span>
             </h3>
           </div>
@@ -99,6 +104,7 @@ defineProps({
             :key="comment.id"
             :comment="comment"
             :article-id="article.id"
+            :bookmarked-ids="bookmarkedComments"
           />
         </div>
       </AdvertWrapper>

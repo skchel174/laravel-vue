@@ -18,7 +18,10 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $author->articles()
             ->with(['topics', 'cardImage'])
-            ->withCount(['usersLiked as likes_count', 'comments'])
+            ->withCount([
+                'usersLiked as likes_count',
+                'allComments as comments_count',
+            ])
             ->withTrashed($status === Status::Deleted)
             ->where('status', $status)
             ->orderBy('id', 'desc')
@@ -30,7 +33,10 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $user->bookmarkedArticles()
             ->with(['topics', 'cardImage'])
-            ->withCount(['usersLiked as likes_count', 'comments'])
+            ->withCount([
+                'usersLiked as likes_count',
+                'allComments as comments_count',
+            ])
             ->where('status', Status::Published)
             ->orderBy('id', 'desc')
             ->paginate()
@@ -58,7 +64,10 @@ class ArticleRepository implements ArticleRepositoryInterface
         /** @var Article $article */
         $article = Article::query()
             ->with(['topics', 'tags', 'cardImage', 'comments'])
-            ->withCount(['usersLiked as likes_count', 'comments'])
+            ->withCount([
+                'usersLiked as likes_count',
+                'allComments as comments_count',
+            ])
             ->where('status', Status::Published)
             ->findOrFail($id);
 

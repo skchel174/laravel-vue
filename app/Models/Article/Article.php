@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -148,14 +149,11 @@ class Article extends Model implements HasMedia
         $this->usersLiked()->detach($user);
     }
 
-    public function getTotalCommentsCount(): int
+    public function getCommentsIds(): array
     {
-        /** @var int $count */
-        $count = $this->comments->reduce(function (int $sum, Comment $comment) {
-            return $sum + $comment->getTotalCommentsCount();
-        }, 0);
-
-        return $count;
+        return $this->comments->reduce(function (array $ids, Comment $comment) {
+            return array_merge($ids, [$comment->id], $comment->getCommentsIds());
+        }, []);
     }
 
     public function tags(): BelongsToMany
@@ -176,6 +174,11 @@ class Article extends Model implements HasMedia
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function allComments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function author(): BelongsTo
