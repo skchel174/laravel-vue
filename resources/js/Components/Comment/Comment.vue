@@ -60,9 +60,7 @@ const isOpen = ref(true);
         <CommentReaction
           :comment-id="comment.id"
           :article-id="articleId"
-          :is-liked="comment.is_liked"
-          :is-bookmarked="comment.is_bookmarked"
-          :likes-count="comment.likes_count ?? 28"
+          :is-bookmarked="false"
         />
       </div>
     </div>

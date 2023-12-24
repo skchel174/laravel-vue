@@ -6,9 +6,10 @@ namespace App\Models\User;
 
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\Comment\Comment;
 use App\Models\Topic\Topic;
-use App\Models\User\Exceptions\ArticleAlreadyBookmarked;
-use App\Models\User\Exceptions\ArticleNotBookmarked;
+use App\Models\User\Exceptions\BookmarkAlreadyCreated;
+use App\Models\User\Exceptions\BookmarkNotCreated;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\PasswordResetNotRequested;
 use App\Models\User\Exceptions\RegistrationAlreadyVerified;
@@ -169,13 +170,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         ]);
     }
 
-    public function isArticleBookmarked(Article $article): bool
-    {
-        return $this->bookmarkedArticles()
-            ->where('id', $article->id)
-            ->exists();
-    }
-
     public function makeArticleBookmark(Article $article)
     {
         if (!$article->status->isPublished()) {
@@ -183,7 +177,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         }
 
         if ($this->isArticleBookmarked($article)) {
-            throw new ArticleAlreadyBookmarked();
+            throw new BookmarkAlreadyCreated();
         }
 
         $this->bookmarkedArticles()->attach($article);
@@ -192,10 +186,28 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     public function removeArticleBookmark(Article $article): void
     {
         if (!$this->isArticleBookmarked($article)) {
-            throw new ArticleNotBookmarked();
+            throw new BookmarkNotCreated();
         }
 
         $this->bookmarkedArticles()->detach($article);
+    }
+
+    public function makeCommentBookmark(Comment $comment)
+    {
+        if ($this->isCommentBookmarked($comment)) {
+            throw new BookmarkAlreadyCreated();
+        }
+
+        $this->bookmarkedComments()->attach($comment);
+    }
+
+    public function removeCommentBookmark(Comment $comment): void
+    {
+        if (!$this->isCommentBookmarked($comment)) {
+            throw new BookmarkNotCreated();
+        }
+
+        $this->bookmarkedComments()->detach($comment);
     }
 
     public function updateLastActivityTime(): void
@@ -207,8 +219,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
     /**
      * Need for AuthenticateSession middleware
-     *
-     * @return string
      */
     public function getAuthPassword(): string
     {
@@ -220,14 +230,19 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         return $this->hasMany(Article::class, 'author_id');
     }
 
+    public function likedArticles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'liked_articles');
+    }
+
     public function bookmarkedArticles(): BelongsToMany
     {
         return $this->belongsToMany(Article::class, 'bookmarked_articles');
     }
 
-    public function likedArticles(): BelongsToMany
+    public function bookmarkedComments(): BelongsToMany
     {
-        return $this->belongsToMany(Article::class, 'liked_articles');
+        return $this->belongsToMany(Comment::class, 'bookmarked_comments');
     }
 
     public function topics(): BelongsToMany
@@ -266,5 +281,19 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
                     ->width(300)
                     ->height(300);
             });
+    }
+
+    private function isArticleBookmarked(Article $article): bool
+    {
+        return $this->bookmarkedArticles()
+            ->where('id', $article->id)
+            ->exists();
+    }
+
+    private function isCommentBookmarked(Comment $comment): bool
+    {
+        return $this->bookmarkedComments()
+            ->where('id', $comment->id)
+            ->exists();
     }
 }

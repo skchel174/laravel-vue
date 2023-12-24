@@ -7,7 +7,7 @@ namespace Tests\Unit\Model\User;
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Article\Status;
-use App\Models\User\Exceptions\ArticleAlreadyBookmarked;
+use App\Models\User\Exceptions\BookmarkAlreadyCreated;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -48,7 +48,7 @@ class MakeArticleBookmarkTest extends TestCase
 
     public function testAddToBookmarksAlreadyBookmarkedArticle(): void
     {
-        $this->expectException(ArticleAlreadyBookmarked::class);
+        $this->expectException(BookmarkAlreadyCreated::class);
 
         /** @var User $user */
         $user = User::factory()

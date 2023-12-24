@@ -10,6 +10,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
@@ -20,7 +21,6 @@ use Illuminate\Support\Collection;
  * @property User $author
  * @property-read Article|Comment $commentable
  * @property-read Collection<Comment> $comments
- * @property-read int $likes_count
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  */
@@ -28,11 +28,20 @@ class Comment extends Model
 {
     use HasFactory;
 
-    public bool $is_liked = false;
-    public bool $is_bookmarked = false;
     protected $fillable = ['text'];
     protected $with = ['author', 'comments'];
     private ?int $totalComments = null;
+
+    public function getTotalCommentsCount(): int
+    {
+        if ($this->totalComments === null) {
+            $this->totalComments = $this->comments->reduce(function (int $sum, Comment $comment) {
+                return $sum + $comment->getTotalCommentsCount();
+            }, 1);
+        }
+
+        return $this->totalComments;
+    }
 
     public function author(): BelongsTo
     {
@@ -49,14 +58,8 @@ class Comment extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function getTotalCommentsCount(): int
+    public function usersBookmarked(): BelongsToMany
     {
-        if ($this->totalComments === null) {
-            $this->totalComments = $this->comments->reduce(function (int $sum, Comment $comment) {
-                return $sum + $comment->getTotalCommentsCount();
-            }, 1);
-        }
-
-        return $this->totalComments;
+        return $this->belongsToMany(User::class, 'bookmarked_comments');
     }
 }
