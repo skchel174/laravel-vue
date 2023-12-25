@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Article\ArticleController;
+use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,10 @@ Route::get('/users/{user:login}/bookmarks/articles', [UserController::class, 'bo
 
 Route::get('/articles/{id}', [ArticleController::class, 'index'])
     ->name('article');
+
+Route::post('/article/{article}/comments', [CommentController::class, 'create'])
+    ->middleware(['auth', 'auth.session', 'verified'])
+    ->name('articles.comment.create');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

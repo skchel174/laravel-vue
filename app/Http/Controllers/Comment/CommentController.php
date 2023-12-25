@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Comment;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Comment\CreateCommentRequest;
+use App\Models\Article\Article;
+use App\Service\CommentService;
+use Illuminate\Http\RedirectResponse;
+
+class CommentController extends Controller
+{
+    public function __construct(private readonly CommentService $service) {
+    }
+
+    public function create(CreateCommentRequest $request, Article $article): RedirectResponse
+    {
+        $this->service->createForArticle($article, $request->text);
+
+        return redirect()->back();
+    }
+}
