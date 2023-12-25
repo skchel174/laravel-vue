@@ -14,14 +14,17 @@ defineProps({
   },
 });
 
-defineEmits(['copy', 'bookmarked']);
+defineEmits(['copy', 'reply', 'bookmarked']);
 </script>
 
 <template>
   <div class="w-full flex items-center justify-between sm:justify-start sm:space-x-4 text-gray-400">
     <CommentsIcon :count="commentsCount"/>
 
-    <span class="text-sm text-gray-400 cursor-pointer hover:text-gray-500 transition duration-200 select-none">
+    <span
+      class="text-sm text-gray-400 cursor-pointer hover:text-gray-500 transition duration-200 select-none"
+      @click="$emit('reply')"
+    >
       Reply
     </span>
 

@@ -23,7 +23,7 @@ defineProps({
 
     <div class="flex flex-wrap items-center">
       <p class="text-sm text-gray-600 font-semibold !leading-4 mr-2">
-        {{ author.name }}
+        {{ author.login }}
       </p>
 
       <p class="text-xs text-gray-400 font-bold">

@@ -1,5 +1,6 @@
 <script setup>
 import {Head} from '@inertiajs/vue3';
+import {provide, ref, watch} from "vue";
 import MainWrapper from "@/Components/MainWrapper.vue";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
 import AdvertWrapper from "@/Components/Advert/AdvertWrapper.vue";
@@ -12,8 +13,9 @@ import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleFooter from "@/Pages/Article/Partials/ArticleFooter.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import Comment from "@/Components/Comment/Comment.vue";
+import CommentForm from "@/Components/Comment/CommentForm.vue";
 
-defineProps({
+const props = defineProps({
   article: {
     type: Object,
     required: true,
@@ -23,6 +25,23 @@ defineProps({
     type: Array,
     required: true,
   },
+});
+
+const commentable = ref(`article_${props.article.id}`);
+
+const setCommentable = (value) => {
+  commentable.value = value;
+};
+
+provide('commentable', {
+  commentable,
+  setCommentable,
+});
+
+watch(commentable, () => {
+  if (!commentable.value) {
+    commentable.value = `article_${props.article.id}`;
+  }
 });
 </script>
 
@@ -108,6 +127,11 @@ defineProps({
             :comment="comment"
             :article-id="article.id"
             :bookmarked-ids="bookmarkedComments"
+          />
+
+          <CommentForm
+            v-if="commentable === `article_${article.id}`"
+            :article-id="article.id"
           />
         </div>
       </AdvertWrapper>

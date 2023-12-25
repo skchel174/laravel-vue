@@ -19,27 +19,15 @@ class CommentController extends Controller
 
     public function create(CreateCommentRequest $request, Article $article): RedirectResponse
     {
-        $comment = $this->service->createForArticle($article, $request->text);
+        $this->service->createForArticle($article, $request->text);
 
-        $url = sprintf(
-            '%s#comment_%d',
-            route('article', ['id' => $article->id]),
-            $comment->id
-        );
-
-        return redirect($url);
+        return redirect()->back();
     }
 
     public function reply(CreateCommentRequest $request, Article $article, Comment $comment): RedirectResponse
     {
-        $comment = $this->service->createForComment($comment, $article, $request->text);
+        $this->service->createForComment($comment, $article, $request->text);
 
-        $url = sprintf(
-            '%s#comment_%d',
-            route('article', ['id' => $article->id]),
-            $comment->id
-        );
-
-        return redirect($url);
+        return redirect()->back();
     }
 }

@@ -5,6 +5,7 @@ import useBookmark from "@/Hooks/useBookmark.js";
 import CommentReaction from "@/Components/Comment/CommentReaction.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
 import HideButton from "@/Components/Comment/HideButton.vue";
+import CommentReplyForm from "@/Components/Comment/CommentReplyForm.vue";
 
 const props = defineProps({
   comment: {
@@ -27,8 +28,6 @@ const props = defineProps({
     default: 0,
   },
 });
-
-const isOpen = ref(true);
 
 const user = usePage().props.auth.user;
 
@@ -64,6 +63,26 @@ const onBookmarked = () => {
 onMounted(() => {
   isBookmarked.value = props.bookmarkedIds.includes(props.comment.id);
 });
+
+const {commentable, setCommentable} = inject('commentable');
+
+const isOpen = ref(true);
+
+const toggleVisibility = () => {
+  isOpen.value = !isOpen.value;
+
+  if (!isOpen.value) {
+    closeReply();
+  }
+};
+
+const openReply = () => {
+  setCommentable(`comment_${props.comment.id}`);
+};
+
+const closeReply = () => {
+  setCommentable(null);
+}
 </script>
 
 <template>
@@ -72,13 +91,13 @@ onMounted(() => {
       <HideButton
         :open="isOpen"
         :depth="depth"
-        @click="() => isOpen = !isOpen"
+        @click="toggleVisibility"
       />
 
       <div
         class="inline-flex items-center pt-[0.175rem] cursor-pointer"
         v-show="!isOpen"
-        @click="() => isOpen = !isOpen"
+        @click="toggleVisibility"
       >
         <p class="text-sky-600 text-base font-bold">
           Show comments ({{ comment.total_comments + 1 }})
@@ -95,21 +114,32 @@ onMounted(() => {
           :created-date="comment.created_date"
         />
 
-        <div class="mb-2 text-sm font-medium text-gray-700">
+        <div class="text-sm font-medium text-gray-700">
           {{ comment.text }}
         </div>
 
         <CommentReaction
+          class="mt-2"
+          v-show="commentable !== `comment_${comment.id}`"
           :bookmarked-ids="bookmarkedIds"
           :is-bookmarked="isBookmarked"
           :comments-count="comment.total_comments"
           @bookmarked="onBookmarked"
           @copy="copyLink"
+          @reply="openReply"
         />
       </div>
     </div>
 
-    <div v-if="comment.comments.length > 0">
+    <CommentReplyForm
+      v-if="commentable === `comment_${comment.id}`"
+      :article-id="articleId"
+      :comment-id="comment.id"
+      :author="comment.author.login"
+      @close="closeReply"
+    />
+
+    <div v-show="isOpen">
       <Comment
         v-for="comment in comment.comments"
         :key="comment.id"

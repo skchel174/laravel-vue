@@ -32,7 +32,7 @@ class CreateComment extends TestCase
         /** @var Comment $comment */
         $comment = $article->comments()->first();
 
-        $response->assertRedirect($fromUrl . '#comment_' . $comment->id);
+        $response->assertRedirect($fromUrl);
 
         $response->assertSessionHasNoErrors();
 
@@ -70,7 +70,7 @@ class CreateComment extends TestCase
         /** @var Comment $comment */
         $comment = $commentable->comments()->first();
 
-        $response->assertRedirect($fromUrl . '#comment_' . $comment->id);
+        $response->assertRedirect($fromUrl);
 
         $response->assertSessionHasNoErrors();
 
