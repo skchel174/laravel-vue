@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models\Comment;
 
 use App\Models\Article\Article;
+use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,6 +36,26 @@ class Comment extends Model
     protected $with = ['author', 'comments'];
 
     private array $commentsIds = [];
+
+    public static function createForArticle(Article $article, User $author, string $text): static
+    {
+        if (!$article->status->isPublished()) {
+            throw new ArticleNotPublished();
+        }
+
+        if (!$author->status->isActive()) {
+            throw new AccountNotActive();
+        }
+
+        $comment = new static();
+        $comment->text = $text;
+        $comment->author()->associate($author);
+        $comment->article()->associate($article);
+        $comment->commentable()->associate($article);
+        $comment->save();
+
+        return $comment;
+    }
 
     public function getCommentsCount(): int
     {
