@@ -30,4 +30,16 @@ class CommentService
 
         return $comment;
     }
+
+    public function createForComment(Comment $comment, Article $article, string $text): Comment
+    {
+        /** @var User $user */
+        $user = $this->authService->user();
+
+        $comment = Comment::createForComment($comment, $article, $user, $text);
+
+        $this->eventDispatcher->dispatch(new CreateComment($comment));
+
+        return $comment;
+    }
 }
