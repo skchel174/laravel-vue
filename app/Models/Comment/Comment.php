@@ -6,6 +6,7 @@ namespace App\Models\Comment;
 
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\Comment\Exception\NotBelongsToArticle;
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
@@ -21,6 +22,7 @@ use Illuminate\Support\Collection;
  * @property-read int $id
  * @property string $text
  * @property User $author
+ * @property-read int $article_id
  * @property-read Article $article
  * @property-read Article|Comment $commentable
  * @property-read Collection<Comment> $comments
@@ -37,9 +39,9 @@ class Comment extends Model
 
     private array $commentsIds = [];
 
-    public static function createForArticle(Article $article, User $author, string $text): static
+    public static function createForArticle(Article $commentable, User $author, string $text): static
     {
-        if (!$article->status->isPublished()) {
+        if (!$commentable->status->isPublished()) {
             throw new ArticleNotPublished();
         }
 
@@ -50,8 +52,32 @@ class Comment extends Model
         $comment = new static();
         $comment->text = $text;
         $comment->author()->associate($author);
+        $comment->article()->associate($commentable);
+        $comment->commentable()->associate($commentable);
+        $comment->save();
+
+        return $comment;
+    }
+
+    public static function createForComment(Comment $commentable, Article $article, $author, string $text): static
+    {
+        if (!$article->status->isPublished()) {
+            throw new ArticleNotPublished();
+        }
+
+        if (!$author->status->isActive()) {
+            throw new AccountNotActive();
+        }
+
+        if (!$commentable->belongsToArticle($article)) {
+            throw new NotBelongsToArticle();
+        }
+
+        $comment = new static();
+        $comment->text = $text;
+        $comment->author()->associate($author);
         $comment->article()->associate($article);
-        $comment->commentable()->associate($article);
+        $comment->commentable()->associate($commentable);
         $comment->save();
 
         return $comment;
@@ -71,6 +97,11 @@ class Comment extends Model
         }
 
         return $this->commentsIds;
+    }
+
+    public function belongsToArticle(Article $article): bool
+    {
+        return $this->article_id === $article->id;
     }
 
     public function author(): BelongsTo
