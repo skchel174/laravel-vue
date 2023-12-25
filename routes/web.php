@@ -49,5 +49,9 @@ Route::post('/article/{article}/comments', [CommentController::class, 'create'])
     ->middleware(['auth', 'auth.session', 'verified'])
     ->name('articles.comment.create');
 
+Route::post('/article/{article}/comments/{comment}/comments', [CommentController::class, 'reply'])
+    ->middleware(['auth', 'auth.session', 'verified'])
+    ->name('articles.comment.reply');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

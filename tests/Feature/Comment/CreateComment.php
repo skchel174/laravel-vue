@@ -29,14 +29,53 @@ class CreateComment extends TestCase
                 'text' => $text = $this->faker->text(),
             ]);
 
-        $response->assertRedirect($fromUrl);
-
-        $response->assertSessionHasNoErrors();
-
         /** @var Comment $comment */
         $comment = $article->comments()->first();
 
+        $response->assertRedirect($fromUrl . '#comment_' . $comment->id);
+
+        $response->assertSessionHasNoErrors();
+
         $this->assertNotNull($comment);
+
+        $this->assertEquals($text, $comment->text);
+    }
+
+    public function testCreateNewCommentForComment(): void
+    {
+        /** @var Article $article */
+        $article = Article::factory()->create();
+
+        /** @var Comment $commentable */
+        $commentable = Comment::factory()
+            ->forArticle($article)
+            ->create();
+
+        /** @var User $author */
+        $author = User::factory()->create();
+
+        $response = $this
+            ->from($fromUrl = route('article', ['id' => $article->id]))
+            ->actingAs($author)
+            ->post(
+                route('articles.comment.reply', [
+                    'article' => $article->id,
+                    'comment' => $commentable->id,
+                ]),
+                [
+                    'text' => $text = $this->faker->text(),
+                ],
+            );
+
+        /** @var Comment $comment */
+        $comment = $commentable->comments()->first();
+
+        $response->assertRedirect($fromUrl . '#comment_' . $comment->id);
+
+        $response->assertSessionHasNoErrors();
+
+        $this->assertNotNull($comment);
+
         $this->assertEquals($text, $comment->text);
     }
 }
