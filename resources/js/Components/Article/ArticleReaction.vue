@@ -66,7 +66,7 @@ const onBookmarked = () => {
 };
 
 const openComments = () => {
-  const url = route('article', {id: props.articleId});
+  const url = route('article', {article: props.articleId});
   router.get(url + '#comments');
 };
 </script>

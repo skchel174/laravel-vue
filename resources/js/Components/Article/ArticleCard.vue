@@ -20,7 +20,7 @@ const props = defineProps({
 
 const openArticle = () => {
   if (props.readable) {
-    router.get(route('article', {id: props.article.id}));
+    router.get(route('article', {article: props.article.id}));
   }
 };
 </script>

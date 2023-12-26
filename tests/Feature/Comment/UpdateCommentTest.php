@@ -30,7 +30,7 @@ class UpdateCommentTest extends TestCase
             ->create(['created_at' => CarbonImmutable::now()]);
 
         $response = $this
-            ->from($fromUrl = route('article', ['id' => $article->id]))
+            ->from($fromUrl = route('article', ['article' => $article->id]))
             ->actingAs($author)
             ->patch(route('articles.comment.update', [
                 'article' => $article->id,
@@ -62,7 +62,7 @@ class UpdateCommentTest extends TestCase
         $author = User::factory()->create();
 
         $response = $this
-            ->from(route('article', ['id' => $article->id]))
+            ->from(route('article', ['article' => $article->id]))
             ->actingAs($author)
             ->patch(route('articles.comment.update', [
                 'article' => $article->id,

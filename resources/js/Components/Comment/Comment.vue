@@ -36,7 +36,7 @@ const notify = inject('notify');
 
 const copyLink = () => {
   const link = route('article', {
-    id: props.articleId
+    article: props.articleId
   });
 
   navigator.clipboard.writeText(`${link}#comment_${props.comment.id}`);

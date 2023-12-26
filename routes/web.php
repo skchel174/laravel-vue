@@ -42,20 +42,24 @@ Route::get('/users/{user:login}/articles/{status?}', [UserController::class, 'ar
 Route::get('/users/{user:login}/bookmarks/articles', [UserController::class, 'bookmarkedArticles'])
     ->name('user.bookmarks.articles');
 
-Route::get('/articles/{id}', [ArticleController::class, 'index'])
-    ->name('article');
+Route::prefix('/articles/{article}')->group(function () {
+    Route::get('/', [ArticleController::class, 'index'])
+        ->name('article');
 
-Route::post('/article/{article}/comments', [CommentController::class, 'create'])
-    ->middleware(['auth', 'auth.session', 'verified'])
-    ->name('articles.comment.create');
+    Route::prefix('/comments')
+        ->middleware(['auth', 'auth.session', 'verified'])
+        ->group(function () {
+        Route::post('/', [CommentController::class, 'create'])
+            ->name('articles.comment.create');
 
-Route::post('/article/{article}/comments/{comment}/comments', [CommentController::class, 'reply'])
-    ->middleware(['auth', 'auth.session', 'verified'])
-    ->name('articles.comment.reply');
+        Route::post('/{comment}/comments', [CommentController::class, 'reply'])
+            ->name('articles.comment.reply');
 
-Route::patch('/article/{article}/comments/{comment}/comments', [CommentController::class, 'edit'])
-    ->middleware(['auth', 'auth.session', 'verified', 'can:update,comment'])
-    ->name('articles.comment.update');
+        Route::patch('/{comment}/comments', [CommentController::class, 'edit'])
+            ->middleware('can:update,comment')
+            ->name('articles.comment.update');
+    });
+});
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

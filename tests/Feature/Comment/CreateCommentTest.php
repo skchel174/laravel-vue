@@ -23,7 +23,7 @@ class CreateCommentTest extends TestCase
         $author = User::factory()->create();
 
         $response = $this
-            ->from($fromUrl = route('article', ['id' => $article->id]))
+            ->from($fromUrl = route('article', ['article' => $article->id]))
             ->actingAs($author)
             ->post(route('articles.comment.create', ['article' => $article->id]), [
                 'text' => $text = $this->faker->text(),
@@ -55,7 +55,7 @@ class CreateCommentTest extends TestCase
         $author = User::factory()->create();
 
         $response = $this
-            ->from($fromUrl = route('article', ['id' => $article->id]))
+            ->from($fromUrl = route('article', ['article' => $article->id]))
             ->actingAs($author)
             ->post(
                 route('articles.comment.reply', [

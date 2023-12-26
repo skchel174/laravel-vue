@@ -22,9 +22,9 @@ class ArticleController extends Controller
     ) {
     }
 
-    public function index(int $id): Response
+    public function index(int $article): Response
     {
-        $article = $this->articleRepository->getById($id);
+        $article = $this->articleRepository->getById($article);
 
         $bookmarkedComments = [];
         /** @var User $user */
