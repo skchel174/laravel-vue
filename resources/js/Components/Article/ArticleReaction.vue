@@ -55,14 +55,9 @@ const onLike = () => {
 const {isBookmarked, toggleBookmark} = useBookmark(props.isBookmarked);
 
 const onBookmarked = () => {
-  if (!user) {
-    notify('error', 'Login to bookmark this article');
-    return;
-  }
-
-  toggleBookmark(route('api.articles.bookmark', {
-    article: props.articleId,
-  }));
+  toggleBookmark(route('api.articles.bookmark', {article: props.articleId}))
+    .then(() => notify('success', 'Comment added to bookmarks'))
+    .catch(error => notify('error', error.message))
 };
 
 const openComments = () => {

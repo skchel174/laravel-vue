@@ -35,30 +35,22 @@ const user = usePage().props.auth.user;
 const notify = inject('notify');
 
 const copyLink = () => {
-  const link = route('article', {
-    article: props.articleId
-  });
-
+  const link = route('article', {article: props.articleId});
   navigator.clipboard.writeText(`${link}#comment_${props.comment.id}`);
-
   notify('success', 'Link was copied');
 };
 
-/* TODO:update useBookmark */
 const {isBookmarked, toggleBookmark} = useBookmark();
 
 const onBookmarked = () => {
-  if (!user) {
-    notify('error', 'Login to bookmark comments');
-    return;
-  }
-
-  toggleBookmark(route('api.comments.bookmark', {
+  const url = route('api.comments.bookmark', {
     article: props.articleId,
     comment: props.comment.id,
-  }));
+  });
 
-  notify('success', 'Comment added to bookmarks');
+  toggleBookmark(url)
+    .then(() => notify('success', 'Comment added to bookmarks'))
+    .catch(error => notify('error', error.message))
 };
 
 onMounted(() => {
@@ -117,7 +109,7 @@ const closeForm = () => {
           />
 
           <div
-            v-if="comment.author.id === user.id && comment.is_editable"
+            v-if="comment.author.id === user?.id && comment.is_editable"
             class="flex items-center space-x-1 cursor-pointer text-sky-600 hover:text-sky-700 transition duration-200"
             @click="() => openForm(`comment_${props.comment.id}_edit`)"
           >
