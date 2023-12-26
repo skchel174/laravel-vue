@@ -6,6 +6,7 @@ import CommentReaction from "@/Components/Comment/CommentReaction.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
 import HideButton from "@/Components/Comment/HideButton.vue";
 import CommentReplyForm from "@/Components/Comment/CommentReplyForm.vue";
+import CommentEditForm from "@/Components/Comment/CommentEditForm.vue";
 
 const props = defineProps({
   comment: {
@@ -72,22 +73,22 @@ const toggleVisibility = () => {
   isOpen.value = !isOpen.value;
 
   if (!isOpen.value) {
-    closeReply();
+    closeForm();
   }
 };
 
-const openReply = () => {
-  setCommentable(`comment_${props.comment.id}`);
+const openForm = (commentId) => {
+  setCommentable(commentId);
 };
 
-const closeReply = () => {
+const closeForm = () => {
   setCommentable(null);
-}
+};
 </script>
 
 <template>
   <div :id="`comment_${comment.id}`">
-    <div class="pb-6 pt-2 flex items-stretch">
+    <div class="pt-4 pb-2 flex items-stretch">
       <HideButton
         :open="isOpen"
         :depth="depth"
@@ -105,14 +106,29 @@ const closeReply = () => {
       </div>
 
       <div
-        class="pr-4"
+        class="w-full pr-4"
         v-show="isOpen"
       >
-        <CommentAuthor
-          class="mb-1"
-          :author="comment.author"
-          :created-date="comment.created_date"
-        />
+        <div class="flex items-center space-x-4">
+          <CommentAuthor
+            class="mb-1"
+            :author="comment.author"
+            :created-date="comment.created_date"
+          />
+
+          <div
+            v-if="comment.author.id === user.id && comment.is_editable"
+            class="flex items-center space-x-1 cursor-pointer text-sky-600 hover:text-sky-700 transition duration-200"
+            @click="() => openForm(`comment_${props.comment.id}_edit`)"
+          >
+            <span class="material-icons !text-xs !leading-none">
+              edit
+            </span>
+            <span class="text-xs font-semibold !leading-none">
+              Edit
+            </span>
+          </div>
+        </div>
 
         <div class="text-sm font-medium text-gray-700">
           {{ comment.text }}
@@ -120,13 +136,12 @@ const closeReply = () => {
 
         <CommentReaction
           class="mt-2"
-          v-show="commentable !== `comment_${comment.id}`"
           :bookmarked-ids="bookmarkedIds"
           :is-bookmarked="isBookmarked"
           :comments-count="comment.total_comments"
           @bookmarked="onBookmarked"
           @copy="copyLink"
-          @reply="openReply"
+          @reply="() => openForm(`comment_${props.comment.id}`)"
         />
       </div>
     </div>
@@ -136,7 +151,15 @@ const closeReply = () => {
       :article-id="articleId"
       :comment-id="comment.id"
       :author="comment.author.login"
-      @close="closeReply"
+      @close="closeForm"
+    />
+
+    <CommentEditForm
+      v-if="commentable === `comment_${comment.id}_edit`"
+      :text="comment.text"
+      :article-id="articleId"
+      :comment-id="comment.id"
+      @close="closeForm"
     />
 
     <div v-show="isOpen">

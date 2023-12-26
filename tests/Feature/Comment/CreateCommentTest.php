@@ -10,7 +10,7 @@ use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class CreateComment extends TestCase
+class CreateCommentTest extends TestCase
 {
     use RefreshDatabase;
 

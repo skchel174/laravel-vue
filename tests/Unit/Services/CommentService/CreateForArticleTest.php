@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\CommentService;
 
-use App\Events\Article\CreateComment;
+use App\Events\Comment\CreateComment;
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
 use App\Models\User\User;

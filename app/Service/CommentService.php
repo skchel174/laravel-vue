@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Events\Article\CreateComment;
+use App\Events\Comment\CreateComment;
+use App\Events\Comment\UpdateComment;
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
 use App\Models\User\User;
@@ -39,6 +40,15 @@ class CommentService
         $comment = Comment::createForComment($comment, $article, $user, $text);
 
         $this->eventDispatcher->dispatch(new CreateComment($comment));
+
+        return $comment;
+    }
+
+    public function edit(Comment $comment, string $text): Comment
+    {
+        $comment->edit($text);
+
+        $this->eventDispatcher->dispatch(new UpdateComment($comment));
 
         return $comment;
     }

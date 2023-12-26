@@ -20,15 +20,19 @@ class BookmarkTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
+        /** @var Article $article */
+        $article = Article::factory()->create();
+
         /** @var Comment $comment */
         $comment = Comment::factory()
-            ->forCommentable(Article::factory()->create())
+            ->forArticle($article)
             ->create();
 
         $response = $this
             ->actingAs($user)
             ->post(route('api.comments.bookmark', [
                 'comment' => $comment->id,
+                'article' => $article->id,
             ]));
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
@@ -42,9 +46,12 @@ class BookmarkTest extends TestCase
         $user = User::factory()
             ->create();
 
+        /** @var Article $article */
+        $article = Article::factory()->create();
+
         /** @var Comment $comment */
         $comment = Comment::factory()
-            ->forCommentable(Article::factory()->create())
+            ->forArticle($article)
             ->bookmarkedBy($user)
             ->create();
 
@@ -52,6 +59,7 @@ class BookmarkTest extends TestCase
             ->actingAs($user)
             ->delete(route('api.comments.bookmark', [
                 'comment' => $comment->id,
+                'article' => $article->id,
             ]));
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);

@@ -11,7 +11,7 @@ defineProps({
     type: String,
     required: true,
   },
-})
+});
 </script>
 
 <template>
@@ -21,14 +21,14 @@ defineProps({
       size="xs"
     />
 
-    <div class="flex flex-wrap items-center">
-      <p class="text-sm text-gray-600 font-semibold !leading-4 mr-2">
+    <div class="mr-4 flex flex-wrap items-end">
+      <span class="text-sm text-gray-600 font-semibold !leading-none mr-2">
         {{ author.login }}
-      </p>
+      </span>
 
-      <p class="text-xs text-gray-400 font-bold">
+      <span class="text-xs text-gray-400 font-bold !leading-none">
         {{ $formatDate(createdDate, 'MMM D YYYY [at] kk:mm') }}
-      </p>
+      </span>
     </div>
   </header>
 </template>

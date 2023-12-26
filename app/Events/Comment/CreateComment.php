@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Events\Article;
+namespace App\Events\Comment;
 
 use App\Models\Comment\Comment;
 use Illuminate\Broadcasting\InteractsWithSockets;

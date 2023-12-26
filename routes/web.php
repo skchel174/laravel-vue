@@ -53,5 +53,9 @@ Route::post('/article/{article}/comments/{comment}/comments', [CommentController
     ->middleware(['auth', 'auth.session', 'verified'])
     ->name('articles.comment.reply');
 
+Route::patch('/article/{article}/comments/{comment}/comments', [CommentController::class, 'edit'])
+    ->middleware(['auth', 'auth.session', 'verified', 'can:update,comment'])
+    ->name('articles.comment.update');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

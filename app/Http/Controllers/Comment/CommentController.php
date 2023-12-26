@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Comment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\CreateCommentRequest;
+use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
 use App\Service\CommentService;
@@ -27,6 +28,13 @@ class CommentController extends Controller
     public function reply(CreateCommentRequest $request, Article $article, Comment $comment): RedirectResponse
     {
         $this->service->createForComment($comment, $article, $request->text);
+
+        return redirect()->back();
+    }
+
+    public function edit(UpdateCommentRequest $request, Article $article, Comment $comment): RedirectResponse
+    {
+        $this->service->edit($comment,  $request->text);
 
         return redirect()->back();
     }

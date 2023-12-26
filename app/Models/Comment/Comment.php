@@ -6,6 +6,7 @@ namespace App\Models\Comment;
 
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\Comment\Exception\ExceededEditingTimeLimit;
 use App\Models\Comment\Exception\NotBelongsToArticle;
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
@@ -37,6 +38,11 @@ class Comment extends Model
 
     protected $with = ['author', 'comments'];
 
+    protected $casts = [
+        'created_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
+    ];
+
     private array $commentsIds = [];
 
     public static function createForArticle(Article $commentable, User $author, string $text): static
@@ -59,7 +65,7 @@ class Comment extends Model
         return $comment;
     }
 
-    public static function createForComment(Comment $commentable, Article $article, $author, string $text): static
+    public static function createForComment(Comment $commentable, Article $article, User $author, string $text): static
     {
         if (!$article->status->isPublished()) {
             throw new ArticleNotPublished();
@@ -99,9 +105,28 @@ class Comment extends Model
         return $this->commentsIds;
     }
 
+    public function edit(string $text): void
+    {
+        if (!$this->isEditable(CarbonImmutable::now())) {
+            throw new ExceededEditingTimeLimit();
+        }
+
+        $this->update(['text' => $text]);
+    }
+
     public function belongsToArticle(Article $article): bool
     {
         return $this->article_id === $article->id;
+    }
+
+    public function isAuthor(User $author): bool
+    {
+        return $this->author->is($author);
+    }
+
+    public function isEditable(CarbonImmutable $now): bool
+    {
+       return $this->created_at->diffInDays($now) < 31;
     }
 
     public function author(): BelongsTo
