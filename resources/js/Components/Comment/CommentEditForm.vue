@@ -1,5 +1,6 @@
 <script setup>
-import {useForm} from "@inertiajs/vue3";
+import {inject} from "vue";
+import useComment from "@/Hooks/useComment.js";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
 import InputError from "@/Components/InputError.vue";
@@ -24,22 +25,22 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-const form = useForm({
-  text: props.text,
-});
+const notify = inject('notify');
 
-const sendForm = () => {
+const {form, sendForm} = useComment({text: props.text});
+
+const onSubmit = () => {
   const url = route('articles.comment.update', {
     article: props.articleId,
     comment: props.commentId,
   });
 
-  form.post(url, {
-    preserveScroll: true,
+  sendForm('patch', url, {
     onSuccess: () => {
-      form.reset();
+      notify('success', 'Comment successfully updated');
       emit('close');
-    },
+      form.reset();
+    }
   });
 };
 </script>
@@ -47,7 +48,7 @@ const sendForm = () => {
 <template>
   <form
     class="p-4 bg-gray-50 border-t border-gray-200"
-    @submit.prevent="sendForm"
+    @submit.prevent="onSubmit"
   >
     <div class="flex justify-between items-center">
       <InputLabel
@@ -76,7 +77,10 @@ const sendForm = () => {
       :message="form.errors.text"
     />
 
-    <PrimaryButton class="mt-4">
+    <PrimaryButton
+      class="mt-4"
+      :disabled="form.text.length === 0"
+    >
       Save
     </PrimaryButton>
   </form>

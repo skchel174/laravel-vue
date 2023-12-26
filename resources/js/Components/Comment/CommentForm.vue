@@ -1,5 +1,6 @@
 <script setup>
-import {useForm} from "@inertiajs/vue3";
+import {inject} from "vue";
+import useComment from "@/Hooks/useComment.js";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
@@ -12,18 +13,18 @@ const props = defineProps({
   },
 });
 
-const form = useForm({
-  text: '',
-});
+const notify = inject('notify');
 
-const sendForm = () => {
-  const url = route('articles.comment.create', {
-    article: props.articleId,
-  });
+const {form, sendForm} = useComment();
 
-  form.post(url, {
-    preserveScroll: true,
-    onSuccess: () => form.reset(),
+const onSubmit = () => {
+  const url = route('articles.comment.create', {article: props.articleId});
+
+  sendForm('post', url, {
+    onSuccess: () => {
+      notify('success', 'Comment successfully created');
+      form.reset();
+    }
   });
 };
 </script>
@@ -31,7 +32,7 @@ const sendForm = () => {
 <template>
   <form
     class="p-4 bg-gray-50 border-t border-gray-200"
-    @submit.prevent="sendForm"
+    @submit.prevent="onSubmit"
   >
     <InputLabel
       class="!font-bold"
@@ -51,7 +52,10 @@ const sendForm = () => {
       :message="form.errors.text"
     />
 
-    <PrimaryButton class="mt-4">
+    <PrimaryButton
+      class="mt-4"
+      :disabled="form.text.length === 0"
+    >
       Send
     </PrimaryButton>
   </form>
