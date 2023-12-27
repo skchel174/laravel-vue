@@ -7,6 +7,7 @@ namespace Tests\Unit\Services\MarkReactionService;
 use App\Models\Article\Article;
 use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Service\MarkReactionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
@@ -31,9 +32,10 @@ class MarkArticlesTest extends TestCase
             ->bookmarkedBy($user)
             ->create();
 
-        $repository = $this->createArticleRepository($user);
+        $articleRepository = $this->createArticleRepository($user);
+        $commentRepository = $this->createMock(CommentRepositoryInterface::class);
 
-        $service = new MarkReactionService($repository);
+        $service = new MarkReactionService($articleRepository, $commentRepository);
 
         $service->markArticles($user, [$article01, $article02]);
 
