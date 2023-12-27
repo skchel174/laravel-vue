@@ -149,13 +149,6 @@ class Article extends Model implements HasMedia
         $this->usersLiked()->detach($user);
     }
 
-    public function getCommentsIds(): array
-    {
-        return $this->comments->reduce(function (array $ids, Comment $comment) {
-            return array_merge($ids, [$comment->id], $comment->getCommentsIds());
-        }, []);
-    }
-
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);

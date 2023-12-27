@@ -9,6 +9,7 @@ use App\Http\Resources\Article\ArticleResource;
 use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
+use App\Service\MarkReactionService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,6 +19,7 @@ class ArticleController extends Controller
     public function __construct(
         private readonly ArticleRepositoryInterface $articleRepository,
         private readonly CommentRepositoryInterface $commentRepository,
+        private readonly MarkReactionService $reactionService,
         private readonly StatefulGuard $authService,
     ) {
     }
@@ -29,8 +31,9 @@ class ArticleController extends Controller
         $bookmarkedComments = [];
         /** @var User $user */
         if ($user = $this->authService->user()) {
-            $comments = $article->getCommentsIds();
-            $bookmarkedComments = $this->commentRepository->getBookmarksIds($user, $comments);
+            $this->reactionService->markArticle($user, $article);
+            $commentsIds = $this->commentRepository->getIdsByArticle($article);
+            $bookmarkedComments = $this->commentRepository->getBookmarksIds($user, $commentsIds);
         }
 
         return Inertia::render('Article/ArticlePage', [
