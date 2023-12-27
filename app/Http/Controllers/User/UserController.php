@@ -12,19 +12,18 @@ use App\Models\Article\Status;
 use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\TopicRepositoryInterface;
-use App\Service\ArticleService;
+use App\Service\MarkReactionService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Inertia\Inertia;
 use Inertia\Response;
-use phpDocumentor\Reflection\Types\Collection;
 
 class UserController extends Controller
 {
     public function __construct(
         private readonly StatefulGuard $authService,
-        private readonly ArticleService $articleService,
         private readonly TopicRepositoryInterface $topicRepository,
         private readonly ArticleRepositoryInterface $articleRepository,
+        private readonly MarkReactionService $reactionService,
     ) {
     }
 
@@ -44,29 +43,29 @@ class UserController extends Controller
 
         /** @var User|null $authUser */
         if ($authUser = $this->authService->user()) {
-            $this->articleService->markReactionForUser($authUser, $articles->items());
+            $this->reactionService->markArticles($authUser, $articles->items());
         }
 
         return Inertia::render('User/Articles/ArticlesPage', [
-            'articles' => new ArticleListResource($articles),
-            'statuses' => Status::cases(),
             'status' => $status->value,
+            'statuses' => Status::cases(),
+            'articles' => new ArticleListResource($articles),
             'user' => new UserResource($user),
         ]);
     }
 
     public function bookmarkedArticles(User $user): Response
     {
-        $bookmarks = $this->articleRepository->getBookmarks($user);
+        $articles = $this->articleRepository->getBookmarks($user);
 
         /** @var User|null $authUser */
         if ($authUser = $this->authService->user()) {
-            $this->articleService->markReactionForUser($authUser, $bookmarks->items());
+            $this->reactionService->markArticles($authUser, $articles->items());
         }
 
         return Inertia::render('User/Bookmarks/ArticlesPage', [
-            'bookmarks' => new ArticleListResource($bookmarks),
             'user' => new UserResource($user),
+            'articles' => new ArticleListResource($articles),
         ]);
     }
 }

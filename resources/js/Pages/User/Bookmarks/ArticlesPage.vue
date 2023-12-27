@@ -5,7 +5,7 @@ import ArticlesPlaceholder from "@/Pages/User/Articles/Partials/ArticlesPlacehol
 import UserLayout from "@/Layouts/UserLayout.vue";
 
 const props = defineProps({
-  bookmarks: {
+  articles: {
     type: Object,
     required: true,
   },
@@ -25,19 +25,19 @@ const props = defineProps({
     <div class="mt-4">
       <div
         class="space-y-4"
-        v-if="bookmarks.items.length > 0"
+        v-if="articles.items.length > 0"
       >
         <ArticleCard
-          v-for="article in bookmarks.items"
+          v-for="article in articles.items"
           :key="article.id"
           :article="article"
         />
 
         <Pagination
-          v-if="bookmarks.totalPages > 1"
-          :query-params="bookmarks.query"
-          :total-pages="bookmarks.totalPages"
-          :current-page="bookmarks.currentPage"
+          v-if="articles.totalPages > 1"
+          :query-params="articles.query"
+          :total-pages="articles.totalPages"
+          :current-page="articles.currentPage"
           route-name="user.bookmarks.articles"
           :queryParams="{user: user.login}"
         />
