@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\ArticleService;
+namespace Tests\Unit\Services\MarkReactionService;
 
 use App\Models\Article\Article;
 use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
-use App\Service\ArticleService;
+use App\Service\MarkReactionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
-class MarkReactionForUserTest extends TestCase
+class MarkArticlesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testMarkReactionForUser(): void
+    public function testMarkArticles(): void
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -33,9 +33,9 @@ class MarkReactionForUserTest extends TestCase
 
         $repository = $this->createArticleRepository($user);
 
-        $service = new ArticleService($repository);
+        $service = new MarkReactionService($repository);
 
-        $service->markReactionForUser($user, Collection::make([$article01, $article02]));
+        $service->markArticles($user, [$article01, $article02]);
 
         $this->assertTrue($article01->is_liked);
         $this->assertFalse($article01->is_bookmarked);
@@ -50,11 +50,11 @@ class MarkReactionForUserTest extends TestCase
 
         $repository->expects($this->once())
             ->method('getBookmarksIds')
-            ->willReturn($user->bookmarkedArticles->pluck('id'));
+            ->willReturn($user->bookmarkedArticles()->pluck('id'));
 
         $repository->expects($this->once())
             ->method('getLikesIds')
-            ->willReturn($user->likedArticles->pluck('id'));
+            ->willReturn($user->likedArticles()->pluck('id'));
 
         return $repository;
     }
