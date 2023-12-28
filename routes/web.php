@@ -53,6 +53,9 @@ Route::prefix('/articles/{article}')->group(function () {
     Route::get('/', [ArticleController::class, 'index'])
         ->name('article');
 
+    Route::get('/comments', [ArticleController::class, 'comments'])
+        ->name('article.comments');
+
     Route::prefix('/comments')
         ->middleware(['auth', 'auth.session', 'verified'])
         ->group(function () {

@@ -41,4 +41,22 @@ class ArticleController extends Controller
             'bookmarkedComments' => $bookmarkedComments,
         ]);
     }
+
+    public function comments(int $article): Response
+    {
+        $article = $this->articleRepository->getById($article);
+
+        $bookmarkedComments = [];
+        /** @var User $user */
+        if ($user = $this->authService->user()) {
+            $this->reactionService->markArticle($user, $article);
+            $commentsIds = $this->commentRepository->getIdsByArticle($article);
+            $bookmarkedComments = $this->commentRepository->getBookmarksIds($user, $commentsIds);
+        }
+
+        return Inertia::render('Article/CommentsPage', [
+            'article' => new ArticleResource($article),
+            'bookmarkedComments' => $bookmarkedComments,
+        ]);
+    }
 }

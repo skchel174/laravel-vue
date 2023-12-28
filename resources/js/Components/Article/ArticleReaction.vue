@@ -59,11 +59,6 @@ const onBookmarked = () => {
     .then(() => notify('success', 'Comment added to bookmarks'))
     .catch(error => notify('error', error.message))
 };
-
-const openComments = () => {
-  const url = route('article', {article: props.articleId});
-  router.get(url + '#comments');
-};
 </script>
 
 <template>
@@ -76,7 +71,7 @@ const openComments = () => {
 
     <CommentsIcon
       :count="commentsCount"
-      @click="openComments"
+      @click="() => router.get(route('article.comments', {article: articleId}))"
     />
 
     <BookmarkIcon
