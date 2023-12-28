@@ -2,11 +2,16 @@
 import {usePage} from "@inertiajs/vue3";
 import {inject, onMounted, ref} from "vue";
 import useBookmark from "@/Hooks/useBookmark.js";
-import CommentReaction from "@/Components/Comment/CommentReaction.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
-import HideButton from "@/Components/Comment/HideButton.vue";
 import CommentReplyForm from "@/Components/Comment/CommentReplyForm.vue";
 import CommentEditForm from "@/Components/Comment/CommentEditForm.vue";
+import CommentText from "@/Components/Comment/CommentText.vue";
+import CommentFooter from "@/Components/Comment/CommentFooter.vue";
+import BookmarkIcon from "@/Components/Icons/BookmarkIcon.vue";
+import CopyLinkIcon from "@/Components/Icons/CopyLinkIcon.vue";
+import CommentEditButton from "@/Components/Comment/CommentEditButton.vue";
+import OpenThreadButton from "@/Components/Comment/OpenThreadButton.vue";
+import ToggleThreadButton from "@/Components/Comment/ToggleThreadButton.vue";
 
 const props = defineProps({
   comment: {
@@ -65,37 +70,25 @@ const toggleVisibility = () => {
   isOpen.value = !isOpen.value;
 
   if (!isOpen.value) {
-    closeForm();
+    setCommentable(null);
   }
-};
-
-const openForm = (commentId) => {
-  setCommentable(commentId);
-};
-
-const closeForm = () => {
-  setCommentable(null);
 };
 </script>
 
 <template>
   <div :id="`comment_${comment.id}`">
     <div class="pt-4 pb-2 flex items-stretch">
-      <HideButton
+      <ToggleThreadButton
         :open="isOpen"
         :depth="depth"
         @click="toggleVisibility"
       />
 
-      <div
-        class="inline-flex items-center pt-[0.175rem] cursor-pointer"
+      <OpenThreadButton
         v-show="!isOpen"
         @click="toggleVisibility"
-      >
-        <p class="text-sky-600 text-base font-bold">
-          Show comments ({{ comment.total_comments + 1 }})
-        </p>
-      </div>
+        :comments-count="comment.total_comments + 1"
+      />
 
       <div
         class="w-full pr-4"
@@ -108,33 +101,31 @@ const closeForm = () => {
             :created-date="comment.created_date"
           />
 
-          <div
+          <CommentEditButton
             v-if="comment.author.id === user?.id && comment.is_editable"
-            class="flex items-center space-x-1 cursor-pointer text-sky-600 hover:text-sky-700 transition duration-200"
-            @click="() => openForm(`comment_${props.comment.id}_edit`)"
-          >
-            <span class="material-icons !text-xs !leading-none">
-              edit
-            </span>
-            <span class="text-xs font-semibold !leading-none">
-              Edit
-            </span>
-          </div>
+            @click="() => setCommentable(`comment_${props.comment.id}_edit`)"
+          />
         </div>
 
-        <div class="text-sm font-medium text-gray-700">
+        <CommentText>
           {{ comment.text }}
-        </div>
+        </CommentText>
 
-        <CommentReaction
-          class="mt-2"
-          :bookmarked-ids="bookmarkedIds"
-          :is-bookmarked="isBookmarked"
-          :comments-count="comment.total_comments"
-          @bookmarked="onBookmarked"
-          @copy="copyLink"
-          @reply="() => openForm(`comment_${props.comment.id}`)"
-        />
+        <CommentFooter class="mt-2">
+          <BookmarkIcon
+            :is-bookmarked="isBookmarked"
+            @toggle="onBookmarked"
+          />
+
+          <button
+            class="text-sm text-gray-400 cursor-pointer hover:text-gray-500 transition duration-200 select-none"
+            @click="() => setCommentable(`comment_${props.comment.id}`)"
+          >
+            Reply
+          </button>
+
+          <CopyLinkIcon @click="copyLink"/>
+        </CommentFooter>
       </div>
     </div>
 
@@ -143,7 +134,7 @@ const closeForm = () => {
       :article-id="articleId"
       :comment-id="comment.id"
       :author="comment.author.login"
-      @close="closeForm"
+      @close="() => setCommentable(null)"
     />
 
     <CommentEditForm
@@ -151,7 +142,7 @@ const closeForm = () => {
       :text="comment.text"
       :article-id="articleId"
       :comment-id="comment.id"
-      @close="closeForm"
+      @close="() => setCommentable(null)"
     />
 
     <div v-show="isOpen">
