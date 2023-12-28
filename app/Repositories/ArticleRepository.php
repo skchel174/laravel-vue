@@ -10,6 +10,7 @@ use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 
 class ArticleRepository implements ArticleRepositoryInterface
@@ -67,7 +68,9 @@ class ArticleRepository implements ArticleRepositoryInterface
                 'usersLiked as likes_count',
                 'allComments as comments_count',
             ])
-            ->with(['topics', 'tags', 'cardImage', 'comments'])
+            ->with(['topics', 'tags', 'cardImage', 'comments' => function (MorphMany $query) {
+                $query->limit(10);
+            }])
             ->where('status', Status::Published)
             ->findOrFail($id);
 

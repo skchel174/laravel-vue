@@ -1,6 +1,6 @@
 <script setup>
-import {Head} from '@inertiajs/vue3';
 import {provide, ref, watch} from "vue";
+import {Head, router, usePage} from '@inertiajs/vue3';
 import MainWrapper from "@/Components/MainWrapper.vue";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
 import AdvertWrapper from "@/Components/Advert/AdvertWrapper.vue";
@@ -14,6 +14,7 @@ import ArticleFooter from "@/Pages/Article/Partials/ArticleFooter.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import Comment from "@/Components/Comment/Comment.vue";
 import CommentForm from "@/Components/Comment/CommentForm.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 const props = defineProps({
   article: {
@@ -26,6 +27,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const user = usePage().props.auth.user;
 
 const commentable = ref(`article_${props.article.id}`);
 
@@ -110,15 +113,12 @@ watch(commentable, () => {
           id="comments"
           class="mt-4 bg-white"
         >
-          <div>
-            <h3 class="p-4 text-lg text-gray-700 font-bold">
-              Comments
-
-              <span class="ml-2 text-sky-600">
-                {{ article.comments_count }}
-              </span>
-            </h3>
-          </div>
+          <h3 class="p-4 text-lg text-gray-700 font-bold">
+            Comments
+            <span class="ml-2 text-sky-600">
+              {{ article.comments_count }}
+            </span>
+          </h3>
 
           <Comment
             class="mb-2"
@@ -129,8 +129,17 @@ watch(commentable, () => {
             :bookmarked-ids="bookmarkedComments"
           />
 
+          <div
+            class="flex justify-center items-end pb-8"
+            v-if="article.comments.length > 10"
+          >
+            <PrimaryButton @click="() => router.get(route('article.comments', {article: article.id}))">
+              Show all comments ({{ article.comments_count }})
+            </PrimaryButton>
+          </div>
+
           <CommentForm
-            v-if="commentable === `article_${article.id}`"
+            v-if="user && commentable === `article_${article.id}`"
             :article-id="article.id"
           />
         </div>
