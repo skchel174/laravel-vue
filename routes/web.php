@@ -3,7 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Article\ArticleController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Comment\CommentController;
+use App\Http\Controllers\User\ArticlesController;
+use App\Http\Controllers\User\BookmarksController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,17 +35,41 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'auth.session', 'verified'])->name('dashboard');
 
-Route::get('/users/{user:login}', [UserController::class, 'profile'])
-    ->name('user');
+Route::prefix('/users/{user:login}')->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])
+        ->name('user');
 
-Route::get('/users/{user:login}/articles/{status?}', [UserController::class, 'articles'])
-    ->name('user.articles');
+    Route::get('/articles/{status?}', [ArticlesController::class, 'index'])
+        ->name('user.articles');
 
-Route::get('/users/{user:login}/bookmarks/articles', [UserController::class, 'bookmarkedArticles'])
-    ->name('user.bookmarks.articles');
+    Route::get('/bookmarks/articles', [BookmarksController::class, 'articles'])
+        ->name('user.bookmarks.articles');
 
-Route::get('/articles/{id}', [ArticleController::class, 'index'])
-    ->name('article');
+    Route::get('/bookmarks/comments', [BookmarksController::class, 'comments'])
+        ->name('user.bookmarks.comments');
+});
+
+Route::prefix('/articles/{article}')->group(function () {
+    Route::get('/', [ArticleController::class, 'index'])
+        ->name('article');
+
+    Route::get('/comments', [ArticleController::class, 'comments'])
+        ->name('article.comments');
+
+    Route::prefix('/comments')
+        ->middleware(['auth', 'auth.session', 'verified'])
+        ->group(function () {
+        Route::post('/', [CommentController::class, 'create'])
+            ->name('articles.comment.create');
+
+        Route::post('/{comment}/comments', [CommentController::class, 'reply'])
+            ->name('articles.comment.reply');
+
+        Route::patch('/{comment}/comments', [CommentController::class, 'edit'])
+            ->middleware('can:update,comment')
+            ->name('articles.comment.update');
+    });
+});
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

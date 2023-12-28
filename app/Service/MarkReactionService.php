@@ -1,0 +1,64 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Service;
+
+use App\Models\Article\Article;
+use App\Models\Comment\Comment;
+use App\Models\User\User;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\CommentRepositoryInterface;
+use Illuminate\Support\Arr;
+
+class MarkReactionService
+{
+    public function __construct(
+        private readonly ArticleRepositoryInterface $articleRepository,
+        private readonly CommentRepositoryInterface $commentRepository,
+    ) {
+    }
+
+    public function markArticle(User $user, Article $article): void
+    {
+        $article->is_liked = $user->likedArticles()
+            ->where('id', $article->id)
+            ->exists();
+
+        $article->is_bookmarked = $user->bookmarkedArticles()
+            ->where('id', $article->id)
+            ->exists();
+    }
+
+    /**
+     * @param User $user
+     * @param iterable<Article> $articles
+     * @return void
+     */
+    public function markArticles(User $user, iterable $articles): void
+    {
+        $articlesIds = Arr::pluck($articles, 'id');
+        $likesIds = $this->articleRepository->getLikesIds($user, $articlesIds);
+        $bookmarksIds = $this->articleRepository->getBookmarksIds($user, $articlesIds);
+
+        foreach ($articles as $article) {
+            $article->is_liked = $likesIds->contains($article->id);
+            $article->is_bookmarked = $bookmarksIds->contains($article->id);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @param iterable<Comment> $comments
+     * @return void
+     */
+    public function markComments(User $user, iterable $comments): void
+    {
+        $commentsIds = Arr::pluck($comments, 'id');
+        $bookmarkedComments = $this->commentRepository->getBookmarksIds($user, $commentsIds);
+
+        foreach ($comments as $comment) {
+            $comment->is_bookmarked = $bookmarkedComments->contains($comment->id);
+        }
+    }
+}

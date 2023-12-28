@@ -20,7 +20,7 @@ const props = defineProps({
 
 const openArticle = () => {
   if (props.readable) {
-    router.get(route('article', {id: props.article.id}));
+    router.get(route('article', {article: props.article.id}));
   }
 };
 </script>
@@ -85,7 +85,7 @@ const openArticle = () => {
         :is-liked="article.is_liked"
         :likes-count="article.likes_count"
         :is-bookmarked="article.is_bookmarked"
-        :comments-count="article.commnets_count ?? 345"
+        :comments-count="article.comments_count"
       />
     </footer>
   </article>

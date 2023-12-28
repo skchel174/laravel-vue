@@ -6,10 +6,10 @@ namespace App\Models\User\Exceptions;
 
 use DomainException;
 
-class ArticleNotBookmarked extends DomainException
+class BookmarkNotCreated extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('The article is not bookmarked');
+        parent::__construct('The bookmark has not yet been created');
     }
 }

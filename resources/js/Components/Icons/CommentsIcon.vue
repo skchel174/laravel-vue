@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="flex items-center justify-center">
+  <div class="flex items-center justify-center cursor-pointer">
     <span class="material-icons text-gray-300 !text-xl select-none">
       chat_bubble
     </span>

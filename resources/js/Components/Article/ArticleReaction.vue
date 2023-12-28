@@ -1,12 +1,12 @@
 <script setup>
+import {inject} from "vue";
+import useLike from "@/Hooks/useLike.js";
+import {router, usePage} from "@inertiajs/vue3";
+import useBookmark from "@/Hooks/useBookmark.js";
 import LikesIcon from "@/Components/Icons/LikesIcon.vue";
 import CommentsIcon from "@/Components/Icons/CommentsIcon.vue";
 import BookmarkIcon from "@/Components/Icons/BookmarkIcon.vue";
 import ShareIcon from "@/Components/Icons/ShareIcon.vue";
-import useLike from "@/Hooks/useLike.js";
-import useBookmark from "@/Hooks/useBookmark.js";
-import {usePage} from "@inertiajs/vue3";
-import {inject} from "vue";
 
 const props = defineProps({
   articleId: {
@@ -55,14 +55,9 @@ const onLike = () => {
 const {isBookmarked, toggleBookmark} = useBookmark(props.isBookmarked);
 
 const onBookmarked = () => {
-  if (!user) {
-    notify('error', 'Login to bookmark this article');
-    return;
-  }
-
-  toggleBookmark(route('api.articles.bookmark', {
-    article: props.articleId,
-  }));
+  toggleBookmark(route('api.articles.bookmark', {article: props.articleId}))
+    .then(() => notify('success', 'Comment added to bookmarks'))
+    .catch(error => notify('error', error.message))
 };
 </script>
 
@@ -74,7 +69,10 @@ const onBookmarked = () => {
       @toggle="onLike"
     />
 
-    <CommentsIcon :count="commentsCount"/>
+    <CommentsIcon
+      :count="commentsCount"
+      @click="() => router.get(route('article.comments', {article: articleId}))"
+    />
 
     <BookmarkIcon
       :is-bookmarked="isBookmarked"

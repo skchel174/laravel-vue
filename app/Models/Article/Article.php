@@ -11,6 +11,7 @@ use App\Models\Article\Exceptions\ArticleNotLiked;
 use App\Models\Article\Exceptions\ArticlePublished;
 use App\Models\Article\Exceptions\ArticleWasNotModerated;
 use App\Models\Category\Category;
+use App\Models\Comment\Comment;
 use App\Models\Tag\Tag;
 use App\Models\Topic\Topic;
 use App\Models\User\User;
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -47,6 +49,8 @@ use Throwable;
  * @property-read Collection<Tag> $tags
  * @property-read Collection<Topic> $topics
  * @property-read Collection<Category> $categories
+ * @property-read Collection<Comment> $comments
+ * @property-read int $comments_count
  * @property-read int $likes_count
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
@@ -158,6 +162,16 @@ class Article extends Model implements HasMedia
     public function categories(): HasManyThrough
     {
         return $this->hasManyThrough(Category::class, Topic::class);
+    }
+
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function allComments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function author(): BelongsTo

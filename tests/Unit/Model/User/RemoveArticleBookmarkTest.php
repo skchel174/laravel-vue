@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Model\User;
 
 use App\Models\Article\Article;
-use App\Models\User\Exceptions\ArticleNotBookmarked;
+use App\Models\User\Exceptions\BookmarkNotCreated;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -32,7 +32,7 @@ class RemoveArticleBookmarkTest extends TestCase
 
     public function testRemoveNotBookmarkedPost(): void
     {
-        $this->expectException(ArticleNotBookmarked::class);
+        $this->expectException(BookmarkNotCreated::class);
 
         /** @var User $user */
         $user = User::factory()

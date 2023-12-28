@@ -3,12 +3,12 @@ import MenuList from "@/Components/Menu/MenuList.vue";
 import MenuItem from "@/Components/Menu/MenuItem.vue";
 
 defineProps({
-  statuses: {
+  items: {
     type: Array,
     required: true,
   },
 
-  currentStatus: {
+  currentItem: {
     type: String,
     required: true,
   },
@@ -21,12 +21,12 @@ defineEmits(['select']);
   <MenuList>
     <MenuItem
       class="py-2 px-4 text-sm capitalize"
-      v-for="status in statuses"
-      :key="status"
-      :selected="currentStatus === status"
-      @click="$emit('select', status)"
+      v-for="item in items"
+      :key="item"
+      :selected="currentItem === item"
+      @click="$emit('select', item)"
     >
-      {{ status }}
+      {{ item }}
     </MenuItem>
   </MenuList>
 </template>

@@ -1,5 +1,6 @@
 <script setup>
-import {Head} from '@inertiajs/vue3';
+import {provide, ref, watch} from "vue";
+import {Head, router, usePage} from '@inertiajs/vue3';
 import MainWrapper from "@/Components/MainWrapper.vue";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
 import AdvertWrapper from "@/Components/Advert/AdvertWrapper.vue";
@@ -11,12 +12,39 @@ import TagsList from "@/Pages/Article/Partials/TagsList.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleFooter from "@/Pages/Article/Partials/ArticleFooter.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
+import Comment from "@/Components/Comment/Comment.vue";
+import CommentForm from "@/Components/Comment/CommentForm.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 const props = defineProps({
   article: {
     type: Object,
     required: true,
   },
+
+  bookmarkedComments: {
+    type: Array,
+    required: true,
+  },
+});
+
+const user = usePage().props.auth.user;
+
+const commentable = ref(`article_${props.article.id}`);
+
+const setCommentable = (value) => {
+  commentable.value = value;
+};
+
+provide('commentable', {
+  commentable,
+  setCommentable,
+});
+
+watch(commentable, () => {
+  if (!commentable.value) {
+    commentable.value = `article_${props.article.id}`;
+  }
 });
 </script>
 
@@ -76,9 +104,44 @@ const props = defineProps({
               :is-liked="article.is_liked"
               :likes-count="article.likes_count"
               :is-bookmarked="article.is_bookmarked"
-              :comments-count="article.commnets_count ?? 345"
+              :comments-count="article.comments_count"
             />
           </ArticleFooter>
+        </div>
+
+        <div
+          id="comments"
+          class="mt-4 bg-white"
+        >
+          <h3 class="p-4 text-lg text-gray-700 font-bold">
+            Comments
+            <span class="ml-2 text-sky-600">
+              {{ article.comments_count }}
+            </span>
+          </h3>
+
+          <Comment
+            class="mb-2"
+            v-for="comment in article.comments"
+            :key="comment.id"
+            :comment="comment"
+            :article-id="article.id"
+            :bookmarked-ids="bookmarkedComments"
+          />
+
+          <div
+            class="flex justify-center items-end pb-8"
+            v-if="article.comments.length > 10"
+          >
+            <PrimaryButton @click="() => router.get(route('article.comments', {article: article.id}))">
+              Show all comments ({{ article.comments_count }})
+            </PrimaryButton>
+          </div>
+
+          <CommentForm
+            v-if="user && commentable === `article_${article.id}`"
+            :article-id="article.id"
+          />
         </div>
       </AdvertWrapper>
     </MainWrapper>

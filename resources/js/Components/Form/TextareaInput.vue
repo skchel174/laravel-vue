@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 defineProps({
   modelValue: {
@@ -27,6 +27,11 @@ const handleKeydown = (event) => {
     el.value.blur();
   }
 };
+
+onMounted(() => {
+  el.value.style.height = 'auto';
+  el.value.style.height = el.value.scrollHeight + 'px';
+});
 </script>
 
 <template>
@@ -35,7 +40,7 @@ const handleKeydown = (event) => {
     :value="modelValue"
     @input="handleInput"
     @keydown="handleKeydown"
-    class="w-full resize-none overflow-hidden outline-none border-gray-300 focus:ring-0 focus:border-sky-500/70 rounded-sm transition duration-700 rounded-sm placeholder:text-gray-300"
+    class="w-full resize-none overflow-auto outline-none border-gray-300 focus:ring-0 focus:border-sky-500/70 rounded-sm transition duration-700 rounded-sm placeholder:text-gray-300"
     rows="1"
   />
 </template>

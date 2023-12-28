@@ -10,6 +10,7 @@ use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 
 class ArticleRepository implements ArticleRepositoryInterface
@@ -17,8 +18,11 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getByAuthor(User $author, Status $status): LengthAwarePaginator
     {
         return $author->articles()
+            ->withCount([
+                'usersLiked as likes_count',
+                'allComments as comments_count',
+            ])
             ->with(['topics', 'cardImage'])
-            ->withCount(['usersLiked as likes_count'])
             ->withTrashed($status === Status::Deleted)
             ->where('status', $status)
             ->orderBy('id', 'desc')
@@ -29,8 +33,11 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getBookmarks(User $user): LengthAwarePaginator
     {
         return $user->bookmarkedArticles()
+            ->withCount([
+                'usersLiked as likes_count',
+                'allComments as comments_count',
+            ])
             ->with(['topics', 'cardImage'])
-            ->withCount(['usersLiked as likes_count'])
             ->where('status', Status::Published)
             ->orderBy('id', 'desc')
             ->paginate()
@@ -56,8 +63,14 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getById(int $id): Article
     {
         /** @var Article $article */
-        $article = Article::with(['topics', 'tags', 'cardImage'])
-            ->withCount(['usersLiked as likes_count'])
+        $article = Article::query()
+            ->withCount([
+                'usersLiked as likes_count',
+                'allComments as comments_count',
+            ])
+            ->with(['topics', 'tags', 'cardImage', 'comments' => function (MorphMany $query) {
+                $query->limit(10);
+            }])
             ->where('status', Status::Published)
             ->findOrFail($id);
 
