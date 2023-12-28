@@ -1,5 +1,5 @@
 <script setup>
-import {Head, Link} from '@inertiajs/vue3';
+import {Head, Link, usePage} from '@inertiajs/vue3';
 import {provide, ref, watch} from "vue";
 import MainWrapper from "@/Components/MainWrapper.vue";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
@@ -23,6 +23,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const user = usePage().props.auth.user;
 
 const commentable = ref(`article_${props.article.id}`);
 
@@ -107,7 +109,7 @@ watch(commentable, () => {
           />
 
           <CommentForm
-            v-if="commentable === `article_${article.id}`"
+            v-if="user && commentable === `article_${article.id}`"
             :article-id="article.id"
           />
         </div>

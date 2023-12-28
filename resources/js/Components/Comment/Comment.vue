@@ -102,7 +102,7 @@ const toggleVisibility = () => {
           />
 
           <CommentEditButton
-            v-if="comment.author.id === user?.id && comment.is_editable"
+            v-if="user?.id === comment.author.id && comment.is_editable"
             @click="() => setCommentable(`comment_${props.comment.id}_edit`)"
           />
         </div>
@@ -119,6 +119,7 @@ const toggleVisibility = () => {
 
           <button
             class="text-sm text-gray-400 cursor-pointer hover:text-gray-500 transition duration-200 select-none"
+            v-if="user"
             @click="() => setCommentable(`comment_${props.comment.id}`)"
           >
             Reply
