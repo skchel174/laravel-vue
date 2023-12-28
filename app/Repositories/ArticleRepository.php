@@ -67,7 +67,7 @@ class ArticleRepository implements ArticleRepositoryInterface
                 'usersLiked as likes_count',
                 'allComments as comments_count',
             ])
-            ->with(['topics', 'tags', 'cardImage', 'comments', 'comments.comments'])
+            ->with(['topics', 'tags', 'cardImage', 'comments'])
             ->where('status', Status::Published)
             ->findOrFail($id);
 

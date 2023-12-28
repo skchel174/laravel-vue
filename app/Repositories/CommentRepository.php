@@ -23,6 +23,7 @@ class CommentRepository implements CommentRepositoryInterface
     {
         return $user->bookmarkedComments()
             ->with('article')
+            ->without('comments')
             ->orderBy('id', 'desc')
             ->paginate()
             ->withQueryString();

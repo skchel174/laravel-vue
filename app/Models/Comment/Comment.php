@@ -38,7 +38,7 @@ class Comment extends Model
 
     protected $fillable = ['text'];
 
-    protected $with = ['author'];
+    protected $with = ['author', 'comments'];
 
     protected $casts = [
         'created_at' => 'immutable_datetime:d-m-Y H:i:s',
