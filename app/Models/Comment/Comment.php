@@ -34,9 +34,11 @@ class Comment extends Model
 {
     use HasFactory;
 
+    public bool $is_bookmarked = false;
+
     protected $fillable = ['text'];
 
-    protected $with = ['author', 'comments'];
+    protected $with = ['author'];
 
     protected $casts = [
         'created_at' => 'immutable_datetime:d-m-Y H:i:s',
