@@ -5,7 +5,7 @@ defineProps({
     required: true,
   },
 
-  status: {
+  currentItem: {
     type: String,
     required: true,
   },
@@ -15,7 +15,7 @@ defineProps({
 <template>
   <button class="flex items-center text-sm text-gray-400 font-semibold capitalize cursor-pointer select-none">
     <span>
-      {{ status }}
+      {{ currentItem }}
     </span>
 
     <span
