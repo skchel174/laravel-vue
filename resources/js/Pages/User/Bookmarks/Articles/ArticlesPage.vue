@@ -1,8 +1,11 @@
 <script setup>
+import {ref} from "vue";
+import {router} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
-import ArticlesPlaceholder from "@/Pages/User/Articles/Partials/ArticlesPlaceholder.vue";
 import UserLayout from "@/Layouts/UserLayout.vue";
+import ArticlesPlaceholder from "@/Pages/User/Partials/ArticlesPlaceholder.vue";
+import NavigationWrapper from "@/Pages/User/Partials/NavigationWrapper.vue";
 
 const props = defineProps({
   articles: {
@@ -15,6 +18,17 @@ const props = defineProps({
     required: true,
   },
 });
+
+const currentLink = ref('articles');
+
+const navigation = {
+  articles: route('user.bookmarks.articles', {user: props.user.login}),
+  comments: route('user.bookmarks.comments', {user: props.user.login}),
+};
+
+const selectLink = (value) => {
+  router.get(navigation[value]);
+};
 </script>
 
 <template>
@@ -22,7 +36,11 @@ const props = defineProps({
     current-tab="bookmarks"
     :user="user"
   >
-    <div class="mt-4">
+    <NavigationWrapper
+      :navigation="Object.keys(navigation)"
+      :current-link="currentLink"
+      @select="selectLink"
+    >
       <div
         class="space-y-4"
         v-if="articles.items.length > 0"
@@ -43,10 +61,7 @@ const props = defineProps({
         />
       </div>
 
-      <ArticlesPlaceholder
-        v-else
-        class="mt-16"
-      />
-    </div>
+      <ArticlesPlaceholder v-else class="mt-16"/>
+    </NavigationWrapper>
   </UserLayout>
 </template>
