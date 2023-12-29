@@ -6,7 +6,6 @@ namespace App\Service\Auth;
 
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Validation\ValidationException;
@@ -14,7 +13,6 @@ use Illuminate\Validation\ValidationException;
 class LoginService
 {
     public function __construct(
-        private readonly UserRepositoryInterface $repository,
         private readonly StatefulGuard $auth,
         private readonly Session $session,
     ) {
@@ -25,7 +23,8 @@ class LoginService
      */
     public function login(string $login, string $password, bool $remember): User
     {
-        $user = $this->repository->getByLogin($login);
+        /** @var User $user */
+        $user = User::whereLogin($login)->firstOrFail();
 
         if (!$user->password->isEquals($password)) {
             throw ValidationException::withMessages([

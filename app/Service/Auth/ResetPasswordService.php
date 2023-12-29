@@ -7,7 +7,7 @@ namespace App\Service\Auth;
 use App\Events\User\PasswordReset;
 use App\Mail\ResetPassword;
 use App\Models\User\Password;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Models\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Session\Session;
@@ -15,7 +15,6 @@ use Illuminate\Contracts\Session\Session;
 class ResetPasswordService
 {
     public function __construct(
-        private readonly UserRepositoryInterface $repository,
         private readonly Mailer $mailer,
         private readonly Dispatcher $dispatcher,
         private readonly Session $session,
@@ -24,7 +23,8 @@ class ResetPasswordService
 
     public function sendVerificationEmail(string $email): void
     {
-        $user = $this->repository->getByEmail($email);
+        /** @var User $user */
+        $user = User::whereEmail($email)->firstOrFail();
 
         $user->requestVerification();
 
@@ -35,7 +35,8 @@ class ResetPasswordService
 
     public function changePassword(string $password, string $token): void
     {
-        $user = $this->repository->getByVerifyToken($token);
+        /** @var User $user */
+        $user = User::whereVerifyToken($token)->firstOrFail();
 
         $password = Password::create($password);
 

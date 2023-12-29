@@ -19,6 +19,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -52,6 +53,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read Collection<Article> $bookmarkedArticles
  * @property-read Collection<Article> $likedArticles
  * @property-read Collection<Topic> $topics
+ *
+ * @method static Builder whereLogin(string $login)
+ * @method static Builder whereEmail(string $email)
+ * @method static Builder whereVerifyToken(string $token)
  */
 class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
 {
