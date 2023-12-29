@@ -126,7 +126,7 @@ class Article extends Model implements HasMedia
 
     public function isLiked(User $user): bool
     {
-        return $this->usersLiked()
+        return $this->likes()
             ->where('id', $user->id)
             ->exists();
     }
@@ -137,7 +137,7 @@ class Article extends Model implements HasMedia
             throw new ArticleAlreadyLiked();
         }
 
-        $this->usersLiked()->attach($user);
+        $this->likes()->attach($user);
     }
 
     public function removeLike(User $user): void
@@ -146,7 +146,7 @@ class Article extends Model implements HasMedia
             throw new ArticleNotLiked();
         }
 
-        $this->usersLiked()->detach($user);
+        $this->likes()->detach($user);
     }
 
     public function tags(): BelongsToMany
@@ -184,7 +184,7 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'bookmarked_articles');
     }
 
-    public function usersLiked(): BelongsToMany
+    public function likes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'liked_articles');
     }

@@ -26,7 +26,7 @@ class AddLikeTest extends TestCase
 
         $article->addLike($user);
 
-        $this->assertTrue($article->usersLiked()->where('id', $user->id)->exists());
+        $this->assertTrue($article->likes()->where('id', $user->id)->exists());
     }
 
 

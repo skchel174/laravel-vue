@@ -27,7 +27,7 @@ class RemoveLikeTest extends TestCase
 
         $article->removeLike($user);
 
-        $this->assertFalse($article->usersLiked()->where('id', $user->id)->exists());
+        $this->assertFalse($article->likes()->where('id', $user->id)->exists());
     }
 
 
