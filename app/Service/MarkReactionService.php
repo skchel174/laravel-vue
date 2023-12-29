@@ -21,13 +21,8 @@ class MarkReactionService
 
     public function markArticle(User $user, Article $article): void
     {
-        $article->is_liked = $user->likedArticles()
-            ->where('id', $article->id)
-            ->exists();
-
-        $article->is_bookmarked = $user->bookmarkedArticles()
-            ->where('id', $article->id)
-            ->exists();
+        $article->is_liked = $article->isLiked($user);
+        $article->is_bookmarked = $user->isArticleBookmarked($article);
     }
 
     /**

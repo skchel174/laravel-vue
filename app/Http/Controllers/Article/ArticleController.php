@@ -10,14 +10,17 @@ use App\Http\Resources\Comment\CommentsResource;
 use App\Models\Article\Article;
 use App\Models\Article\Status;
 use App\Models\User\User;
+use App\Service\MarkReactionService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ArticleController extends Controller
 {
-    public function __construct(private readonly StatefulGuard $authService)
-    {
+    public function __construct(
+        private readonly StatefulGuard $authService,
+        private readonly MarkReactionService $reactionService,
+    ) {
     }
 
     public function index(int $article): Response
@@ -31,8 +34,7 @@ class ArticleController extends Controller
 
         /** @var User $user */
         if ($user = $this->authService->user()) {
-            $article->is_liked = $article->isLiked($user);
-            $article->is_bookmarked = $user->isArticleBookmarked($article);
+            $this->reactionService->markArticle($user, $article);
         }
 
         return Inertia::render('Article/ArticlePage', [
