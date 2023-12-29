@@ -37,6 +37,7 @@ class CommentFactory extends Factory
     public function forComment(Comment $comment): CommentFactory
     {
         return $this->state([
+            'depth' => $comment->depth + 1,
             'article_id' => Article::factory(),
             'created_at' => $this->faker->dateTimeBetween($comment->created_at),
         ])->for($comment, 'commentable');

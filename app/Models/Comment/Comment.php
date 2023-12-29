@@ -6,6 +6,7 @@ namespace App\Models\Comment;
 
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\Comment\Exception\CommentNotCommentable;
 use App\Models\Comment\Exception\ExceededEditingTimeLimit;
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
@@ -34,6 +35,8 @@ class Comment extends Model
 {
     use HasFactory;
 
+    public const MAX_DEPTH = 1;
+
     public bool $is_bookmarked = false;
 
     protected $fillable = ['text', 'depth'];
@@ -44,8 +47,6 @@ class Comment extends Model
         'created_at' => 'immutable_datetime:d-m-Y H:i:s',
         'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
     ];
-
-    private array $commentsIds = [];
 
     public static function createForArticle(Article $article, User $author, string $text): static
     {
@@ -68,20 +69,25 @@ class Comment extends Model
 
     public static function createForComment(Comment $comment, User $author, string $text): static
     {
-        $article = $comment->article;
-
-        if (!$article->status->isPublished()) {
-            throw new ArticleNotPublished();
+        if (!$comment->isCommentable()) {
+            throw new CommentNotCommentable();
         }
 
         if (!$author->status->isActive()) {
             throw new AccountNotActive();
         }
 
+        $article = $comment->article;
+
+        if (!$article->status->isPublished()) {
+            throw new ArticleNotPublished();
+        }
+
         $instance = static::make([
             'text' => $text,
             'depth' => $comment->depth + 1,
         ]);
+
         $instance->author()->associate($author);
         $instance->article()->associate($article);
         $instance->commentable()->associate($comment);
@@ -92,18 +98,12 @@ class Comment extends Model
 
     public function getCommentsCount(): int
     {
-        return count($this->getCommentsIds());
-    }
+        /** @var int $count */
+        $count = $this->comments->reduce(function (int $cnt, Comment $comment) {
+            return 1 + $comment->getCommentsCount();
+        }, 0);
 
-    public function getCommentsIds(): array
-    {
-        if (!$this->commentsIds) {
-            $this->commentsIds = $this->comments->reduce(function (array $ids, Comment $comment) {
-                return array_merge($ids, [$comment->id], $comment->getCommentsIds());
-            }, []);
-        }
-
-        return $this->commentsIds;
+        return $count;
     }
 
     public function edit(string $text): void
@@ -115,11 +115,6 @@ class Comment extends Model
         $this->update(['text' => $text]);
     }
 
-    public function belongsToArticle(Article $article): bool
-    {
-        return $this->article_id === $article->id;
-    }
-
     public function isAuthor(User $author): bool
     {
         return $this->author->is($author);
@@ -128,6 +123,11 @@ class Comment extends Model
     public function isEditable(CarbonImmutable $now): bool
     {
        return $this->created_at->diffInDays($now) < 31;
+    }
+
+    public function isCommentable(): bool
+    {
+        return $this->depth < static::MAX_DEPTH;
     }
 
     public function author(): BelongsTo

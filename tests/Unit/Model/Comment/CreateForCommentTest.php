@@ -8,6 +8,7 @@ use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Article\Status as ArticleStatus;
 use App\Models\Comment\Comment;
+use App\Models\Comment\Exception\CommentNotCommentable;
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\Status as UserStatus;
 use App\Models\User\User;
@@ -78,6 +79,21 @@ class CreateForCommentTest extends TestCase
         $comment = Comment::factory()
             ->forArticle($article)
             ->create();
+
+        Comment::createForComment($comment, $author, $this->faker->text());
+    }
+
+    public function testCreateCommentForNotCommentableComment(): void
+    {
+        $this->expectException(CommentNotCommentable::class);
+
+        /** @var User $author */
+        $author = User::factory()->create();
+
+        /** @var Comment $comment */
+        $comment = Comment::factory()
+            ->forArticle(Article::factory()->create())
+            ->create(['depth' => Comment::MAX_DEPTH]);
 
         Comment::createForComment($comment, $author, $this->faker->text());
     }
