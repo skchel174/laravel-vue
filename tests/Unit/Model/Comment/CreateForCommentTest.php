@@ -8,7 +8,6 @@ use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Article\Status as ArticleStatus;
 use App\Models\Comment\Comment;
-use App\Models\Comment\Exception\NotBelongsToArticle;
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\Status as UserStatus;
 use App\Models\User\User;
@@ -32,10 +31,11 @@ class CreateForCommentTest extends TestCase
             ->forArticle($article)
             ->create();
 
-        $comment = Comment::createForComment($commentable, $article, $author, $text = $this->faker->text());
+        $comment = Comment::createForComment($commentable, $author, $text = $this->faker->text());
 
         $this->assertInstanceOf(Comment::class, $comment);
         $this->assertEquals($text, $comment->text);
+        $this->assertEquals($comment->depth, $commentable->depth + 1);
         $this->assertTrue($comment->author->is($author));
         $this->assertTrue($comment->article->is($article));
         $this->assertTrue($comment->commentable->is($commentable));
@@ -59,7 +59,7 @@ class CreateForCommentTest extends TestCase
             ->forArticle($article)
             ->create();
 
-        Comment::createForComment($comment, $article, $author, $this->faker->text());
+        Comment::createForComment($comment, $author, $this->faker->text());
     }
 
     public function testCreateCommentForNotPublishedArticle(): void
@@ -79,24 +79,6 @@ class CreateForCommentTest extends TestCase
             ->forArticle($article)
             ->create();
 
-        Comment::createForComment($comment, $article, $author, $this->faker->text());
-    }
-
-    public function testCreateCommentForInvalidArticle(): void
-    {
-        $this->expectException(NotBelongsToArticle::class);
-
-        /** @var User $author */
-        $author = User::factory()->create();
-
-        /** @var Article $article */
-        $article = Article::factory()->create();
-
-        /** @var Comment $comment */
-        $comment = Comment::factory()
-            ->forArticle(Article::factory()->create())
-            ->create();
-
-        Comment::createForComment($comment, $article, $author, $this->faker->text());
+        Comment::createForComment($comment, $author, $this->faker->text());
     }
 }
