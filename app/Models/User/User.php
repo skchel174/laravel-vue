@@ -74,8 +74,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'login_at' => 'immutable_datetime:d-m-Y H:i:s',
     ];
 
-    protected $with = ['media'];
-
     public static function register(string $login, string $email, Password $password, string $avatar): static
     {
         return static::create([
@@ -168,6 +166,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'password' => $password,
             'verify_token' => null,
         ]);
+    }
+
+    public function isArticleBookmarked(Article $article): bool
+    {
+        return $this->bookmarkedArticles()
+            ->where('id', $article->id)
+            ->exists();
     }
 
     public function makeArticleBookmark(Article $article)
@@ -281,13 +286,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
                     ->width(300)
                     ->height(300);
             });
-    }
-
-    private function isArticleBookmarked(Article $article): bool
-    {
-        return $this->bookmarkedArticles()
-            ->where('id', $article->id)
-            ->exists();
     }
 
     private function isCommentBookmarked(Comment $comment): bool

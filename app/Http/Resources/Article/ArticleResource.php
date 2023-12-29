@@ -46,14 +46,13 @@ class ArticleResource extends JsonResource
             'is_bookmarked' => $this->resource->is_bookmarked,
             'is_liked' => $this->resource->is_liked,
             'likes_count' => $this->resource->likes_count,
-            'comments_count' => $this->resource->comments_count,
+            'comments_count' => $this->resource->related_comments_count,
             'image' => $imageResource,
             'publish_date' => $publishedDate,
             'created_date' => $this->formatDate($this->resource->created_at),
             'author' => UserResource::make($this->resource->author),
             'topics' => TopicResource::collection($this->resource->topics),
             'tags' => TagResource::collection($this->resource->tags),
-            'comments' => CommentResource::collection($this->resource->comments),
         ];
     }
 
