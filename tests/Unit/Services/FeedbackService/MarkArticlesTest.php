@@ -6,11 +6,8 @@ namespace Tests\Unit\Services\FeedbackService;
 
 use App\Models\Article\Article;
 use App\Models\User\User;
-use App\Repositories\Interfaces\ArticleRepositoryInterface;
-use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Service\FeedbackService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class MarkArticlesTest extends TestCase
@@ -32,10 +29,7 @@ class MarkArticlesTest extends TestCase
             ->bookmarkedBy($user)
             ->create();
 
-        $articleRepository = $this->createArticleRepository($user);
-        $commentRepository = $this->createMock(CommentRepositoryInterface::class);
-
-        $service = new FeedbackService($articleRepository, $commentRepository);
+        $service = new FeedbackService();
 
         $service->markArticles($user, [$article01, $article02]);
 
@@ -44,20 +38,5 @@ class MarkArticlesTest extends TestCase
 
         $this->assertFalse($article02->is_liked);
         $this->assertTrue($article02->is_bookmarked);
-    }
-
-    private function createArticleRepository(User $user): ArticleRepositoryInterface
-    {
-        $repository = $this->createMock(ArticleRepositoryInterface::class);
-
-        $repository->expects($this->once())
-            ->method('getBookmarksIds')
-            ->willReturn($user->bookmarkedArticles()->pluck('id'));
-
-        $repository->expects($this->once())
-            ->method('getLikesIds')
-            ->willReturn($user->likedArticles()->pluck('id'));
-
-        return $repository;
     }
 }

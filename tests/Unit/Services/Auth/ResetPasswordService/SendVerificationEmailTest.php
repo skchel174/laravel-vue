@@ -6,7 +6,6 @@ namespace Tests\Unit\Services\Auth\ResetPasswordService;
 
 use App\Mail\ResetPassword;
 use App\Models\User\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Service\Auth\ResetPasswordService;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Session\Session;
@@ -23,12 +22,6 @@ class SendVerificationEmailTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $repository = $this->createMock(UserRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getByEmail')
-            ->with($user->email)
-            ->willReturn($user);
-
         $mailer = $this->createMock(Mailer::class);
         $mailer->expects($this->once())
             ->method('to')
@@ -42,7 +35,7 @@ class SendVerificationEmailTest extends TestCase
 
         $session = $this->createMock(Session::class);
 
-        $service = new ResetPasswordService($repository, $mailer, $dispatcher, $session);
+        $service = new ResetPasswordService($mailer, $dispatcher, $session);
 
         $service->sendVerificationEmail($user->email);
     }

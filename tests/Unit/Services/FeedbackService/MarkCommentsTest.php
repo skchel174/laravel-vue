@@ -7,8 +7,6 @@ namespace Tests\Unit\Services\FeedbackService;
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
 use App\Models\User\User;
-use App\Repositories\Interfaces\ArticleRepositoryInterface;
-use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Service\FeedbackService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -33,24 +31,11 @@ class MarkCommentsTest extends TestCase
             ->forArticle(Article::factory()->create())
             ->create();
 
-        $articleRepository = $this->createMock(ArticleRepositoryInterface::class);
-        $commentRepository = $this->createCommentRepository($user);
-
-        $service = new FeedbackService($articleRepository, $commentRepository);
+        $service = new FeedbackService();
 
         $service->markComments($user, [$comment01, $comment02]);
 
         $this->assertTrue($comment01->is_bookmarked);
         $this->assertFalse($comment02->is_bookmarked);
-    }
-
-    private function createCommentRepository(User $user): CommentRepositoryInterface
-    {
-        $repository = $this->createMock(CommentRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getBookmarksIds')
-            ->willReturn($user->bookmarkedComments()->pluck('id'));
-
-        return $repository;
     }
 }
