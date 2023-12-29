@@ -21,7 +21,7 @@ class GetBookmarksIdsTest extends TestCase
             ->create();
 
         $bookmarkedArticles = Article::factory(5)
-            ->hasAttached($user, relationship: 'usersBookmarked')
+            ->hasAttached($user, relationship: 'bookmarks')
             ->create();
 
         $repository = new ArticleRepository();

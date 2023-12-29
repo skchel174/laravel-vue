@@ -23,11 +23,11 @@ class GetBookmarksTest extends TestCase
             ->create();
 
         $bookmarkedArticles = Article::factory($cnt = 3)
-            ->hasAttached($user, relationship: 'usersBookmarked')
+            ->hasAttached($user, relationship: 'bookmarks')
             ->create();
 
         Article::factory(2)
-            ->hasAttached($user, relationship: 'usersBookmarked')
+            ->hasAttached($user, relationship: 'bookmarks')
             ->create(['status' => Status::Deleted]);
 
         $repository = new ArticleRepository();

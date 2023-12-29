@@ -179,7 +179,7 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function usersBookmarked(): BelongsToMany
+    public function bookmarks(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'bookmarked_articles');
     }

@@ -41,7 +41,7 @@ class BookmarkTest extends TestCase
 
         /** @var Article $article */
         $article = Article::factory()
-            ->hasAttached($user, relationship: 'usersBookmarked')
+            ->hasAttached($user, relationship: 'bookmarks')
             ->create();
 
         $response = $this
