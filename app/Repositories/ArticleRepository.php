@@ -17,8 +17,8 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getByAuthor(User $author, Status $status): LengthAwarePaginator
     {
         return $author->articles()
+            ->with(['topics'])
             ->withCount(['likes', 'relatedComments'])
-            ->with(['topics', 'cardImage'])
             ->withTrashed($status === Status::Deleted)
             ->where('status', $status)
             ->orderBy('id', 'desc')
@@ -29,8 +29,8 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getBookmarks(User $user): LengthAwarePaginator
     {
         return $user->bookmarkedArticles()
+            ->with(['topics'])
             ->withCount(['likes', 'relatedComments'])
-            ->with(['topics', 'cardImage'])
             ->where('status', Status::Published)
             ->orderBy('id', 'desc')
             ->paginate()
@@ -58,7 +58,7 @@ class ArticleRepository implements ArticleRepositoryInterface
         /** @var Article $article */
         $article = Article::query()
             ->withCount(['likes', 'relatedComments'])
-            ->with(['topics', 'tags', 'cardImage', 'comments'])
+            ->with(['topics', 'tags', 'comments'])
             ->where('status', Status::Published)
             ->findOrFail($id);
 

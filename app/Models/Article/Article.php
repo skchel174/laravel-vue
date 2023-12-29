@@ -45,7 +45,6 @@ use Throwable;
  * @property Difficulty|null $difficulty
  * @property int $views
  * @property User $author
- * @property-read Collection<Media> $cardImage
  * @property-read Collection<Tag> $tags
  * @property-read Collection<Topic> $topics
  * @property-read Collection<Category> $categories
@@ -189,15 +188,12 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'liked_articles');
     }
 
-    public function cardImage(): MorphMany
-    {
-        return $this->media()->where('collection_name', 'card_image');
-    }
-
     public function getCardImage(): ?Media
     {
         /** @var Media|null $image */
-        $image = $this->cardImage->first();
+        $image = $this->media()
+            ->firstWhere('collection_name', 'card_image');
+
         return $image;
     }
 
@@ -210,15 +206,11 @@ class Article extends Model implements HasMedia
             ->where('collection_name', 'card_image')
             ->delete();
 
-        if (!$file) {
-            return;
+        if ($file) {
+            $this->addMedia($file)
+                ->usingFileName(sprintf('%s.%s', Str::uuid(), $file->getExtension()))
+                ->toMediaCollection('card_image');
         }
-
-        $fileName = sprintf('%s.%s', Str::uuid(), $file->getExtension());
-
-        $this->addMedia($file)
-            ->usingFileName($fileName)
-            ->toMediaCollection('card_image');
     }
 
     /**
