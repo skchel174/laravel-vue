@@ -15,7 +15,7 @@ class CommentRepository implements CommentRepositoryInterface
 {
     public function getIdsByArticle(Article $article): Collection
     {
-        return $article->allComments()
+        return $article->relatedComments()
             ->pluck('id');
     }
 

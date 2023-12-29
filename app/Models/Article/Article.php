@@ -51,6 +51,7 @@ use Throwable;
  * @property-read Collection<Category> $categories
  * @property-read Collection<Comment> $comments
  * @property-read int $comments_count
+ * @property-read int $related_comments_count
  * @property-read int $likes_count
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
@@ -81,8 +82,7 @@ class Article extends Model implements HasMedia
         string $text,
         ?string $summary = null,
         ?Difficulty $difficulty = null,
-    ): static
-    {
+    ): static {
         $article = static::make([
             'title' => $title,
             'text' => $text,
@@ -169,7 +169,7 @@ class Article extends Model implements HasMedia
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function allComments(): HasMany
+    public function relatedComments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }

@@ -10,7 +10,6 @@ use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 
 class ArticleRepository implements ArticleRepositoryInterface
@@ -18,10 +17,7 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getByAuthor(User $author, Status $status): LengthAwarePaginator
     {
         return $author->articles()
-            ->withCount([
-                'usersLiked as likes_count',
-                'allComments as comments_count',
-            ])
+            ->withCount(['likes', 'relatedComments'])
             ->with(['topics', 'cardImage'])
             ->withTrashed($status === Status::Deleted)
             ->where('status', $status)
@@ -33,10 +29,7 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function getBookmarks(User $user): LengthAwarePaginator
     {
         return $user->bookmarkedArticles()
-            ->withCount([
-                'usersLiked as likes_count',
-                'allComments as comments_count',
-            ])
+            ->withCount(['likes', 'relatedComments'])
             ->with(['topics', 'cardImage'])
             ->where('status', Status::Published)
             ->orderBy('id', 'desc')
@@ -64,13 +57,8 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         /** @var Article $article */
         $article = Article::query()
-            ->withCount([
-                'usersLiked as likes_count',
-                'allComments as comments_count',
-            ])
-            ->with(['topics', 'tags', 'cardImage', 'comments' => function (MorphMany $query) {
-                $query->limit(10);
-            }])
+            ->withCount(['likes', 'relatedComments'])
+            ->with(['topics', 'tags', 'cardImage', 'comments'])
             ->where('status', Status::Published)
             ->findOrFail($id);
 
