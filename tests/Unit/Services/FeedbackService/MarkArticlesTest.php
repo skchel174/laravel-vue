@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\MarkReactionService;
+namespace Tests\Unit\Services\FeedbackService;
 
 use App\Models\Article\Article;
 use App\Models\User\User;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
-use App\Service\MarkReactionService;
+use App\Service\FeedbackService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
@@ -35,7 +35,7 @@ class MarkArticlesTest extends TestCase
         $articleRepository = $this->createArticleRepository($user);
         $commentRepository = $this->createMock(CommentRepositoryInterface::class);
 
-        $service = new MarkReactionService($articleRepository, $commentRepository);
+        $service = new FeedbackService($articleRepository, $commentRepository);
 
         $service->markArticles($user, [$article01, $article02]);
 

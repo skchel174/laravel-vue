@@ -10,7 +10,7 @@ use App\Http\Resources\Comment\CommentsResource;
 use App\Models\Article\Article;
 use App\Models\Article\Status;
 use App\Models\User\User;
-use App\Service\MarkReactionService;
+use App\Service\FeedbackService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,7 +19,7 @@ class ArticleController extends Controller
 {
     public function __construct(
         private readonly StatefulGuard $authService,
-        private readonly MarkReactionService $reactionService,
+        private readonly FeedbackService $reactionService,
     ) {
     }
 

@@ -9,7 +9,7 @@ use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Comment\BookmarkedCommentsResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User\User;
-use App\Service\MarkReactionService;
+use App\Service\FeedbackService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,7 +18,7 @@ class BookmarksController extends Controller
 {
     public function __construct(
         private readonly StatefulGuard $authService,
-        private readonly MarkReactionService $reactionService,
+        private readonly FeedbackService $reactionService,
     ) {
     }
 

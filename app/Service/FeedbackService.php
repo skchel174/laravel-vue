@@ -10,7 +10,7 @@ use App\Models\Comment\Comment;
 use App\Models\User\User;
 use Illuminate\Support\Arr;
 
-class MarkReactionService
+class FeedbackService
 {
     public function markArticle(User $user, Article $article): void
     {
