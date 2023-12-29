@@ -6,25 +6,18 @@ namespace App\Http\Controllers\Article;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Article\ArticleResource;
-use App\Http\Resources\Comment\CommentResource;
+use App\Http\Resources\Comment\CommentsResource;
 use App\Models\Article\Article;
 use App\Models\Article\Status;
 use App\Models\User\User;
-use App\Repositories\Interfaces\ArticleRepositoryInterface;
-use App\Repositories\Interfaces\CommentRepositoryInterface;
-use App\Service\MarkReactionService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ArticleController extends Controller
 {
-    public function __construct(
-        private readonly ArticleRepositoryInterface $articleRepository,
-        private readonly CommentRepositoryInterface $commentRepository,
-        private readonly MarkReactionService $reactionService,
-        private readonly StatefulGuard $authService,
-    ) {
+    public function __construct(private readonly StatefulGuard $authService)
+    {
     }
 
     public function index(int $article): Response
@@ -49,20 +42,31 @@ class ArticleController extends Controller
 
     public function comments(int $article): Response
     {
-        $article = $this->articleRepository->getById($article);
+        /** @var Article $article */
+        $article = Article::query()
+            ->with('topics')
+            ->withCount('likes', 'bookmarks', 'relatedComments')
+            ->whereStatus(Status::Published)
+            ->findOrFail($article);
 
-        $bookmarkedComments = [];
+        $comments = $article->comments()
+            ->with('comments')
+            ->paginate();
+
         /** @var User $user */
         if ($user = $this->authService->user()) {
-            $this->reactionService->markArticle($user, $article);
-            $commentsIds = $this->commentRepository->getIdsByArticle($article);
-            $bookmarkedComments = $this->commentRepository->getBookmarksIds($user, $commentsIds);
+            $article->is_liked = $article->isLiked($user);
+            $article->is_bookmarked = $user->isArticleBookmarked($article);
+
+            $bookmarkedComments = $article->relatedComments()
+                ->whereIn('id', $user->bookmarkedComments()->select('id'))
+                ->pluck('id');
         }
 
         return Inertia::render('Article/CommentsPage', [
             'article' => new ArticleResource($article),
-            'comments' => CommentResource::collection($article->comments),
-            'bookmarkedComments' => $bookmarkedComments,
+            'comments' => new CommentsResource($comments),
+            'bookmarkedComments' => $bookmarkedComments ?? [],
         ]);
     }
 }

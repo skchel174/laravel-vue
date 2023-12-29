@@ -9,11 +9,17 @@ import ArticleInfo from "@/Components/Article/ArticleInfo.vue";
 import ArticleTopics from "@/Components/Article/ArticleTopics.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
-import Comment from "@/Components/Comment/Comment.vue";
 import CommentForm from "@/Components/Comment/CommentForm.vue";
+import Comment from "@/Components/Comment/Comment.vue";
+import Pagination from "@/Components/Pagination/Pagination.vue";
 
 const props = defineProps({
   article: {
+    type: Object,
+    required: true,
+  },
+
+  comments: {
     type: Object,
     required: true,
   },
@@ -52,7 +58,7 @@ watch(commentable, () => {
   <NotificationWrapper>
     <MainWrapper>
       <AdvertWrapper>
-        <div class="p-4 bg-white">
+        <div class="p-4 pb-2 bg-white">
           <ArticleAuthor
             class="mb-4"
             :article-id="article.id"
@@ -61,31 +67,31 @@ watch(commentable, () => {
             :publish-date="article.publish_date"
           />
 
-          <Link
-            class="text-lg sm:text-xl text-gray-700 font-black hover:text-sky-600 transition duration-300"
-            :href="route('article', {article: article.id})"
-          >
-            {{ article.title }}
+          <Link :href="route('article', {article: article.id})">
+            <h2 class="mb-2 text-lg sm:text-xl text-gray-700 font-black hover:text-sky-600 transition duration-300">
+              {{ article.title }}
+            </h2>
           </Link>
 
           <ArticleInfo
-            class="my-1"
+            class="mb-2"
             :views-count="article.views ?? 4352"
             :duration="20"
             :difficulty="article.difficulty"
           />
 
-          <ArticleTopics :topics="article.topics"/>
+          <ArticleTopics
+            class="mb-4"
+            :topics="article.topics"
+          />
 
-          <footer class="px-4 h-[3rem] flex items-center bg-white stickyPanel">
-            <ArticleReaction
-              :article-id="article.id"
-              :is-liked="article.is_liked"
-              :likes-count="article.likes_count"
-              :is-bookmarked="article.is_bookmarked"
-              :comments-count="article.comments_count"
-            />
-          </footer>
+          <ArticleReaction
+            :article-id="article.id"
+            :is-liked="article.is_liked"
+            :likes-count="article.likes_count"
+            :is-bookmarked="article.is_bookmarked"
+            :comments-count="article.comments_count"
+          />
         </div>
 
         <div
@@ -101,7 +107,7 @@ watch(commentable, () => {
 
           <Comment
             class="mb-2"
-            v-for="comment in article.comments"
+            v-for="comment in comments.items"
             :key="comment.id"
             :comment="comment"
             :article-id="article.id"
@@ -113,6 +119,15 @@ watch(commentable, () => {
             :article-id="article.id"
           />
         </div>
+
+        <Pagination
+          class="mt-4"
+          v-if="comments.totalPages > 1"
+          :total-pages="comments.totalPages"
+          :current-page="comments.currentPage"
+          :queryParams="{article: article.id}"
+          route-name="article.comments"
+        />
       </AdvertWrapper>
     </MainWrapper>
   </NotificationWrapper>
