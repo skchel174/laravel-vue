@@ -9,8 +9,6 @@ use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Comment\BookmarkedCommentsResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User\User;
-use App\Repositories\Interfaces\ArticleRepositoryInterface;
-use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Service\MarkReactionService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Inertia\Inertia;
@@ -20,15 +18,17 @@ class BookmarksController extends Controller
 {
     public function __construct(
         private readonly StatefulGuard $authService,
-        private readonly ArticleRepositoryInterface $articleRepository,
-        private readonly CommentRepositoryInterface $commentRepository,
         private readonly MarkReactionService $reactionService,
     ) {
     }
 
     public function articles(User $user): Response
     {
-        $articles = $this->articleRepository->getBookmarks($user);
+        $articles = $user->bookmarkedArticles()
+            ->with(['topics'])
+            ->withCount(['likes', 'relatedComments'])
+            ->orderBy('id', 'desc')
+            ->paginate();
 
         /** @var User|null $authUser */
         if ($authUser = $this->authService->user()) {
@@ -43,7 +43,11 @@ class BookmarksController extends Controller
 
     public function comments(User $user): Response
     {
-        $comments = $this->commentRepository->getBookmarks($user);
+        $comments = $user->bookmarkedComments()
+            ->with('article')
+            ->without('comments')
+            ->orderBy('id', 'desc')
+            ->paginate();
 
         /** @var User|null $authUser */
         if ($authUser = $this->authService->user()) {

@@ -8,15 +8,10 @@ use App\Models\Article\Article;
 use App\Models\Article\Status;
 use App\Models\Comment\Comment;
 use App\Models\User\User;
-use App\Repositories\Interfaces\CommentRepositoryInterface;
 use Illuminate\Support\Arr;
 
 class MarkReactionService
 {
-    public function __construct(private readonly CommentRepositoryInterface $commentRepository)
-    {
-    }
-
     public function markArticle(User $user, Article $article): void
     {
         $article->is_liked = $article->isLiked($user);
@@ -56,10 +51,13 @@ class MarkReactionService
     public function markComments(User $user, iterable $comments): void
     {
         $commentsIds = Arr::pluck($comments, 'id');
-        $bookmarkedComments = $this->commentRepository->getBookmarksIds($user, $commentsIds);
+
+        $bookmarksIds = $user->bookmarkedComments()
+            ->whereIn('id', $commentsIds)
+            ->pluck('id');
 
         foreach ($comments as $comment) {
-            $comment->is_bookmarked = $bookmarkedComments->contains($comment->id);
+            $comment->is_bookmarked = $bookmarksIds->contains($comment->id);
         }
     }
 }
