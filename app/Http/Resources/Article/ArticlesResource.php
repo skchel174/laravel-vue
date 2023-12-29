@@ -11,7 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 /**
  * @property LengthAwarePaginator $resource
  */
-class ArticleListResource extends JsonResource
+class ArticlesResource extends JsonResource
 {
     public function __construct(LengthAwarePaginator $resource)
     {

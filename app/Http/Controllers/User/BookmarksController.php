@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Article\ArticleListResource;
+use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Comment\BookmarkedCommentsResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User\User;
@@ -37,7 +37,7 @@ class BookmarksController extends Controller
 
         return Inertia::render('User/Bookmarks/Articles/ArticlesPage', [
             'user' => new UserResource($user),
-            'articles' => new ArticleListResource($articles),
+            'articles' => new ArticlesResource($articles),
         ]);
     }
 

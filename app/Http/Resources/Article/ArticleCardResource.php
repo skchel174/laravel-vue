@@ -32,7 +32,7 @@ class ArticleCardResource extends JsonResource
             'is_bookmarked' => $this->resource->is_bookmarked,
             'is_liked' => $this->resource->is_liked,
             'likes_count' => $this->resource->likes_count,
-            'comments_count' => $this->resource->comments_count,
+            'comments_count' => $this->resource->related_comments_count,
             'image' => $this->getImageResource(),
             'publish_date' => $this->getPublishedDate(),
             'author' => UserResource::make($this->resource->author),
