@@ -49,9 +49,12 @@ use Throwable;
  * @property-read Collection<Topic> $topics
  * @property-read Collection<Category> $categories
  * @property-read Collection<Comment> $comments
+ * @property-read Collection<Media> $cardImage
  * @property-read int $comments_count
  * @property-read int $related_comments_count
+ * @property-read bool $is_liked
  * @property-read int $likes_count
+ * @property-read bool $is_bookmarked
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
@@ -59,9 +62,6 @@ use Throwable;
 class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
-
-    public bool $is_liked = false;
-    public bool $is_bookmarked = false;
 
     protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'published_at'];
 
@@ -188,13 +188,14 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'liked_articles');
     }
 
+    public function cardImage(): MorphMany
+    {
+        return $this->media()->where('collection_name', 'card_image');
+    }
+
     public function getCardImage(): ?Media
     {
-        /** @var Media|null $image */
-        $image = $this->media()
-            ->firstWhere('collection_name', 'card_image');
-
-        return $image;
+        return $this->cardImage->first();
     }
 
     /**
