@@ -62,7 +62,7 @@ class GetByUserTest extends TestCase
         $this->assertEquals(2, $userArticle->related_comments_count);
     }
 
-    public function testGetArticleByIdForAuthenticatedUser()
+    public function testGetArticlesForAuthenticatedUser()
     {
         /** @var User $user */
         $user = User::factory()->create();
