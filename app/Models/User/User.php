@@ -220,6 +220,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         $this->bookmarkedComments()->detach($comment);
     }
 
+    public function getBookmarkedCommentsByArticle(Article $article): Collection
+    {
+        return $article->relatedComments()
+            ->whereIn('id', $this->bookmarkedComments()->select('id'))
+            ->get();
+    }
+
     public function updateLastActivityTime(): void
     {
         if (CarbonImmutable::now() > $this->login_at->addHour()) {
