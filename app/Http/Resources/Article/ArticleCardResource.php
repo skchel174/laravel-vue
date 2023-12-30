@@ -29,8 +29,8 @@ class ArticleCardResource extends JsonResource
             'difficulty' => $this->resource->difficulty?->value,
             'summary' => $this->resource->summary,
             'views' => $this->resource->views,
-            'is_bookmarked' => $this->resource->is_bookmarked,
-            'is_liked' => $this->resource->is_liked,
+            'is_bookmarked' => (bool) $this->resource->is_bookmarked,
+            'is_liked' => (bool) $this->resource->is_liked,
             'likes_count' => $this->resource->likes_count,
             'comments_count' => $this->resource->related_comments_count,
             'image' => $this->getImageResource(),
@@ -42,19 +42,19 @@ class ArticleCardResource extends JsonResource
 
     private function getImageResource(): ?ArticleImageResource
     {
-        if (!$image = $this->resource->getCardImage()) {
-            return null;
+        if ($image = $this->resource->getCardImage()) {
+            return ArticleImageResource::make($image);
         }
 
-        return ArticleImageResource::make($image);
+        return null;
     }
 
     private function getPublishedDate(): ?string
     {
-        if (!$date = $this->resource->published_at) {
-            return null;
+        if ($date = $this->resource->published_at) {
+            return $date->format('d-m-Y H:i');
         }
 
-        return $date->format('d-m-Y H:i');
+        return null;
     }
 }
