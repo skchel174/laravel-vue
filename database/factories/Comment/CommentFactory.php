@@ -45,6 +45,6 @@ class CommentFactory extends Factory
 
     public function bookmarkedBy(User $user): CommentFactory
     {
-        return $this->hasAttached($user, relationship: 'usersBookmarked');
+        return $this->hasAttached($user, relationship: 'bookmarks');
     }
 }

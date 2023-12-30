@@ -26,6 +26,7 @@ use Illuminate\Support\Collection;
  * @property int $depth
  * @property-read int $article_id
  * @property-read Article $article
+ * @property-read bool $is_bookmarked
  * @property-read Article|Comment $commentable
  * @property-read Collection<Comment> $comments
  * @property-read CarbonImmutable $created_at
@@ -36,8 +37,6 @@ class Comment extends Model
     use HasFactory;
 
     public const MAX_DEPTH = 1;
-
-    public bool $is_bookmarked = false;
 
     protected $fillable = ['text', 'depth'];
 
@@ -150,7 +149,7 @@ class Comment extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function usersBookmarked(): BelongsToMany
+    public function bookmarks(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'bookmarked_comments');
     }
