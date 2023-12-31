@@ -7,11 +7,16 @@ const intersectObservable = ref(null);
 const prevScrollOffset = ref(window.scrollY);
 
 const onWindowScroll = () => {
+  if (window.scrollY > intersectObservable.value.offsetTop) {
+    return;
+  }
+
   if (window.scrollY - prevScrollOffset.value > 1) {
     isStickyPanelVisible.value = false;
   } else if (window.scrollY - prevScrollOffset.value < 1) {
     isStickyPanelVisible.value = true;
   }
+
   prevScrollOffset.value = window.scrollY;
 };
 
