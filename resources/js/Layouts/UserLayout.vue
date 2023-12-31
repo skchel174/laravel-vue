@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
+import {router, Link} from "@inertiajs/vue3";
 import Tab from "@/Components/Tabs/Tab.vue";
 import Tabs from "@/Components/Tabs/Tabs.vue";
 import Avatar from "@/Components/Avatar.vue";
@@ -59,8 +59,20 @@ const selectTab = (tab) => {
                 clickable
               />
 
-              <h3 class="mt-2 text-base sm:text-lg font-medium text-sky-600">
-                @{{ user.login }}
+              <h3 class="mt-2 text-base sm:text-lg">
+                <span
+                  class="text-gray-800 font-black"
+                  v-if="user.name"
+                >
+                  {{ user.name }}
+                </span>
+
+                <Link
+                  class="text-sky-600"
+                  :href="route('user', {user: user.login})"
+                >
+                  @{{ user.login }}
+                </Link>
               </h3>
 
               <p class="mt-1 text-sm text-gray-500 font-medium capitalize">
