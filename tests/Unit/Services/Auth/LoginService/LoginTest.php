@@ -6,7 +6,6 @@ namespace Tests\Unit\Services\Auth\LoginService;
 
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Service\Auth\LoginService;
 use Database\Factories\User\UserFactory;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -24,12 +23,6 @@ class LoginTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $repository = $this->createMock(UserRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getByLogin')
-            ->with($user->login)
-            ->willReturn($user);
-
         $auth = $this->createMock(StatefulGuard::class);
         $auth->expects($this->once())
             ->method('login')
@@ -39,7 +32,7 @@ class LoginTest extends TestCase
         $session->expects($this->once())
             ->method('regenerate');
 
-        $service = new LoginService($repository, $auth, $session);
+        $service = new LoginService($auth, $session);
 
         $loggedUser = $service->login($user->login, UserFactory::PASSWORD, $remember);
 
@@ -54,17 +47,11 @@ class LoginTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $repository = $this->createMock(UserRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getByLogin')
-            ->with($user->login)
-            ->willReturn($user);
-
         $auth = $this->createMock(StatefulGuard::class);
 
         $session = $this->createMock(Session::class);
 
-        $service = new LoginService($repository, $auth, $session);
+        $service = new LoginService($auth, $session);
 
         $service->login($user->login, $this->faker->word(), false);
     }
@@ -78,17 +65,11 @@ class LoginTest extends TestCase
             ->unverified()
             ->create();
 
-        $repository = $this->createMock(UserRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getByLogin')
-            ->with($user->login)
-            ->willReturn($user);
-
         $auth = $this->createMock(StatefulGuard::class);
 
         $session = $this->createMock(Session::class);
 
-        $service = new LoginService($repository, $auth, $session);
+        $service = new LoginService($auth, $session);
 
         $service->login($user->login, UserFactory::PASSWORD, false);
     }

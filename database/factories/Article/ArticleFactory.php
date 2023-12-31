@@ -48,11 +48,11 @@ class ArticleFactory extends Factory
 
     public function bookmarkedBy(User $user): ArticleFactory
     {
-        return $this->hasAttached($user, relationship: 'usersBookmarked');
+        return $this->hasAttached($user, relationship: 'bookmarks');
     }
 
     public function likedBy(User $user): ArticleFactory
     {
-        return $this->hasAttached($user, relationship: 'usersLiked');
+        return $this->hasAttached($user, relationship: 'likes');
     }
 }

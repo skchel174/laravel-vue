@@ -23,7 +23,7 @@ class BookmarkedCommentResource extends JsonResource
             'created_date' => $this->resource->created_at->format('d-m-Y H:i'),
             'article_id' => $this->resource->article->id,
             'article_title' => $this->resource->article->title,
-            'is_bookmarked' => $this->resource->is_bookmarked,
+            'is_bookmarked' => (bool) $this->resource->is_bookmarked,
         ];
     }
 }

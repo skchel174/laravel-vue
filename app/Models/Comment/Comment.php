@@ -6,8 +6,8 @@ namespace App\Models\Comment;
 
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
+use App\Models\Comment\Exception\CommentNotCommentable;
 use App\Models\Comment\Exception\ExceededEditingTimeLimit;
-use App\Models\Comment\Exception\NotBelongsToArticle;
 use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
@@ -23,8 +23,10 @@ use Illuminate\Support\Collection;
  * @property-read int $id
  * @property string $text
  * @property User $author
+ * @property int $depth
  * @property-read int $article_id
  * @property-read Article $article
+ * @property-read bool $is_bookmarked
  * @property-read Article|Comment $commentable
  * @property-read Collection<Comment> $comments
  * @property-read CarbonImmutable $created_at
@@ -34,40 +36,18 @@ class Comment extends Model
 {
     use HasFactory;
 
-    public bool $is_bookmarked = false;
+    public const MAX_DEPTH = 1;
 
-    protected $fillable = ['text'];
+    protected $fillable = ['text', 'depth'];
 
-    protected $with = ['author', 'comments'];
+    protected $with = ['author'];
 
     protected $casts = [
         'created_at' => 'immutable_datetime:d-m-Y H:i:s',
         'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
     ];
 
-    private array $commentsIds = [];
-
-    public static function createForArticle(Article $commentable, User $author, string $text): static
-    {
-        if (!$commentable->status->isPublished()) {
-            throw new ArticleNotPublished();
-        }
-
-        if (!$author->status->isActive()) {
-            throw new AccountNotActive();
-        }
-
-        $comment = new static();
-        $comment->text = $text;
-        $comment->author()->associate($author);
-        $comment->article()->associate($commentable);
-        $comment->commentable()->associate($commentable);
-        $comment->save();
-
-        return $comment;
-    }
-
-    public static function createForComment(Comment $commentable, Article $article, User $author, string $text): static
+    public static function createForArticle(Article $article, User $author, string $text): static
     {
         if (!$article->status->isPublished()) {
             throw new ArticleNotPublished();
@@ -77,34 +57,52 @@ class Comment extends Model
             throw new AccountNotActive();
         }
 
-        if (!$commentable->belongsToArticle($article)) {
-            throw new NotBelongsToArticle();
+        $instance = static::make(['text' => $text]);
+        $instance->author()->associate($author);
+        $instance->article()->associate($article);
+        $instance->commentable()->associate($article);
+        $instance->save();
+
+        return $instance;
+    }
+
+    public static function createForComment(Comment $comment, User $author, string $text): static
+    {
+        if (!$comment->isCommentable()) {
+            throw new CommentNotCommentable();
         }
 
-        $comment = new static();
-        $comment->text = $text;
-        $comment->author()->associate($author);
-        $comment->article()->associate($article);
-        $comment->commentable()->associate($commentable);
-        $comment->save();
+        if (!$author->status->isActive()) {
+            throw new AccountNotActive();
+        }
 
-        return $comment;
+        $article = $comment->article;
+
+        if (!$article->status->isPublished()) {
+            throw new ArticleNotPublished();
+        }
+
+        $instance = static::make([
+            'text' => $text,
+            'depth' => $comment->depth + 1,
+        ]);
+
+        $instance->author()->associate($author);
+        $instance->article()->associate($article);
+        $instance->commentable()->associate($comment);
+        $instance->save();
+
+        return $instance;
     }
 
     public function getCommentsCount(): int
     {
-        return count($this->getCommentsIds());
-    }
+        /** @var int $count */
+        $count = $this->comments->reduce(function (int $cnt, Comment $comment) {
+            return 1 + $comment->getCommentsCount();
+        }, 0);
 
-    public function getCommentsIds(): array
-    {
-        if (!$this->commentsIds) {
-            $this->commentsIds = $this->comments->reduce(function (array $ids, Comment $comment) {
-                return array_merge($ids, [$comment->id], $comment->getCommentsIds());
-            }, []);
-        }
-
-        return $this->commentsIds;
+        return $count;
     }
 
     public function edit(string $text): void
@@ -116,11 +114,6 @@ class Comment extends Model
         $this->update(['text' => $text]);
     }
 
-    public function belongsToArticle(Article $article): bool
-    {
-        return $this->article_id === $article->id;
-    }
-
     public function isAuthor(User $author): bool
     {
         return $this->author->is($author);
@@ -129,6 +122,11 @@ class Comment extends Model
     public function isEditable(CarbonImmutable $now): bool
     {
        return $this->created_at->diffInDays($now) < 31;
+    }
+
+    public function isCommentable(): bool
+    {
+        return $this->depth < static::MAX_DEPTH;
     }
 
     public function author(): BelongsTo
@@ -151,7 +149,7 @@ class Comment extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function usersBookmarked(): BelongsToMany
+    public function bookmarks(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'bookmarked_comments');
     }

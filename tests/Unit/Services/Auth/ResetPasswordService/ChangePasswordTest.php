@@ -7,7 +7,6 @@ namespace Tests\Unit\Services\Auth\ResetPasswordService;
 use App\Events\User\PasswordReset;
 use App\Models\User\User;
 use App\Models\User\VerifyToken;
-use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Service\Auth\ResetPasswordService;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Session\Session;
@@ -26,14 +25,6 @@ class ChangePasswordTest extends TestCase
             'verify_token' => VerifyToken::create(),
         ]);
 
-        $password = 'new-password';
-
-        $repository = $this->createMock(UserRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getByVerifyToken')
-            ->with($user->verify_token->getValue())
-            ->willReturn($user);
-
         $mailer = $this->createMock(Mailer::class);
 
         $dispatcher = $this->createMock(Dispatcher::class);
@@ -45,9 +36,9 @@ class ChangePasswordTest extends TestCase
         $session->expects($this->once())
             ->method('invalidate');
 
-        $service = new ResetPasswordService($repository, $mailer, $dispatcher, $session);
+        $service = new ResetPasswordService($mailer, $dispatcher, $session);
 
-        $service->changePassword($password, $user->verify_token->getValue());
+        $service->changePassword($password = 'new-password', $user->verify_token->getValue());
 
         $this->assertTrue($user->password->isEquals($password));
     }

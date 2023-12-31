@@ -19,6 +19,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -52,6 +53,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read Collection<Article> $bookmarkedArticles
  * @property-read Collection<Article> $likedArticles
  * @property-read Collection<Topic> $topics
+ *
+ * @method static Builder whereLogin(string $login)
+ * @method static Builder whereEmail(string $email)
+ * @method static Builder whereVerifyToken(string $token)
  */
 class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
 {
@@ -73,8 +78,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
         'login_at' => 'immutable_datetime:d-m-Y H:i:s',
     ];
-
-    protected $with = ['media'];
 
     public static function register(string $login, string $email, Password $password, string $avatar): static
     {
@@ -170,6 +173,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         ]);
     }
 
+    public function isArticleBookmarked(Article $article): bool
+    {
+        return $this->bookmarkedArticles()
+            ->where('id', $article->id)
+            ->exists();
+    }
+
     public function makeArticleBookmark(Article $article)
     {
         if (!$article->status->isPublished()) {
@@ -208,6 +218,13 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         }
 
         $this->bookmarkedComments()->detach($comment);
+    }
+
+    public function getBookmarkedCommentsByArticle(Article $article): Collection
+    {
+        return $article->relatedComments()
+            ->whereIn('id', $this->bookmarkedComments()->select('id'))
+            ->get();
     }
 
     public function updateLastActivityTime(): void
@@ -281,13 +298,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
                     ->width(300)
                     ->height(300);
             });
-    }
-
-    private function isArticleBookmarked(Article $article): bool
-    {
-        return $this->bookmarkedArticles()
-            ->where('id', $article->id)
-            ->exists();
     }
 
     private function isCommentBookmarked(Comment $comment): bool

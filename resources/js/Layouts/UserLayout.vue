@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import Tab from "@/Components/Tabs/Tab.vue";
 import Tabs from "@/Components/Tabs/Tabs.vue";
 import Avatar from "@/Components/Avatar.vue";
@@ -59,8 +59,20 @@ const selectTab = (tab) => {
                 clickable
               />
 
-              <h3 class="mt-2 text-base sm:text-lg font-medium text-sky-600">
-                @{{ user.login }}
+              <h3 class="mt-2 text-base sm:text-lg">
+                <span
+                  class="text-gray-800 font-black"
+                  v-if="user.name"
+                >
+                  {{ user.name }}
+                </span>
+
+                <Link
+                  class="text-sky-600"
+                  :href="route('user', {user: user.login})"
+                >
+                  @{{ user.login }}
+                </Link>
               </h3>
 
               <p class="mt-1 text-sm text-gray-500 font-medium capitalize">
@@ -83,32 +95,50 @@ const selectTab = (tab) => {
           <slot/>
         </div>
 
-        <div class="hidden lg:block p-4 bg-white w-full lg:max-w-xs">
-          <h2 class="text-sm text-gray-500 font-bold uppercase">
-            Information
-          </h2>
+        <div class="hidden lg:block space-y-4">
+          <div class="p-4 bg-white w-full lg:max-w-xs">
+            <h2 class="text-sm text-gray-500 font-bold uppercase">
+              Information
+            </h2>
 
-          <Divider class="my-4"/>
+            <Divider class="my-4"/>
 
-          <table class="w-full max-w-xs">
-            <tr>
-              <td class="pb-1 text-sm text-gray-700 font-bold">
-                Registered
-              </td>
-              <td class="pb-1 px-4 text-xs text-gray-700 font-medium">
-                {{ user.created_at }}
-              </td>
-            </tr>
-            <tr>
-              <td class="pt-2 text-sm text-gray-700 font-bold">
-                Activity
-              </td>
-              <td class="pt-2 px-4 text-xs text-gray-700 font-medium">
-                {{ $formatDate(user.login_at, 'DD MMM YYYY') }}
-              </td>
-            </tr>
-          </table>
+            <table class="w-full max-w-xs">
+              <tr>
+                <td class="pb-1 text-sm text-gray-700 font-bold">
+                  Registered
+                </td>
+                <td class="pb-1 px-4 text-xs text-gray-700 font-medium">
+                  {{ user.created_at }}
+                </td>
+              </tr>
+              <tr>
+                <td class="pt-2 text-sm text-gray-700 font-bold">
+                  Activity
+                </td>
+                <td class="pt-2 px-4 text-xs text-gray-700 font-medium">
+                  {{ $formatDate(user.login_at, 'DD MMM YYYY') }}
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div
+            class="p-4 bg-white w-full lg:max-w-xs"
+            v-if="user.about"
+          >
+            <h2 class="text-sm text-gray-500 font-bold uppercase">
+              About Me
+            </h2>
+
+            <Divider class="my-4"/>
+
+            <p class="text-sm text-gray-700 font-medium">
+              {{ user.about }}
+            </p>
+          </div>
         </div>
+
       </div>
     </MainWrapper>
   </NotificationWrapper>

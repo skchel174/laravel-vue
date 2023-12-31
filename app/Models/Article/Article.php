@@ -45,13 +45,16 @@ use Throwable;
  * @property Difficulty|null $difficulty
  * @property int $views
  * @property User $author
- * @property-read Collection<Media> $cardImage
  * @property-read Collection<Tag> $tags
  * @property-read Collection<Topic> $topics
  * @property-read Collection<Category> $categories
  * @property-read Collection<Comment> $comments
+ * @property-read Collection<Media> $cardImage
  * @property-read int $comments_count
+ * @property-read int $related_comments_count
+ * @property-read bool $is_liked
  * @property-read int $likes_count
+ * @property-read bool $is_bookmarked
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
@@ -59,9 +62,6 @@ use Throwable;
 class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
-
-    public bool $is_liked = false;
-    public bool $is_bookmarked = false;
 
     protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'published_at'];
 
@@ -81,8 +81,7 @@ class Article extends Model implements HasMedia
         string $text,
         ?string $summary = null,
         ?Difficulty $difficulty = null,
-    ): static
-    {
+    ): static {
         $article = static::make([
             'title' => $title,
             'text' => $text,
@@ -126,7 +125,7 @@ class Article extends Model implements HasMedia
 
     public function isLiked(User $user): bool
     {
-        return $this->usersLiked()
+        return $this->likes()
             ->where('id', $user->id)
             ->exists();
     }
@@ -137,7 +136,7 @@ class Article extends Model implements HasMedia
             throw new ArticleAlreadyLiked();
         }
 
-        $this->usersLiked()->attach($user);
+        $this->likes()->attach($user);
     }
 
     public function removeLike(User $user): void
@@ -146,7 +145,7 @@ class Article extends Model implements HasMedia
             throw new ArticleNotLiked();
         }
 
-        $this->usersLiked()->detach($user);
+        $this->likes()->detach($user);
     }
 
     public function tags(): BelongsToMany
@@ -169,7 +168,7 @@ class Article extends Model implements HasMedia
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function allComments(): HasMany
+    public function relatedComments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -179,12 +178,12 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function usersBookmarked(): BelongsToMany
+    public function bookmarks(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'bookmarked_articles');
     }
 
-    public function usersLiked(): BelongsToMany
+    public function likes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'liked_articles');
     }
@@ -196,9 +195,7 @@ class Article extends Model implements HasMedia
 
     public function getCardImage(): ?Media
     {
-        /** @var Media|null $image */
-        $image = $this->cardImage->first();
-        return $image;
+        return $this->cardImage->first();
     }
 
     /**
@@ -210,15 +207,11 @@ class Article extends Model implements HasMedia
             ->where('collection_name', 'card_image')
             ->delete();
 
-        if (!$file) {
-            return;
+        if ($file) {
+            $this->addMedia($file)
+                ->usingFileName(sprintf('%s.%s', Str::uuid(), $file->getExtension()))
+                ->toMediaCollection('card_image');
         }
-
-        $fileName = sprintf('%s.%s', Str::uuid(), $file->getExtension());
-
-        $this->addMedia($file)
-            ->usingFileName($fileName)
-            ->toMediaCollection('card_image');
     }
 
     /**

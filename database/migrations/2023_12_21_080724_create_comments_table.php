@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('author_id');
             $table->foreignId('article_id');
             $table->morphs('commentable');
+            $table->unsignedTinyInteger('depth')->default(0);
             $table->text('text');
             $table->timestamps();
 

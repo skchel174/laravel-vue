@@ -6,7 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\User\UserResource;
-use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Models\Category\Category;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -14,10 +14,6 @@ use Tightenco\Ziggy\Ziggy;
 class HandleInertiaRequests extends Middleware
 {
     protected $rootView = 'app';
-
-    public function __construct(private readonly CategoryRepositoryInterface $categories)
-    {
-    }
 
     /**
      * Determine the current asset version.
@@ -32,22 +28,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $categories = CategoryResource::collection($this->categories->getAll());
-
-        $user = $request->user()
-            ? UserResource::make($request->user())
-            : null;
-
         return [
             ...parent::share($request),
 
             'app' => [
                 'name' => config('app.name'),
-                'categories' => $categories,
+                'categories' => CategoryResource::collection(Category::all()),
             ],
 
             'auth' => [
-                'user' => $user,
+                'user' => $request->user() ? UserResource::make($request->user()) : null,
             ],
 
             'ziggy' => fn () => [

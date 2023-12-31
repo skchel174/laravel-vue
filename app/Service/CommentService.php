@@ -37,7 +37,7 @@ class CommentService
         /** @var User $user */
         $user = $this->authService->user();
 
-        $comment = Comment::createForComment($comment, $article, $user, $text);
+        $comment = Comment::createForComment($comment, $user, $text);
 
         $this->eventDispatcher->dispatch(new CreateComment($comment));
 

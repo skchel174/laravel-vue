@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Article;
 
-use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Tag\TagResource;
 use App\Http\Resources\Topic\TopicResource;
 use App\Http\Resources\User\UserResource;
@@ -25,16 +24,6 @@ class ArticleResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        if ($image = $this->resource->getCardImage()) {
-            $imageResource = $image && ArticleImageResource::make($image);
-        } else {
-            $imageResource = null;
-        }
-
-        $publishedDate = $this->resource->published_at
-            ? $this->formatDate($this->resource->published_at)
-            : null;
-
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
@@ -43,18 +32,35 @@ class ArticleResource extends JsonResource
             'summary' => $this->resource->summary,
             'text' => $this->resource->text,
             'views' => $this->resource->views,
-            'is_bookmarked' => $this->resource->is_bookmarked,
-            'is_liked' => $this->resource->is_liked,
+            'is_bookmarked' => (bool) $this->resource->is_bookmarked,
+            'is_liked' => (bool) $this->resource->is_liked,
             'likes_count' => $this->resource->likes_count,
-            'comments_count' => $this->resource->comments_count,
-            'image' => $imageResource,
-            'publish_date' => $publishedDate,
+            'comments_count' => $this->resource->related_comments_count,
+            'image' => $this->getCardImage(),
+            'publish_date' => $this->getPublishDate(),
             'created_date' => $this->formatDate($this->resource->created_at),
             'author' => UserResource::make($this->resource->author),
             'topics' => TopicResource::collection($this->resource->topics),
             'tags' => TagResource::collection($this->resource->tags),
-            'comments' => CommentResource::collection($this->resource->comments),
         ];
+    }
+
+    private function getCardImage(): ?ArticleImageResource
+    {
+        if ($image = $this->resource->getCardImage()) {
+            return ArticleImageResource::make($image);
+        }
+
+        return null;
+    }
+
+    private function getPublishDate(): ?string
+    {
+        if ($this->resource->published_at) {
+            return $this->formatDate($this->resource->published_at);
+        }
+
+        return null;
     }
 
     private function formatDate(CarbonImmutable $date): string

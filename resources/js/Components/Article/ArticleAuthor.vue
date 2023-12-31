@@ -1,4 +1,5 @@
 <script setup>
+import {Link} from "@inertiajs/vue3";
 import EditIcon from "@/Components/Icons/EditIcon.vue";
 import RestoreIcon from "@/Components/Icons/RestoreIcon.vue";
 import DeleteIcon from "@/Components/Icons/DeleteIcon.vue";
@@ -32,9 +33,12 @@ defineProps({
       <Avatar :value="author.avatar"/>
 
       <div class="flex flex-wrap items-center">
-        <p class="text-sm text-gray-600 font-semibold !leading-4 mr-2">
-          {{ author.name }}
-        </p>
+        <Link
+          class="text-sm text-gray-600 font-semibold !leading-4 mr-2 hover:text-sky-600 transition duration-300"
+          :href="route('user', {user: author.login})"
+        >
+          {{ author.login }}
+        </Link>
 
         <p
           class="text-xs text-gray-400 font-bold"
