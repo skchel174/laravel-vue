@@ -6,6 +6,7 @@ use App\Http\Controllers\Article\ArticleController;
 use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\User\ArticlesController;
 use App\Http\Controllers\User\BookmarksController;
+use App\Http\Controllers\User\CommentsController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,9 @@ Route::prefix('/users/{user:login}')->group(function () {
 
     Route::get('/articles/{status?}', [ArticlesController::class, 'index'])
         ->name('user.articles');
+
+    Route::get('/comments', [CommentsController::class, 'index'])
+        ->name('user.comments');
 
     Route::get('/bookmarks/articles', [BookmarksController::class, 'articles'])
         ->name('user.bookmarks.articles');
