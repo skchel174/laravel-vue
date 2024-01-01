@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Article\ArticleController;
 use App\Http\Controllers\Comment\CommentController;
-use App\Http\Controllers\User\ArticlesController;
-use App\Http\Controllers\User\BookmarksController;
-use App\Http\Controllers\User\CommentsController;
-use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,19 +34,19 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'auth.session', 'verified'])->name('dashboard');
 
 Route::prefix('/users/{user:login}')->group(function () {
-    Route::get('/', [ProfileController::class, 'index'])
+    Route::get('/', [UserController::class, 'profile'])
         ->name('user');
 
-    Route::get('/articles/{status?}', [ArticlesController::class, 'index'])
+    Route::get('/articles/{status?}', [UserController::class, 'articles'])
         ->name('user.articles');
 
-    Route::get('/comments', [CommentsController::class, 'index'])
+    Route::get('/comments', [UserController::class, 'comments'])
         ->name('user.comments');
 
-    Route::get('/bookmarks/articles', [BookmarksController::class, 'articles'])
+    Route::get('/bookmarks/articles', [UserController::class, 'bookmarkedArticles'])
         ->name('user.bookmarks.articles');
 
-    Route::get('/bookmarks/comments', [BookmarksController::class, 'comments'])
+    Route::get('/bookmarks/comments', [UserController::class, 'bookmarkedComments'])
         ->name('user.bookmarks.comments');
 });
 

@@ -7,23 +7,18 @@ namespace App\Http\Controllers\Article;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\Comment\CommentsResource;
-use App\Models\User\User;
-use App\Service\ArticlesService;
-use Illuminate\Contracts\Auth\StatefulGuard;
+use App\Models\Article\Article;
+use App\Models\Article\Status;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ArticleController extends Controller
 {
-    public function __construct(
-        private readonly ArticlesService $articlesService,
-        private readonly StatefulGuard $authService,
-    ) {
-    }
-
     public function index(int $article): Response
     {
-        $article = $this->articlesService->getById($article);
+        $article = $this->getArticleById($article);
 
         return Inertia::render('Article/ArticlePage', [
             'article' => new ArticleResource($article),
@@ -32,14 +27,13 @@ class ArticleController extends Controller
 
     public function comments(int $article): Response
     {
-        $article = $this->articlesService->getById($article);
+        $article = $this->getArticleById($article);
 
         $comments = $article->comments()
             ->with('comments')
             ->paginate();
 
-        /** @var User $user */
-        if ($user = $this->authService->user()) {
+        if ($user = Auth::user()) {
             $bookmarkedComments = $user->getBookmarkedCommentsByArticle($article);
             $bookmarkedCommentsIds = $bookmarkedComments->pluck('id');
         }
@@ -49,5 +43,22 @@ class ArticleController extends Controller
             'comments' => new CommentsResource($comments),
             'bookmarkedComments' => $bookmarkedCommentsIds ?? [],
         ]);
+    }
+
+    private function getArticleById(int $articleId): Article
+    {
+        $query = Article::query();
+
+        if (Auth::check()) {
+            $query->withExists([
+                'likes as is_liked' => fn(Builder $query) => $query->whereId(Auth::id()),
+                'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId(Auth::id()),
+            ]);
+        }
+
+        return $query->with(['topics', 'tags'])
+            ->withCount('likes', 'bookmarks', 'relatedComments')
+            ->whereStatus(Status::Published)
+            ->findOrFail($articleId);
     }
 }
