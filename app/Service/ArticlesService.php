@@ -7,25 +7,20 @@ namespace App\Service;
 use App\Models\Article\Article;
 use App\Models\Article\Status;
 use App\Models\User\User;
-use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class ArticlesService
 {
-    public function __construct(private readonly StatefulGuard $authService)
-    {
-    }
-
     public function getById(int $id): Article
     {
         $query = Article::query();
 
-        /** @var User $user */
-        if ($user = $this->authService->user()) {
+        if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn (Builder $query) => $query->whereId($user->id),
-                'bookmarks as is_bookmarked' => fn (Builder $query) => $query->whereId($user->id),
+                'likes as is_liked' => fn(Builder $query) => $query->whereId($user->id),
+                'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId($user->id),
             ]);
         }
 
@@ -39,11 +34,10 @@ class ArticlesService
     {
         $query = $author->articles();
 
-        /** @var User $authUser */
-        if ($user = $this->authService->user()) {
+        if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn (Builder $query) => $query->whereId($user->id),
-                'bookmarks as is_bookmarked' => fn (Builder $query) => $query->whereId($user->id),
+                'likes as is_liked' => fn(Builder $query) => $query->whereId($user->id),
+                'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId($user->id),
             ]);
         }
 
@@ -54,5 +48,22 @@ class ArticlesService
             ->orderBy('id', 'desc')
             ->paginate()
             ->withQueryString();
+    }
+
+    public function getBookmarkedByUser(User $user): LengthAwarePaginator
+    {
+        $query = $user->bookmarkedArticles();
+
+        if ($authUser = Auth::user()) {
+            $query->withExists([
+                'likes as is_liked' => fn(Builder $query) => $query->whereId($authUser->id),
+                'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId($authUser->id),
+            ]);
+        }
+
+        return $query->with(['topics'])
+            ->withCount(['likes', 'relatedComments'])
+            ->orderBy('id', 'desc')
+            ->paginate();
     }
 }

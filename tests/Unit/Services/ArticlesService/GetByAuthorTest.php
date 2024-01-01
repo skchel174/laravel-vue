@@ -10,13 +10,13 @@ use App\Models\Comment\Comment;
 use App\Models\Topic\Topic;
 use App\Models\User\User;
 use App\Service\ArticlesService;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
-class GetByUserTest extends TestCase
+class GetByAuthorTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -25,9 +25,15 @@ class GetByUserTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        /** @var Article $article */
-        $article = Article::factory()
-            ->hasAttached(Topic::factory())
+        Auth::shouldReceive('user')
+            ->once()
+            ->andReturn(null);
+
+        Article::factory()
+            ->create(['status' => Status::Moderated]);
+
+        /** @var Collection<Article> $articles */
+        $articles = Article::factory(2)
             ->likedBy(User::factory()->create())
             ->likedBy(User::factory()->create())
             ->create([
@@ -35,31 +41,29 @@ class GetByUserTest extends TestCase
                 'status' => $status = Status::Published,
             ]);
 
-        Comment::factory(2)
-            ->forArticle($article)
+        Comment::factory(3)
+            ->forArticle($articles[0])
             ->create();
 
-        Article::factory()->create([
-            'status' => Status::Moderated,
-        ]);
+        Comment::factory(3)
+            ->forArticle($articles[1])
+            ->create();
 
-        $authService = $this->createAuthService($user);
-
-        $service = new ArticlesService($authService);
+        $service = new ArticlesService();
 
         $paginator = $service->getByAuthor($user, $status);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertContainsOnlyInstancesOf(Article::class,  $paginator->items());
-        $this->assertCount(1, $paginator->items());
+        $this->assertCount($articles->count(), $paginator->items());
 
-        $userArticle = $paginator->items()[0];
-
-        $this->assertTrue($article->is($userArticle));
-        $this->assertTrue($userArticle->author->is($user));
-        $this->assertEquals(Status::Published, $userArticle->status);
-        $this->assertEquals(2, $userArticle->likes_count);
-        $this->assertEquals(2, $userArticle->related_comments_count);
+        foreach (Collection::make($paginator->items()) as $article) {
+            /** @var Article $article */
+            $this->assertTrue($article->author->is($user));
+            $this->assertEquals(Status::Published, $article->status);
+            $this->assertEquals(2, $article->likes_count);
+            $this->assertEquals(3, $article->related_comments_count);
+        }
     }
 
     public function testGetArticlesForAuthenticatedUser()
@@ -67,34 +71,27 @@ class GetByUserTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
+        Auth::shouldReceive('user')
+            ->once()
+            ->andReturn($user);
+
         /** @var User $author */
         $author = User::factory()->create();
 
-        Article::factory()
+        Article::factory(3)
             ->hasAttached(Topic::factory())
             ->likedBy($user)
             ->bookmarkedBy($user)
             ->create(['author_id' => $author]);
 
-        $authService = $this->createAuthService($user);
-
-        $service = new ArticlesService($authService);
+        $service = new ArticlesService();
 
         $paginator = $service->getByAuthor($author, Status::Published);
 
-        $article = $paginator->items()[0];
-
-        $this->assertTrue($article->is_liked);
-        $this->assertTrue($article->is_bookmarked);
-    }
-
-    private function createAuthService(?User $user = null): StatefulGuard
-    {
-        $service = $this->createMock(StatefulGuard::class);
-        $service->expects($this->once())
-            ->method('user')
-            ->willReturn($user);
-
-        return $service;
+        foreach (Collection::make($paginator->items()) as $article) {
+            /** @var Article $article */
+            $this->assertTrue($article->is_liked);
+            $this->assertTrue($article->is_bookmarked);
+        }
     }
 }

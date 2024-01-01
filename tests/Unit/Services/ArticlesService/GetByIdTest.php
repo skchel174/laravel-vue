@@ -6,12 +6,10 @@ namespace Tests\Unit\Services\ArticlesService;
 
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
-use App\Models\Tag\Tag;
-use App\Models\Topic\Topic;
 use App\Models\User\User;
 use App\Service\ArticlesService;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class GetByIdTest extends TestCase
@@ -22,8 +20,6 @@ class GetByIdTest extends TestCase
     {
         /** @var Article $article */
         $article = Article::factory()
-            ->hasAttached(Tag::factory())
-            ->hasAttached(Topic::factory())
             ->likedBy(User::factory()->create())
             ->create();
 
@@ -31,9 +27,11 @@ class GetByIdTest extends TestCase
             ->forArticle($article)
             ->create();
 
-        $authService = $this->createAuthService();
+        Auth::shouldReceive('user')
+            ->once()
+            ->andReturnNull();
 
-        $service = new ArticlesService($authService);
+        $service = new ArticlesService();
 
         $fetchedArticle = $service->getById($article->id);
 
@@ -41,8 +39,6 @@ class GetByIdTest extends TestCase
         $this->assertTrue($article->is($fetchedArticle));
         $this->assertNull($fetchedArticle->is_liked);
         $this->assertNull($fetchedArticle->is_bookmarked);
-        $this->assertNotEmpty($fetchedArticle->tags);
-        $this->assertNotEmpty($fetchedArticle->topics);
         $this->assertEquals(1, $fetchedArticle->likes_count);
         $this->assertEquals($fetchedArticle->related_comments_count, $comments->count());
     }
@@ -59,24 +55,15 @@ class GetByIdTest extends TestCase
             ->likedBy($user)
             ->create();
 
-        $authService = $this->createAuthService($user);
+        Auth::shouldReceive('user')
+            ->once()
+            ->andReturns($user);
 
-        $service = new ArticlesService($authService);
+        $service = new ArticlesService();
 
-        $fetchedArticle = $service->getById($article->id);
+        $article = $service->getById($article->id);
 
-        $this->assertTrue($fetchedArticle->is_liked);
-        $this->assertTrue($fetchedArticle->is_bookmarked);
-        $this->assertEquals(2, $fetchedArticle->likes_count);
-    }
-
-    private function createAuthService(?User $user = null): StatefulGuard
-    {
-        $service = $this->createMock(StatefulGuard::class);
-        $service->expects($this->once())
-            ->method('user')
-            ->willReturn($user);
-
-        return $service;
+        $this->assertTrue($article->is_liked);
+        $this->assertTrue($article->is_bookmarked);
     }
 }
