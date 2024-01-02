@@ -6,21 +6,22 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\ChangePasswordRequest;
-use App\Service\Profile\PasswordUpdateService;
+use App\Models\User\Password;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ChangePasswordController extends Controller
 {
-    public function __construct(private readonly PasswordUpdateService $service)
-    {
-    }
-
     public function __invoke(ChangePasswordRequest $request): RedirectResponse
     {
-        $this->service->changePassword($request->password);
+        $password = Password::create($request->password);
 
-        return redirect()
-            ->route('login')
+        Auth::user()->changePassword($password);
+
+        Session::invalidate();
+
+        return redirect()->route('login')
             ->with('status', 'Password successfully changed');
     }
 }

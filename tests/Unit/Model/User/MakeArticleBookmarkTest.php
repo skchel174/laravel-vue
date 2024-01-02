@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\User;
 
+use App\Exceptions\Article\ArticleNotPublished;
+use App\Exceptions\User\BookmarkAlreadyCreated;
 use App\Models\Article\Article;
-use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Article\Status;
-use App\Models\User\Exceptions\BookmarkAlreadyCreated;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

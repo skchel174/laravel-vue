@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\Article;
 
+use App\Exceptions\Article\ArticleModerated;
 use App\Models\Article\Article;
-use App\Models\Article\Exceptions\ArticleModerated;
 use App\Models\Article\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

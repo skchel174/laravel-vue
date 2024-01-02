@@ -7,20 +7,20 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\PasswordRecoveryRequest;
 use App\Http\Requests\Auth\PasswordResetRequest;
-use App\Models\User\Exceptions\PasswordResetNotRequested;
-use App\Models\User\Exceptions\VerificationTokenExpired;
-use App\Service\Auth\ResetPasswordService;
+use App\Mail\ResetPassword;
+use App\Models\User\Password;
+use App\Models\User\User;
+use App\Models\User\VerifyToken;
+use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PasswordResetController extends Controller
 {
-    public function __construct(private readonly ResetPasswordService $service)
-    {
-    }
-
     public function index(): Response
     {
         return Inertia::render('Auth/ForgotPassword', [
@@ -30,10 +30,14 @@ class PasswordResetController extends Controller
 
     public function email(PasswordResetRequest $request): RedirectResponse
     {
-        $this->service->sendVerificationEmail($request->email);
+        /** @var User $user */
+        $user = User::whereEmail($request->email)->firstOrFail();
 
-        return redirect()
-            ->route('login')
+        $user->update(['verify_token' => VerifyToken::create()]);
+
+        Mail::to($user->email)->send(new ResetPassword($user));
+
+        return redirect()->route('login')
             ->with('status', 'We have emailed your password reset link');
     }
 
@@ -46,16 +50,19 @@ class PasswordResetController extends Controller
 
     public function reset(PasswordRecoveryRequest $request): RedirectResponse
     {
+        /** @var User $user */
+        $user = User::whereVerifyToken($request->token)->firstOrFail();
+
         try {
-            $this->service->changePassword($request->password, $request->token);
-        } catch (PasswordResetNotRequested|VerificationTokenExpired $e) {
-            return redirect()
-                ->route('login')
+            $user->resetPassword(Password::create($request->password));
+        } catch (DomainException $e) {
+            return redirect()->route('login')
                 ->with('error', $e->getMessage());
         }
 
-        return redirect()
-            ->route('login')
+        Session::invalidate();
+
+        return redirect()->route('login')
             ->with('status', 'Your password has been reset');
     }
 }

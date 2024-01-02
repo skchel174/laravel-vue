@@ -3,8 +3,8 @@ import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import UserLayout from "@/Layouts/UserLayout.vue";
-import CommentCard from "@/Pages/User/Bookmarks/Comments/Partials/CommentCard.vue";
 import NavigationWrapper from "@/Pages/User/Partials/NavigationWrapper.vue";
+import CommentCard from "@/Components/Comment/CommentCard.vue";
 
 const props = defineProps({
   comments: {
@@ -56,7 +56,7 @@ const selectLink = (value) => {
           :total-pages="comments.totalPages"
           :current-page="comments.currentPage"
           route-name="user.articles"
-          :queryParams="{user: user.login, status}"
+          :queryParams="{user: user.login}"
         />
       </div>
 

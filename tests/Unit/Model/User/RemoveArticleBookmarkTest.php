@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\User;
 
+use App\Exceptions\User\BookmarkNotCreated;
 use App\Models\Article\Article;
-use App\Models\User\Exceptions\BookmarkNotCreated;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

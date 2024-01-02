@@ -7,33 +7,22 @@ namespace App\Http\Controllers\Api\Comments;
 use App\Http\Controllers\Controller;
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
-use App\Models\User\User;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class BookmarkController extends Controller
 {
-    public function __construct(private readonly StatefulGuard $authService)
-    {
-    }
-
     public function make(Article $article, Comment $comment): JsonResponse
     {
-        /** @var User $user */
-        $user = $this->authService->user();
-
-        $user->makeCommentBookmark($comment);
+        Auth::user()->makeCommentBookmark($comment);
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 
     public function remove(Article $article, Comment $comment): JsonResponse
     {
-        /** @var User $user */
-        $user = $this->authService->user();
-
-        $user->removeCommentBookmark($comment);
+        Auth::user()->removeCommentBookmark($comment);
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }

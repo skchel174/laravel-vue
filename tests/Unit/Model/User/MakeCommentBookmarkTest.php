@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\User;
 
+use App\Exceptions\User\BookmarkAlreadyCreated;
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
-use App\Models\User\Exceptions\BookmarkAlreadyCreated;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -22,7 +22,7 @@ class MakeCommentBookmarkTest extends TestCase
 
         /** @var Comment $comment */
         $comment = Comment::factory()
-            ->forCommentable(Article::factory()->create())
+            ->forArticle(Article::factory()->create())
             ->create();
 
         $user->makeCommentBookmark($comment);
@@ -39,7 +39,7 @@ class MakeCommentBookmarkTest extends TestCase
 
         /** @var Comment $comment */
         $comment = Comment::factory()
-            ->forCommentable(Article::factory()->create())
+            ->forArticle(Article::factory()->create())
             ->bookmarkedBy($user)
             ->create();
 

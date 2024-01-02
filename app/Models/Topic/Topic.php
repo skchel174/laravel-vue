@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\Topic;
 
+use App\Exceptions\Topic\UserAlreadySubscribed;
+use App\Exceptions\Topic\UserNotSubscribed;
 use App\Models\Article\Article;
 use App\Models\Category\Category;
-use App\Models\Topic\Exceptions\UserAlreadySubscribed;
-use App\Models\Topic\Exceptions\UserNotSubscribed;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

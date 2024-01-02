@@ -22,17 +22,10 @@ const props = defineProps({
 });
 
 const tabs = {
-  profile: route('user', {
-    user: props.user.login,
-  }),
-
-  articles: route('user.articles', {
-    user: props.user.login,
-  }),
-
-  bookmarks: route('user.bookmarks.articles', {
-    user: props.user.login,
-  }),
+  profile: route('user', {user: props.user.login}),
+  articles: route('user.articles', {user: props.user.login}),
+  comments: route('user.comments', {user: props.user.login}),
+  bookmarks: route('user.bookmarks.articles', {user: props.user.login}),
 };
 
 const currentTab = ref(props.currentTab);
@@ -95,7 +88,7 @@ const selectTab = (tab) => {
           <slot/>
         </div>
 
-        <div class="hidden lg:block space-y-4">
+        <div class="hidden lg:block w-80 space-y-4">
           <div class="p-4 bg-white w-full lg:max-w-xs">
             <h2 class="text-sm text-gray-500 font-bold uppercase">
               Information

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\Article;
 
+use App\Exceptions\Article\ArticleNotLiked;
 use App\Models\Article\Article;
-use App\Models\Article\Exceptions\ArticleNotLiked;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
