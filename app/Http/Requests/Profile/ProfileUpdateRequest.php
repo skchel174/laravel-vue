@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Requests\Profile;
 
 use App\Models\User\User;
-use App\Service\Profile\ProfileUpdateDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
@@ -41,16 +40,5 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'regex' => 'Login can only contain letters (A-Z a-z) and numbers (0-9)',
         ];
-    }
-
-    public function getDto(): ProfileUpdateDto
-    {
-        return new ProfileUpdateDto(
-            $this->login,
-            (string) $this->name,
-            (string) $this->about,
-            $this->avatar,
-            $this->has('avatar'),
-        );
     }
 }

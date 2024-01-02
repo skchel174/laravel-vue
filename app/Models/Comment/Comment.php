@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Comment;
 
+use App\Events\Comment\CommentCreated;
+use App\Events\Comment\CommentUpdated;
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Comment\Exception\CommentNotCommentable;
@@ -18,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Event;
 
 /**
  * @property-read int $id
@@ -57,13 +60,15 @@ class Comment extends Model
             throw new AccountNotActive();
         }
 
-        $instance = static::make(['text' => $text]);
-        $instance->author()->associate($author);
-        $instance->article()->associate($article);
-        $instance->commentable()->associate($article);
-        $instance->save();
+        $comment = static::make(['text' => $text]);
+        $comment->author()->associate($author);
+        $comment->article()->associate($article);
+        $comment->commentable()->associate($article);
+        $comment->save();
 
-        return $instance;
+        Event::dispatch(new CommentCreated($comment));
+
+        return $comment;
     }
 
     public static function createForComment(Comment $comment, User $author, string $text): static
@@ -92,6 +97,8 @@ class Comment extends Model
         $instance->commentable()->associate($comment);
         $instance->save();
 
+        Event::dispatch(new CommentCreated($comment));
+
         return $instance;
     }
 
@@ -112,6 +119,8 @@ class Comment extends Model
         }
 
         $this->update(['text' => $text]);
+
+        Event::dispatch(new CommentUpdated($this));
     }
 
     public function isAuthor(User $author): bool

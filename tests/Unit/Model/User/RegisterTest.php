@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\User;
 
+use App\Events\User\UserRegistered;
 use App\Models\User\Password;
 use App\Models\User\Status;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Mockery;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -17,12 +20,18 @@ class RegisterTest extends TestCase
 
     public function testRegisterNewUser(): void
     {
-        $user = User::register(
-            $login = $this->faker->word(),
-            $email = $this->faker->email(),
-            Password::create($password = 'secret'),
-            $avatar = $this->faker->filePath(),
-        );
+        $login = $this->faker->word();
+        $email = $this->faker->email();
+        $password = $this->faker->word();
+        $avatar = $this->faker->filePath();
+
+        Event::shouldReceive('dispatch')
+            ->once()
+            ->with(Mockery::on(function ($arg) use ($login) {
+                return $arg instanceof UserRegistered && $arg->user->login === $login;
+            }));
+
+        $user = User::register($login, $email, Password::create($password), $avatar);
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals($user->login, $login);

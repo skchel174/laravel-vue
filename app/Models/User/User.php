@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\User;
 
+use App\Events\User\EmailChanged;
+use App\Events\User\EmailChanging;
+use App\Events\User\PasswordChanged;
+use App\Events\User\PasswordReset;
+use App\Events\User\UserRegistered;
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Comment\Comment;
@@ -27,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -81,7 +87,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
     public static function register(string $login, string $email, Password $password, string $avatar): static
     {
-        return static::create([
+        $user = static::create([
             'login' => $login,
             'email' => $email,
             'password' => $password,
@@ -89,6 +95,10 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'status' => Status::Wait,
             'verify_token' => VerifyToken::create(),
         ]);
+
+        Event::dispatch(new UserRegistered($user));
+
+        return $user;
     }
 
     public function verifyRegistration(string $token): void
@@ -123,6 +133,8 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'new_email' => $email,
             'verify_token' => VerifyToken::create(),
         ]);
+
+        Event::dispatch(new EmailChanging($this));
     }
 
     public function verifyNewEmail(string $token): void
@@ -146,13 +158,8 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'new_email' => null,
             'verify_token' => null,
         ]);
-    }
 
-    public function requestVerification(): void
-    {
-        $this->update([
-            'verify_token' => VerifyToken::create(),
-        ]);
+        Event::dispatch(new EmailChanged($this));
     }
 
     public function resetPassword(Password $password): void
@@ -171,6 +178,15 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'password' => $password,
             'verify_token' => null,
         ]);
+
+        Event::dispatch(new PasswordReset($this));
+    }
+
+    public function changePassword(Password $password): void
+    {
+        $this->update(['password' => $password]);
+
+        Event::dispatch(new PasswordChanged($this));
     }
 
     public function isArticleBookmarked(Article $article): bool

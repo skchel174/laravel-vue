@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\Comment;
 
+use App\Events\Comment\CommentCreated;
 use App\Models\Article\Article;
 use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Article\Status as ArticleStatus;
@@ -13,6 +14,8 @@ use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\Status as UserStatus;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Mockery;
 use Tests\TestCase;
 
 class CreateForCommentTest extends TestCase
@@ -31,6 +34,10 @@ class CreateForCommentTest extends TestCase
         $commentable = Comment::factory()
             ->forArticle($article)
             ->create();
+
+        Event::shouldReceive('dispatch')
+            ->once()
+            ->with(Mockery::on(fn ($arg) => $arg instanceof CommentCreated));
 
         $comment = Comment::createForComment($commentable, $author, $text = $this->faker->text());
 
@@ -60,6 +67,8 @@ class CreateForCommentTest extends TestCase
             ->forArticle($article)
             ->create();
 
+        Event::shouldReceive('dispatch')->never();
+
         Comment::createForComment($comment, $author, $this->faker->text());
     }
 
@@ -80,6 +89,8 @@ class CreateForCommentTest extends TestCase
             ->forArticle($article)
             ->create();
 
+        Event::shouldReceive('dispatch')->never();
+
         Comment::createForComment($comment, $author, $this->faker->text());
     }
 
@@ -94,6 +105,8 @@ class CreateForCommentTest extends TestCase
         $comment = Comment::factory()
             ->forArticle(Article::factory()->create())
             ->create(['depth' => Comment::MAX_DEPTH]);
+
+        Event::shouldReceive('dispatch')->never();
 
         Comment::createForComment($comment, $author, $this->faker->text());
     }

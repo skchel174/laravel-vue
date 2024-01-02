@@ -56,7 +56,7 @@ const selectLink = (value) => {
           :total-pages="comments.totalPages"
           :current-page="comments.currentPage"
           route-name="user.articles"
-          :queryParams="{user: user.login, status}"
+          :queryParams="{user: user.login}"
         />
       </div>
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Events\User;
 
 use App\Models\User\User;
@@ -13,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ProfileUpdated
+class UserRegistered
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

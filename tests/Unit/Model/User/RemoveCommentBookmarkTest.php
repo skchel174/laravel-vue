@@ -23,7 +23,7 @@ class RemoveCommentBookmarkTest extends TestCase
 
         /** @var Comment $comment */
         $comment = Comment::factory()
-            ->forCommentable(Article::factory()->create())
+            ->forArticle(Article::factory()->create())
             ->bookmarkedBy($user)
             ->create();
 
@@ -41,7 +41,7 @@ class RemoveCommentBookmarkTest extends TestCase
 
         /** @var Comment $comment */
         $comment = Comment::factory()
-            ->forCommentable(Article::factory()->create())
+            ->forArticle(Article::factory()->create())
             ->create();
 
         $user->removeCommentBookmark($comment);

@@ -88,7 +88,7 @@ const selectTab = (tab) => {
           <slot/>
         </div>
 
-        <div class="hidden lg:block space-y-4">
+        <div class="hidden lg:block w-72 space-y-4">
           <div class="p-4 bg-white w-full lg:max-w-xs">
             <h2 class="text-sm text-gray-500 font-bold uppercase">
               Information

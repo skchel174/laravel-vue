@@ -6,8 +6,9 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Requests\Profile\ProfileDeleteRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
-use App\Service\Profile\ProfileService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
@@ -15,10 +16,6 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class ProfileController
 {
-    public function __construct(private readonly ProfileService $service)
-    {
-    }
-
     public function index(): Response
     {
         return Inertia::render('Profile/ProfilePage', [
@@ -32,16 +29,33 @@ class ProfileController
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $this->service->updateProfileInfo($request->getDto());
+        $user = Auth::user();
 
-        return redirect()
-            ->route('profile')
+        $user->update([
+            'login' => $request->login,
+            'name' => $request->name,
+            'about' => $request->about,
+        ]);
+
+        if ($request->has('avatar')) {
+            $user->setAvatar($request->avatar);
+        }
+
+        return redirect()->route('profile')
             ->with('status', 'Profile successfully updated');
     }
 
     public function delete(ProfileDeleteRequest $request): RedirectResponse
     {
-        $this->service->deleteProfile();
+        $user = Auth::user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        Session::invalidate();
+
+        Session::regenerateToken();
 
         return redirect()->route('main');
     }

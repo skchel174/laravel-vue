@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\User;
 
+use App\Events\User\EmailChanged;
 use App\Models\User\Exceptions\InvalidVerificationToken;
 use App\Models\User\Exceptions\VerificationNotRequested;
 use App\Models\User\Exceptions\VerificationTokenExpired;
@@ -12,6 +13,7 @@ use App\Models\User\VerifyToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Mockery;
 use Tests\TestCase;
 
 class VerifyNewEmailTest extends TestCase
@@ -25,6 +27,12 @@ class VerifyNewEmailTest extends TestCase
             'new_email' => $email = $this->faker->email(),
             'verify_token' => $token = VerifyToken::create(),
         ]);
+
+        Event::shouldReceive('dispatch')
+            ->once()
+            ->with(Mockery::on(function ($arg) use ($user) {
+                return $arg instanceof EmailChanged && $arg->user->is($user);
+            }));
 
         $user->verifyNewEmail($token->getValue());
 
@@ -42,6 +50,8 @@ class VerifyNewEmailTest extends TestCase
             'new_email' => $this->faker->email(),
         ]);
 
+        Event::shouldReceive('dispatch')->never();
+
         $user->verifyNewEmail($this->faker->word());
     }
 
@@ -49,8 +59,7 @@ class VerifyNewEmailTest extends TestCase
     {
         $this->expectException(InvalidVerificationToken::class);
 
-        Event::fake();
-
+        Event::shouldReceive('dispatch')->never();
         /** @var User $user */
         $user = User::factory()->create([
             'new_email' => $this->faker->email(),
@@ -71,6 +80,8 @@ class VerifyNewEmailTest extends TestCase
             'new_email' => $this->faker->email(),
             'verify_token' => $token = VerifyToken::create(),
         ]);
+
+        Event::shouldReceive('dispatch')->never();
 
         $user->verifyNewEmail($token->getValue());
     }

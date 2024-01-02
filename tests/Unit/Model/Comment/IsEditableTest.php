@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class IsEditTest extends TestCase
+class IsEditableTest extends TestCase
 {
     use RefreshDatabase;
 
