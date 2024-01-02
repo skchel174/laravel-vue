@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\Article;
 
+use App\Exceptions\Article\ArticlePublished;
+use App\Exceptions\Article\ArticleWasNotModerated;
 use App\Models\Article\Article;
-use App\Models\Article\Exceptions\ArticlePublished;
-use App\Models\Article\Exceptions\ArticleWasNotModerated;
 use App\Models\Article\Status;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;

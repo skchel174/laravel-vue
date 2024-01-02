@@ -6,11 +6,11 @@ namespace App\Models\Comment;
 
 use App\Events\Comment\CommentCreated;
 use App\Events\Comment\CommentUpdated;
+use App\Exceptions\Article\ArticleNotPublished;
+use App\Exceptions\Comment\CommentNotCommentable;
+use App\Exceptions\Comment\ExceededEditingTimeLimit;
+use App\Exceptions\User\AccountNotActive;
 use App\Models\Article\Article;
-use App\Models\Article\Exceptions\ArticleNotPublished;
-use App\Models\Comment\Exception\CommentNotCommentable;
-use App\Models\Comment\Exception\ExceededEditingTimeLimit;
-use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

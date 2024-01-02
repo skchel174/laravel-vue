@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\Article;
 
+use App\Exceptions\Article\ArticleNotDeleted;
 use App\Models\Article\Article;
-use App\Models\Article\Exceptions\ArticleNotDeleted;
 use App\Models\Article\Status;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;

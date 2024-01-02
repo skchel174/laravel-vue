@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\Topic;
 
-use App\Models\Topic\Exceptions\UserAlreadySubscribed;
+use App\Exceptions\Topic\UserAlreadySubscribed;
 use App\Models\Topic\Topic;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models\Article;
 
-use App\Models\Article\Exceptions\ArticleAlreadyLiked;
-use App\Models\Article\Exceptions\ArticleModerated;
-use App\Models\Article\Exceptions\ArticleNotDeleted;
-use App\Models\Article\Exceptions\ArticleNotLiked;
-use App\Models\Article\Exceptions\ArticlePublished;
-use App\Models\Article\Exceptions\ArticleWasNotModerated;
+use App\Exceptions\Article\ArticleAlreadyLiked;
+use App\Exceptions\Article\ArticleModerated;
+use App\Exceptions\Article\ArticleNotDeleted;
+use App\Exceptions\Article\ArticleNotLiked;
+use App\Exceptions\Article\ArticlePublished;
+use App\Exceptions\Article\ArticleWasNotModerated;
 use App\Models\Category\Category;
 use App\Models\Comment\Comment;
 use App\Models\Tag\Tag;

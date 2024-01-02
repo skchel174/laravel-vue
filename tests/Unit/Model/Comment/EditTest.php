@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Model\Comment;
 
 use App\Events\Comment\CommentUpdated;
+use App\Exceptions\Comment\ExceededEditingTimeLimit;
 use App\Models\Article\Article;
 use App\Models\Comment\Comment;
-use App\Models\Comment\Exception\ExceededEditingTimeLimit;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;

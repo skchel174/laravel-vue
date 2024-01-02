@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Model\Comment;
 
 use App\Events\Comment\CommentCreated;
+use App\Exceptions\Article\ArticleNotPublished;
+use App\Exceptions\User\AccountNotActive;
 use App\Models\Article\Article;
-use App\Models\Article\Exceptions\ArticleNotPublished;
 use App\Models\Article\Status as ArticleStatus;
 use App\Models\Comment\Comment;
-use App\Models\User\Exceptions\AccountNotActive;
 use App\Models\User\Status as UserStatus;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

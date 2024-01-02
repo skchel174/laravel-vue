@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Model\User;
 
-use App\Models\User\Exceptions\InvalidVerificationToken;
-use App\Models\User\Exceptions\RegistrationAlreadyVerified;
-use App\Models\User\Exceptions\VerificationNotRequested;
-use App\Models\User\Exceptions\VerificationTokenExpired;
+use App\Exceptions\User\InvalidVerificationToken;
+use App\Exceptions\User\RegistrationAlreadyVerified;
+use App\Exceptions\User\VerificationNotRequested;
+use App\Exceptions\User\VerificationTokenExpired;
 use App\Models\User\Status;
 use App\Models\User\User;
 use App\Models\User\VerifyToken;

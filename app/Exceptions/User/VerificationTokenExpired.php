@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models\User\Exceptions;
+namespace App\Exceptions\User;
 
 use DomainException;
 

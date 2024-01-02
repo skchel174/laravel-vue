@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Model\User;
 
 use App\Events\User\PasswordReset;
-use App\Models\User\Exceptions\PasswordResetNotRequested;
-use App\Models\User\Exceptions\VerificationTokenExpired;
+use App\Exceptions\User\PasswordResetNotRequested;
+use App\Exceptions\User\VerificationTokenExpired;
 use App\Models\User\Password;
 use App\Models\User\User;
 use App\Models\User\VerifyToken;
