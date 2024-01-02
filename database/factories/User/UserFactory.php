@@ -46,4 +46,9 @@ class UserFactory extends Factory
            $user->setAvatar(UploadedFile::fake()->image('avatar.jpg'));
         });
     }
+
+    public function withFollowing(User $user): static
+    {
+        return $this->hasAttached($user, relationship: 'following');
+    }
 }

@@ -15,6 +15,9 @@ use App\Exceptions\User\BookmarkNotCreated;
 use App\Exceptions\User\InvalidVerificationToken;
 use App\Exceptions\User\PasswordResetNotRequested;
 use App\Exceptions\User\RegistrationAlreadyVerified;
+use App\Exceptions\User\UnableFollowYourself;
+use App\Exceptions\User\SubscriptionAlreadyExists;
+use App\Exceptions\User\SubscriptionNotExists;
 use App\Exceptions\User\VerificationNotRequested;
 use App\Exceptions\User\VerificationTokenExpired;
 use App\Models\Article\Article;
@@ -59,6 +62,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read Collection<Article> $bookmarkedArticles
  * @property-read Collection<Article> $likedArticles
  * @property-read Collection<Topic> $topics
+ * @property-read Collection<User> $following
+ * @property-read Collection<User> $followers
  *
  * @method static Builder whereLogin(string $login)
  * @method static Builder whereEmail(string $email)
@@ -243,6 +248,35 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             ->get();
     }
 
+    public function isFollow(User $user): bool
+    {
+        return $this->following()
+            ->where('id', $user->id)
+            ->exists();
+    }
+
+    public function follow(User $user): void
+    {
+        if ($this->is($user)) {
+            throw new UnableFollowYourself();
+        }
+
+        if ($this->isFollow($user)) {
+            throw new SubscriptionAlreadyExists();
+        }
+
+        $this->following()->attach($user);
+    }
+
+    public function unfollow(User $user): void
+    {
+        if (!$this->isFollow($user)) {
+            throw new SubscriptionNotExists();
+        }
+
+        $this->following()->detach($user);
+    }
+
     public function updateLastActivityTime(): void
     {
         if (CarbonImmutable::now() > $this->login_at->addHour()) {
@@ -286,6 +320,26 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     public function topics(): BelongsToMany
     {
         return $this->belongsToMany(Topic::class);
+    }
+
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'followers',
+            'user_id',
+            'follower_id'
+        );
+    }
+
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'followers',
+            'follower_id',
+            'user_id'
+        );
     }
 
     public function getAvatar(): ?Media

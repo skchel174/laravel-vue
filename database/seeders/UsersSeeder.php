@@ -12,9 +12,7 @@ class UsersSeeder extends Seeder
 {
     public function run(): void
     {
-        $config = config('filesystems.avatar_mask');
-        $avatars = Storage::disk($config['disk'])
-            ->files($config['directory']);
+        $avatars = Storage::disk('public')->files('avatar');
 
         User::factory()->create([
             'login' => 'user',
