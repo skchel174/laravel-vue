@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Article;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\Comment\CommentsCollection;
 use App\Models\Article\Article;

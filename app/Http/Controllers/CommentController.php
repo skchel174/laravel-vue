@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Comment;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\CreateCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Models\Article\Article;
