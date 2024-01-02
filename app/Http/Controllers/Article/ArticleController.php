@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Article;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Article\ArticleResource;
-use App\Http\Resources\Comment\CommentsResource;
+use App\Http\Resources\Comment\CommentsCollection;
 use App\Models\Article\Article;
 use App\Models\Article\Status;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +40,7 @@ class ArticleController extends Controller
 
         return Inertia::render('Article/CommentsPage', [
             'article' => new ArticleResource($article),
-            'comments' => new CommentsResource($comments),
+            'comments' => new CommentsCollection($comments),
             'bookmarkedComments' => $bookmarkedCommentsIds ?? [],
         ]);
     }

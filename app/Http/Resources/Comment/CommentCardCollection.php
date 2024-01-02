@@ -11,7 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 /**
  * @property LengthAwarePaginator $resource
  */
-class CommentsResource extends JsonResource
+class CommentCardCollection extends JsonResource
 {
     public function __construct(LengthAwarePaginator $resource)
     {
@@ -20,11 +20,18 @@ class CommentsResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+        $query = array_filter(
+            $request->query(),
+            fn (string $key) => $key !== $this->resource->getPageName(),
+        ARRAY_FILTER_USE_KEY,
+        );
+
         return [
+            'query' => $query,
             'perPage' => $this->resource->perPage(),
             'currentPage' => $this->resource->currentPage(),
             'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
-            'items' => CommentResource::collection($this->resource->items()),
+            'items' => CommentCardResource::collection($this->resource->items()),
         ];
     }
 }

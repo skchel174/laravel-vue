@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property-read Comment $resource
  */
-class BookmarkedCommentResource extends JsonResource
+class CommentCardResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

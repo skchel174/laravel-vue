@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Article\ArticlesResource;
-use App\Http\Resources\Comment\BookmarkedCommentsResource;
+use App\Http\Resources\Comment\CommentCardCollection;
 use App\Http\Resources\Topic\TopicResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Article\Status;
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         return Inertia::render('User/Comments/CommentsPage', [
             'user' => new UserResource($user),
-            'comments' => new BookmarkedCommentsResource($comments),
+            'comments' => new CommentCardCollection($comments),
         ]);
     }
 
@@ -119,7 +119,7 @@ class UserController extends Controller
 
         return Inertia::render('User/Bookmarks/Comments/CommentsPage', [
             'user' => new UserResource($user),
-            'comments' => new BookmarkedCommentsResource($comments),
+            'comments' => new CommentCardCollection($comments),
         ]);
     }
 }

@@ -15,6 +15,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class CommentResource extends JsonResource
 {
+    public function __construct(Comment $resource)
+    {
+        parent::__construct($resource);
+    }
+
     public function toArray(Request $request): array
     {
         return [
@@ -25,6 +30,7 @@ class CommentResource extends JsonResource
             'created_date' => $this->resource->created_at->format('d-m-Y H:i'),
             'comments' => CommentResource::collection($this->resource->comments),
             'total_comments' => $this->resource->getCommentsCount(),
+            'is_bookmarked' => (bool) $this->resource->is_bookmarked,
         ];
     }
 }
