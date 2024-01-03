@@ -115,23 +115,7 @@ const selectTab = (tab) => {
               </tr>
             </table>
           </div>
-
-          <div
-            class="p-4 bg-white w-full lg:max-w-xs"
-            v-if="user.about"
-          >
-            <h2 class="text-sm text-gray-500 font-bold uppercase">
-              About Me
-            </h2>
-
-            <Divider class="my-4"/>
-
-            <p class="text-sm text-gray-700 font-medium">
-              {{ user.about }}
-            </p>
-          </div>
         </div>
-
       </div>
     </MainWrapper>
   </NotificationWrapper>

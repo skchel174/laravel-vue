@@ -2,6 +2,7 @@
 import ProfileInfo from "@/Pages/User/Profile/Partials/ProfileInfo.vue";
 import ProfileTopics from "@/Pages/User/Profile/Partials/ProfileTopics.vue";
 import UserLayout from "@/Layouts/UserLayout.vue";
+import ProfileAbout from "@/Pages/User/Profile/Partials/ProfileAbout.vue";
 
 defineProps({
   user: {
@@ -21,10 +22,15 @@ defineProps({
     current-tab="profile"
     :user="user"
   >
-    <div class="mt-4 p-4 bg-white">
+    <div class="mt-4 p-4 bg-white space-y-4">
       <ProfileInfo
         class="mb-4 block lg:hidden"
         :user="user"
+      />
+
+      <ProfileAbout
+        v-if="user.about"
+        :text="user.about"
       />
 
       <ProfileTopics
