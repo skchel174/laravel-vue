@@ -27,6 +27,7 @@ const tabs = {
   comments: route('user.comments', {user: props.user.login}),
   bookmarks: route('user.bookmarks.articles', {user: props.user.login}),
   following: route('user.following', {user: props.user.login}),
+  followers: route('user.followers', {user: props.user.login}),
 };
 
 const currentTab = ref(props.currentTab);

@@ -53,6 +53,9 @@ Route::prefix('/users/{user:login}')
 
         Route::get('/following', [UserController::class, 'following'])
             ->name('user.following');
+
+        Route::get('/followers', [UserController::class, 'followers'])
+            ->name('user.followers');
     });
 
 Route::prefix('/articles/{article}')->group(function () {

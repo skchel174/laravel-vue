@@ -134,4 +134,15 @@ class UserController extends Controller
             'users' => new UsersCollection($following),
         ]);
     }
+
+    public function followers(User $user): Response
+    {
+        $following = $user->followers()
+            ->paginate(30);
+
+        return Inertia::render('User/Following/FollowersPage', [
+            'user' => new UserResource($user),
+            'users' => new UsersCollection($following),
+        ]);
+    }
 }
