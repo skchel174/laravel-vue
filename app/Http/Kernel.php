@@ -51,5 +51,7 @@ class Kernel extends HttpKernel
         'verified' => \App\Http\Middleware\EnsureRegistrationVerified::class,
         'unverified' => \App\Http\Middleware\EnsureRegistrationUnverified::class,
         'login.limiter' => \App\Http\Middleware\LoginAttemptsLimiter::class,
+
+        'user.subscription' => \App\Http\Middleware\User\CheckSubscription::class,
     ];
 }
