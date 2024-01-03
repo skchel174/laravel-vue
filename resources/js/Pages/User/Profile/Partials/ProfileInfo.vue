@@ -28,18 +28,5 @@ defineProps({
         {{ $formatDate(user.login_at, 'DD MMM YYYY') }}
       </p>
     </div>
-
-    <div
-      class="space-y-2"
-      v-if="user.about"
-    >
-      <h5 class="text-sm text-gray-700 font-bold">
-        About Me
-      </h5>
-
-      <p class="text-sm text-gray-500 font-medium">
-        {{ user.about }}
-      </p>
-    </div>
   </div>
 </template>

@@ -5,7 +5,8 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\Articles\LikesController;
 use App\Http\Controllers\Api\Articles\BookmarkController as ArticleBookmarkController;
 use App\Http\Controllers\Api\Comments\BookmarkController as CommentBookmarkController;
-use App\Http\Controllers\Api\Topics\SubscriptionController;
+use App\Http\Controllers\Api\Topics\SubscriptionController as TopicSubscriptionController;
+use App\Http\Controllers\Api\Users\SubscriptionController as UserSubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,8 +24,8 @@ Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
     Route::prefix('/topics/{topic}/subscription')
         ->name('api.topics.subscription')
         ->group(function () {
-            Route::post('', [SubscriptionController::class, 'make']);
-            Route::delete('', [SubscriptionController::class, 'remove']);
+            Route::post('', [TopicSubscriptionController::class, 'make']);
+            Route::delete('', [TopicSubscriptionController::class, 'remove']);
         });
 
     Route::prefix('/articles/{article}')->group(function () {
@@ -49,4 +50,11 @@ Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
                 Route::delete('', [CommentBookmarkController::class, 'remove']);
             });
     });
+
+    Route::prefix('/users/{user}/subscription')
+        ->name('api.users.subscription')
+        ->group(function () {
+            Route::post('', [UserSubscriptionController::class, 'make']);
+            Route::delete('', [UserSubscriptionController::class, 'remove']);
+        });
 });
