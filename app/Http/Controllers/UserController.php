@@ -8,6 +8,7 @@ use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Comment\CommentCardCollection;
 use App\Http\Resources\Topic\TopicResource;
 use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UsersCollection;
 use App\Models\Article\Status;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -120,6 +121,17 @@ class UserController extends Controller
         return Inertia::render('User/Bookmarks/Comments/CommentsPage', [
             'user' => new UserResource($user),
             'comments' => new CommentCardCollection($comments),
+        ]);
+    }
+
+    public function following(User $user): Response
+    {
+        $following = $user->following()
+            ->paginate(30);
+
+        return Inertia::render('User/Following/FollowingPage', [
+            'user' => new UserResource($user),
+            'users' => new UsersCollection($following),
         ]);
     }
 }
