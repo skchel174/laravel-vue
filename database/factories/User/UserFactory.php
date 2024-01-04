@@ -23,7 +23,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' => Password::create(self::PASSWORD),
             'name' => fake()->name(),
-            'about' => fake()->text(1000),
+            'about' => fake()->text(50),
             'avatar_mask' => fake()->filePath(),
             'remember_token' => Str::random(10),
             'status' => Status::Active,

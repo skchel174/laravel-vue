@@ -37,7 +37,7 @@ const url = route('user', {user: props.user.login});
       </p>
 
       <p class="text-gray-500">
-        User
+        {{ user.about ?? 'user' }}
       </p>
     </div>
   </div>

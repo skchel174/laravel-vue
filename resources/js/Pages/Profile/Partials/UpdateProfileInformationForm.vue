@@ -128,17 +128,15 @@ const submit = () => {
 
             <InputLength
               :input="form.about"
-              :max-length="1000"
+              :max-length="50"
             />
           </div>
 
-          <TextareaInput
+          <TextInput
             id="about"
             type="text"
-            class="mt-1 w-full block"
+            class="mt-1 block w-full"
             v-model="form.about"
-            maxLength="1000"
-            rows="8"
           />
 
           <InputError

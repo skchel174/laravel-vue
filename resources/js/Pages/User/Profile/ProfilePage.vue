@@ -1,8 +1,7 @@
 <script setup>
+import UserLayout from "@/Layouts/UserLayout.vue";
 import ProfileInfo from "@/Pages/User/Profile/Partials/ProfileInfo.vue";
 import ProfileTopics from "@/Pages/User/Profile/Partials/ProfileTopics.vue";
-import UserLayout from "@/Layouts/UserLayout.vue";
-import ProfileAbout from "@/Pages/User/Profile/Partials/ProfileAbout.vue";
 
 defineProps({
   user: {
@@ -26,11 +25,6 @@ defineProps({
       <ProfileInfo
         class="mb-4 block lg:hidden"
         :user="user"
-      />
-
-      <ProfileAbout
-        v-if="user.about"
-        :text="user.about"
       />
 
       <ProfileTopics
