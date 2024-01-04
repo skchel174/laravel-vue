@@ -2,12 +2,12 @@
 import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination/Pagination.vue";
+import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import UserLayout from "@/Layouts/UserLayout.vue";
-import NavigationWrapper from "@/Pages/User/Partials/NavigationWrapper.vue";
-import CommentCard from "@/Components/Comment/CommentCard.vue";
+import NavigationSelect from "@/Pages/User/Partials/NavigationSelect.vue";
 
 const props = defineProps({
-  comments: {
+  articles: {
     type: Object,
     required: true,
   },
@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 
-const currentLink = ref('comments');
+const currentLink = ref('articles');
 
 const navigation = {
   articles: route('user.bookmarks.articles', {user: props.user.login}),
@@ -35,34 +35,34 @@ const selectLink = (value) => {
     current-tab="bookmarks"
     :user="user"
   >
-    <NavigationWrapper
+    <NavigationSelect
       :navigation="Object.keys(navigation)"
       :current-link="currentLink"
       @select="selectLink"
     >
       <div
-        class="space-y-4"
-        v-if="comments.items.length > 0"
+        class="mt-4 space-y-4"
+        v-if="articles.items.length > 0"
       >
-        <CommentCard
-          v-for="comment in comments.items"
-          :key="comment.id"
-          :comment="comment"
+        <ArticleCard
+          v-for="article in articles.items"
+          :key="article.id"
+          :article="article"
         />
 
         <Pagination
-          v-if="comments.totalPages > 1"
-          :query-params="comments.query"
-          :total-pages="comments.totalPages"
-          :current-page="comments.currentPage"
-          route-name="user.articles"
+          v-if="articles.totalPages > 1"
+          :query-params="articles.query"
+          :total-pages="articles.totalPages"
+          :current-page="articles.currentPage"
+          route-name="user.bookmarks.articles"
           :queryParams="{user: user.login}"
         />
       </div>
 
       <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">
-        Unfortunately there are no comments here yet
+        Unfortunately there are no articles here yet
       </div>
-    </NavigationWrapper>
+    </NavigationSelect>
   </UserLayout>
 </template>

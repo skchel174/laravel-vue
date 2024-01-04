@@ -2,8 +2,9 @@
 import {ref} from "vue";
 import useMedia from "@/Hooks/useMedia.js";
 import Popover from "@/Components/Popover.vue";
-import ItemsSelect from "@/Pages/User/Partials/ItemsSelect.vue";
-import ItemsSelectButton from "@/Pages/User/Partials/ItemsSelectButton.vue";
+import MenuList from "@/Components/Menu/MenuList.vue";
+import MenuItem from "@/Components/Menu/MenuItem.vue";
+import ExpandButton from "@/Components/Buttons/ExpandButton.vue";
 
 const props = defineProps({
   navigation: {
@@ -38,21 +39,29 @@ const isTablet = useMedia('(max-width: 1024px)');
       class="relative w-full p-4 bg-white z-10 lg:z-0 cursor-pointer"
       @click.stop="() => selectOpen = !selectOpen"
     >
-      <ItemsSelectButton
-        :current-item="currentLink"
-        :open="selectOpen"
-      />
+      <ExpandButton
+        class="text-sm text-gray-500 font-medium capitalize"
+        :expand="selectOpen"
+      >
+        {{ currentLink }}
+      </ExpandButton>
 
       <Popover
         v-if="!isTablet"
-        class="top-9 left-3"
+        class="top-10 left-3"
         v-model:open="selectOpen"
       >
-        <ItemsSelect
-          :items="navigation"
-          :current-item="currentLink"
-          @select="selectLink"
-        />
+        <MenuList>
+          <MenuItem
+            class="py-2 px-4 text-sm capitalize"
+            v-for="item in navigation"
+            :key="item"
+            :selected="currentLink === item"
+            @click="() => selectLink(item)"
+          >
+            {{ item }}
+          </MenuItem>
+        </MenuList>
       </Popover>
     </button>
 
@@ -65,17 +74,24 @@ const isTablet = useMedia('(max-width: 1024px)');
       leave-active-class="absolute transition-transform duration-500"
       move-class="transition-transform duration-500"
     >
-      <ItemsSelect
+      <MenuList
         class="w-full !bg-sky-50"
         v-if="isTablet && selectOpen"
         :key="1"
-        :items="navigation"
-        :current-item="currentLink"
-        @select="selectLink"
-      />
+      >
+        <MenuItem
+          class="py-2 px-4 text-sm capitalize"
+          v-for="item in navigation"
+          :key="item"
+          :selected="currentLink === item"
+          @click="() => selectLink(item)"
+        >
+          {{ item }}
+        </MenuItem>
+      </MenuList>
 
       <div
-        class="mt-4 transition-transform"
+        class="transition-transform"
         :key="2"
       >
         <slot/>

@@ -106,7 +106,7 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->paginate();
 
-        return Inertia::render('User/Bookmarks/Articles/ArticlesPage', [
+        return Inertia::render('User/Bookmarks/ArticlesPage', [
             'user' => new UserResource($user),
             'articles' => new ArticlesResource($articles),
         ]);
@@ -126,7 +126,7 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->paginate();
 
-        return Inertia::render('User/Bookmarks/Comments/CommentsPage', [
+        return Inertia::render('User/Bookmarks/CommentsPage', [
             'user' => new UserResource($user),
             'comments' => new CommentCardCollection($comments),
         ]);

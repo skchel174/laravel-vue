@@ -4,7 +4,7 @@ import AppHeader from "@/Components/AppHeader/AppHeader.vue";
 import MainWrapper from "@/Components/MainWrapper.vue";
 import NotificationWrapper from "@/Components/NotificationWrapper.vue";
 import ProfileWidget from "@/Components/ProfileWidget.vue";
-import Menu from "@/Pages/User/Partials/Menu.vue";
+import NavigationTabs from "@/Pages/User/Partials/NavigationTabs.vue";
 
 const props = defineProps({
   currentTab: {
@@ -34,7 +34,7 @@ const props = defineProps({
               :subscription="$page.props.subscription"
             />
 
-            <Menu
+            <NavigationTabs
               :user="user"
               :current-tab="currentTab"
             />

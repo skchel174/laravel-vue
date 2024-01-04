@@ -4,8 +4,7 @@ import {router, usePage} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import UserLayout from "@/Layouts/UserLayout.vue";
-import ArticlesPlaceholder from "@/Pages/User/Partials/ArticlesPlaceholder.vue";
-import NavigationWrapper from "@/Pages/User/Partials/NavigationWrapper.vue";
+import NavigationSelect from "@/Pages/User/Partials/NavigationSelect.vue";
 
 const props = defineProps({
   status: {
@@ -47,13 +46,13 @@ const selectLink = (value) => {
     current-tab="articles"
     :user="user"
   >
-    <NavigationWrapper
+    <NavigationSelect
       :navigation="navigation"
       :current-link="currentLink"
       @select="selectLink"
     >
       <div
-        class="space-y-4"
+        class="mt-4 space-y-4"
         v-if="articles.items.length > 0"
       >
         <ArticleCard
@@ -73,7 +72,9 @@ const selectLink = (value) => {
         />
       </div>
 
-      <ArticlesPlaceholder v-else class="mt-16"/>
-    </NavigationWrapper>
+      <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">
+        Unfortunately there are no articles here yet
+      </div>
+    </NavigationSelect>
   </UserLayout>
 </template>
