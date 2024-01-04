@@ -43,7 +43,7 @@ class UpdateProfileTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->patch(route('profile.update'), [
-                'login' => $login = $this->faker->word(),
+                'login' => $login = 'user',
                 'name' => $name = $this->faker->name(),
                 'about' => $about = $this->faker->text(),
                 'avatar' => UploadedFile::fake()->image('new-avatar.jpg'),

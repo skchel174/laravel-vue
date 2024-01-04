@@ -19,8 +19,8 @@ class ShareIndicators
         Inertia::share([
             'indicators' => [
                 'articles' => $user->articles()->count(),
-                'bookmarks' => $user->bookmarkedArticles()->count() + $user->bookmarkedComments()->count(),
                 'comments' => $user->comments()->count(),
+                'bookmarks' => $user->bookmarks()->count(),
                 'followers' => $user->followers()->count(),
                 'following' => $user->following()->count(),
             ],

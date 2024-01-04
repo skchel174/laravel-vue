@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -178,9 +179,9 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function bookmarks(): BelongsToMany
+    public function bookmarks(): MorphToMany
     {
-        return $this->belongsToMany(User::class, 'bookmarked_articles');
+        return $this->morphToMany(User::class, 'bookmark', 'bookmarks');
     }
 
     public function likes(): BelongsToMany

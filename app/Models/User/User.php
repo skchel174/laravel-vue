@@ -15,9 +15,9 @@ use App\Exceptions\User\BookmarkNotCreated;
 use App\Exceptions\User\InvalidVerificationToken;
 use App\Exceptions\User\PasswordResetNotRequested;
 use App\Exceptions\User\RegistrationAlreadyVerified;
-use App\Exceptions\User\UnableFollowYourself;
 use App\Exceptions\User\SubscriptionAlreadyExists;
 use App\Exceptions\User\SubscriptionNotExists;
+use App\Exceptions\User\UnableFollowYourself;
 use App\Exceptions\User\VerificationNotRequested;
 use App\Exceptions\User\VerificationTokenExpired;
 use App\Models\Article\Article;
@@ -59,7 +59,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property CarbonImmutable $updated_at
  * @property CarbonImmutable $login_at
  * @property-read Collection<Article> $articles
+ * @property-read Collection<Bookmark> $bookmarks
  * @property-read Collection<Article> $bookmarkedArticles
+ * @property-read Collection<Comment> $bookmarkedComments
  * @property-read Collection<Article> $likedArticles
  * @property-read Collection<Topic> $topics
  * @property-read Collection<User> $following
@@ -307,14 +309,19 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         return $this->belongsToMany(Article::class, 'liked_articles');
     }
 
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
     public function bookmarkedArticles(): BelongsToMany
     {
-        return $this->belongsToMany(Article::class, 'bookmarked_articles');
+        return $this->morphedByMany(Article::class, 'bookmark', 'bookmarks');
     }
 
     public function bookmarkedComments(): BelongsToMany
     {
-        return $this->belongsToMany(Comment::class, 'bookmarked_comments');
+        return $this->morphedByMany(Comment::class, 'bookmark', 'bookmarks');
     }
 
     public function topics(): BelongsToMany
