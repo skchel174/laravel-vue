@@ -9,23 +9,12 @@ const props = defineProps({
     type: String,
     default: 'sm',
   },
-
-  clickable: {
-    type: Boolean,
-    default: false,
-  },
 });
-
-const open = () => {
-  if (props.clickable && props.value.default) {
-    window.open(props.value.default);
-  }
-};
 </script>
 
 <template>
   <img
-    class="flex flex-none justify-center items-center overflow-hidden rounded-full cursor-pointer"
+    class="flex justify-center items-center overflow-hidden rounded-full cursor-pointer"
     :class="{
       'w-7 h-7': size === 'xs',
       'w-9 h-9' : size === 'sm',
@@ -34,6 +23,5 @@ const open = () => {
     }"
     :src="value.thumb ?? value.mask"
     alt="avatar"
-    @click="open"
   >
 </template>

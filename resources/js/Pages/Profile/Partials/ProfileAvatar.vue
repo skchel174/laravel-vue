@@ -24,7 +24,7 @@ const emit = defineEmits([
   'update:modelValue',
 ]);
 
-const image = ref(props.avatar);
+const avatar = ref(props.avatar);
 const avatarEl = ref(null);
 const avatarInput = ref(null);
 const isAvatarUpdated = ref(false);
@@ -37,21 +37,21 @@ const selectImage = () => {
   isAvatarUpdated.value = true;
   const file = avatarInput.value.files[0];
   const objectUrl = URL.createObjectURL(file);
-  image.value = {thumb: objectUrl, default: objectUrl};
+  avatar.value = {thumb: objectUrl, default: objectUrl};
   emit('update:modelValue', file);
 };
 
 const resetImage = () => {
   isAvatarUpdated.value = false;
   avatarInput.value.value = '';
-  image.value = props.avatar;
+  avatar.value = props.avatar;
   emit('update:modelValue', undefined);
 };
 
 const deleteImage = () => {
   isAvatarUpdated.value = true;
   avatarInput.value.value = '';
-  image.value = {mask: props.avatar.mask};
+  avatar.value = null;
   emit('update:modelValue', null);
 };
 </script>
@@ -61,13 +61,18 @@ const deleteImage = () => {
     <div class="space-y-2 lg:space-y-4 flex flex-col">
       <InputLabel value="Avatar"/>
 
-      <Avatar
-        class="hidden lg:flex"
-        size="lg"
-        ref="avatarEl"
-        :value="image"
-        clickable
-      />
+      <div class="hidden lg:flex">
+        <Avatar
+          v-if="avatar?.thumb"
+          size="lg"
+          ref="avatarEl"
+          :value="avatar"
+        />
+
+        <span v-else class="material-icons w-20 h-20 flex justify-center items-center !text-8xl text-gray-300">
+          account_circle
+        </span>
+      </div>
 
       <p class="text-xs text-gray-400 font-medium">
         Format: jpg, bmp, png.
@@ -93,7 +98,7 @@ const deleteImage = () => {
         </NeutralButton>
 
         <DangerOutlineButton
-          v-if="avatar"
+          v-if="avatar?.thumb"
           @click.prevent="deleteImage"
         >
           Delete image
@@ -101,13 +106,18 @@ const deleteImage = () => {
       </div>
     </div>
 
-    <Avatar
-      class="mt-4 flex lg:hidden"
-      size="lg"
-      ref="avatarEl"
-      :value="image"
-      clickable
-    />
+    <div class="mt-4 flex lg:hidden">
+      <Avatar
+        v-if="avatar?.thumb"
+        size="lg"
+        ref="avatarEl"
+        :value="avatar"
+      />
+
+      <span v-else class="material-icons w-20 h-20 flex justify-center items-center !text-8xl text-gray-300">
+        account_circle
+      </span>
+    </div>
 
     <input
       ref="avatarInput"

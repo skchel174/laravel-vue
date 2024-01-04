@@ -32,7 +32,6 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
       <Avatar
         size="md"
         :value="user.avatar"
-        clickable
       />
 
       <h3 class="mt-2 text-base sm:text-lg">
