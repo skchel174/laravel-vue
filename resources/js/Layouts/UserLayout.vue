@@ -1,13 +1,10 @@
 <script setup>
-import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
-import Tab from "@/Components/Tabs/Tab.vue";
-import Tabs from "@/Components/Tabs/Tabs.vue";
 import Divider from "@/Components/Divider.vue";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
 import MainWrapper from "@/Components/MainWrapper.vue";
 import NotificationWrapper from "@/Components/NotificationWrapper.vue";
 import ProfileWidget from "@/Components/ProfileWidget.vue";
+import NavigationTabs from "@/Pages/User/Partials/NavigationTabs.vue";
 
 const props = defineProps({
   currentTab: {
@@ -20,22 +17,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const tabs = {
-  profile: route('user', {user: props.user.login}),
-  articles: route('user.articles', {user: props.user.login}),
-  comments: route('user.comments', {user: props.user.login}),
-  bookmarks: route('user.bookmarks.articles', {user: props.user.login}),
-  following: route('user.following', {user: props.user.login}),
-  followers: route('user.followers', {user: props.user.login}),
-};
-
-const currentTab = ref(props.currentTab);
-
-const selectTab = (tab) => {
-  currentTab.value = tab;
-  router.get(tabs[tab]);
-};
 </script>
 
 <template>
@@ -53,16 +34,10 @@ const selectTab = (tab) => {
               :subscription="$page.props.subscription"
             />
 
-            <Tabs v-if="tabs">
-              <Tab
-                v-for="(_, tab) in tabs"
-                :key="tab"
-                :selected="currentTab === tab"
-                @click="() => selectTab(tab)"
-              >
-                {{ tab }}
-              </Tab>
-            </Tabs>
+            <NavigationTabs
+              :user="user"
+              :current-tab="currentTab"
+            />
           </div>
 
           <slot/>

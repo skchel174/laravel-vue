@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\User\CheckSubscription;
+use App\Http\Middleware\User\ShareIndicators;
 use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Comment\CommentCardCollection;
 use App\Http\Resources\Topic\TopicResource;
@@ -19,6 +21,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckSubscription::class);
+        $this->middleware(ShareIndicators::class);
+    }
+
     public function profile(User $user): Response
     {
         $topics = $user->topics()
@@ -98,7 +106,7 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->paginate();
 
-        return Inertia::render('User/Bookmarks/Articles/ArticlesPage', [
+        return Inertia::render('User/Bookmarks/ArticlesPage', [
             'user' => new UserResource($user),
             'articles' => new ArticlesResource($articles),
         ]);
@@ -118,7 +126,7 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->paginate();
 
-        return Inertia::render('User/Bookmarks/Comments/CommentsPage', [
+        return Inertia::render('User/Bookmarks/CommentsPage', [
             'user' => new UserResource($user),
             'comments' => new CommentCardCollection($comments),
         ]);

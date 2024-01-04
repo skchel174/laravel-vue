@@ -16,9 +16,9 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 
@@ -158,8 +158,7 @@ class Comment extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function bookmarks(): BelongsToMany
+    public function bookmarks(): MorphToMany
     {
-        return $this->belongsToMany(User::class, 'bookmarked_comments');
-    }
+        return $this->morphToMany(User::class, 'bookmark', 'bookmarks');    }
 }
