@@ -3,7 +3,7 @@ import {Link} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 import ProfileMenuLink from "@/Components/AppHeader/ProfileMenuLink.vue";
 
-defineProps({
+const props = defineProps({
   user: {
     type: Object,
     required: true,
@@ -11,29 +11,55 @@ defineProps({
 });
 
 const menu = [
-  {url: '#', value: 'Publications', icon: 'article'},
-  {url: '#', value: 'Comments', icon: 'question_answer'},
-  {url: '#', value: 'Bookmarks', icon: 'bookmarks'},
-  {url: route('profile'), value: 'Profile settings', icon: 'manage_accounts'},
+  {
+    url: route('user.articles', {user: props.user.login}),
+    value: 'Articles',
+    icon: 'article',
+  },
+  {
+    url: route('user.comments', {user: props.user.login}),
+    value: 'Comments',
+    icon: 'question_answer',
+  },
+  {
+    url: route('user.bookmarks.articles', {user: props.user.login}),
+    value: 'Bookmarks',
+    icon: 'bookmarks',
+  },
+  {
+    url: route('profile'),
+    value: 'Profile settings',
+    icon: 'manage_accounts',
+  },
 ];
 </script>
 
 <template>
   <div>
     <div class="p-4 sm:px-6 flex items-center space-x-4 bg-gray-50 border-b border-gray-200">
-      <div class="cursor-pointer">
+      <Link :href="route('user', {user})">
         <Avatar
           v-if="user"
           :value="user.avatar"
+          size="sm"
         />
-      </div>
-
-      <Link
-        class="text-sm text-sky-500 font-medium cursor-pointer hover:text-sky-600 transition duration-300"
-        :href="route('user', {user})"
-      >
-        @{{ user.login }}
       </Link>
+
+      <div class="text-sm text-gray-700 font-medium">
+        <p
+          class="leading-tight"
+          v-if="user.name"
+        >
+          {{ user.name }}
+        </p>
+
+        <Link
+          class="text-sky-600 hover:text-sky-500 transition duration-300"
+          :href="route('user', {user})"
+        >
+          @{{ user.login }}
+        </Link>
+      </div>
     </div>
 
     <div class="py-4">
@@ -47,7 +73,7 @@ const menu = [
       </ProfileMenuLink>
 
       <ProfileMenuLink
-        class="text-red-600 hover:bg-red-50 active:bg-red-100 hover:text-red-700"
+        class="text-red-600 hover:!bg-red-50 active:!bg-red-100 hover:!text-red-700"
         :href="route('logout')"
       >
         <span class="material-icons">logout</span>
