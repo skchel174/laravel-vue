@@ -34,8 +34,8 @@ const isTablet = useMedia('(max-width: 1024px)');
 
 <template>
   <div class="relative">
-    <div
-      class="relative p-4 bg-white z-10 cursor-pointer"
+    <button
+      class="relative w-full p-4 bg-white z-10 lg:z-0 cursor-pointer"
       @click.stop="() => selectOpen = !selectOpen"
     >
       <ItemsSelectButton
@@ -54,7 +54,7 @@ const isTablet = useMedia('(max-width: 1024px)');
           @select="selectLink"
         />
       </Popover>
-    </div>
+    </button>
 
     <TransitionGroup
       enter-from-class="translate-y-[-100%]"
