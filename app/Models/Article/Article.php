@@ -74,7 +74,7 @@ class Article extends Model implements HasMedia
         'published_at' => 'immutable_datetime:d-m-Y H:i',
     ];
 
-    protected $with = ['author'];
+    protected $with = ['author', 'cardImage'];
 
     public static function createNew(
         User $author,

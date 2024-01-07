@@ -49,10 +49,7 @@ const contribution = usePage().props.contribution;
         </div>
 
         <div class="hidden lg:block w-80 space-y-4">
-          <SidebarSection
-            v-if="contribution.length > 0"
-            title="Information"
-          >
+          <SidebarSection title="Information">
             <UserInformation :user="user"/>
           </SidebarSection>
 

@@ -20,7 +20,6 @@ class ShareContribution
         $user = $request->route('user');
 
         $topics = Topic::query()
-            ->distinct()
             ->withCount(['articles' => fn(Builder $query) => $query->where('author_id', $user->id)])
             ->having('articles_count', '>', 0)
             ->orderBy('articles_count', 'desc')
