@@ -1,5 +1,5 @@
 <script setup>
-import {Link} from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
@@ -12,16 +12,13 @@ const props = defineProps({
     required: true,
   },
 
-  auth: {
-    type: Object,
-    required: true,
-  },
-
   subscription: {
     type: Boolean,
     required: true,
   }
 });
+
+const auth = usePage().props.auth;
 
 const {subscription, follow, unfollow} = useSubscription(props.subscription);
 </script>

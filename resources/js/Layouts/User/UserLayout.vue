@@ -35,7 +35,6 @@ const contribution = usePage().props.contribution;
           <div class="relative z-10 bg-white">
             <ProfileWidget
               :user="user"
-              :auth="$page.props.auth"
               :subscription="$page.props.subscription"
             />
 

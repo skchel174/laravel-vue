@@ -19,8 +19,13 @@ class ArticleController extends Controller
     {
         $article = $this->getArticleById($article);
 
+        if ($user = Auth::user()) {
+            $subscription = $user->isFollow($article->author);
+        }
+
         return Inertia::render('Article/ArticlePage', [
             'article' => new ArticleResource($article),
+            'authorSubscription' => $subscription ?? false,
         ]);
     }
 
