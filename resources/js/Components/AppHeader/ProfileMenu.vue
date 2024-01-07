@@ -45,8 +45,10 @@ const isTablet = useMedia('(max-width: 1024px)');
       </ProfileMenuIcon>
 
       <Avatar
+        class="cursor-pointer"
         v-if="user"
-        :value="user.avatar"
+        :src="user.avatar"
+        size="xs"
         @click.stop="isMenuOpen = !isMenuOpen"
       />
 

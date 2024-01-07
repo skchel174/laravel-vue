@@ -30,8 +30,8 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
   <div class="p-4 flex flex-col sm:flex-row bg-white">
     <div class="flex-1 mb-2 sm:mb-0">
       <Avatar
+        :src="user.avatar"
         size="md"
-        :value="user.avatar"
       />
 
       <h3 class="mt-2 text-base sm:text-lg">

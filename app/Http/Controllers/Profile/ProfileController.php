@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class ProfileController
 {
@@ -24,9 +22,6 @@ class ProfileController
         ]);
     }
 
-    /**
-     * @throws FileDoesNotExist| FileIsTooBig
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = Auth::user();

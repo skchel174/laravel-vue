@@ -40,7 +40,7 @@ const menu = [
       <Link :href="route('user', {user})">
         <Avatar
           v-if="user"
-          :value="user.avatar"
+          :src="user.avatar"
           size="sm"
         />
       </Link>

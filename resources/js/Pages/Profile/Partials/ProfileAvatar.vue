@@ -8,7 +8,8 @@ import DangerOutlineButton from "@/Components/Buttons/DangerOutlineButton.vue";
 
 const props = defineProps({
   avatar: {
-    type: Object,
+    type: [String, null],
+    required: true
   },
 
   modelValue: {
@@ -36,8 +37,7 @@ const triggerInput = () => {
 const selectImage = () => {
   isAvatarUpdated.value = true;
   const file = avatarInput.value.files[0];
-  const objectUrl = URL.createObjectURL(file);
-  avatar.value = {thumb: objectUrl, default: objectUrl};
+  avatar.value = URL.createObjectURL(file);
   emit('update:modelValue', file);
 };
 
@@ -61,18 +61,12 @@ const deleteImage = () => {
     <div class="space-y-2 lg:space-y-4 flex flex-col">
       <InputLabel value="Avatar"/>
 
-      <div class="hidden lg:flex">
-        <Avatar
-          v-if="avatar?.thumb"
-          size="lg"
-          ref="avatarEl"
-          :value="avatar"
-        />
-
-        <span v-else class="material-icons w-20 h-20 flex justify-center items-center !text-8xl text-gray-300">
-          account_circle
-        </span>
-      </div>
+      <Avatar
+        class="hidden lg:flex"
+        ref="avatarEl"
+        :src="avatar"
+        size="lg"
+      />
 
       <p class="text-xs text-gray-400 font-medium">
         Format: jpg, bmp, png.
@@ -106,18 +100,12 @@ const deleteImage = () => {
       </div>
     </div>
 
-    <div class="mt-4 flex lg:hidden">
-      <Avatar
-        v-if="avatar?.thumb"
-        size="lg"
-        ref="avatarEl"
-        :value="avatar"
-      />
-
-      <span v-else class="material-icons w-20 h-20 flex justify-center items-center !text-8xl text-gray-300">
-        account_circle
-      </span>
-    </div>
+    <Avatar
+      class="mt-4 flex lg:hidden"
+      ref="avatarEl"
+      :src="avatar"
+      size="lg"
+    />
 
     <input
       ref="avatarInput"

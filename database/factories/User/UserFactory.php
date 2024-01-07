@@ -24,7 +24,6 @@ class UserFactory extends Factory
             'password' => Password::create(self::PASSWORD),
             'name' => fake()->name(),
             'about' => fake()->text(50),
-            'avatar_mask' => fake()->filePath(),
             'remember_token' => Str::random(10),
             'status' => Status::Active,
             'created_at' => $createdAt = $this->faker->dateTimeBetween('-1 year'),
@@ -38,13 +37,6 @@ class UserFactory extends Factory
             'verify_token' => VerifyToken::create(),
             'status' => Status::Wait,
         ]);
-    }
-
-    public function withAvatar(): static
-    {
-        return $this->afterCreating(function (User $user) {
-           $user->setAvatar(UploadedFile::fake()->image('avatar.jpg'));
-        });
     }
 
     public function withFollowing(User $user): static
