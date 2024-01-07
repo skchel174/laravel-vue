@@ -39,6 +39,7 @@ const contribution = usePage().props.contribution;
             />
 
             <NavigationTabs
+              class="mt-4"
               :user="user"
               :current-tab="currentTab"
             />
