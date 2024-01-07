@@ -2,33 +2,33 @@
 import {ref} from "vue";
 import {Link} from "@inertiajs/vue3";
 import Popover from "@/Components/Popover.vue";
-import PrimaryButton from "@/Components/Buttons/SecondaryButton.vue";
+import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
+import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
+import useSubscription from "@/Hooks/Topic/useSubscription.js";
 
-defineProps({
+const props = defineProps({
   topic: {
     type: Object,
     required: true,
   },
-
-  authorized: {
-    type: Boolean,
-    required: true,
-  }
 });
-
-defineEmits(['unsubscribe']);
 
 const topicEl = ref(null);
 
 const isPopoverOpen = ref(false);
+
+const {subscribed, subscribe, unsubscribe} = useSubscription(props.topic.is_subscribed)
 </script>
 
 <template>
   <div
     ref="topicEl"
-    class="mb-2 mr-2 px-2 py-0.5 bg-lime-500/60 rounded-sm cursor-pointer text-sm text-gray-500 font-medium hover:bg-lime-500/80 hover:text-sky-600 transition duration-400 select-none"
-    :class="{'text-sky-600 bg-lime-500/80': isPopoverOpen}"
-    @click="isPopoverOpen = !isPopoverOpen"
+    class="mb-2 mr-2 px-2 py-0.5 bg-blue-200 rounded-sm cursor-pointer text-sm text-gray-600 font-medium hover:text-sky-600 transition duration-400 select-none"
+    :class="{
+      '!text-sky-600': isPopoverOpen,
+      '!bg-lime-200': subscribed,
+    }"
+    @click="() => isPopoverOpen = !isPopoverOpen"
   >
     {{ topic.name }}
 
@@ -55,12 +55,21 @@ const isPopoverOpen = ref(false);
             {{ topic.description }}
           </p>
 
-          <PrimaryButton
-            v-if="authorized"
-            @click="$emit('unsubscribe', topic)"
-          >
-            Unsubscribe
-          </PrimaryButton>
+          <div v-if="$page.props.auth.user">
+            <SuccessButton
+              v-if="subscribed"
+              @click="() => unsubscribe(topic.id)"
+            >
+              Subscribed
+            </SuccessButton>
+
+            <SuccessOutlineButton
+              v-else
+              @click="() => subscribe(topic.id)"
+            >
+              Subscribe
+            </SuccessOutlineButton>
+          </div>
         </div>
 
         <div class="p-4 flex justify-between">

@@ -1,5 +1,4 @@
 <script setup>
-import {ref} from "vue";
 import ProfileTopic from "@/Pages/User/Profile/Partials/ProfileTopic.vue";
 
 const props = defineProps({
@@ -8,23 +7,11 @@ const props = defineProps({
     required: true,
   },
 
-  auth: {
-    type: Object,
-    required: true,
-  },
-
   user: {
     type: Object,
     required: true,
   },
 });
-
-const topics = ref(props.topics);
-
-const unsubscribe = (topic) => {
-  topics.value.splice(topics.value.findIndex(item => item.id === topic.id), 1);
-  axios.delete(route('api.topics.subscription', {topic: topic.id}));
-};
 </script>
 
 <template>
@@ -41,8 +28,6 @@ const unsubscribe = (topic) => {
         v-for="topic in topics"
         :key="topic"
         :topic="topic"
-        :authorized="auth.user?.id === user.id"
-        @unsubscribe="unsubscribe"
       />
     </div>
 

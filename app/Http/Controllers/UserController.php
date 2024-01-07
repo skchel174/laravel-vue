@@ -31,9 +31,16 @@ class UserController extends Controller
 
     public function profile(User $user): Response
     {
-        $topics = $user->topics()
-            ->withCount(['subscribers', 'articles'])
-            ->get();
+        $query = $user->topics()
+            ->withCount(['subscribers', 'articles']);
+
+        if (Auth::check()) {
+            $query->withExists(['subscribers as is_subscribed' => function (Builder $query) {
+                $query->where('user_id', Auth::id());
+            }]);
+        }
+
+        $topics = $query->get();
 
         return Inertia::render('User/Profile/ProfilePage', [
             'user' => new UserResource($user),

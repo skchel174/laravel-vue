@@ -30,7 +30,6 @@ defineProps({
       <ProfileTopics
         :topics="topics"
         :user="user"
-        :auth="$page.props.auth"
       />
     </div>
   </UserLayout>
