@@ -1,5 +1,5 @@
 <script setup>
-import UserLayout from "@/Layouts/UserLayout.vue";
+import UserLayout from "@/Layouts/User/UserLayout.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import UserItem from "@/Pages/User/Following/Partials/UserItem.vue";
 

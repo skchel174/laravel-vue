@@ -30,7 +30,10 @@ defineProps({
 <template>
   <header class="w-full flex flex-wrap items-center justify-between">
     <div class="order-2 sm:order-1 flex items-center space-x-2">
-      <Avatar :value="author.avatar"/>
+      <Avatar
+        :src="author.avatar"
+        size="xs"
+      />
 
       <div class="flex flex-wrap items-center">
         <Link

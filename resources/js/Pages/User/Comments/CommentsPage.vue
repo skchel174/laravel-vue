@@ -1,6 +1,6 @@
 <script setup>
 import Pagination from "@/Components/Pagination/Pagination.vue";
-import UserLayout from "@/Layouts/UserLayout.vue";
+import UserLayout from "@/Layouts/User/UserLayout.vue";
 import CommentCard from "@/Components/Comment/CommentCard.vue";
 
 const props = defineProps({

@@ -1,8 +1,7 @@
 <script setup>
+import UserLayout from "@/Layouts/User/UserLayout.vue";
 import ProfileInfo from "@/Pages/User/Profile/Partials/ProfileInfo.vue";
 import ProfileTopics from "@/Pages/User/Profile/Partials/ProfileTopics.vue";
-import UserLayout from "@/Layouts/UserLayout.vue";
-import ProfileAbout from "@/Pages/User/Profile/Partials/ProfileAbout.vue";
 
 defineProps({
   user: {
@@ -28,15 +27,9 @@ defineProps({
         :user="user"
       />
 
-      <ProfileAbout
-        v-if="user.about"
-        :text="user.about"
-      />
-
       <ProfileTopics
         :topics="topics"
         :user="user"
-        :auth="$page.props.auth"
       />
     </div>
   </UserLayout>

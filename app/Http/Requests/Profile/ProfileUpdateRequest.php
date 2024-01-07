@@ -22,7 +22,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => 'string|max:60',
-            'about' => 'nullable|string|max:1000',
+            'about' => 'nullable|string|max:50',
             'avatar' => 'nullable|file|mimes:jpg,bmp,png|max:10240', // max 10MB
             'login' => [
                 'required',

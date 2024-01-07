@@ -1,7 +1,9 @@
 <script setup>
+import {computed} from "vue";
+
 const props = defineProps({
-  value: {
-    type: Object,
+  src: {
+    type: [String, null],
     required: true,
   },
 
@@ -9,31 +11,41 @@ const props = defineProps({
     type: String,
     default: 'sm',
   },
-
-  clickable: {
-    type: Boolean,
-    default: false,
-  },
 });
 
-const open = () => {
-  if (props.clickable && props.value.default) {
-    window.open(props.value.default);
-  }
-};
+const baseStyles = computed(() => ({
+  'w-8 h-8': props.size === 'xs',
+  'w-10 h-10' : props.size === 'sm',
+  'w-12 h-12': props.size === 'md',
+  'w-16 h-16': props.size === 'lg',
+  'border-none': props.src,
+}));
+
+const iconStyles = computed(() => ({
+  '!text-2xl': props.size === 'xs',
+  '!text-3xl' : props.size === 'sm',
+  '!text-4xl': props.size === 'md',
+  '!text-5xl': props.size === 'lg',
+}));
 </script>
 
 <template>
-  <img
-    class="flex flex-none justify-center items-center overflow-hidden rounded-full cursor-pointer"
-    :class="{
-      'w-7 h-7': size === 'xs',
-      'w-9 h-9' : size === 'sm',
-      'w-14 h-14': size === 'md',
-      'w-20 h-20': size === 'lg',
-    }"
-    :src="value.thumb ?? value.mask"
-    alt="avatar"
-    @click="open"
+  <div
+    class="flex justify-center items-center overflow-hidden rounded text-gray-300 border border-gray-300 select-none"
+    :class="baseStyles"
   >
+    <img
+      v-if="src"
+      :src="src"
+      alt="avatar"
+    >
+
+    <span
+      class="material-icons text-inherit"
+      :class="iconStyles"
+      v-else
+    >
+      person
+    </span>
+  </div>
 </template>

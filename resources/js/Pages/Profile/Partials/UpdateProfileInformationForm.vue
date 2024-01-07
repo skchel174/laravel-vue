@@ -4,7 +4,6 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLength from "@/Components/Form/InputLength.vue";
-import TextareaInput from "@/Components/Form/TextareaInput.vue";
 import ProfileAvatar from "@/Pages/Profile/Partials/ProfileAvatar.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
@@ -26,7 +25,7 @@ const form = useForm({
 
 const submit = () => {
   form.post(route('profile.update'), {
-    onSuccess: () => document.location.reload(),
+    preserveState: false,
   });
 };
 </script>
@@ -128,17 +127,15 @@ const submit = () => {
 
             <InputLength
               :input="form.about"
-              :max-length="1000"
+              :max-length="50"
             />
           </div>
 
-          <TextareaInput
+          <TextInput
             id="about"
             type="text"
-            class="mt-1 w-full block"
+            class="mt-1 block w-full"
             v-model="form.about"
-            maxLength="1000"
-            rows="8"
           />
 
           <InputError

@@ -17,7 +17,7 @@ defineProps({
 <template>
   <header class="flex items-center space-x-2">
     <Avatar
-      :value="author.avatar"
+      :src="author.avatar"
       size="xs"
     />
 

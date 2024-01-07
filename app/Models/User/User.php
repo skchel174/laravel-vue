@@ -36,12 +36,6 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Str;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property-read int $id
@@ -52,7 +46,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $new_email
  * @property Status $status
  * @property Password $password
- * @property string $avatar_mask
+ * @property Avatar|null $avatar
  * @property string $remember_token
  * @property VerifyToken $verify_token
  * @property-read CarbonImmutable $created_at
@@ -71,12 +65,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder whereEmail(string $email)
  * @method static Builder whereVerifyToken(string $token)
  */
-class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
+class User extends Model implements AuthenticatableInterface, AuthorizableInterface
 {
-    use HasFactory, Authenticatable, Authorizable, InteractsWithMedia;
+    use HasFactory, Authenticatable, Authorizable;
 
     protected $fillable = [
-        'login', 'email', 'name', 'about', 'status', 'password', 'new_email', 'avatar_mask', 'verify_token',
+        'login', 'email', 'name', 'about', 'status', 'password', 'new_email', 'avatar', 'verify_token',
     ];
 
     protected $hidden = [
@@ -84,6 +78,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     ];
 
     protected $casts = [
+        'avatar' => Avatar::class,
         'status' => Status::class,
         'password' => Password::class,
         'verify_token' => VerifyToken::class,
@@ -92,13 +87,12 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'login_at' => 'immutable_datetime:d-m-Y H:i:s',
     ];
 
-    public static function register(string $login, string $email, Password $password, string $avatar): static
+    public static function register(string $login, string $email, Password $password): static
     {
         $user = static::create([
             'login' => $login,
             'email' => $email,
             'password' => $password,
-            'avatar_mask' => $avatar,
             'status' => Status::Wait,
             'verify_token' => VerifyToken::create(),
         ]);
@@ -196,6 +190,30 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         Event::dispatch(new PasswordChanged($this));
     }
 
+    public function setAvatar(?UploadedFile $file): void
+    {
+        if ($this->avatar) {
+            unlink($this->avatar->getFilePath());
+        }
+
+        $this->update(['avatar' => $file ? Avatar::create($file) : null]);
+    }
+
+    /**
+     * Need for AuthenticateSession middleware
+     */
+    public function getAuthPassword(): string
+    {
+        return $this->password->getHash();
+    }
+
+    public function updateLastActivityTime(): void
+    {
+        if (CarbonImmutable::now() > $this->login_at->addHour()) {
+            $this->update(['login_at' => CarbonImmutable::now()]);
+        }
+    }
+
     public function isArticleBookmarked(Article $article): bool
     {
         return $this->bookmarkedArticles()
@@ -279,21 +297,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         $this->following()->detach($user);
     }
 
-    public function updateLastActivityTime(): void
-    {
-        if (CarbonImmutable::now() > $this->login_at->addHour()) {
-            $this->update(['login_at' => CarbonImmutable::now()]);
-        }
-    }
-
-    /**
-     * Need for AuthenticateSession middleware
-     */
-    public function getAuthPassword(): string
-    {
-        return $this->password->getHash();
-    }
-
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class, 'author_id');
@@ -347,39 +350,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'follower_id',
             'user_id'
         );
-    }
-
-    public function getAvatar(): ?Media
-    {
-        return $this->getFirstMedia('avatar');
-    }
-
-    /**
-     * @throws FileDoesNotExist|FileIsTooBig
-     */
-    public function setAvatar(?UploadedFile $file): void
-    {
-        $this->media()
-            ->where('collection_name', 'avatar')
-            ->delete();
-
-        if (!$file) {
-            return;
-        }
-
-        $this->addMedia($file)
-            ->usingFileName(sprintf('%s.%s', Str::uuid(), $file->guessExtension()))
-            ->toMediaCollection('avatar');
-    }
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('avatar')
-            ->registerMediaConversions(function (Media $media) {
-                $this->addMediaConversion('thumb')
-                    ->width(300)
-                    ->height(300);
-            });
     }
 
     private function isCommentBookmarked(Comment $comment): bool

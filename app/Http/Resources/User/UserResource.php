@@ -24,18 +24,7 @@ class UserResource extends JsonResource
             'status' => $this->resource->status->value,
             'login_at' => $this->resource->login_at->format('d-m-Y H:i'),
             'created_at' => $this->resource->created_at->format('d M Y'),
-            'avatar' => $this->createAvatarResource(),
-        ];
-    }
-
-    private function createAvatarResource(): array
-    {
-        $avatar = $this->resource->getAvatar();
-
-        return [
-            'default' => $avatar?->getUrl(),
-            'thumb' => $avatar?->getUrl('thumb'),
-            'mask' => asset(sprintf('storage/%s', $this->resource->avatar_mask)),
+            'avatar' => $this->resource->avatar?->getUrl(),
         ];
     }
 }

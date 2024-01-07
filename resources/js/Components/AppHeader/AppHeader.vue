@@ -37,7 +37,9 @@ const isTablet = useMedia('(max-width: 1024px)');
       <div class="w-full max-w-3xl lg:max-w-5xl h-12 px-4 flex justify-center lg:justify-between items-center">
         <CategoriesNav class="flex-1"/>
 
-        <ProfileMenu v-if="!isTablet"/>
+        <ProfileMenu
+          v-if="!isTablet"
+        />
       </div>
     </nav>
 

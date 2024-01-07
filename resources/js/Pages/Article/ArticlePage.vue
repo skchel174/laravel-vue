@@ -12,10 +12,16 @@ import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleFooter from "@/Pages/Article/Partials/ArticleFooter.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import CommentsButton from "@/Pages/Article/Partials/CommentsButton.vue";
+import ProfileWidget from "@/Components/ProfileWidget.vue";
 
 const props = defineProps({
   article: {
     type: Object,
+    required: true,
+  },
+
+  authorSubscription: {
+    type: Boolean,
     required: true,
   },
 });
@@ -81,6 +87,12 @@ const props = defineProps({
             />
           </ArticleFooter>
         </div>
+
+        <ProfileWidget
+          class="mt-4"
+          :user="article.author"
+          :subscription="authorSubscription"
+        />
 
         <CommentsButton
           class="mt-4"

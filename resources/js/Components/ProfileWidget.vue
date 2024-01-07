@@ -1,5 +1,5 @@
 <script setup>
-import {Link} from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
@@ -12,16 +12,13 @@ const props = defineProps({
     required: true,
   },
 
-  auth: {
-    type: Object,
-    required: true,
-  },
-
   subscription: {
     type: Boolean,
     required: true,
   }
 });
+
+const auth = usePage().props.auth;
 
 const {subscription, follow, unfollow} = useSubscription(props.subscription);
 </script>
@@ -30,9 +27,8 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
   <div class="p-4 flex flex-col sm:flex-row bg-white">
     <div class="flex-1 mb-2 sm:mb-0">
       <Avatar
+        :src="user.avatar"
         size="md"
-        :value="user.avatar"
-        clickable
       />
 
       <h3 class="mt-2 text-base sm:text-lg">
@@ -52,7 +48,7 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
       </h3>
 
       <p class="mt-1 text-sm text-gray-500 font-medium capitalize">
-        user
+        {{ user.about ?? 'user' }}
       </p>
     </div>
 

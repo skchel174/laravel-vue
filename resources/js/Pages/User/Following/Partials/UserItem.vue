@@ -15,7 +15,7 @@ const url = route('user', {user: props.user.login});
 <template>
   <div class="flex items-center space-x-2">
     <Link :href="url">
-      <Avatar :value="user.avatar"/>
+      <Avatar :src="user.avatar"/>
     </Link>
 
     <div class="text-sm font-medium">
@@ -37,7 +37,7 @@ const url = route('user', {user: props.user.login});
       </p>
 
       <p class="text-gray-500">
-        User
+        {{ user.about ?? 'user' }}
       </p>
     </div>
   </div>

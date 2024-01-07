@@ -22,6 +22,7 @@ class TopicResource extends JsonResource
             'description' => $this->resource->description,
             'subscribers_count' => $this->resource->subscribers_count,
             'articles_count' => $this->resource->articles_count,
+            'is_subscribed' => (bool) $this->resource->is_subscribed,
             'icon' => asset(sprintf('storage/%s', $this->resource->icon)),
         ];
     }
