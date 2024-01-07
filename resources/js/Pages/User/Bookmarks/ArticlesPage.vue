@@ -3,7 +3,7 @@ import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
-import UserLayout from "@/Layouts/UserLayout.vue";
+import UserLayout from "@/Layouts/User/UserLayout.vue";
 import NavigationSelect from "@/Pages/User/Partials/NavigationSelect.vue";
 
 const props = defineProps({

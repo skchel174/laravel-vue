@@ -1,5 +1,5 @@
 <script setup>
-import UserLayout from "@/Layouts/UserLayout.vue";
+import UserLayout from "@/Layouts/User/UserLayout.vue";
 import ProfileInfo from "@/Pages/User/Profile/Partials/ProfileInfo.vue";
 import ProfileTopics from "@/Pages/User/Profile/Partials/ProfileTopics.vue";
 

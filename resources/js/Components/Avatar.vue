@@ -31,7 +31,7 @@ const iconStyles = computed(() => ({
 
 <template>
   <div
-    class="flex justify-center items-center overflow-hidden rounded text-gray-300 border border-gray-300"
+    class="flex justify-center items-center overflow-hidden rounded text-gray-300 border border-gray-300 select-none"
     :class="baseStyles"
   >
     <img
