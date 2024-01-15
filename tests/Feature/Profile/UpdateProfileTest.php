@@ -37,7 +37,6 @@ class UpdateProfileTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()
-            ->withAvatar()
             ->create();
 
         $response = $this
@@ -46,7 +45,7 @@ class UpdateProfileTest extends TestCase
                 'login' => $login = 'user',
                 'name' => $name = $this->faker->name(),
                 'about' => $about = $this->faker->word(),
-                'avatar' => UploadedFile::fake()->image('new-avatar.jpg'),
+                'avatar' => UploadedFile::fake()->image('avatar.jpg'),
             ]);
 
         $response->assertRedirect(route('profile'));
@@ -58,6 +57,6 @@ class UpdateProfileTest extends TestCase
         $this->assertEquals($login, $user->login);
         $this->assertEquals($name, $user->name);
         $this->assertEquals($about, $user->about);
-        $this->assertEquals('new-avatar', $user->getAvatar()->name);
+        $this->assertNotEmpty($user->avatar);
     }
 }

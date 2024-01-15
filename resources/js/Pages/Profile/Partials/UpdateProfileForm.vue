@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLength from "@/Components/Form/InputLength.vue";
-import ProfileAvatar from "@/Pages/Profile/Partials/ProfileAvatar.vue";
+import AvatarInput from "@/Pages/Profile/Partials/AvatarInput.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 defineProps({
@@ -56,7 +56,7 @@ const submit = () => {
       class="mt-8 flex-1 flex flex-col lg:flex-row"
       @submit.prevent="submit"
     >
-      <ProfileAvatar
+      <AvatarInput
         class="max-w-2xl order-1 lg:order-2 lg:ml-16 mb-8"
         v-model="form.avatar"
         :avatar="user.avatar"

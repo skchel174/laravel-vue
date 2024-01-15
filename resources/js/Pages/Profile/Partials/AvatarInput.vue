@@ -21,9 +21,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits([
-  'update:modelValue',
-]);
+const emit = defineEmits(['update:modelValue']);
 
 const avatar = ref(props.avatar);
 const avatarEl = ref(null);
@@ -58,7 +56,7 @@ const deleteImage = () => {
 
 <template>
   <div class="flex flex-row justify-between lg:flex-col lg:justify-start">
-    <div class="space-y-2 lg:space-y-4 flex flex-col">
+    <div class="space-y-2 lg:space-y-3 flex flex-col">
       <InputLabel value="Avatar"/>
 
       <Avatar
@@ -68,9 +66,10 @@ const deleteImage = () => {
         size="lg"
       />
 
-      <p class="text-xs text-gray-400 font-medium">
+      <p class="text-xs text-gray-500 font-medium">
         Format: jpg, bmp, png.
-        <br/>Maximum file size: 10Mb.
+        <br/>Maximum file size: 1Mb.
+        <br/>Resolution: up to 64px.
       </p>
 
       <InputError :message="error"/>
@@ -92,7 +91,7 @@ const deleteImage = () => {
         </NeutralButton>
 
         <DangerOutlineButton
-          v-if="avatar?.thumb"
+          v-if="avatar"
           @click.prevent="deleteImage"
         >
           Delete image

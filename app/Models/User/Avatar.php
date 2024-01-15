@@ -10,44 +10,28 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Spatie\Image\Image;
 
 class Avatar implements CastsAttributes
 {
-    private ?string $file = null;
+    private string $filename;
 
     public static function create(UploadedFile $file): static
     {
         $avatar = new static();
-        $avatar->file = Str::uuid() . '.' . $file->guessExtension();
-
-        Image::load($file->path())
-            ->width(300)
-            ->height(300)
-            ->save($avatar->getFilePath());
-
-        unlink($file->path());
+        $avatar->filename = Str::uuid() . '.' . $file->guessExtension();
+        Storage::disk('public')->putFileAs('uploads/avatars', $file, $avatar->filename);
 
         return $avatar;
     }
 
-    public function getFile(): ?string
+    public function getUrl(): string
     {
-        return $this->file;
+        return Storage::disk('public')->url('uploads/avatars/' . $this->filename);
     }
 
     public function getFilePath(): string
     {
-        $conf = config('assets.avatar');
-
-        return Storage::disk($conf['disk'])->path($conf['path'] . '/' . $this->file);
-    }
-
-    public function getUrl(): string
-    {
-        $conf = config('assets.avatar');
-
-        return Storage::disk($conf['disk'])->url($conf['path'] . '/' . $this->file);
+        return Storage::disk('public')->path('uploads/avatars/' . $this->filename);
     }
 
     public function get(Model $model, string $key, mixed $value, array $attributes): ?static
@@ -57,7 +41,7 @@ class Avatar implements CastsAttributes
         }
 
         $instance = new static();
-        $instance->file = $attributes['avatar'] ?? null;
+        $instance->filename = $attributes['avatar'];
 
         return $instance;
     }
@@ -65,11 +49,13 @@ class Avatar implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes): array
     {
         if ($value && !$value instanceof Avatar) {
-            throw new InvalidArgumentException('The given value is not an Avatar instance.');
+            throw new InvalidArgumentException('The given value is not an user Avatar instance.');
         }
 
-        return [
-            'avatar' => $value?->file,
-        ];
+        if (isset($attributes['avatar']) && $attributes['avatar'] !== $value?->filename) {
+            Storage::disk('public')->delete('uploads/avatars/' . $attributes['avatar']);
+        }
+
+        return ['avatar' => $value?->filename];
     }
 }

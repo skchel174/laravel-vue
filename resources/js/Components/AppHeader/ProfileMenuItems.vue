@@ -27,6 +27,11 @@ const menu = [
     icon: 'bookmarks',
   },
   {
+    url: route('article.editor'),
+    value: 'Write article',
+    icon: 'post_add',
+  },
+  {
     url: route('profile'),
     value: 'Profile settings',
     icon: 'manage_accounts',

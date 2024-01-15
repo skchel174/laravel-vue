@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {router, usePage} from "@inertiajs/vue3";
+import {Link, router, usePage} from "@inertiajs/vue3";
 import useMedia from "@/Hooks/useMedia.js";
 import Avatar from "@/Components/Avatar.vue";
 import Sidebar from "@/Components/Sidebar.vue";
@@ -40,9 +40,11 @@ const isTablet = useMedia('(max-width: 1024px)');
         notifications_none
       </ProfileMenuIcon>
 
-      <ProfileMenuIcon>
-        post_add
-      </ProfileMenuIcon>
+      <Link :href="route('article.editor')">
+        <ProfileMenuIcon>
+          post_add
+        </ProfileMenuIcon>
+      </Link>
 
       <Avatar
         class="cursor-pointer"

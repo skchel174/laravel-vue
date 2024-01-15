@@ -143,7 +143,7 @@ class UserController extends Controller
 
     public function following(User $user): Response
     {
-        $following = $user->following()
+        $following = $user->followings()
             ->paginate(30);
 
         return Inertia::render('User/Following/FollowingPage', [

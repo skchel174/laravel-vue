@@ -33,7 +33,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 
@@ -58,7 +57,7 @@ use Illuminate\Support\Facades\Event;
  * @property-read Collection<Comment> $bookmarkedComments
  * @property-read Collection<Article> $likedArticles
  * @property-read Collection<Topic> $topics
- * @property-read Collection<User> $following
+ * @property-read Collection<User> $followings
  * @property-read Collection<User> $followers
  *
  * @method static Builder whereLogin(string $login)
@@ -77,16 +76,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'password', 'remember_token', 'verify_token',
     ];
 
-    protected $casts = [
-        'avatar' => Avatar::class,
-        'status' => Status::class,
-        'password' => Password::class,
-        'verify_token' => VerifyToken::class,
-        'created_at' => 'immutable_datetime:d-m-Y H:i:s',
-        'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
-        'login_at' => 'immutable_datetime:d-m-Y H:i:s',
-    ];
-
     public static function register(string $login, string $email, Password $password): static
     {
         $user = static::create([
@@ -101,6 +90,16 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
         return $user;
     }
+
+    protected $casts = [
+        'avatar' => Avatar::class,
+        'status' => Status::class,
+        'password' => Password::class,
+        'verify_token' => VerifyToken::class,
+        'created_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'login_at' => 'immutable_datetime:d-m-Y H:i:s',
+    ];
 
     public function verifyRegistration(string $token): void
     {
@@ -183,28 +182,19 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         Event::dispatch(new PasswordReset($this));
     }
 
-    public function changePassword(Password $password): void
-    {
-        $this->update(['password' => $password]);
-
-        Event::dispatch(new PasswordChanged($this));
-    }
-
-    public function setAvatar(?UploadedFile $file): void
-    {
-        if ($this->avatar) {
-            unlink($this->avatar->getFilePath());
-        }
-
-        $this->update(['avatar' => $file ? Avatar::create($file) : null]);
-    }
-
     /**
      * Need for AuthenticateSession middleware
      */
     public function getAuthPassword(): string
     {
         return $this->password->getHash();
+    }
+
+    public function changePassword(Password $password): void
+    {
+        $this->update(['password' => $password]);
+
+        Event::dispatch(new PasswordChanged($this));
     }
 
     public function updateLastActivityTime(): void
@@ -270,7 +260,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
     public function isFollow(User $user): bool
     {
-        return $this->following()
+        return $this->followings()
             ->where('id', $user->id)
             ->exists();
     }
@@ -285,7 +275,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             throw new SubscriptionAlreadyExists();
         }
 
-        $this->following()->attach($user);
+        $this->followings()->attach($user);
     }
 
     public function unfollow(User $user): void
@@ -294,7 +284,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             throw new SubscriptionNotExists();
         }
 
-        $this->following()->detach($user);
+        $this->followings()->detach($user);
     }
 
     public function articles(): HasMany
@@ -332,23 +322,23 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         return $this->belongsToMany(Topic::class);
     }
 
-    public function following(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            User::class,
-            'followers',
-            'user_id',
-            'follower_id'
-        );
-    }
-
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(
             User::class,
             'followers',
+            'user_id',
             'follower_id',
-            'user_id'
+        );
+    }
+
+    public function followings(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'followers',
+            'follower_id',
+            'user_id',
         );
     }
 

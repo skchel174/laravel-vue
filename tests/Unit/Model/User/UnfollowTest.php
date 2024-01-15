@@ -25,7 +25,7 @@ class UnfollowTest extends TestCase
 
         $follower->unfollow($user);
 
-        $this->assertFalse($follower->following()->where('id', $user->id)->exists());
+        $this->assertFalse($follower->followings()->where('id', $user->id)->exists());
     }
 
     public function testUnfollowWhenSubscriptionNotExists(): void

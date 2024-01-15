@@ -14,11 +14,9 @@ use App\Providers\RouteServiceProvider;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,7 +33,6 @@ class RegisterController extends Controller
             $request->login,
             $request->email,
             Password::create($request->password),
-            Arr::random(Storage::disk('public')->files('avatar')),
         );
 
         Event::dispatch(new UserRegistered($user));
