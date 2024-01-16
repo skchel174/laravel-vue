@@ -33,7 +33,7 @@ class SetTest extends TestCase
 
     public function testChangeAvatar(): void
     {
-        Storage::fake(config('filesystem.avatars.disk'));
+        Storage::fake('public');
 
         /** @var User $user */
         $user = User::factory()->create([

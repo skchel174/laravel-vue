@@ -13,7 +13,7 @@ class CreateTest extends TestCase
 {
     public function testCreateAvatar(): void
     {
-        Storage::fake(config('filesystem.avatars.disk'));
+        Storage::fake('public');
 
         $avatar = Avatar::create(UploadedFile::fake()->image('demo.jpg'));
 
