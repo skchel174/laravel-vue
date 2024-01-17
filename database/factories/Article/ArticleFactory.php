@@ -8,6 +8,7 @@ use App\Models\Article\Status;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 
 class ArticleFactory extends Factory
 {
@@ -54,5 +55,15 @@ class ArticleFactory extends Factory
     public function likedBy(User $user): ArticleFactory
     {
         return $this->hasAttached($user, relationship: 'likes');
+    }
+
+    public function withTopics(Collection $topics): ArticleFactory
+    {
+        return $this->hasAttached($topics, relationship: 'topics');
+    }
+
+    public function withTags(Collection $tags): ArticleFactory
+    {
+        return $this->hasAttached($tags, relationship: 'tags');
     }
 }

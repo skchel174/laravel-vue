@@ -56,26 +56,43 @@ Route::prefix('/users/{user:login}')->group(function () {
         ->name('user.followers');
 });
 
-Route::prefix('/articles/{article}')->group(function () {
-    Route::get('/', [ArticleController::class, 'index'])
+Route::prefix('/articles')->group(function () {
+    Route::get('/{article}', [ArticleController::class, 'index'])
+        ->whereNumber('article')
         ->name('article');
 
-    Route::get('/comments', [ArticleController::class, 'comments'])
-        ->name('article.comments');
+    Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
+        Route::get('/editor', [ArticleController::class, 'editor'])
+            ->name('editor');
 
-    Route::prefix('/comments')
-        ->middleware(['auth', 'auth.session', 'verified'])
-        ->group(function () {
+        Route::get('/{article}/editor', [ArticleController::class, 'editor'])
+            ->middleware('can:update,article')
+            ->name('article.editor');
+
+        Route::post('/create', [ArticleController::class, 'create'])
+            ->name('article.create');
+
+        Route::patch('/{article}/update', [ArticleController::class, 'update'])
+            ->middleware('can:update,article')
+            ->name('article.update');
+    });
+
+    Route::prefix('/{article}/comments')->group(function () {
+        Route::get('/', [ArticleController::class, 'comments'])
+            ->name('article.comments');
+
+        Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
             Route::post('/', [CommentController::class, 'create'])
                 ->name('articles.comment.create');
 
-            Route::post('/{comment}/comments', [CommentController::class, 'reply'])
-                ->name('articles.comment.reply');
-
-            Route::patch('/{comment}/comments', [CommentController::class, 'edit'])
+            Route::patch('/{comment}', [CommentController::class, 'edit'])
                 ->middleware('can:update,comment')
                 ->name('articles.comment.update');
+
+            Route::post('/{comment}/comments', [CommentController::class, 'reply'])
+                ->name('articles.comment.reply');
         });
+    });
 });
 
 require __DIR__ . '/auth.php';
