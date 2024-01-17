@@ -40,7 +40,7 @@ const isTablet = useMedia('(max-width: 1024px)');
         notifications_none
       </ProfileMenuIcon>
 
-      <Link :href="route('article.editor')">
+      <Link :href="route('editor')">
         <ProfileMenuIcon>
           post_add
         </ProfileMenuIcon>
