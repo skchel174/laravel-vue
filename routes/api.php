@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\Articles\LikesController;
 use App\Http\Controllers\Api\Articles\BookmarkController as ArticleBookmarkController;
 use App\Http\Controllers\Api\Comments\BookmarkController as CommentBookmarkController;
+use App\Http\Controllers\Api\Tags\TagsController;
 use App\Http\Controllers\Api\Topics\SubscriptionController as TopicSubscriptionController;
 use App\Http\Controllers\Api\Users\SubscriptionController as UserSubscriptionController;
 use Illuminate\Support\Facades\Route;
@@ -58,3 +59,6 @@ Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
             Route::delete('', [UserSubscriptionController::class, 'remove']);
         });
 });
+
+Route::get('/tags/{name}', [TagsController::class, 'search'])
+    ->name('api.tags.search');
