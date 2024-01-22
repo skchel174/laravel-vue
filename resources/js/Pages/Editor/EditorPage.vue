@@ -21,12 +21,10 @@ const form = useForm({
   topics: props.article?.topics ?? [],
   difficulty: props.article?.difficulty ?? null,
   image: undefined,
+  media: null,
 });
 
-const tabs = {
-  Editor,
-  Settings,
-};
+const tabs = {Editor, Settings};
 
 const currentTab = ref('Editor');
 

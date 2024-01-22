@@ -30,8 +30,28 @@ const emit = defineEmits(['openTab', 'updateForm']);
 
 const focus = ref(false);
 
-const saveImage = (file) => {
-  console.log(file);
+const saveImage = async (file) => {
+  try {
+    if (!props.form.media) {
+      const response = await axios.post(route('api.article.media'));
+      emit('updateForm', 'media', response.data.media);
+    }
+
+    const uri = route('api.article.media.image', {
+      media: props.form.media,
+    });
+
+    const data = new FormData();
+    data.append('image', file, file.name);
+
+    const response = await axios.post(uri, data, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    });
+
+    return response.data.image.md;
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const options = {
@@ -50,12 +70,6 @@ const modules = [
     name: 'blotFormatter',
     module: BlotFormatter,
   },
-];
-
-const items = [
-  {id: 1, value: 'One'},
-  {id: 2, value: 'Two'},
-  {id: 3, value: 'Three'},
 ];
 </script>
 
@@ -103,9 +117,9 @@ const items = [
     />
 
     <PageFooter>
-        <PrimaryOutlineButton @click="$emit('openTab', 'Settings')">
-          Proceed to settings
-        </PrimaryOutlineButton>
+      <PrimaryOutlineButton @click="$emit('openTab', 'Settings')">
+        Proceed to settings
+      </PrimaryOutlineButton>
     </PageFooter>
   </div>
 </template>
