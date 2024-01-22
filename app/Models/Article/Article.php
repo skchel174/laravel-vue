@@ -26,14 +26,13 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Throwable;
 
 /**
  * @property-read int $id
- * @property int $user_id
+ * @property-read int $author_id
+ * @property-read int $article_media_id
  * @property string $title
  * @property string $text
  * @property Status $status
@@ -47,6 +46,7 @@ use Throwable;
  * @property-read Collection<Category> $categories
  * @property-read Collection<Comment> $comments
  * @property-read Collection<Media> $cardImage
+ * @property-read ArticleMedia|null $media
  * @property-read int $comments_count
  * @property-read int $related_comments_count
  * @property-read bool $is_liked
@@ -56,9 +56,9 @@ use Throwable;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  */
-class Article extends Model implements HasMedia
+class Article extends Model
 {
-    use HasFactory, InteractsWithMedia, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'feed_image', 'published_at'];
 
@@ -151,8 +151,8 @@ class Article extends Model implements HasMedia
     public function remove(): void
     {
         if ($this->status->isDraft() || $this->trashed()) {
+            $this->media->delete();
             $this->forceDelete();
-            return;
         }
 
         $this->update(['status' => Status::Deleted]);
@@ -207,5 +207,10 @@ class Article extends Model implements HasMedia
     public function likes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'liked_articles');
+    }
+
+    public function media(): BelongsTo
+    {
+        return $this->belongsTo(ArticleMedia::class, 'article_media_id');
     }
 }
