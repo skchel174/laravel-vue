@@ -17,6 +17,7 @@ use Illuminate\Validation\Rule;
  * @property-read array|null $tags
  * @property-read array $topics
  * @property-read Difficulty|null $difficulty
+ * @property-read int|null $media
  */
 class SaveArticleRequest extends FormRequest
 {
@@ -30,6 +31,7 @@ class SaveArticleRequest extends FormRequest
             'tags' => 'nullable|array',
             'topics' => 'required|array|min:1',
             'difficulty' => ['nullable', Rule::enum(Difficulty::class)],
+            'media' => 'nullable|integer|exists:article_media,id',
         ];
     }
 }

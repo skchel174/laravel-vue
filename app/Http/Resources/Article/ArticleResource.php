@@ -36,6 +36,7 @@ class ArticleResource extends JsonResource
             'is_liked' => $this->resource->is_liked,
             'likes_count' => $this->resource->likes_count,
             'comments_count' => $this->resource->related_comments_count,
+            'media_id' => $this->resource->article_media_id,
             'image' => $this->resource->feed_image?->getUrl(),
             'publish_date' => $this->getPublishDate(),
             'created_date' => $this->formatDate($this->resource->created_at),

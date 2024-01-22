@@ -12,6 +12,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\Article\Article;
 use App\Models\Article\Difficulty;
 use App\Models\Article\FeedImage;
+use App\Models\Article\ArticleMedia;
 use App\Models\Article\Status;
 use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Builder;
@@ -60,6 +61,11 @@ class ArticleController extends Controller
 
         $article->topics()->attach($request->topics);
         $article->tags()->attach($request->tags);
+
+        if ($request->media) {
+            $media = ArticleMedia::findOrFail($request->media);
+            $article->media()->associate($media)->save();
+        }
 
         return redirect()
             ->route('article.editor', ['article' => $article->id])

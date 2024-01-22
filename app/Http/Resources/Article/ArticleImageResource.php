@@ -13,6 +13,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  */
 class ArticleImageResource extends JsonResource
 {
+    public function __construct(Media $resource)
+    {
+        parent::__construct($resource);
+    }
+
     public function toArray(Request $request): array
     {
         return [
