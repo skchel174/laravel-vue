@@ -29,6 +29,7 @@ const form = useForm({
   difficulty: props.article?.difficulty ?? null,
   image: undefined,
   media: null,
+  status: null,
 });
 
 const tabs = {Editor, Settings};
@@ -39,7 +40,7 @@ const {notice, showNotification} = useNotification();
 
 provide('showNotification', showNotification);
 
-const onSubmit = () => {
+const sendFrom = () => {
   const uri = props.article
     ? route('article.update', {article: props.article.id})
     : route('article.create');
@@ -64,10 +65,7 @@ const onSubmit = () => {
   <AppHeader/>
 
   <MainWrapper>
-    <form
-      class="flex-1 w-full flex flex-col"
-      @submit.prevent="onSubmit"
-    >
+    <div class="flex-1 w-full flex flex-col">
       <KeepAlive>
         <component
           :is="tabs[currentTab]"
@@ -75,9 +73,10 @@ const onSubmit = () => {
           :article="article"
           @open-tab="tab => currentTab = tab"
           @update-form="(prop, val) => form[prop] = val"
+          @submit="sendFrom"
         />
       </KeepAlive>
-    </form>
+    </div>
 
     <Notification
       :type="notice.type"

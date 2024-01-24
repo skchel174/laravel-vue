@@ -120,7 +120,7 @@ const modules = [
       class="bg-white h-10"
     />
 
-    <PageFooter>
+    <PageFooter class="justify-end">
       <PrimaryOutlineButton
         :disabled="form.title.length === 0 || form.text.length < 10"
         @click="$emit('openTab', 'Settings')"

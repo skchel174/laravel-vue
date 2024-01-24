@@ -1,4 +1,5 @@
 <script setup>
+import {ref} from "vue";
 import TagsSelect from "@/Pages/Editor/Partials/TagsSelect.vue";
 import SummaryInput from "@/Pages/Editor/Partials/SummaryInput.vue";
 import ImageInput from "@/Pages/Editor/Partials/ImageInput.vue";
@@ -6,7 +7,9 @@ import TopicsSelect from "@/Pages/Editor/Partials/TopicsSelect.vue";
 import DifficultSelect from "@/Pages/Editor/Partials/DifficultSelect.vue";
 import PageFooter from "@/Pages/Editor/Partials/PageFooter.vue";
 import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
-import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
+import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import Modal from "@/Components/Modal.vue";
 
 const props = defineProps({
   article: {
@@ -21,6 +24,20 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['openTab', 'updateForm', 'submit']);
+
+const isConfirmationOpen = ref(false);
+
+const sendToModeration = () => {
+  emit('updateForm', 'status', 'moderated');
+  emit( 'submit');
+  isConfirmationOpen.value = false;
+};
+
+const saveToDrafts = () => {
+  emit('updateForm', 'status', 'draft');
+  emit('submit');
+  isConfirmationOpen.value = false;
+};
 </script>
 
 <template>
@@ -71,12 +88,40 @@ const emit = defineEmits(['openTab', 'updateForm', 'submit']);
         Back to editor
       </NeutralButton>
 
-      <PrimaryOutlineButton
+      <SuccessButton
         :disabled="form.topics.length === 0"
-        @click="$emit('save', 'submit')"
+        @click="() => isConfirmationOpen = true"
       >
-        Send to moderation
-      </PrimaryOutlineButton>
+        Save article
+      </SuccessButton>
     </PageFooter>
+
+    <Modal
+      v-model:open="isConfirmationOpen"
+      max-width="md"
+    >
+      <div class="flex flex-col justify-center p-6 space-y-4">
+        <h2 class="text-base font-medium text-gray-900">
+          Are you sure you want to publish this article?
+        </h2>
+
+        <div class="flex justify-start space-x-2">
+          <PrimaryButton @click="sendToModeration">
+            Send to moderation
+          </PrimaryButton>
+
+          <NeutralButton @click="saveToDrafts">
+            Save to drafts
+          </NeutralButton>
+        </div>
+      </div>
+
+      <span
+        class="material-icons absolute top-1 right-2 !text-xl text-gray-600 cursor-pointer"
+        @click="() => isConfirmationOpen = false"
+      >
+        close
+      </span>
+    </Modal>
   </div>
 </template>

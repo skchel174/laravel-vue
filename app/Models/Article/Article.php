@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Article;
 
+use App\Events\Article\ArticleModerated;
 use App\Exceptions\Article\ArticleAlreadyLiked;
-use App\Exceptions\Article\ArticleModerated;
+use App\Exceptions\Article\ArticleAlreadyModerated;
 use App\Exceptions\Article\ArticleNotDeleted;
 use App\Exceptions\Article\ArticleNotLiked;
 use App\Exceptions\Article\ArticlePublished;
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Event;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Throwable;
 
@@ -81,13 +83,15 @@ class Article extends Model
         string $text,
         ?string $summary = null,
         ?Difficulty $difficulty = null,
+        ?FeedImage $image = null,
     ): static {
         $article = static::make([
             'title' => $title,
             'text' => $text,
             'summary' => $summary,
-            'status' => Status::Draft,
             'difficulty' => $difficulty,
+            'image' => $image,
+            'status' => Status::Draft,
         ]);
         $article->author()->associate($author);
         $article->save();
@@ -98,10 +102,12 @@ class Article extends Model
     public function moderate(): void
     {
         if ($this->status->isModerated()) {
-            throw new ArticleModerated();
+            throw new ArticleAlreadyModerated();
         }
 
         $this->update(['status' => Status::Moderated]);
+
+        Event::dispatch(new ArticleModerated($this));
     }
 
     /**

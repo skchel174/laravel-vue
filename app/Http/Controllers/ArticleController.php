@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Events\Article\ArticleModerated;
 use App\Http\Requests\Article\SaveArticleRequest;
 use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\Comment\CommentsCollection;
@@ -18,6 +19,7 @@ use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -57,7 +59,7 @@ class ArticleController extends Controller
             'summary' => $request->summary,
             'difficulty' => $request->difficulty,
             'feed_image' => $request->image ? FeedImage::create($request->image) : null,
-            'status' => Status::Moderated,
+            'status' => $request->status,
         ]);
 
         $article->topics()->attach($request->topics);
@@ -68,9 +70,17 @@ class ArticleController extends Controller
             $article->media()->associate($media)->save();
         }
 
+        if ($article->status->isModerated()) {
+            Event::dispatch(new ArticleModerated($article));
+        }
+
+        $status = $article->status->isModerated()
+            ? 'Article was sent for moderation'
+            : 'Article saved as draft';
+
         return redirect()
             ->route('article.editor', ['article' => $article->id])
-            ->with('status', 'Article was successfully created and sent for moderation');
+            ->with('status', $status);
     }
 
     public function update(SaveArticleRequest $request, Article $article): RedirectResponse
@@ -80,20 +90,29 @@ class ArticleController extends Controller
             'text' => $request->text,
             'summary' => $request->summary,
             'difficulty' => $request->difficulty,
-            'status' => Status::Moderated,
+            'status' => $request->status,
         ]);
 
         if ($request->has('image')) {
             $article->feed_image = $request->image ? FeedImage::create($request->image) : null;
         }
 
+        $article->save();
+
         $article->topics()->sync($request->topics);
         $article->tags()->sync($request->tags);
-        $article->save();
+
+        if ($article->status->isModerated()) {
+            Event::dispatch(new ArticleModerated($article));
+        }
+
+        $status = $article->status->isModerated()
+            ? 'Article was sent for moderation'
+            : 'Draft updated successfully';
 
         return redirect()
             ->route('article.editor', ['article' => $article->id])
-            ->with('status', 'Article updates have been sent for moderation');
+            ->with('status', $status);
     }
 
     public function comments(int $article): Response
