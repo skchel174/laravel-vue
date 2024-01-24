@@ -9,7 +9,7 @@ import Editor from "@/Pages/Editor/Partials/Editor.vue";
 import Settings from "@/Pages/Editor/Partials/Settings.vue";
 import Notification from "@/Components/Notification.vue";
 import BackupNotice from "@/Pages/Editor/Partials/BackupNotice.vue";
-import EditorHeader from "@/Pages/Editor/Partials/EditorHeader.vue";
+import PageHeader from "@/Pages/Editor/Partials/PageHeader.vue";
 
 const props = defineProps({
   article: {
@@ -55,7 +55,9 @@ onMounted(() => {
 
   <MainWrapper>
     <div class="flex-1 w-full flex flex-col space-y-4">
-      <EditorHeader/>
+      <PageHeader>
+        Article editor
+      </PageHeader>
 
       <BackupNotice
         v-if="backupVisible"
