@@ -3,14 +3,16 @@ import {inject, ref} from "vue";
 import ImageUploader from "quill-image-uploader";
 import BlotFormatter from 'quill-blot-formatter';
 import PageFooter from "@/Pages/Editor/Partials/PageFooter.vue";
-import TitleInput from "@/Pages/Editor/Partials/TitleInput.vue";
 import ArticleAuthor from "@/Pages/Editor/Partials/Author.vue"
 import ArticleEditorToolbar from "@/Pages/Editor/Partials/EditorToolbar.vue";
 import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
+import TextareaInput from "@/Components/Form/TextareaInput.vue";
+import InputLength from "@/Components/Form/InputLength.vue";
 import {Quill, QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 
+Quill.debug('error');
 Quill.register("modules/imageUploader", ImageUploader);
 Quill.register('modules/blotFormatter', BlotFormatter);
 
@@ -28,11 +30,13 @@ const props = defineProps({
 
 const emit = defineEmits(['openTab', 'updateForm']);
 
-const focus = ref(false);
+const titleFocused = ref(false);
+
+const textFocus = ref(false);
 
 const showNotification = inject('showNotification');
 
-const saveImage = async (file) => {
+const uploadImage = async (file) => {
   try {
     if (!props.form.media) {
       const response = await axios.post(route('api.article.media'));
@@ -58,6 +62,8 @@ const saveImage = async (file) => {
 }
 
 const options = {
+  debug: 'error',
+  placeholder: 'Write article',
   scrollingContainer: 'html',
 };
 
@@ -65,9 +71,7 @@ const modules = [
   {
     name: 'imageUploader',
     module: ImageUploader,
-    options: {
-      upload: saveImage,
-    },
+    options: {upload: uploadImage},
   },
   {
     name: 'blotFormatter',
@@ -84,33 +88,46 @@ const modules = [
         :publish-date="article?.publish_date"
       />
 
-      <TitleInput
-        :title="form.title"
-        :error="form.errors.title"
-        @update="(value) => $emit('updateForm', 'title', value)"
-      />
+      <div>
+        <TextareaInput
+          id="title"
+          class="!px-0 !border-none !shadow-none !ring-0 !text-3xl !font-black"
+          placeholder="Title"
+          :model-value="form.title"
+          @update:modelValue="value => $emit('updateForm', 'title', value)"
+          @focus="() => titleFocused = true"
+          @blur="() => titleFocused = false"
+        />
+
+        <div class="h-6 flex justify-end items-top">
+          <InputLength
+            :visible="titleFocused"
+            :input="form.title"
+            :max-length="100"
+          />
+        </div>
+      </div>
 
       <QuillEditor
         toolbar="#toolbar"
         class="!w-full !h-auto !border-0 !text-lg"
         content-type="html"
-        placeholder="Write article"
         :options="options"
         :modules="modules"
         :content="form.text"
         @update:content="(value) => $emit('updateForm', 'text', value)"
-        @focus="() => focus = true"
-        @blur="() => focus = false"
+        @focus="() => textFocus = true"
+        @blur="() => textFocus = false"
       />
     </div>
 
     <ArticleEditorToolbar
       id="toolbar"
-      :visible="focus"
+      :visible="textFocus"
     />
 
     <div
-      v-if="!focus"
+      v-if="!textFocus"
       class="bg-white h-10"
     />
 
