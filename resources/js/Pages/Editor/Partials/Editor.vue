@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {inject, ref} from "vue";
 import ImageUploader from "quill-image-uploader";
 import BlotFormatter from 'quill-blot-formatter';
 import PageFooter from "@/Pages/Editor/Partials/PageFooter.vue";
@@ -30,6 +30,8 @@ const emit = defineEmits(['openTab', 'updateForm']);
 
 const focus = ref(false);
 
+const showNotification = inject('showNotification');
+
 const saveImage = async (file) => {
   try {
     if (!props.form.media) {
@@ -49,8 +51,9 @@ const saveImage = async (file) => {
     });
 
     return response.data.image.md;
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    // TODO: added api errors handler
+    showNotification('error', error.message);
   }
 }
 
@@ -89,6 +92,7 @@ const modules = [
 
       <TitleInput
         :title="form.title"
+        :error="form.errors.title"
         @update="(value) => $emit('updateForm', 'title', value)"
       />
 

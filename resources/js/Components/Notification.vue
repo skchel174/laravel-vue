@@ -14,13 +14,11 @@ const props = defineProps({
 
   duration: {
     type: [Number, null],
-    default: 5000,
+    default: 10000,
   },
 });
 
-const emit = defineEmits([
-  'update:visible',
-]);
+const emit = defineEmits(['update:visible']);
 
 const types = {
   info: 'bg-sky-100 text-sky-700',
@@ -31,10 +29,6 @@ const types = {
 
 const notificationRef = ref(null);
 
-const hide = () => {
-  emit('update:visible', false);
-}
-
 const setNotificationOffset = () => {
   const offset = document.body.offsetWidth / 2 - notificationRef.value.offsetWidth / 2;
   notificationRef.value.style.left = offset + 'px';
@@ -43,7 +37,7 @@ const setNotificationOffset = () => {
 
 watch(() => props.visible, () => {
   if (props.visible && props.duration) {
-    setTimeout(hide, props.duration);
+    setTimeout(() => emit('update:visible', false), props.duration);
   }
 });
 
@@ -70,13 +64,19 @@ watch(notificationRef, () => {
       <div
         v-if="visible"
         ref="notificationRef"
-        class="fixed top-4 px-4 min-w-[24rem] max-w-xl z-50"
+        class="fixed top-4 px-2 min-w-[24rem] max-w-lg z-50"
       >
         <div
-          class="rounded shadow-md p-4 text-sm font-medium flex flex-col justify-center items-center"
+          class="rounded shadow-md px-6 pt-7 pb-4 text-sm font-medium flex flex-col justify-center items-center"
           :class="types[type]"
-          @click="hide"
         >
+          <span
+            class="material-icons absolute top-1 right-4 !text-xl cursor-pointer"
+            @click="$emit('update:visible', false)"
+          >
+            close
+          </span>
+
           <slot/>
         </div>
       </div>

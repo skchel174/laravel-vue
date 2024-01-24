@@ -40,6 +40,7 @@ class ArticleController extends Controller
     public function editor(?Article $article = null): Response
     {
         return Inertia::render('Editor/EditorPage', [
+            'status' => session('status'),
             'user' => new UserResource(Auth::user()),
             'difficulty' => Difficulty::cases(),
             'topics' => TopicResource::collection(Topic::all()),
