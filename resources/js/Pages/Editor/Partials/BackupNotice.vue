@@ -1,24 +1,25 @@
 <script setup>
 const props = defineProps({
-  visible: {
-    type: Boolean,
-    required: true,
-  },
-
   backup: {
-    type: Object,
+    type: [Object, null],
     required: true,
   },
 });
 
-defineEmits(['update:visible', 'backup']);
+const emit = defineEmits(['restore', 'close']);
+
+const restore = () => {
+  const confirmation = confirm('Are you sure you want to restore autosave?');
+
+  if (confirmation) {
+    emit('restore');
+    emit('close');
+  }
+};
 </script>
 
 <template>
-  <div
-    v-if="visible"
-    class="relative p-4 flex items-center bg-sky-50 border border-sky-500 text-sm text-gray-700 space-x-4"
-  >
+  <div class="relative p-4 flex items-center bg-sky-50 border border-sky-500 text-sm text-gray-700 space-x-4">
     <span class="material-icons !text-[1.75rem] text-sky-600">
       error
     </span>
@@ -32,7 +33,7 @@ defineEmits(['update:visible', 'backup']);
 
       <span
         class="ml-2 font-bold tracking-wide text-sky-600 hover:text-sky-400 transition duration-300 cursor-pointer"
-        @click="$emit('backup')"
+        @click="restore"
       >
         Restore
       </span>
@@ -40,7 +41,7 @@ defineEmits(['update:visible', 'backup']);
 
     <span
       class="material-icons absolute top-0.5 right-1.5 !text-xl text-sky-600 hover:text-sky-500 transition duration-300 cursor-pointer"
-      @click="$emit('update:visible', false)"
+      @click="$emit('close')"
     >
       close
     </span>

@@ -2,7 +2,6 @@
 import {Head} from "@inertiajs/vue3";
 import {onMounted, provide, ref} from "vue";
 import useForm from "@/Hooks/Article/useForm.js";
-import useBackup from "@/Hooks/Article/useBackup.js";
 import useNotification from "@/Hooks/useNotification.js";
 import AppHeader from "@/Components/AppHeader/AppHeader.vue";
 import MainWrapper from "@/Components/MainWrapper.vue";
@@ -24,42 +23,28 @@ const props = defineProps({
   },
 });
 
-const tabs = {Editor, Settings};
+const tabs = {
+  Editor,
+  Settings,
+};
+
 const currentTab = ref('Editor');
-const setTab = (tab) => currentTab.value = tab;
 
-const backupVisible = ref(false);
-const {backup, makeBackup, backupForm} = useBackup();
-
-const {form, submit} = useForm(props.article);
-
-const updateForm = (prop, value) => {
-  form[prop] = value;
-  makeBackup(form);
-};
-
-const backupConfirmation = () => {
-  const confirmation = confirm('Are you sure you want to restore autosave?');
-
-  if (confirmation) {
-    backupForm(form);
-    backupVisible.value = false;
-  }
-};
+const {form, backup, update, send, restore} = useForm(props.article);
 
 const {notice, showNotification} = useNotification();
 
 provide('showNotification', showNotification);
 
-const sendForm = () => submit({
+const submit = () => send({
   onSuccess: () => showNotification('success', props.status),
   onError: () => showNotification('error', props.status),
 });
 
+const backupVisible = ref(false);
+
 onMounted(() => {
-  if (backup.value) {
-    backupVisible.value = true;
-  }
+  backupVisible.value = Boolean(backup.value);
 });
 </script>
 
@@ -73,9 +58,10 @@ onMounted(() => {
       <EditorHeader/>
 
       <BackupNotice
-        v-model:visible="backupVisible"
+        v-if="backupVisible"
         :backup="backup"
-        @backup="backupConfirmation"
+        @restore="restore"
+        @close="() => backupVisible = false"
       />
 
       <KeepAlive>
@@ -83,9 +69,9 @@ onMounted(() => {
           :is="tabs[currentTab]"
           :form="form"
           :article="article"
-          @open-tab="setTab"
-          @update-form="updateForm"
-          @submit="sendForm"
+          @open-tab="tab => currentTab = tab"
+          @update-form="update"
+          @submit="submit"
         />
       </KeepAlive>
     </div>
