@@ -2,12 +2,10 @@
 import {inject, ref} from "vue";
 import ImageUploader from "quill-image-uploader";
 import BlotFormatter from 'quill-blot-formatter';
-import PageFooter from "@/Pages/Editor/Partials/PageFooter.vue";
 import ArticleAuthor from "@/Pages/Editor/Partials/Author.vue"
-import ArticleEditorToolbar from "@/Pages/Editor/Partials/EditorToolbar.vue";
-import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
 import InputLength from "@/Components/Form/InputLength.vue";
+import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
 import {Quill, QuillEditor} from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import 'quill-image-uploader/dist/quill.imageUploader.min.css';
@@ -121,24 +119,40 @@ const modules = [
       />
     </div>
 
-    <ArticleEditorToolbar
-      id="toolbar"
-      :visible="textFocus"
-    />
-
     <div
-      v-if="!textFocus"
-      class="bg-white h-10"
-    />
+      v-show="textFocus"
+      class="sticky bottom-0 h-10 w-full overflow-x-auto border-t border-gray-200 bg-gray-50 z-20 toolbar-container"
+    >
+      <div class="mx-auto w-full max-w-[64rem] px-2">
+        <div id="toolbar" class="w-[26.5rem] !px-0 !border-0">
+          <button class="ql-bold"/>
+          <button class="ql-italic"/>
+          <button class="ql-underline"/>
+          <button class="ql-header" value="1"/>
+          <button class="ql-header" value="2"/>
+          <button class="ql-list" value="ordered"/>
+          <button class="ql-list" value="bullet"/>
+          <button class="ql-indent" value="-1"/>
+          <button class="ql-indent" value="+1"/>
+          <button class="ql-blockquote"/>
+          <button class="ql-code-block"/>
+          <button class="ql-link"/>
+          <button class="ql-image"/>
+          <button class="ql-video"/>
+        </div>
+      </div>
+    </div>
 
-    <PageFooter class="justify-end">
+    <div v-if="!textFocus" class="bg-white h-10"/>
+
+    <div class="h-14 px-4 lg:px-8 flex items-center justify-end bg-white border-t border-gray-200">
       <PrimaryOutlineButton
         :disabled="form.title.length === 0 || form.text.length < 10"
         @click="$emit('openTab', 'Settings')"
       >
         Proceed to settings
       </PrimaryOutlineButton>
-    </PageFooter>
+    </div>
   </div>
 </template>
 
@@ -155,5 +169,10 @@ const modules = [
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 500;
+}
+
+.toolbar-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 </style>
