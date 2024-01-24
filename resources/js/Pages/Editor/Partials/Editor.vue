@@ -78,13 +78,7 @@ const modules = [
 
 <template>
   <div class="flex-1 flex flex-col">
-    <header class="p-4 lg:px-8 bg-white">
-      <h1 class="font-semibold text-2xl text-gray-800">
-        Article editor
-      </h1>
-    </header>
-
-    <div class="mt-4 p-4 lg:py-6 lg:px-8 flex-1 bg-white">
+    <div class="p-4 lg:py-6 lg:px-8 flex-1 bg-white">
       <ArticleAuthor
         class="mb-2 lg:mb-4"
         :publish-date="article?.publish_date"
