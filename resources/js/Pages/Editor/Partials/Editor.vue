@@ -121,7 +121,10 @@ const modules = [
     />
 
     <PageFooter>
-      <PrimaryOutlineButton @click="$emit('openTab', 'Settings')">
+      <PrimaryOutlineButton
+        :disabled="form.title.length === 0 || form.text.length < 10"
+        @click="$emit('openTab', 'Settings')"
+      >
         Proceed to settings
       </PrimaryOutlineButton>
     </PageFooter>

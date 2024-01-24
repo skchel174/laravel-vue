@@ -71,7 +71,10 @@ const emit = defineEmits(['openTab', 'updateForm', 'submit']);
         Back to editor
       </NeutralButton>
 
-      <PrimaryOutlineButton @click="$emit('save', 'submit')">
+      <PrimaryOutlineButton
+        :disabled="form.topics.length === 0"
+        @click="$emit('save', 'submit')"
+      >
         Send to moderation
       </PrimaryOutlineButton>
     </PageFooter>
