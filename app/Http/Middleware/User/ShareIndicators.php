@@ -22,7 +22,7 @@ class ShareIndicators
                 'comments' => $user->comments()->count(),
                 'bookmarks' => $user->bookmarks()->count(),
                 'followers' => $user->followers()->count(),
-                'following' => $user->following()->count(),
+                'following' => $user->followings()->count(),
             ],
         ]);
 

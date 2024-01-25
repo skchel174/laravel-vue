@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Article;
 
+use App\Events\Article\ArticleModerated;
 use App\Exceptions\Article\ArticleAlreadyLiked;
-use App\Exceptions\Article\ArticleModerated;
+use App\Exceptions\Article\ArticleAlreadyModerated;
 use App\Exceptions\Article\ArticleNotDeleted;
 use App\Exceptions\Article\ArticleNotLiked;
 use App\Exceptions\Article\ArticlePublished;
@@ -25,24 +26,20 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Illuminate\Support\Facades\Event;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Throwable;
 
 /**
  * @property-read int $id
- * @property int $user_id
+ * @property-read int $author_id
+ * @property-read int $article_media_id
  * @property string $title
  * @property string $text
  * @property Status $status
  * @property string|null $summary
+ * @property FeedImage|null $feed_image
  * @property Difficulty|null $difficulty
  * @property int $views
  * @property User $author
@@ -51,6 +48,7 @@ use Throwable;
  * @property-read Collection<Category> $categories
  * @property-read Collection<Comment> $comments
  * @property-read Collection<Media> $cardImage
+ * @property-read ArticleMedia|null $media
  * @property-read int $comments_count
  * @property-read int $related_comments_count
  * @property-read bool $is_liked
@@ -60,21 +58,24 @@ use Throwable;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  */
-class Article extends Model implements HasMedia
+class Article extends Model
 {
-    use HasFactory, InteractsWithMedia, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'published_at'];
+    protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'feed_image', 'published_at'];
 
     protected $casts = [
         'status' => Status::class,
+        'feed_image' => FeedImage::class,
         'difficulty' => Difficulty::class,
         'created_at' => 'immutable_datetime:d-m-Y H:i',
         'updated_at' => 'immutable_datetime:d-m-Y H:i',
         'published_at' => 'immutable_datetime:d-m-Y H:i',
+        'is_bookmarked' => 'boolean',
+        'is_liked' => 'boolean',
     ];
 
-    protected $with = ['author', 'cardImage'];
+    protected $with = ['author'];
 
     public static function createNew(
         User $author,
@@ -82,13 +83,15 @@ class Article extends Model implements HasMedia
         string $text,
         ?string $summary = null,
         ?Difficulty $difficulty = null,
+        ?FeedImage $image = null,
     ): static {
         $article = static::make([
             'title' => $title,
             'text' => $text,
             'summary' => $summary,
-            'status' => Status::Draft,
             'difficulty' => $difficulty,
+            'image' => $image,
+            'status' => Status::Draft,
         ]);
         $article->author()->associate($author);
         $article->save();
@@ -99,10 +102,12 @@ class Article extends Model implements HasMedia
     public function moderate(): void
     {
         if ($this->status->isModerated()) {
-            throw new ArticleModerated();
+            throw new ArticleAlreadyModerated();
         }
 
         $this->update(['status' => Status::Moderated]);
+
+        Event::dispatch(new ArticleModerated($this));
     }
 
     /**
@@ -149,6 +154,27 @@ class Article extends Model implements HasMedia
         $this->likes()->detach($user);
     }
 
+    public function remove(): void
+    {
+        if ($this->status->isDraft() || $this->trashed()) {
+            $this->media->delete();
+            $this->forceDelete();
+        }
+
+        $this->update(['status' => Status::Deleted]);
+        $this->delete();
+    }
+
+    public function recover(): void
+    {
+        if (!$this->status->isDeleted()) {
+            throw new ArticleNotDeleted();
+        }
+
+        $this->moderate();
+        $this->restore();
+    }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
@@ -189,61 +215,8 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'liked_articles');
     }
 
-    public function cardImage(): MorphMany
+    public function media(): BelongsTo
     {
-        return $this->media()->where('collection_name', 'card_image');
-    }
-
-    public function getCardImage(): ?Media
-    {
-        return $this->cardImage->first();
-    }
-
-    /**
-     * @throws FileIsTooBig|FileDoesNotExist
-     */
-    public function setCardImage(?UploadedFile $file): void
-    {
-        $this->media()
-            ->where('collection_name', 'card_image')
-            ->delete();
-
-        if ($file) {
-            $this->addMedia($file)
-                ->usingFileName(sprintf('%s.%s', Str::uuid(), $file->getExtension()))
-                ->toMediaCollection('card_image');
-        }
-    }
-
-    /**
-     * @throws InvalidManipulation
-     */
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('md')
-            ->width(1200)
-            ->height(600)
-            ->nonQueued();
-    }
-
-    public function remove(): void
-    {
-        if ($this->status->isDraft() || $this->trashed()) {
-            $this->forceDelete();
-            return;
-        }
-
-        $this->update(['status' => Status::Deleted]);
-        $this->delete();
-    }
-
-    public function recover(): void
-    {
-        if (!$this->status->isDeleted()) {
-            throw new ArticleNotDeleted();
-        }
-
-        $this->moderate();
-        $this->restore();
+        return $this->belongsTo(ArticleMedia::class, 'article_media_id');
     }
 }

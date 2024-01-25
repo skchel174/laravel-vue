@@ -6,7 +6,7 @@ namespace App\Exceptions\Article;
 
 use DomainException;
 
-class ArticleModerated extends DomainException
+class ArticleAlreadyModerated extends DomainException
 {
     public function __construct()
     {

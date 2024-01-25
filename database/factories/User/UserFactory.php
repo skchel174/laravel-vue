@@ -41,6 +41,6 @@ class UserFactory extends Factory
 
     public function withFollowing(User $user): static
     {
-        return $this->hasAttached($user, relationship: 'following');
+        return $this->hasAttached($user, relationship: 'followings');
     }
 }

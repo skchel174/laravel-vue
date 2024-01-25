@@ -1,5 +1,6 @@
 <script setup>
 import {computed} from "vue";
+import avatar from 'img/avatar.png';
 
 const props = defineProps({
   src: {
@@ -13,39 +14,25 @@ const props = defineProps({
   },
 });
 
-const baseStyles = computed(() => ({
-  'w-8 h-8': props.size === 'xs',
-  'w-10 h-10' : props.size === 'sm',
-  'w-12 h-12': props.size === 'md',
-  'w-16 h-16': props.size === 'lg',
-  'border-none': props.src,
-}));
-
-const iconStyles = computed(() => ({
-  '!text-2xl': props.size === 'xs',
-  '!text-3xl' : props.size === 'sm',
-  '!text-4xl': props.size === 'md',
-  '!text-5xl': props.size === 'lg',
-}));
+const size = computed(() => {
+  switch (props.size) {
+    case 'lg':
+      return 'w-16 h-16';
+    case 'md':
+      return 'w-12 h-12';
+    case 'sm':
+      return 'w-10 h-10';
+    case 'xs':
+      return 'w-8 h-8';
+  }
+});
 </script>
 
 <template>
-  <div
-    class="flex justify-center items-center overflow-hidden rounded text-gray-300 border border-gray-300 select-none"
-    :class="baseStyles"
+  <img
+    class="rounded"
+    :class="size"
+    :src="src ?? avatar"
+    alt="avatar"
   >
-    <img
-      v-if="src"
-      :src="src"
-      alt="avatar"
-    >
-
-    <span
-      class="material-icons text-inherit"
-      :class="iconStyles"
-      v-else
-    >
-      person
-    </span>
-  </div>
 </template>

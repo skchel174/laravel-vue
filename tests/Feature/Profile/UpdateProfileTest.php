@@ -14,12 +14,6 @@ class UpdateProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Storage::disk('public');
-    }
 
     public function testProfilePageIsDisplayed(): void
     {
@@ -35,10 +29,10 @@ class UpdateProfileTest extends TestCase
 
     public function testProfileInformationCanBeUpdated(): void
     {
+        Storage::fake('public');
+
         /** @var User $user */
-        $user = User::factory()
-            ->withAvatar()
-            ->create();
+        $user = User::factory()->create();
 
         $response = $this
             ->actingAs($user)
@@ -46,11 +40,13 @@ class UpdateProfileTest extends TestCase
                 'login' => $login = 'user',
                 'name' => $name = $this->faker->name(),
                 'about' => $about = $this->faker->word(),
-                'avatar' => UploadedFile::fake()->image('new-avatar.jpg'),
+                'avatar' => UploadedFile::fake()->image('avatar.jpg'),
             ]);
 
         $response->assertRedirect(route('profile'));
+
         $response->assertSessionHas('status', 'Profile successfully updated');
+
         $response->assertSessionHasNoErrors();
 
         $user->refresh();
@@ -58,6 +54,6 @@ class UpdateProfileTest extends TestCase
         $this->assertEquals($login, $user->login);
         $this->assertEquals($name, $user->name);
         $this->assertEquals($about, $user->about);
-        $this->assertEquals('new-avatar', $user->getAvatar()->name);
+        $this->assertNotEmpty($user->avatar);
     }
 }

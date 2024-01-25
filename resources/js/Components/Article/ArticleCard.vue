@@ -57,7 +57,7 @@ const openArticle = () => {
 
     <img
       class="mb-2 w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm cursor-pointer"
-      :src="article.image?.md ?? 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg'"
+      :src="article.image ?? 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg'"
       alt="img"
     />
 

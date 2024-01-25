@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories\Topic;
 
 use App\Models\Category\Category;
-use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -13,10 +12,8 @@ class TopicFactory extends Factory
 {
     public function definition(): array
     {
-        $name = $this->faker->word();
-
         return [
-            'name' => $name,
+            'name' => $name = $this->faker->unique()->word(),
             'slug' => Str::slug($name),
             'description' => $this->faker->sentence(),
             'icon' => $this->faker->filePath(),

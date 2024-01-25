@@ -32,26 +32,18 @@ class ArticleResource extends JsonResource
             'summary' => $this->resource->summary,
             'text' => $this->resource->text,
             'views' => $this->resource->views,
-            'is_bookmarked' => (bool) $this->resource->is_bookmarked,
-            'is_liked' => (bool) $this->resource->is_liked,
+            'is_bookmarked' => $this->resource->is_bookmarked,
+            'is_liked' => $this->resource->is_liked,
             'likes_count' => $this->resource->likes_count,
             'comments_count' => $this->resource->related_comments_count,
-            'image' => $this->getCardImage(),
+            'media_id' => $this->resource->article_media_id,
+            'image' => $this->resource->feed_image?->getUrl(),
             'publish_date' => $this->getPublishDate(),
             'created_date' => $this->formatDate($this->resource->created_at),
             'author' => UserResource::make($this->resource->author),
             'topics' => TopicResource::collection($this->resource->topics),
             'tags' => TagResource::collection($this->resource->tags),
         ];
-    }
-
-    private function getCardImage(): ?ArticleImageResource
-    {
-        if ($image = $this->resource->getCardImage()) {
-            return ArticleImageResource::make($image);
-        }
-
-        return null;
     }
 
     private function getPublishDate(): ?string

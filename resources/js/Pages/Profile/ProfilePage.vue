@@ -4,7 +4,7 @@ import {Head} from '@inertiajs/vue3';
 import useNotification from "@/Hooks/useNotification.js";
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+import UpdateProfileForm from './Partials/UpdateProfileForm.vue';
 import ChangeEmailForm from "@/Pages/Profile/Partials/ChangeEmailForm.vue";
 import SettingsLayout from "@/Layouts/SettingsLayout.vue";
 
@@ -18,6 +18,7 @@ const props = defineProps({
   },
 });
 
+// TODO: where notification component?
 const {notice, showError, showSuccess} = useNotification();
 
 onMounted(() => {
@@ -43,7 +44,7 @@ onMounted(() => {
       </header>
 
       <div class="p-4 sm:p-8 bg-white">
-        <UpdateProfileInformationForm :status="status"/>
+        <UpdateProfileForm :status="status"/>
       </div>
 
       <div class="p-4 sm:p-8 bg-white">

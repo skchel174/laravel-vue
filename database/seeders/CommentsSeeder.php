@@ -17,12 +17,11 @@ class CommentsSeeder extends Seeder
         $articles = Article::all();
 
         foreach ($articles as $article) {
-            $randomUsers = $users->random(rand(1, $users->count() / 2));
-
-            foreach ($randomUsers as $user) {
+            foreach ($users->random(rand(0, 5)) as $user) {
                 Comment::factory()
                     ->withAuthor($user)
                     ->forArticle($article)
+                    ->hasAttached($users->random(rand(0, 2)), relationship: 'bookmarks')
                     ->create();
             }
         }

@@ -13,7 +13,6 @@ provide('notify', showNotification);
 
   <Notification
     :type="notice.type"
-    :duration="notice.duration"
     v-model:visible="notice.visible"
   >
     {{ notice.message }}

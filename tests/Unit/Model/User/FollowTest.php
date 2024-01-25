@@ -24,7 +24,7 @@ class FollowTest extends TestCase
 
         $follower->follow($user);
 
-        $this->assertTrue($follower->following()->where('id', $user->id)->exists());
+        $this->assertTrue($follower->followings()->where('id', $user->id)->exists());
     }
 
     public function testMakeSelfSubscription(): void
@@ -36,7 +36,7 @@ class FollowTest extends TestCase
 
         $user->follow($user);
 
-        $this->assertFalse($user->following()->where('id', $user->id)->exists());
+        $this->assertFalse($user->followings()->where('id', $user->id)->exists());
     }
 
     public function testMakeAlreadyExistsSubscription(): void
@@ -53,6 +53,6 @@ class FollowTest extends TestCase
 
         $follower->follow($user);
 
-        $this->assertFalse($follower->following()->where('id', $user->id)->exists());
+        $this->assertFalse($follower->followings()->where('id', $user->id)->exists());
     }
 }

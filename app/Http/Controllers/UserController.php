@@ -63,7 +63,7 @@ class UserController extends Controller
             ]);
         }
 
-        $articles = $query->with(['topics', 'cardImage'])
+        $articles = $query->with(['topics'])
             ->withCount(['likes', 'relatedComments'])
             ->withTrashed($status === Status::Deleted)
             ->whereStatus($status)
@@ -143,7 +143,7 @@ class UserController extends Controller
 
     public function following(User $user): Response
     {
-        $following = $user->following()
+        $following = $user->followings()
             ->paginate(30);
 
         return Inertia::render('User/Following/FollowingPage', [

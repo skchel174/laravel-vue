@@ -2,42 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Model\User;
+namespace Tests\Unit\Model\User\Avatar;
 
 use App\Models\User\Avatar;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class SetAvatarTest extends TestCase
+class SetTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
+    public function testSetNewAvatar(): void
     {
-        parent::setUp();
+        Storage::fake('public');
 
-        Config::set(['assets' => [
-            'avatar' => [
-                'disk' => $disk = 'public',
-                'path' => '',
-            ],
-        ]]);
-
-        Storage::fake($disk);
-    }
-
-    public function testNewAvatar(): void
-    {
         /** @var User $user */
         $user = User::factory()->create([
             'avatar' => null,
         ]);
 
-        $user->setAvatar(UploadedFile::fake()->image('test.jpg'));
+        $user->update(['avatar' => Avatar::create(UploadedFile::fake()->image('demo.jpg'))]);
+        $user->refresh();
 
         $this->assertInstanceOf(Avatar::class, $user->avatar);
         $this->assertFileExists($user->avatar->getFilePath());
@@ -45,26 +33,31 @@ class SetAvatarTest extends TestCase
 
     public function testChangeAvatar(): void
     {
+        Storage::fake('public');
+
         /** @var User $user */
         $user = User::factory()->create([
-            'avatar' => $oldAvatar = Avatar::create(UploadedFile::fake()->image('test01.jpg')),
+            'avatar' => $oldAvatar = Avatar::create(UploadedFile::fake()->image('demo.jpg')),
         ]);
 
-        $user->setAvatar(UploadedFile::fake()->image('test.jpg'));
+        $user->update(['avatar' => Avatar::create(UploadedFile::fake()->image('demo.jpg'))]);
+        $user->refresh();
 
-        $this->assertNotEquals($user->avatar->getFile(), $oldAvatar->getFilePath());
+        $this->assertNotEquals($oldAvatar->getFilePath(), $user->avatar->getFilePath());
         $this->assertFileExists($user->avatar->getFilePath());
         $this->assertFileDoesNotExist($oldAvatar->getFilePath());
     }
 
     public function testDeleteAvatar(): void
     {
+        Storage::fake('public');
+
         /** @var User $user */
         $user = User::factory()->create([
-            'avatar' => $oldAvatar = Avatar::create(UploadedFile::fake()->image('test01.jpg')),
+            'avatar' => $oldAvatar = Avatar::create(UploadedFile::fake()->image('demo.jpg')),
         ]);
 
-        $user->setAvatar(null);
+        $user->update(['avatar' => null]);
 
         $this->assertNull($user->avatar);
         $this->assertFileDoesNotExist($oldAvatar->getFilePath());

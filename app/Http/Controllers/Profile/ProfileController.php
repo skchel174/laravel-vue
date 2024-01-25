@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Profile;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\ProfileDeleteRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
+use App\Models\User\Avatar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController
+class ProfileController extends Controller
 {
     public function index(): Response
     {
@@ -26,15 +28,15 @@ class ProfileController
     {
         $user = Auth::user();
 
+        if ($request->has('avatar')) {
+            $user->avatar = $request->avatar ? Avatar::create($request->avatar) : null;
+        }
+
         $user->update([
             'login' => $request->login,
             'name' => $request->name,
             'about' => $request->about,
         ]);
-
-        if ($request->has('avatar')) {
-            $user->setAvatar($request->avatar);
-        }
 
         return redirect()->route('profile')
             ->with('status', 'Profile successfully updated');

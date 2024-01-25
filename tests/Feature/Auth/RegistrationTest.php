@@ -20,7 +20,7 @@ class RegistrationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testNewUsersCanRegister(): void
+    public function testNewUserCanRegister(): void
     {
         $response = $this->post(route('register'), [
             'login' => $this->faker->word(),

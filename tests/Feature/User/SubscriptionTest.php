@@ -28,7 +28,7 @@ class SubscriptionTest extends TestCase
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
-        $this->assertTrue($follower->following()->where('id', $user->id)->exists());
+        $this->assertTrue($follower->followings()->where('id', $user->id)->exists());
     }
 
     public function testRemoveSubscription(): void
@@ -47,6 +47,6 @@ class SubscriptionTest extends TestCase
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
-        $this->assertFalse($follower->following()->where('id', $user->id)->exists());
+        $this->assertFalse($follower->followings()->where('id', $user->id)->exists());
     }
 }
