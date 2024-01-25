@@ -63,7 +63,7 @@ class UserController extends Controller
             ]);
         }
 
-        $articles = $query->with(['topics', 'cardImage'])
+        $articles = $query->with(['topics'])
             ->withCount(['likes', 'relatedComments'])
             ->withTrashed($status === Status::Deleted)
             ->whereStatus($status)

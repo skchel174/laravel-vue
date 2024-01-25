@@ -23,7 +23,6 @@ class RegisterTest extends TestCase
         $login = $this->faker->word();
         $email = $this->faker->email();
         $password = $this->faker->word();
-        $avatar = $this->faker->filePath();
 
         Event::shouldReceive('dispatch')
             ->once()
@@ -31,7 +30,7 @@ class RegisterTest extends TestCase
                 return $arg instanceof UserRegistered && $arg->user->login === $login;
             }));
 
-        $user = User::register($login, $email, Password::create($password), $avatar);
+        $user = User::register($login, $email, Password::create($password));
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals($user->login, $login);

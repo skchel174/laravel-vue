@@ -14,12 +14,6 @@ class UpdateProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Storage::disk('public');
-    }
 
     public function testProfilePageIsDisplayed(): void
     {
@@ -35,9 +29,10 @@ class UpdateProfileTest extends TestCase
 
     public function testProfileInformationCanBeUpdated(): void
     {
+        Storage::fake('public');
+
         /** @var User $user */
-        $user = User::factory()
-            ->create();
+        $user = User::factory()->create();
 
         $response = $this
             ->actingAs($user)
@@ -49,7 +44,9 @@ class UpdateProfileTest extends TestCase
             ]);
 
         $response->assertRedirect(route('profile'));
+
         $response->assertSessionHas('status', 'Profile successfully updated');
+
         $response->assertSessionHasNoErrors();
 
         $user->refresh();
