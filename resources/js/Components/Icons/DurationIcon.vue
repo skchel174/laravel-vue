@@ -13,7 +13,7 @@ defineProps({
       watch_later
     </span>
     <span class="text-xs font-bold capitalize text-gray-400">
-      {{ value }} min
+      {{ value }} {{ $trans('min') }}
     </span>
   </div>
 </template>

@@ -64,7 +64,7 @@ const toggleHiddenTabs = () => {
       :selected="currentTab === tab"
       @click="() => selectTab(tab)"
     >
-      <span>{{ tab }}</span>
+      <span>{{ $trans(tab) }}</span>
 
       <span
         class="ml-1 text-sky-600"
@@ -83,7 +83,7 @@ const toggleHiddenTabs = () => {
         class="uppercase"
         :expand="isHiddenTabsOpen"
       >
-        More
+        {{ $trans('more') }}
       </ExpandButton>
 
       <Popover
@@ -99,7 +99,7 @@ const toggleHiddenTabs = () => {
             :selected="currentTab === tab"
             @click="() => selectTab(tab)"
           >
-            <span>{{ tab }}</span>
+            <span>{{ $trans(tab) }}</span>
 
             <span
               class="ml-2 text-sky-600"

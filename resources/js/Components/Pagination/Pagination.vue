@@ -35,7 +35,9 @@ const pages = usePagination(props.currentPage, props.totalPages);
       :href="route(routeName, {'page': currentPage - 1, ...queryParams})"
     >
       <span class="material-icons">chevron_left</span>
-      <span class="hidden sm:inline">Prev</span>
+      <span class="hidden sm:inline">
+        {{ $trans('Prev') }}
+      </span>
     </PaginationLink>
 
     <div class="h-full flex">
@@ -53,7 +55,9 @@ const pages = usePagination(props.currentPage, props.totalPages);
       :active="currentPage !== totalPages"
       :href="route(routeName, {'page': currentPage + 1, ...queryParams})"
     >
-      <div class="hidden sm:inline">Next</div>
+      <div class="hidden sm:inline">
+        {{ $trans('Next') }}
+      </div>
       <span class="material-icons">chevron_right</span>
     </PaginationLink>
   </div>

@@ -31,14 +31,17 @@ const searchTags = (input) => {
 
 <template>
   <div class="space-y-2">
-    <InputLabel for="tags" value="Tags"/>
+    <InputLabel
+      for="tags"
+      :value="$trans('Tags')"
+    />
 
     <MultipleSelect
       :options="fetchedTags"
       v-model="selectedTags"
       @input="searchTags"
       @update:modelValue="$emit('select', selectedTags)"
-      placeholder="Select tags"
+      :placeholder="$trans('Select tags')"
     />
   </div>
 </template>

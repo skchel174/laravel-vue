@@ -17,7 +17,7 @@ const props = defineProps({
 <template>
   <div>
     <h5 class="mb-2 text-sm text-gray-700 font-bold">
-      Belongs to topics
+      {{ $trans('Belongs to topics') }}
     </h5>
 
     <div
@@ -35,7 +35,7 @@ const props = defineProps({
       class=" text-gray-400 font-medium"
       v-else
     >
-      No topic subscriptions
+      {{ $trans('No subscriptions') }}
     </div>
   </div>
 </template>

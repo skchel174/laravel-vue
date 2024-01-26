@@ -23,7 +23,7 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <Head title="Forgot Password"/>
+    <Head :title="$tarns('Forgot password')"/>
 
     <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
       <form
@@ -31,8 +31,7 @@ const submit = () => {
         @submit.prevent="submit"
       >
         <div class="mb-4 text-sm text-gray-600">
-          Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-          link that will allow you to choose a new one.
+          {{ $trans('password_forgot_notice') }}
         </div>
 
         <div
@@ -43,7 +42,10 @@ const submit = () => {
         </div>
 
         <div>
-          <InputLabel for="email" value="Email"/>
+          <InputLabel
+            for="email"
+            :value="$trans('Login')"
+          />
 
           <TextInput
             id="email"
@@ -51,11 +53,12 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.email"
             required
-            autofocus
-            autocomplete="username"
           />
 
-          <InputError class="mt-2" :message="form.errors.email"/>
+          <InputError
+            class="mt-2"
+            :message="form.errors.email"
+          />
         </div>
 
         <div class="flex items-center justify-end mt-4">
@@ -64,7 +67,7 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            Email Password Reset Link
+            {{ $trans('Send password reset mail') }}
           </PrimaryButton>
         </div>
       </form>

@@ -20,6 +20,10 @@ defineProps({
     :href="route('article.comments', {article: articleId})"
     as="button"
   >
-    Comments ({{ commentsCount }})
+    <span class="mr-1">
+      {{ $trans('Comments') }}
+    </span>
+
+    <span>({{ commentsCount }})</span>
   </Link>
 </template>

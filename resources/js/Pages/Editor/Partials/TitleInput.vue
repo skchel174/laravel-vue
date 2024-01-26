@@ -10,7 +10,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(['update']);
+defineEmits(['update:content']);
 
 const focus = ref(false);
 </script>
@@ -20,9 +20,9 @@ const focus = ref(false);
     <TextareaInput
       id="title"
       class="!px-0 !border-none !shadow-none !ring-0 !text-3xl !font-black"
-      placeholder="Title"
+      :placeholder="$trans('Title')"
       :model-value="title"
-      @update:modelValue="(value) => $emit('update', value)"
+      @update:modelValue="(value) => $emit('update:content', value)"
       @focus="() => focus = true"
       @blur="() => focus = false"
     />

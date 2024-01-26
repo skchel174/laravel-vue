@@ -73,16 +73,24 @@ const menu = [
         :key="item.value"
         :href="item.url"
       >
-        <span class="material-icons">{{ item.icon }}</span>
-        <span>{{ item.value }}</span>
+        <span class="material-icons">
+          {{ item.icon }}
+        </span>
+        <span>
+          {{ $trans(item.value) }}
+        </span>
       </ProfileMenuLink>
 
       <ProfileMenuLink
         class="text-red-600 hover:!bg-red-50 active:!bg-red-100 hover:!text-red-700"
         :href="route('logout')"
       >
-        <span class="material-icons">logout</span>
-        <span>Log out</span>
+        <span class="material-icons">
+          logout
+        </span>
+        <span>
+          {{ $trans('Log out') }}
+        </span>
       </ProfileMenuLink>
     </div>
   </div>

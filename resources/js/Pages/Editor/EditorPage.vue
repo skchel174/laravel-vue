@@ -49,14 +49,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <Head title="Profile"/>
+  <Head :title="$trans('Article Editor')"/>
 
   <AppHeader/>
 
   <MainWrapper>
     <div class="flex-1 w-full flex flex-col space-y-4">
       <PageHeader>
-        Article editor
+        {{ $trans('Article Editor') }}
       </PageHeader>
 
       <BackupNotice

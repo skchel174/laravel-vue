@@ -35,13 +35,15 @@ const props = defineProps({
   },
 });
 
-const user = usePage().props.auth.user;
+const page = usePage();
+const user = page.props.auth.user;
 
 const notify = inject('notify');
 
 const copyLink = () => {
   const link = route('article', {article: props.articleId});
   navigator.clipboard.writeText(`${link}#comment_${props.comment.id}`);
+  /* TODO: add localization */
   notify('success', 'Link was copied');
 };
 
@@ -54,6 +56,7 @@ const onBookmarked = () => {
   });
 
   toggleBookmark(url)
+    /* TODO: add localization */
     .then(() => notify('success', 'Comment added to bookmarks'))
     .catch(error => notify('error', error.message))
 };

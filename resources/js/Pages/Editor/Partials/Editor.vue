@@ -56,7 +56,7 @@ const focus = ref(false);
         :disabled="form.title.length === 0 || form.text.length < 10"
         @click="$emit('openTab', 'Settings')"
       >
-        Proceed to settings
+        {{ $trans('Proceed to settings') }}
       </PrimaryOutlineButton>
     </PageFooter>
   </div>

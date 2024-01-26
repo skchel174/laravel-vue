@@ -29,24 +29,16 @@ const updatePassword = () => {
 
 <template>
   <section class="max-w-2xl">
-    <header class="flex space-x-4">
-      <div>
-        <div class="h-8 w-8 bg-teal-500 flex items-center justify-center rounded-sm">
-          <span class="material-icons !text-sm text-white">
-            lock
-          </span>
-        </div>
+    <header class="flex items-center space-x-4">
+      <div class="h-8 w-8 bg-teal-500 flex items-center justify-center rounded-sm">
+        <span class="material-icons !text-sm text-white">
+          lock
+        </span>
       </div>
 
-      <div>
-        <h2 class="text-lg font-medium text-gray-900 leading-none">
-          Update Password
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-          Ensure your account is using a long, random password to stay secure.
-        </p>
-      </div>
+      <h2 class="text-lg font-medium text-gray-900 leading-none">
+        {{ $trans('Update Password') }}
+      </h2>
     </header>
 
     <form
@@ -56,7 +48,7 @@ const updatePassword = () => {
       <div>
         <InputLabel
           for="current_password"
-          value="Current Password"
+          :value="$trans('Current password')"
         />
 
         <TextInput
@@ -75,7 +67,7 @@ const updatePassword = () => {
       <div>
         <InputLabel
           for="password"
-          value="New Password"
+          :value="$trans('New password')"
         />
 
         <TextInput
@@ -94,7 +86,7 @@ const updatePassword = () => {
       <div>
         <InputLabel
           for="password_confirmation"
-          value="Confirm Password"
+          :value="$trans('Confirm password')"
         />
 
         <TextInput
@@ -112,7 +104,7 @@ const updatePassword = () => {
 
       <div class="flex items-center gap-4">
         <PrimaryButton :disabled="form.processing">
-          Save
+          {{ $trans('save') }}
         </PrimaryButton>
 
         <Transition
@@ -125,7 +117,7 @@ const updatePassword = () => {
             v-if="form.recentlySuccessful"
             class="text-sm text-gray-600"
           >
-            Saved.
+            {{ $trans('password_saved') }}
           </p>
         </Transition>
       </div>

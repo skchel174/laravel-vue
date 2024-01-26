@@ -19,7 +19,7 @@ defineEmits(['select']);
 
 <template>
   <div class="space-y-4">
-    <InputLabel value="Level of difficulty"/>
+    <InputLabel :value="$trans('Difficulty level')"/>
 
     <div class="flex flex-col sm:flex-row">
       <RadioButton

@@ -61,7 +61,7 @@ const selectLink = (value) => {
       </div>
 
       <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">
-        Unfortunately there are no articles here yet
+        {{ $trans('empty_articles') }}
       </div>
     </NavigationSelect>
   </UserLayout>

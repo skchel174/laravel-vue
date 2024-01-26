@@ -30,14 +30,14 @@ const onInput = (input) => filteredTopics.value = topics.filter(item => {
 
 <template>
   <div class="space-y-2">
-    <InputLabel value="Topics"/>
+    <InputLabel :value="$trans('Topics')"/>
 
     <MultipleSelect
       :options="filteredTopics"
       v-model="selectedTopics"
       @input="onInput"
       @update:modelValue="$emit('select', selectedTopics)"
-      placeholder="Select topics"
+      :placeholder="$trans('Select topics')"
     />
   </div>
 </template>

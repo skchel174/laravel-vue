@@ -28,7 +28,7 @@ const user = usePage().props.auth.user;
     </Link>
 
     <span class="text-sm text-gray-400 font-bold">
-      {{ publishDate ? $formatDate(publishDate, 'MMM D YYYY [at] kk:mm') : 'Never been published' }}
+      {{ publishDate ? $formatDate(publishDate, 'MMM D YYYY [at] kk:mm') : $trans('Never been published') }}
     </span>
   </div>
 </template>

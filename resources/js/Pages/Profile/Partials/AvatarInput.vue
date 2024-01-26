@@ -57,7 +57,7 @@ const deleteImage = () => {
 <template>
   <div class="flex flex-row justify-between lg:flex-col lg:justify-start">
     <div class="space-y-2 lg:space-y-3 flex flex-col">
-      <InputLabel value="Avatar"/>
+      <InputLabel :value="$trans('Avatar')"/>
 
       <Avatar
         class="hidden lg:flex"
@@ -66,10 +66,8 @@ const deleteImage = () => {
         size="lg"
       />
 
-      <p class="text-xs text-gray-500 font-medium">
-        Format: jpg, bmp, png.
-        <br/>Maximum file size: 1Mb.
-        <br/>Resolution: up to 64px.
+      <p class="w-36 text-xs text-gray-500 font-medium">
+        {{$trans('avatar_rules')}}
       </p>
 
       <InputError :message="error"/>
@@ -79,7 +77,7 @@ const deleteImage = () => {
         class="w-full flex flex-col space-y-1.5"
         @click.prevent="resetImage"
       >
-        Reset
+        {{ $trans('Reset') }}
       </NeutralButton>
 
       <div
@@ -87,14 +85,14 @@ const deleteImage = () => {
         class="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-1.5"
       >
         <NeutralButton @click.prevent="triggerInput">
-          Select image
+          {{ $trans('Select') }}
         </NeutralButton>
 
         <DangerOutlineButton
           v-if="avatar"
           @click.prevent="deleteImage"
         >
-          Delete image
+          {{ $trans('Delete') }}
         </DangerOutlineButton>
       </div>
     </div>

@@ -23,19 +23,18 @@ const verificationLinkSent = computed(() => {
 
 <template>
   <AuthLayout>
-    <Head title="Email Verification"/>
+    <Head :title="$trans('Email Verification')"/>
 
     <div class="flex-1 sm:flex-none max-w-lg p-4 sm:p-6 bg-white space-y-10">
       <div class="px-1 text-sm text-gray-600">
-        Thanks for signing up! Before getting started, could you verify your email address by clicking on the link
-        we just emailed to you? If you didn't receive the email, we will gladly send you another.
+        {{ $trans('email_verification_notice') }}
       </div>
 
       <div
         v-if="verificationLinkSent"
         class="px-1 font-medium text-sm text-green-600"
       >
-        A new verification link has been sent to the email address you provided during registration.
+        {{ $trans('email_verification_sent') }}
       </div>
 
       <form @submit.prevent="submit">
@@ -44,7 +43,7 @@ const verificationLinkSent = computed(() => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            Resend Verification Email
+            {{ $trans('Resend Verification Email') }}
           </PrimaryButton>
 
           <Link
@@ -53,7 +52,7 @@ const verificationLinkSent = computed(() => {
             as="button"
             class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Log out
+            {{ $trans('Log out') }}
           </Link>
         </div>
       </form>

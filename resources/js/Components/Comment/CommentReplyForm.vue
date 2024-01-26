@@ -55,7 +55,7 @@ const onSubmit = () => {
         class="!font-bold"
         for="comment_form"
       >
-        Reply
+        {{ $trans('Reply') }}
         <span class="font-medium text-sky-600">
           @{{ author }}
         </span>
@@ -85,7 +85,7 @@ const onSubmit = () => {
       class="mt-4"
       :disabled="form.text.length === 0"
     >
-      Send
+      {{ $trans('Send') }}
     </PrimaryButton>
   </form>
 </template>

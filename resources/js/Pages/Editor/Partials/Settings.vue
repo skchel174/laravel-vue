@@ -45,7 +45,7 @@ const saveToDrafts = () => {
     <div class="p-4 lg:py-6 lg:px-8 space-y-8">
       <div class="space-y-4">
         <h3 class="text-base sm:text-lg font-medium pb-1 border-b border-gray-200">
-          Article settings
+          {{ $trans('Article Settings') }}
         </h3>
 
         <TopicsSelect
@@ -68,7 +68,7 @@ const saveToDrafts = () => {
 
       <div class="space-y-4">
         <h3 class="text-base sm:text-lg font-medium pb-1 border-b border-gray-200">
-          Displaying a article in the feed
+          {{ $trans('Displaying in the feed') }}
         </h3>
 
         <ImageInput
@@ -85,14 +85,14 @@ const saveToDrafts = () => {
 
     <PageFooter class="justify-between">
       <NeutralButton @click="$emit('openTab', 'Editor')">
-        Back to editor
+        {{ $trans('Back to editor') }}
       </NeutralButton>
 
       <SuccessButton
         :disabled="form.topics.length === 0"
         @click="() => isConfirmationOpen = true"
       >
-        Save article
+        {{ $trans('Save') }}
       </SuccessButton>
     </PageFooter>
 
@@ -102,16 +102,16 @@ const saveToDrafts = () => {
     >
       <div class="flex flex-col justify-center p-6 space-y-4">
         <h2 class="text-base font-medium text-gray-900">
-          Are you sure you want to publish this article?
+          {{ $trans('article_save_notice') }}
         </h2>
 
         <div class="flex justify-start space-x-2">
           <PrimaryButton @click="sendToModeration">
-            Send to moderation
+            {{ $trans('Send to moderation') }}
           </PrimaryButton>
 
           <NeutralButton @click="saveToDrafts">
-            Save to drafts
+            {{ $trans('Save to drafts') }}
           </NeutralButton>
         </div>
       </div>

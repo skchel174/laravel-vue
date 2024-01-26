@@ -22,7 +22,7 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <Head title="Register"/>
+    <Head :title="$trans('Registration')"/>
 
     <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
       <form
@@ -30,15 +30,15 @@ const submit = () => {
         @submit.prevent="submit"
       >
         <header class="mb-8 sm:mb-4">
-          <h2 class="text-xl font-black">
-            Registration
+          <h2 class="text-xl font-black capitalize">
+            {{ $trans('Registration') }}
           </h2>
         </header>
 
         <div>
           <InputLabel
             for="login"
-            value="Login"
+            :value="$trans('Login')"
           />
 
           <TextInput
@@ -47,7 +47,6 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.login"
             required
-            autofocus
           />
 
           <InputError
@@ -59,7 +58,7 @@ const submit = () => {
         <div>
           <InputLabel
             for="email"
-            value="Email"
+            :value="$trans('Email')"
           />
 
           <TextInput
@@ -79,7 +78,7 @@ const submit = () => {
         <div>
           <InputLabel
             for="password"
-            value="Password"
+            :value="$trans('Password')"
           />
 
           <TextInput
@@ -99,7 +98,7 @@ const submit = () => {
         <div>
           <InputLabel
             for="password_confirmation"
-            value="Confirm Password"
+            :value="$trans('password_confirmation')"
           />
 
           <TextInput
@@ -122,20 +121,20 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            Register
+            {{ $trans('Registration') }}
           </PrimaryButton>
         </div>
       </form>
 
       <div class="w-full max-w-lg bg-white p-6 flex justify-center">
         <p class="font-medium text-xs sm:text-sm text-gray-600">
-          Already registered?
+          {{ $trans('Already registered?') }}
 
           <Link
             :href="route('login')"
-            class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200"
+            class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200 capitalize"
           >
-            Login
+            {{ $trans('Login') }}
           </Link>
         </p>
       </div>

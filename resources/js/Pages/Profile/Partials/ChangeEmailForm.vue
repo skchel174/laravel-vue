@@ -24,7 +24,7 @@ const updatePassword = () => {
 
 <template>
   <section class="space-y-6">
-    <header class="flex items-start space-x-4">
+    <header class="flex items-center space-x-4">
       <div>
         <div class="h-8 w-8 bg-cyan-600 flex items-center justify-center rounded-sm">
           <span class="material-icons !text-sm text-white">
@@ -33,15 +33,9 @@ const updatePassword = () => {
         </div>
       </div>
 
-      <div>
-        <h2 class="text-lg font-medium text-gray-900 leading-none">
-          Change Email
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-          The email address will be replaced after confirmation.
-        </p>
-      </div>
+      <h2 class="text-lg font-medium text-gray-900 leading-none">
+        {{ $trans('Change Email') }}
+      </h2>
     </header>
 
     <form
@@ -51,7 +45,7 @@ const updatePassword = () => {
       <div>
         <InputLabel
           for="email"
-          value="Email"
+          :value="$trans('Email')"
         />
 
         <TextInput
@@ -70,7 +64,7 @@ const updatePassword = () => {
       <div>
         <InputLabel
           for="email_password"
-          value="Password"
+          :value="$trans('Password')"
         />
 
         <TextInput
@@ -88,7 +82,7 @@ const updatePassword = () => {
 
       <div class="flex items-center gap-4">
         <PrimaryButton :disabled="form.processing">
-          Save
+          {{ $trans('Save') }}
         </PrimaryButton>
 
         <Transition
@@ -101,7 +95,7 @@ const updatePassword = () => {
             v-if="form.recentlySuccessful"
             class="text-sm text-gray-600"
           >
-            A new confirmation link has been sent to the email address you provided.
+            {{ $trans('change_email_notice') }}
           </p>
         </Transition>
       </div>
