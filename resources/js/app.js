@@ -8,6 +8,7 @@ import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
 import formatDate from "../Plugins/formatDate.js";
 import formatCount from "../Plugins/formatCount.js";
+import trans from "../Plugins/trans.js";
 
 createInertiaApp({
   title(title) {
@@ -31,6 +32,7 @@ createInertiaApp({
       .use(ZiggyVue, Ziggy)
       .use(formatDate)
       .use(formatCount)
+      .use(trans)
       .mount(el);
   },
 
