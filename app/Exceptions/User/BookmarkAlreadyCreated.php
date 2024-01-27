@@ -10,6 +10,6 @@ class BookmarkAlreadyCreated extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('The bookmark has already been created');
+        parent::__construct(trans('user.bookmark_created'));
     }
 }

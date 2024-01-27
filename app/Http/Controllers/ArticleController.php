@@ -75,8 +75,8 @@ class ArticleController extends Controller
         }
 
         $status = $article->status->isModerated()
-            ? 'Article was sent for moderation'
-            : 'Article saved as draft';
+            ? trans('article.sent_for_moderation')
+            : trans('article.saved_as_draft');
 
         return redirect()
             ->route('article.editor', ['article' => $article->id])
@@ -107,8 +107,8 @@ class ArticleController extends Controller
         }
 
         $status = $article->status->isModerated()
-            ? 'Article was sent for moderation'
-            : 'Draft updated successfully';
+            ? trans('article.sent_for_moderation')
+            : trans('article.draft_updated');
 
         return redirect()
             ->route('article.editor', ['article' => $article->id])

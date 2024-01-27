@@ -10,6 +10,6 @@ class VerificationTokenExpired extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Verification token expired');
+        parent::__construct(trans('user.expired_token'));
     }
 }

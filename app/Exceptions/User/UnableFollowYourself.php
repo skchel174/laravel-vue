@@ -10,6 +10,6 @@ class UnableFollowYourself extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Unable to follow yourself');
+        parent::__construct(trans('user.follow_yourself'));
     }
 }

@@ -10,6 +10,6 @@ class ArticleAlreadyModerated extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Article already in moderation');
+        parent::__construct(trans('article.already_moderated'));
     }
 }

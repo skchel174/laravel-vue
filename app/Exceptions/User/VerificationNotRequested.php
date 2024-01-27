@@ -10,6 +10,6 @@ class VerificationNotRequested extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Verification not requested');
+        parent::__construct(trans('user.no_verification_request'));
     }
 }

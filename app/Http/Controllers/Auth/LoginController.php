@@ -39,7 +39,7 @@ class LoginController extends Controller
 
         if (!$user->status->isActive()) {
             return redirect()->route('login')
-                ->with('error', 'Account not active');
+                ->with('error', trans('user.not_active'));
         }
 
         Auth::login($user, (bool)$request->remember);

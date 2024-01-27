@@ -22,6 +22,6 @@ class ChangePasswordController extends Controller
         Session::invalidate();
 
         return redirect()->route('login')
-            ->with('status', 'Password successfully changed');
+            ->with('status', trans('user.password_changed'));
     }
 }

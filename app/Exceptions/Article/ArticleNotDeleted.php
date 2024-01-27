@@ -10,6 +10,6 @@ class ArticleNotDeleted extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Article not deleted');
+        parent::__construct(trans('article.not_deleted'));
     }
 }

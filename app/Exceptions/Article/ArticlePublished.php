@@ -10,6 +10,6 @@ class ArticlePublished extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Article already published');
+        parent::__construct(trans('article.already_published'));
     }
 }

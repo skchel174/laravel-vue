@@ -10,6 +10,6 @@ class ArticleNotPublished extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('The article not published');
+        parent::__construct(trans('article.not_published'));
     }
 }

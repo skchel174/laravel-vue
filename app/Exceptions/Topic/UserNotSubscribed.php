@@ -10,6 +10,6 @@ class UserNotSubscribed extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('user not subscribed to the topic');
+        parent::__construct(trans('topic.not_subscribed'));
     }
 }

@@ -10,6 +10,6 @@ class RegistrationAlreadyVerified extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Registration already verified');
+        parent::__construct(trans('user.already_verified'));
     }
 }

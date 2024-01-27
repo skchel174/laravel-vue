@@ -10,6 +10,6 @@ class ArticleAlreadyLiked extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('The article has already been liked by the user');
+        parent::__construct(trans('article.already_liked'));
     }
 }

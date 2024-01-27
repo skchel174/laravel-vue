@@ -10,6 +10,6 @@ class PasswordResetNotRequested extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Password reset not requested');
+        parent::__construct(trans('password.reset_not_requested'));
     }
 }

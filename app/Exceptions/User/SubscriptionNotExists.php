@@ -10,6 +10,6 @@ class SubscriptionNotExists extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('You are not following this user');
+        parent::__construct(trans('user.not_following'));
     }
 }

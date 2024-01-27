@@ -10,6 +10,6 @@ class SubscriptionAlreadyExists extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('You are already following this user');
+        parent::__construct(trans('user.already_following'));
     }
 }
