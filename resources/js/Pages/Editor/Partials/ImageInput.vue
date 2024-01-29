@@ -99,11 +99,11 @@ const openFullImage = () => {
           </span>
 
           <p class="font-semibold">
-            Add Image
+            {{ $trans('Add image') }}
           </p>
 
           <p class="w-full text-sm font-medium text-center">
-            format: jpg, bmp, png, maximum filesize: 1Mb
+            {{ $trans('article_image_rules') }}
           </p>
         </div>
       </div>

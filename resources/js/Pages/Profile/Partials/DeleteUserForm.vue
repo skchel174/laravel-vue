@@ -57,7 +57,7 @@ const closeModal = () => {
     </header>
 
     <DangerButton @click="openModal">
-      {{ $trans('Delete account') }}
+      {{ $trans('Delete Account') }}
     </DangerButton>
 
     <Modal v-model:open="confirmingUserDeletion">
@@ -73,7 +73,7 @@ const closeModal = () => {
         <div class="mt-6">
           <InputLabel
             for="password"
-            :value="$trans('password')"
+            :value="$trans('Password')"
             class="sr-only"
           />
 
@@ -94,7 +94,7 @@ const closeModal = () => {
 
         <div class="mt-6 flex justify-end">
           <SecondaryButton @click.prevent="closeModal">
-            {{ $trans('cancel') }}
+            {{ $trans('Cancel') }}
           </SecondaryButton>
 
           <DangerButton
@@ -103,7 +103,7 @@ const closeModal = () => {
             :disabled="form.processing"
             @click.prevent="deleteUser"
           >
-            {{ $trans('delete') }}
+            {{ $trans('Delete') }}
           </DangerButton>
         </div>
       </div>

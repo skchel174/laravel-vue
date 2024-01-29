@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div class="flex flex-wrap space-x-2 items-center">
-    <span class="mr-1 text-base font-bold capitalize">
+    <span class="mr-1 text-base font-bold">
       {{ $trans('Topics') }}:
     </span>
 

@@ -63,7 +63,7 @@ const openArticle = () => {
 
     <p
       v-if="article.summary"
-      class="mb-4 text-sm sm:text-base text-gray-800  break-words"
+      class="mb-4 text-sm sm:text-base text-gray-800 break-words"
     >
       {{ article.summary }}
     </p>

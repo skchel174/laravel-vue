@@ -48,7 +48,7 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
       </h3>
 
       <p class="mt-1 text-sm text-gray-500 font-medium capitalize">
-        {{ user.about ?? 'user' }}
+        {{ user.about ?? $trans('User') }}
       </p>
     </div>
 

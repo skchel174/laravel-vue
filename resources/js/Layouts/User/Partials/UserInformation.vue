@@ -14,7 +14,7 @@ defineProps({
         {{ $trans('Registered') }}
       </td>
       <td class="pb-1 px-4 text-xs text-gray-700 font-medium">
-        {{ user.created_at }}
+        {{ $formatDate(user.created_at, 'DD MMM YYYY') }}
       </td>
     </tr>
     <tr>

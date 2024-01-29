@@ -83,7 +83,7 @@ const toggleHiddenTabs = () => {
         class="uppercase"
         :expand="isHiddenTabsOpen"
       >
-        {{ $trans('more') }}
+        {{ $trans('More') }}
       </ExpandButton>
 
       <Popover

@@ -43,16 +43,14 @@ const verificationLinkSent = computed(() => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            {{ $trans('Resend Verification Email') }}
+            {{ $trans('Resend verification email') }}
           </PrimaryButton>
 
           <Link
+            class="underline text-sm text-gray-600 hover:text-gray-900"
             :href="route('logout')"
-            method="post"
-            as="button"
-            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {{ $trans('Log out') }}
+            {{ $trans('Logout') }}
           </Link>
         </div>
       </form>

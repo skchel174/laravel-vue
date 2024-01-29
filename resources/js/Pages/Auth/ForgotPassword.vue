@@ -23,7 +23,7 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <Head :title="$tarns('Forgot password')"/>
+    <Head :title="$trans('Forgot password')"/>
 
     <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
       <form
@@ -44,7 +44,7 @@ const submit = () => {
         <div>
           <InputLabel
             for="email"
-            :value="$trans('Login')"
+            :value="$trans('Email')"
           />
 
           <TextInput

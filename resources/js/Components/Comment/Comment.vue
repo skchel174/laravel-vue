@@ -43,7 +43,6 @@ const notify = inject('notify');
 const copyLink = () => {
   const link = route('article', {article: props.articleId});
   navigator.clipboard.writeText(`${link}#comment_${props.comment.id}`);
-  /* TODO: add localization */
   notify('success', 'Link was copied');
 };
 
@@ -56,7 +55,6 @@ const onBookmarked = () => {
   });
 
   toggleBookmark(url)
-    /* TODO: add localization */
     .then(() => notify('success', 'Comment added to bookmarks'))
     .catch(error => notify('error', error.message))
 };
@@ -125,7 +123,7 @@ const toggleVisibility = () => {
             v-if="user"
             @click="() => setCommentable(`comment_${props.comment.id}`)"
           >
-            Reply
+            {{ $trans('Reply') }}
           </button>
 
           <CopyLinkIcon @click="copyLink"/>

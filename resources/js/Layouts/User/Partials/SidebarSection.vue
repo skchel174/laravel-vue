@@ -12,7 +12,7 @@ defineProps({
 <template>
   <div class="p-4 bg-white w-full lg:max-w-xs">
     <h2 class="text-sm text-gray-500 font-bold uppercase">
-      {{ title }}
+      {{ $trans(title) }}
     </h2>
 
     <Divider class="my-4"/>

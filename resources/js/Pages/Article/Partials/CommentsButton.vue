@@ -20,8 +20,8 @@ defineProps({
     :href="route('article.comments', {article: articleId})"
     as="button"
   >
-    <span class="mr-1">
-      {{ $trans('Comments') }}
+    <span class="mr-1 capitalize">
+      {{ $trans('comments') }}
     </span>
 
     <span>({{ commentsCount }})</span>

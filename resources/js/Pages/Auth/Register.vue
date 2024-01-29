@@ -98,7 +98,7 @@ const submit = () => {
         <div>
           <InputLabel
             for="password_confirmation"
-            :value="$trans('password_confirmation')"
+            :value="$trans('Confirm password')"
           />
 
           <TextInput
@@ -121,7 +121,7 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            {{ $trans('Registration') }}
+            {{ $trans('Register') }}
           </PrimaryButton>
         </div>
       </form>

@@ -86,7 +86,7 @@ const updatePassword = () => {
       <div>
         <InputLabel
           for="password_confirmation"
-          :value="$trans('Confirm password')"
+          :value="$trans('Password confirmation')"
         />
 
         <TextInput
@@ -104,7 +104,7 @@ const updatePassword = () => {
 
       <div class="flex items-center gap-4">
         <PrimaryButton :disabled="form.processing">
-          {{ $trans('save') }}
+          {{ $trans('Save') }}
         </PrimaryButton>
 
         <Transition
@@ -117,7 +117,7 @@ const updatePassword = () => {
             v-if="form.recentlySuccessful"
             class="text-sm text-gray-600"
           >
-            {{ $trans('password_saved') }}
+            {{ $trans('Password saved') }}
           </p>
         </Transition>
       </div>

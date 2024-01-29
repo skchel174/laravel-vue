@@ -13,17 +13,17 @@ const props = defineProps({
 const menu = [
   {
     url: route('user.articles', {user: props.user.login}),
-    value: 'Articles',
+    value: 'articles',
     icon: 'article',
   },
   {
     url: route('user.comments', {user: props.user.login}),
-    value: 'Comments',
+    value: 'comments',
     icon: 'question_answer',
   },
   {
     url: route('user.bookmarks.articles', {user: props.user.login}),
-    value: 'Bookmarks',
+    value: 'bookmarks',
     icon: 'bookmarks',
   },
   {

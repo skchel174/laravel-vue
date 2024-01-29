@@ -3,7 +3,7 @@ import CategoriesNavLink from "@/Components/AppHeader/CategoriesNavLink.vue";
 </script>
 
 <template>
-  <div class="w-full flex justify-between lg:justify-start lg:space-x-8">
+  <div class="w-full flex justify-between lg:justify-start lg:space-x-4">
 
     <!--   TODO: add links   -->
 

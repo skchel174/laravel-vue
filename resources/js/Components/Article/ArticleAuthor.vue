@@ -47,7 +47,7 @@ defineProps({
           class="text-xs text-gray-400 font-bold"
           v-if="publishDate"
         >
-          {{ $formatDate(publishDate, 'MMM D YYYY [at] kk:mm') }}
+          {{ $formatDate(publishDate, 'MMM D YYYY kk:mm') }}
         </p>
       </div>
     </div>

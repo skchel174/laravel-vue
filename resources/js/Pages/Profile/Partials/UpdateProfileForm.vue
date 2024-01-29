@@ -150,7 +150,7 @@ const submit = () => {
               v-if="form.recentlySuccessful"
               class="ml-2 text-sm text-gray-600"
             >
-              {{ $trans('profile_saved') }}
+              {{ $trans('Profile saved') }}
             </p>
           </Transition>
         </div>

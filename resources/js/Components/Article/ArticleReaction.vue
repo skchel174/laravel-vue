@@ -43,6 +43,7 @@ const {isLiked, likesCount, toggleLike} = useLike(props.isLiked, props.likesCoun
 
 const onLike = () => {
   if (!user) {
+    // TODO: move to hook
     notify('error', 'Login to like this article');
     return;
   }
@@ -56,7 +57,7 @@ const {isBookmarked, toggleBookmark} = useBookmark(props.isBookmarked);
 
 const onBookmarked = () => {
   toggleBookmark(route('api.articles.bookmark', {article: props.articleId}))
-    .then(() => notify('success', 'Comment added to bookmarks'))
+    .then(() => notify('success', 'Article added to bookmarks'))
     .catch(error => notify('error', error.message))
 };
 </script>

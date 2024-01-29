@@ -1,5 +1,6 @@
 <script setup>
 import {usePage} from "@inertiajs/vue3";
+import moment from "moment";
 
 const props = defineProps({
   backup: {
@@ -29,16 +30,14 @@ const restore = () => {
     </span>
 
     <p class="text-sm text-gray-500">
-      {{ $trans('You have a backup') }}: "{{ backup.title ? backup.title : $trans('Untitled') }}",
+      {{ $trans('You have a backup') }}: "{{ backup.title ? backup.title : $trans('Untitled') }}", {{ $trans('saved') }}
 
-      saved
-
-      <span class="ml-1 font-semibold">
+      <span class="font-semibold">
         {{ $formatDate(backup.save_date) }}.
       </span>
 
       <span
-        class="ml-2 font-bold tracking-wide text-sky-600 hover:text-sky-400 transition duration-300 cursor-pointer"
+        class="ml-1 font-bold tracking-wide text-sky-600 hover:text-sky-400 transition duration-300 cursor-pointer"
         @click="restore"
       >
         {{ $trans('Restore') }}

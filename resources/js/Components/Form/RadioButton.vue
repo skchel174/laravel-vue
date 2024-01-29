@@ -35,7 +35,7 @@ defineEmits(['select'])
     </div>
 
     <span
-      class="font-medium text-sm text-gray-700 capitalize cursor-pointer select-none"
+      class="font-medium text-sm text-gray-700 cursor-pointer select-none"
       v-if="label"
       @click="$emit('select')"
     >

@@ -44,7 +44,7 @@ const submit = () => {
         @submit.prevent="submit"
       >
         <header class="mb-8 sm:mb-4">
-          <h2 class="text-xl font-black capitalize">
+          <h2 class="text-xl font-black">
             {{ $trans('Log in') }}
           </h2>
         </header>
@@ -111,7 +111,7 @@ const submit = () => {
             />
 
             <span class="ms-2 text-sm text-gray-600">
-              {{ $trans('Remember me') }}
+              {{ $ucfirst($trans('Remember me')) }}
             </span>
           </label>
         </div>
@@ -122,14 +122,14 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            {{ $trans('Log in') }}
+            {{ $trans('Login') }}
           </PrimaryButton>
 
           <Link
             :href="route('password.forgot')"
             class="inline text-sm text-sky-600 hover:text-sky-700 focus:text-sky-800 font-medium transition duration-200"
           >
-            {{ $trans('Forgot password') }}?
+            {{ $trans('Forgot password?') }}
           </Link>
         </div>
       </form>
@@ -140,7 +140,7 @@ const submit = () => {
 
           <Link
             :href="route('register.form')"
-            class="ml-1 text-sky-600 hover:text-sky-700 font-semibold capitalize transition duration-200"
+            class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200"
           >
             {{ $trans('Register') }}
           </Link>

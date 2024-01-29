@@ -24,7 +24,7 @@ defineEmits(['select']);
     <div class="flex flex-col sm:flex-row">
       <RadioButton
         class="mr-6 mb-1"
-        label="Not selected"
+        :label="$ucfirst($trans('Not selected'))"
         :selected="value === null"
         @select="$emit('select', null)"
       />
@@ -33,7 +33,7 @@ defineEmits(['select']);
         class="mr-6 mb-1"
         v-for="item in difficulty"
         :key="item"
-        :label="item"
+        :label="$ucfirst($trans(item))"
         :selected="value === item"
         @select="$emit('select', item)"
       />

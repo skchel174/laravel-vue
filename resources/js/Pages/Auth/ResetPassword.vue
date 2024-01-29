@@ -28,7 +28,7 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <Head :title="$trans('Reset Password')"/>
+    <Head :title="$trans('Password Reset')"/>
 
     <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
       <form
@@ -37,7 +37,7 @@ const submit = () => {
       >
         <header class="mb-8 sm:mb-4">
           <h2 class="text-xl font-black">
-            {{ $trans('Reset Password') }}
+            {{ $trans('Password Reset') }}
           </h2>
         </header>
 
@@ -64,7 +64,7 @@ const submit = () => {
         <div class="mt-4">
           <InputLabel
             for="password_confirmation"
-            :value="$trans('password_confirmation')"
+            :value="$trans('Confirm password')"
           />
 
           <TextInput
@@ -87,7 +87,7 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            {{ $trans('Reset') }}
+            {{ $trans('Reset password') }}
           </PrimaryButton>
         </div>
       </form>

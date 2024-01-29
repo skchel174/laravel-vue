@@ -29,7 +29,7 @@ const isTablet = useMedia('(max-width: 1024px)');
       v-if="!user"
       @click="router.get(route('login'))"
     >
-      {{ $trans('Login') }}
+      {{ $trans('Log in') }}
     </PrimaryOutlineButton>
 
     <div

@@ -65,7 +65,7 @@ const onBookmarked = () => {
         class="text-sm text-gray-400 cursor-pointer hover:text-gray-500 transition duration-200 select-none"
         :href="`${route('article.comments', {article: comment.article_id})}#comment_${comment.id}`"
       >
-        Look
+        {{ $trans('Look') }}
       </Link>
     </CommentFooter>
   </div>
