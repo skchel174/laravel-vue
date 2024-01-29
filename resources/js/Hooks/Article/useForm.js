@@ -22,7 +22,7 @@ function useForm(article = null) {
 
     localStorage.setItem('article_backup', JSON.stringify({
       ...form.data(),
-      save_date: moment().format(),
+      save_date: moment().format('DD-MM-YYYY HH:mm:ss'),
     }));
   };
 

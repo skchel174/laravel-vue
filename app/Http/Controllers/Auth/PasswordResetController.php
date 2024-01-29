@@ -38,7 +38,7 @@ class PasswordResetController extends Controller
         Mail::to($user->email)->send(new ResetPassword($user));
 
         return redirect()->route('login')
-            ->with('status', trans('password.sent'));
+            ->with('status', trans('passwords.sent'));
     }
 
     public function form(Request $request): Response
