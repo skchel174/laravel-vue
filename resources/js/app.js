@@ -9,6 +9,7 @@ import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
 import formatDate from "@/Plugins/formatDate.js";
 import formatCount from "@/Plugins/formatCount.js";
 import trans from "@/Plugins/trans.js";
+import ucfirst from "@/Plugins/ucfirst.js";
 
 createInertiaApp({
   title(title) {
@@ -32,6 +33,7 @@ createInertiaApp({
       .use(ZiggyVue, Ziggy)
       .use(formatDate)
       .use(formatCount)
+      .use(ucfirst)
       .use(trans)
       .mount(el);
   },
