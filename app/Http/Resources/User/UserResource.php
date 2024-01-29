@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'email' => $this->resource->email,
             'status' => $this->resource->status->value,
             'login_at' => $this->resource->login_at->format('d-m-Y H:i'),
-            'created_at' => $this->resource->created_at->format('d M Y'),
+            'created_at' => $this->resource->created_at->format('d-m-Y H:i'),
             'avatar' => $this->resource->avatar?->getUrl(),
         ];
     }
