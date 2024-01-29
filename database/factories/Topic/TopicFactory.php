@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Database\Factories\Topic;
 
 use App\Models\Category\Category;
+use App\Models\Localization\Locale;
+use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -19,5 +21,15 @@ class TopicFactory extends Factory
             'icon' => $this->faker->filePath(),
             'category_id' => Category::factory(),
         ];
+    }
+
+    public function withLocalization(Locale $locale, array $localization): static
+    {
+        return $this->afterCreating(function (Topic $topic) use ($locale, $localization) {
+            $topic->localization()->create([
+                'locale' => $locale,
+                'value' => $localization,
+            ]);
+        });
     }
 }
