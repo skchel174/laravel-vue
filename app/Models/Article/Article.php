@@ -50,11 +50,11 @@ use Throwable;
  * @property-read Collection<Comment> $comments
  * @property-read Collection<Media> $cardImage
  * @property-read ArticleMedia|null $media
- * @property-read int $comments_count
- * @property-read int $related_comments_count
- * @property-read bool $is_liked
- * @property-read int $likes_count
- * @property-read bool $is_bookmarked
+ * @property-read int|null $comments_count
+ * @property-read int|null $related_comments_count
+ * @property-read bool|null $is_liked
+ * @property-read int|null $likes_count
+ * @property-read bool|null $is_bookmarked
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
@@ -82,8 +82,6 @@ class Article extends Model
         'created_at' => 'immutable_datetime:d-m-Y H:i',
         'updated_at' => 'immutable_datetime:d-m-Y H:i',
         'published_at' => 'immutable_datetime:d-m-Y H:i',
-        'is_bookmarked' => 'boolean',
-        'is_liked' => 'boolean',
     ];
 
     protected $with = ['author'];

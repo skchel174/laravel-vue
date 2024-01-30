@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Event;
  * @property int $depth
  * @property-read int $article_id
  * @property-read Article $article
- * @property-read bool $is_bookmarked
+ * @property-read bool|null $is_bookmarked
  * @property-read Article|Comment $commentable
  * @property-read Collection<Comment> $comments
  * @property-read CarbonImmutable $created_at
