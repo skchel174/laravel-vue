@@ -6,6 +6,7 @@ namespace App\Http\Requests\Article;
 
 use App\Models\Article\Difficulty;
 use App\Models\Article\Status;
+use App\Models\Localization\Locale;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
@@ -18,6 +19,7 @@ use Illuminate\Validation\Rule;
  * @property-read array|null $tags
  * @property-read array $topics
  * @property-read Difficulty|null $difficulty
+ * @property-read string $lang
  * @property-read int|null $media
  * @property-read Status|null $status
  */
@@ -34,6 +36,7 @@ class SaveArticleRequest extends FormRequest
             'topics' => 'required|array|min:1',
             'media' => 'nullable|integer|exists:article_media,id',
             'difficulty' => ['nullable', Rule::enum(Difficulty::class)],
+            'lang' => ['required', Rule::enum(Locale::class)],
             'status' => [Rule::enum(Status::class), Rule::in([Status::Draft, Status::Moderated])],
         ];
     }
