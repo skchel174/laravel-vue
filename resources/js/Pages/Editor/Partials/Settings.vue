@@ -10,6 +10,7 @@ import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import Modal from "@/Components/Modal.vue";
+import LangSelect from "@/Pages/Editor/Partials/LangSelect.vue";
 
 const props = defineProps({
   article: {
@@ -48,15 +49,20 @@ const saveToDrafts = () => {
           {{ $trans('Article Settings') }}
         </h3>
 
+        <LangSelect
+          :lang="form.lang"
+          @select="value => $emit('updateForm', 'lang', value)"
+        />
+
         <TopicsSelect
           :topics="$page.props.topics"
           :value="form.topics"
-          @select="(value) => $emit('updateForm', 'topics', value)"
+          @select="value => $emit('updateForm', 'topics', value)"
         />
 
         <TagsSelect
           :value="form.tags"
-          @select="(value) => $emit('updateForm', 'tags', value)"
+          @select="value => $emit('updateForm', 'tags', value)"
         />
 
         <DifficultSelect

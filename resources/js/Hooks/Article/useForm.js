@@ -10,6 +10,7 @@ function useForm(article = null) {
     tags: article?.tags ?? [],
     topics: article?.topics ?? [],
     difficulty: article?.difficulty ?? null,
+    lang: article?.lang ?? 'en',
     image: undefined,
     media: null,
     status: null,
