@@ -1,5 +1,5 @@
 <script setup>
-import {onUnmounted, watch} from "vue";
+import {computed, onUnmounted, watch} from "vue";
 
 const props = defineProps({
   open: {
@@ -11,7 +11,7 @@ const props = defineProps({
     type: String,
     required: true,
     validator: (value) => {
-      return ['left', 'right'].includes(value);
+      return ['top', 'left', 'right'].includes(value);
     },
   },
 });
@@ -38,6 +38,42 @@ onUnmounted(() => {
   document.removeEventListener('keydown', closeOnEscape);
   document.body.style.overflow = null;
 });
+
+const wrapperClass = computed(() => {
+  if (props.side === 'top') {
+    return 'flex-col justify-start';
+  }
+
+  return props.side === 'left' ? 'justify-start' : 'justify-end'
+});
+
+const contentClass = computed(() => {
+  return props.side === 'top' ? 'w-screen' : 'w-9/12 h-screen max-w-[18rem]';
+});
+
+const hiddenState = computed(() => {
+  if (props.side === 'top') {
+    return 'translate-y-[-100%]';
+  }
+
+  if (props.side === 'left') {
+    return 'translate-x-[-100%]';
+  }
+
+  if (props.side === 'right') {
+    return 'translate-x-[100%]';
+  }
+});
+
+const visibleState = computed(() => {
+  if (props.side === 'top') {
+    return 'translate-y-0';
+  }
+
+  if (props.side === 'left' || props.side === 'right') {
+    return 'translate-x-0';
+  }
+});
 </script>
 
 <template>
@@ -49,7 +85,7 @@ onUnmounted(() => {
       <div
         v-show="open"
         class="fixed inset-0 overflow-y-auto z-50 flex"
-        :class="side === 'left' ? 'justify-start' : 'justify-end'"
+        :class="wrapperClass"
         scroll-region
       >
         <Transition
@@ -71,15 +107,16 @@ onUnmounted(() => {
 
         <Transition
           enter-active-class="ease-out duration-300"
-          :enter-from-class="side === 'left' ? 'translate-x-[-100%]' : 'translate-x-[100%]'"
-          enter-to-class="translate-x-0"
+          :enter-from-class="hiddenState"
+          :enter-to-class="visibleState"
           leave-active-class="ease-in duration-200"
-          leave-from-class="translate-x-0"
-          :leave-to-class="side === 'left' ? 'translate-x-[-100%]' : 'translate-x-[100%]'"
+          :leave-from-class="visibleState"
+          :leave-to-class="hiddenState"
         >
           <div
             v-if="open"
-            class="w-9/12 h-screen max-w-[18rem] bg-white overflow-y-auto transform transition-all"
+            class="bg-white overflow-y-auto transform transition-all"
+            :class="contentClass"
           >
             <slot/>
           </div>

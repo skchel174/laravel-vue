@@ -24,6 +24,8 @@ return [
     'delete_account_notice' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.',
     'delete_account_confirmation' => 'Are you sure you want to delete your account?',
 
+    'language_not_select' => 'You should select at least one language',
+
     // Article editor
 
     'article_backup_confirmation' => 'Are you sure you want to restore autosave?',
