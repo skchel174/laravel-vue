@@ -35,7 +35,8 @@ const props = defineProps({
   },
 });
 
-const user = usePage().props.auth.user;
+const page = usePage();
+const user = page.props.auth.user;
 
 const notify = inject('notify');
 
@@ -122,7 +123,7 @@ const toggleVisibility = () => {
             v-if="user"
             @click="() => setCommentable(`comment_${props.comment.id}`)"
           >
-            Reply
+            {{ $trans('Reply') }}
           </button>
 
           <CopyLinkIcon @click="copyLink"/>

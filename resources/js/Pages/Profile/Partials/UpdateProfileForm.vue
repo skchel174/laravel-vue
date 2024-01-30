@@ -32,24 +32,16 @@ const submit = () => {
 
 <template>
   <section>
-    <header class="flex space-x-4">
-      <div>
-        <div class="h-8 w-8 bg-green-600 flex items-center justify-center rounded-sm">
-          <span class="material-icons !text-base text-white">
-            manage_accounts
-          </span>
-        </div>
+    <header class="flex items-center space-x-4">
+      <div class="h-8 w-8 bg-green-600 flex items-center justify-center rounded-sm">
+        <span class="material-icons !text-base text-white">
+          manage_accounts
+        </span>
       </div>
 
-      <div>
-        <h2 class="text-lg font-medium text-gray-900 leading-none">
-          Profile Information
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-          Update your account's profile information.
-        </p>
-      </div>
+      <h2 class="text-lg font-medium text-gray-900 leading-none">
+        {{ $trans('Update Profile') }}
+      </h2>
     </header>
 
     <form
@@ -68,7 +60,7 @@ const submit = () => {
           <div class="flex justify-between items-center">
             <InputLabel
               for="login"
-              value="Login"
+              :value="$trans('Login')"
             />
 
             <InputLength
@@ -95,7 +87,7 @@ const submit = () => {
           <div class="flex justify-between items-center">
             <InputLabel
               for="name"
-              value="Actual name"
+              :value="$trans('Actual name')"
             />
 
             <InputLength
@@ -122,7 +114,7 @@ const submit = () => {
           <div class="flex justify-between items-center">
             <InputLabel
               for="about"
-              value="Describe yourself"
+              :value="$trans('Describe yourself')"
             />
 
             <InputLength
@@ -146,7 +138,7 @@ const submit = () => {
 
         <div class="mt-6 flex items-center">
           <PrimaryButton :disabled="form.processing">
-            Save
+            {{ $trans('Save') }}
           </PrimaryButton>
 
           <Transition
@@ -158,7 +150,7 @@ const submit = () => {
               v-if="form.recentlySuccessful"
               class="ml-2 text-sm text-gray-600"
             >
-              Saved.
+              {{ $trans('Profile saved') }}
             </p>
           </Transition>
         </div>

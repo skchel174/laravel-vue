@@ -10,6 +10,6 @@ class CommentNotCommentable extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Maximum comment tree depth reached');
+        parent::__construct(trans('comment.max_depth'));
     }
 }

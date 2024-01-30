@@ -14,7 +14,7 @@ const isTablet = useMedia('(max-width: 1024px)');
 <template>
   <header class="relative border-b border-gray-200">
     <div class="w-full flex justify-center bg-gray-600">
-      <div class="w-full max-w-3xl lg:max-w-5xl h-12 px-4 flex justify-between items-center">
+      <div class="w-full max-w-3xl lg:max-w-5xl h-12 px-2 md:px-0 flex justify-between items-center">
         <div class="flex items-center">
           <span
             class="material-icons md:!hidden mr-3 !text-3xl text-white hover:text-gray-300 transition duration-300 cursor-pointer"
@@ -34,12 +34,9 @@ const isTablet = useMedia('(max-width: 1024px)');
     </div>
 
     <nav class="hidden md:flex justify-center bg-white">
-      <div class="w-full max-w-3xl lg:max-w-5xl h-12 px-4 flex justify-center lg:justify-between items-center">
+      <div class="w-full max-w-3xl lg:max-w-5xl h-12 flex justify-center lg:justify-between items-center">
         <CategoriesNav class="flex-1"/>
-
-        <ProfileMenu
-          v-if="!isTablet"
-        />
+        <ProfileMenu v-if="!isTablet"/>
       </div>
     </nav>
 

@@ -81,7 +81,7 @@ const onSubmit = () => {
       class="mt-4"
       :disabled="form.text.length === 0"
     >
-      Save
+      {{ $trans('Save') }}
     </PrimaryButton>
   </form>
 </template>

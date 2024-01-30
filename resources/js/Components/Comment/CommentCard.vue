@@ -1,6 +1,6 @@
 <script setup>
 import {inject} from "vue";
-import {Link} from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
 import useBookmark from "@/Hooks/useBookmark.js";
 import Divider from "@/Components/Divider.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
@@ -15,6 +15,8 @@ const props = defineProps({
   },
 });
 
+const trans = usePage().props.trans;
+
 const notify = inject('notify');
 
 const {isBookmarked, toggleBookmark} = useBookmark(props.comment.is_bookmarked);
@@ -26,6 +28,7 @@ const onBookmarked = () => {
   });
 
   toggleBookmark(url)
+    /* TODO: add localization */
     .then(() => notify('success', 'Comment added to bookmarks'))
     .catch(error => notify('error', error.message))
 };
@@ -62,7 +65,7 @@ const onBookmarked = () => {
         class="text-sm text-gray-400 cursor-pointer hover:text-gray-500 transition duration-200 select-none"
         :href="`${route('article.comments', {article: comment.article_id})}#comment_${comment.id}`"
       >
-        Look
+        {{ $trans('Look') }}
       </Link>
     </CommentFooter>
   </div>

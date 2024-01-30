@@ -43,7 +43,7 @@ const isTablet = useMedia('(max-width: 1024px)');
         class="text-sm text-gray-500 font-medium capitalize"
         :expand="selectOpen"
       >
-        {{ currentLink }}
+        {{ $ucfirst($trans(currentLink)) }}
       </ExpandButton>
 
       <Popover
@@ -53,13 +53,13 @@ const isTablet = useMedia('(max-width: 1024px)');
       >
         <MenuList>
           <MenuItem
-            class="py-2 px-4 text-sm capitalize"
+            class="py-2 px-4 text-sm"
             v-for="item in navigation"
             :key="item"
             :selected="currentLink === item"
             @click="() => selectLink(item)"
           >
-            {{ item }}
+            {{ $ucfirst($trans(item)) }}
           </MenuItem>
         </MenuList>
       </Popover>
@@ -80,13 +80,13 @@ const isTablet = useMedia('(max-width: 1024px)');
         :key="1"
       >
         <MenuItem
-          class="py-2 px-4 text-sm capitalize"
+          class="py-2 px-4 text-sm"
           v-for="item in navigation"
           :key="item"
           :selected="currentLink === item"
           @click="() => selectLink(item)"
         >
-          {{ item }}
+          {{ $ucfirst($trans(item)) }}
         </MenuItem>
       </MenuList>
 

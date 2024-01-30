@@ -15,6 +15,6 @@ provide('notify', showNotification);
     :type="notice.type"
     v-model:visible="notice.visible"
   >
-    {{ notice.message }}
+    {{ $trans(notice.message) }}
   </Notification>
 </template>

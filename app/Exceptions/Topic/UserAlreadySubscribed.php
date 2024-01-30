@@ -10,6 +10,6 @@ class UserAlreadySubscribed extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('User already subscribed to the topic');
+        parent::__construct(trans('topic.already_subscribed'));
     }
 }

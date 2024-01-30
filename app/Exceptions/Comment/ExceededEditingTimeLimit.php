@@ -10,6 +10,6 @@ class ExceededEditingTimeLimit extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Comments may be edited for 30 days after posting');
+        parent::__construct(trans('comment.edit_time_exceeded'));
     }
 }

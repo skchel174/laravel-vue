@@ -31,6 +31,6 @@ class ChangeEmailController extends Controller
         }
 
         return redirect()->route('profile')
-            ->with('status', 'Email successfully changed');
+            ->with('status', trans('user.email_changed'));
     }
 }

@@ -11,9 +11,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
-  'update:modelValue',
-]);
+const emit = defineEmits(['update:modelValue']);
 
 const focus = ref(false);
 
@@ -25,7 +23,7 @@ const summary = ref(props.modelValue);
     <div class="flex justify-between items-center h-4">
       <InputLabel
         for="summary"
-        value="Summary"
+        :value="$trans('Summary')"
       />
 
       <div>

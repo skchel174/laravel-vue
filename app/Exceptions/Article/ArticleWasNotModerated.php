@@ -10,6 +10,6 @@ class ArticleWasNotModerated extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Article was not moderated');
+        parent::__construct(trans('article.not_moderated'));
     }
 }

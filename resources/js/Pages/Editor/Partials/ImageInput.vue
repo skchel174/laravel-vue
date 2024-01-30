@@ -45,7 +45,10 @@ const openFullImage = () => {
 
 <template>
   <div class="space-y-2">
-    <InputLabel for="image" value="Image"/>
+    <InputLabel
+      for="image"
+      :value="$trans('Image')"
+    />
 
     <div>
       <div
@@ -65,7 +68,7 @@ const openFullImage = () => {
             class="!py-1"
             @click.prevent="triggerInput"
           >
-            Change
+            {{ $trans('Change') }}
           </NeutralButton>
 
           <NeutralButton
@@ -73,7 +76,7 @@ const openFullImage = () => {
             class="!py-1"
             @click.prevent="deleteImage"
           >
-            Delete
+            {{ $trans('Delete') }}
           </NeutralButton>
 
           <NeutralButton
@@ -81,15 +84,12 @@ const openFullImage = () => {
             class="!py-1"
             @click.prevent="resetImage"
           >
-            Reset
+            {{ $trans('Reset') }}
           </NeutralButton>
         </div>
       </div>
 
-      <div
-        v-else
-        class="relative pb-[50%]"
-      >
+      <div v-else class="relative pb-[50%]">
         <div
           class="absolute w-full h-full text-gray-400 border border-dashed border-gray-400 flex flex-col justify-center items-center cursor-pointer"
           @click="triggerInput"
@@ -99,11 +99,11 @@ const openFullImage = () => {
           </span>
 
           <p class="font-semibold">
-            Add Image
+            {{ $trans('Add image') }}
           </p>
 
           <p class="w-full text-sm font-medium text-center">
-            format: jpg, bmp, png, maximum filesize: 1Mb
+            {{ $trans('article_image_rules') }}
           </p>
         </div>
       </div>

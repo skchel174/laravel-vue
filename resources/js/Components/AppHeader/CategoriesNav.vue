@@ -3,13 +3,16 @@ import CategoriesNavLink from "@/Components/AppHeader/CategoriesNavLink.vue";
 </script>
 
 <template>
-  <div class="w-full flex justify-between lg:justify-start lg:space-x-8">
+  <div class="w-full flex justify-between lg:justify-start lg:space-x-4">
+
+    <!--   TODO: add links   -->
+
     <CategoriesNavLink href="#" selected>
-      My feed
+      {{ $trans('My feed') }}
     </CategoriesNavLink>
 
     <CategoriesNavLink href="#">
-      All categories
+      {{ $trans('All categories') }}
     </CategoriesNavLink>
 
     <CategoriesNavLink
@@ -17,6 +20,7 @@ import CategoriesNavLink from "@/Components/AppHeader/CategoriesNavLink.vue";
       :key="category.id"
       href="#"
     >
+      <!--   TODO: add localization   -->
       {{ category.name }}
     </CategoriesNavLink>
   </div>

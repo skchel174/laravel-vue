@@ -1,4 +1,7 @@
 <script setup>
+import {usePage} from "@inertiajs/vue3";
+import moment from "moment";
+
 const props = defineProps({
   backup: {
     type: [Object, null],
@@ -8,8 +11,10 @@ const props = defineProps({
 
 const emit = defineEmits(['restore', 'close']);
 
+const page = usePage();
+
 const restore = () => {
-  const confirmation = confirm('Are you sure you want to restore autosave?');
+  const confirmation = confirm(page.props.trans['article_backup_confirmation']);
 
   if (confirmation) {
     emit('restore');
@@ -25,17 +30,17 @@ const restore = () => {
     </span>
 
     <p class="text-sm text-gray-500">
-      You have a backup save "{{ backup.title ? backup.title : 'Untitled' }}" at
+      {{ $trans('You have a backup') }}: "{{ backup.title ? backup.title : $trans('Untitled') }}", {{ $trans('saved') }}
 
-      <span class="ml-1 font-semibold">
-        {{ $formatDate(backup.save_date) }}
+      <span class="font-semibold">
+        {{ $formatDate(backup.save_date) }}.
       </span>
 
       <span
-        class="ml-2 font-bold tracking-wide text-sky-600 hover:text-sky-400 transition duration-300 cursor-pointer"
+        class="ml-1 font-bold tracking-wide text-sky-600 hover:text-sky-400 transition duration-300 cursor-pointer"
         @click="restore"
       >
-        Restore
+        {{ $trans('Restore') }}
       </span>
     </p>
 

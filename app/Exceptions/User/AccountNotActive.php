@@ -10,6 +10,6 @@ class AccountNotActive extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('User account not active.');
+        parent::__construct(trans('user.not_active'));
     }
 }

@@ -10,6 +10,6 @@ class NotBelongsToArticle extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Commentary does not belong to the article');
+        parent::__construct(trans('comment.not_belongs_article'));
     }
 }

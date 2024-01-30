@@ -37,7 +37,7 @@ const onSubmit = () => {
     <InputLabel
       class="!font-bold"
       for="comment_form"
-      value="Your comment"
+      :value="$trans('Your comment')"
     />
 
     <TextareaInput
@@ -56,7 +56,7 @@ const onSubmit = () => {
       class="mt-4"
       :disabled="form.text.length === 0"
     >
-      Send
+      {{ $trans('Send') }}
     </PrimaryButton>
   </form>
 </template>

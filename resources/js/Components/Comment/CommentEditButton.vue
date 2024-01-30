@@ -4,7 +4,7 @@
       edit
     </span>
     <span class="text-xs font-semibold !leading-none">
-      Edit
+      {{ $trans('Edit') }}
     </span>
   </button>
 </template>

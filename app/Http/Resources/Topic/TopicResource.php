@@ -17,9 +17,9 @@ class TopicResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
             'slug' => $this->resource->slug,
-            'description' => $this->resource->description,
+            'name' => $this->resource->getLocalizedValue('name'),
+            'description' => $this->resource->getLocalizedValue('description'),
             'subscribers_count' => $this->resource->subscribers_count,
             'articles_count' => $this->resource->articles_count,
             'is_subscribed' => (bool) $this->resource->is_subscribed,

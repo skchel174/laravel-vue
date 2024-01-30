@@ -41,6 +41,7 @@ use Throwable;
  * @property string|null $summary
  * @property FeedImage|null $feed_image
  * @property Difficulty|null $difficulty
+ * @property string $lang
  * @property int $views
  * @property User $author
  * @property-read Collection<Tag> $tags
@@ -62,7 +63,17 @@ class Article extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'text', 'summary', 'status', 'difficulty', 'views', 'feed_image', 'published_at'];
+    protected $fillable = [
+        'title',
+        'text',
+        'summary',
+        'status',
+        'difficulty',
+        'lang',
+        'views',
+        'feed_image',
+        'published_at',
+    ];
 
     protected $casts = [
         'status' => Status::class,

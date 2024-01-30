@@ -39,7 +39,7 @@ class ProfileController extends Controller
         ]);
 
         return redirect()->route('profile')
-            ->with('status', 'Profile successfully updated');
+            ->with('status', trans('profile_updated'));
     }
 
     public function delete(ProfileDeleteRequest $request): RedirectResponse

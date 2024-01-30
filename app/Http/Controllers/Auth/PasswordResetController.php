@@ -38,7 +38,7 @@ class PasswordResetController extends Controller
         Mail::to($user->email)->send(new ResetPassword($user));
 
         return redirect()->route('login')
-            ->with('status', 'We have emailed your password reset link');
+            ->with('status', trans('passwords.sent'));
     }
 
     public function form(Request $request): Response
@@ -63,6 +63,6 @@ class PasswordResetController extends Controller
         Session::invalidate();
 
         return redirect()->route('login')
-            ->with('status', 'Your password has been reset');
+            ->with('status', trans('password.reset'));
     }
 }

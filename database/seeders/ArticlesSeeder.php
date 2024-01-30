@@ -30,10 +30,7 @@ class ArticlesSeeder extends Seeder
                     ->hasAttached($userTopics->random(rand(1, $userTopics->count())))
                     ->hasAttached($users->random(rand(0, $user->count())), relationship: 'likes')
                     ->hasAttached($users->random(rand(0, 5)), relationship: 'bookmarks')
-                    ->create([
-                        'author_id' => $user,
-                        'difficulty' => fn() => Collection::make([null, ...Difficulty::cases()])->random(),
-                    ]);
+                    ->create(['author_id' => $user]);
             }
         }
     }

@@ -47,35 +47,33 @@ const closeModal = () => {
 
       <div>
         <h2 class="text-lg font-medium text-gray-900 leading-none">
-          Delete Account
+          {{ $trans('Delete Account') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-          Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting
-          your account, please download any data or information that you wish to retain.
+          {{ $trans('delete_account_notice') }}
         </p>
       </div>
     </header>
 
     <DangerButton @click="openModal">
-      Delete Account
+      {{ $trans('Delete Account') }}
     </DangerButton>
 
     <Modal v-model:open="confirmingUserDeletion">
       <div class="p-6">
         <h2 class="text-lg font-medium text-gray-900">
-          Are you sure you want to delete your account?
+          {{ $trans('delete_account_confirmation') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-          Once your account is deleted, all of its resources and data will be permanently deleted. Please
-          enter your password to confirm you would like to permanently delete your account.
+          {{ $trans('delete_account_notice') }}
         </p>
 
         <div class="mt-6">
           <InputLabel
             for="password"
-            value="Password"
+            :value="$trans('Password')"
             class="sr-only"
           />
 
@@ -96,7 +94,7 @@ const closeModal = () => {
 
         <div class="mt-6 flex justify-end">
           <SecondaryButton @click.prevent="closeModal">
-            Cancel
+            {{ $trans('Cancel') }}
           </SecondaryButton>
 
           <DangerButton
@@ -105,7 +103,7 @@ const closeModal = () => {
             :disabled="form.processing"
             @click.prevent="deleteUser"
           >
-            Delete Account
+            {{ $trans('Delete') }}
           </DangerButton>
         </div>
       </div>

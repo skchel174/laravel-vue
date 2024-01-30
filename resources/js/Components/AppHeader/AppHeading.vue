@@ -5,7 +5,7 @@ import {Link} from "@inertiajs/vue3";
 <template>
   <Link :href="route('main')">
     <h1 class="text-2xl text-white font-black hover:text-gray-300 transition duration-300">
-      Feed
+      {{ $trans('Feed') }}
     </h1>
   </Link>
 </template>

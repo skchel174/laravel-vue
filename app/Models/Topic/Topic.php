@@ -8,6 +8,7 @@ use App\Exceptions\Topic\UserAlreadySubscribed;
 use App\Exceptions\Topic\UserNotSubscribed;
 use App\Models\Article\Article;
 use App\Models\Category\Category;
+use App\Models\Localization\Localizable;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,11 +34,9 @@ use Illuminate\Support\Str;
  */
 class Topic extends Model
 {
-    use HasFactory;
+    use HasFactory, Localizable;
 
-    protected $fillable = [
-        'name', 'slug', 'description', 'icon',
-    ];
+    protected $fillable = ['name', 'slug', 'description', 'icon'];
 
     protected $casts = [
         'created_at' => 'immutable_datetime:d-m-Y H:i',

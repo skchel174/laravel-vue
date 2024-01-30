@@ -10,6 +10,6 @@ class ArticleNotLiked extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('The article was not liked by the user');
+        parent::__construct(trans('article.not_liked'));
     }
 }

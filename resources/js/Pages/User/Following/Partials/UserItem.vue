@@ -37,7 +37,7 @@ const url = route('user', {user: props.user.login});
       </p>
 
       <p class="text-gray-500">
-        {{ user.about ?? 'user' }}
+        {{ user.about ?? $trans('User') }}
       </p>
     </div>
   </div>

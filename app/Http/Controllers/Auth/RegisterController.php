@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Events\User\UserRegistered;
+use App\Exceptions\User\VerificationNotRequested;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Mail\VerifyRegistration;
@@ -54,8 +55,7 @@ class RegisterController extends Controller
         $user = Auth::user();
 
         if (!$user->verify_token) {
-            return redirect()->route('register.prompt')
-                ->with('status', 'Verification not requested');
+            throw new VerificationNotRequested();
         }
 
         Mail::to($user->email)->send(new VerifyRegistration($user));

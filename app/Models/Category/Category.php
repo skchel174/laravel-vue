@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Category;
 
 use App\Models\Article\Article;
+use App\Models\Localization\Localizable;
 use App\Models\Topic\Topic;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,21 +26,21 @@ use Illuminate\Support\Str;
  */
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, Localizable;
 
     protected $casts = [
         'created_at' => 'immutable_datetime:d-m-Y H:i',
         'updated_at' => 'immutable_datetime:d-m-Y H:i',
     ];
 
+    protected $fillable = ['name', 'slug'];
+
     public static function createNew(string $name): static
     {
-        $category = new Category();
-        $category->name = $name;
-        $category->slug = Str::slug($name);
-        $category->save();
-
-        return $category;
+        return static::create([
+            'name' => $name,
+            'slug' => Str::slug($name),
+        ]);
     }
 
     public function topics(): HasMany

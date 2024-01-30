@@ -10,6 +10,6 @@ class BookmarkNotCreated extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('The bookmark has not yet been created');
+        parent::__construct(trans('user.bookmark_not_created'));
     }
 }

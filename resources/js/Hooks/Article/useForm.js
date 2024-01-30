@@ -10,6 +10,7 @@ function useForm(article = null) {
     tags: article?.tags ?? [],
     topics: article?.topics ?? [],
     difficulty: article?.difficulty ?? null,
+    lang: article?.lang ?? 'en',
     image: undefined,
     media: null,
     status: null,
@@ -22,7 +23,7 @@ function useForm(article = null) {
 
     localStorage.setItem('article_backup', JSON.stringify({
       ...form.data(),
-      save_date: moment().format(),
+      save_date: moment().format('DD-MM-YYYY HH:mm:ss'),
     }));
   };
 

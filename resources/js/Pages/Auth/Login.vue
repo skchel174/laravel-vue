@@ -36,7 +36,7 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <Head title="Log in"/>
+    <Head :title="$trans('Log in')"/>
 
     <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
       <form
@@ -45,7 +45,7 @@ const submit = () => {
       >
         <header class="mb-8 sm:mb-4">
           <h2 class="text-xl font-black">
-            Log in
+            {{ $trans('Log in') }}
           </h2>
         </header>
 
@@ -64,7 +64,10 @@ const submit = () => {
         </div>
 
         <div>
-          <InputLabel for="login" value="Login"/>
+          <InputLabel
+            for="login"
+            :value="$trans('Login')"
+          />
 
           <TextInput
             id="login"
@@ -74,11 +77,17 @@ const submit = () => {
             required
           />
 
-          <InputError class="mt-2" :message="form.errors.login"/>
+          <InputError
+            class="mt-2"
+            :message="form.errors.login"
+          />
         </div>
 
         <div>
-          <InputLabel for="password" value="Password"/>
+          <InputLabel
+            for="password"
+            :value="$trans('Password')"
+          />
 
           <TextInput
             id="password"
@@ -88,7 +97,10 @@ const submit = () => {
             required
           />
 
-          <InputError class="mt-2" :message="form.errors.password"/>
+          <InputError
+            class="mt-2"
+            :message="form.errors.password"
+          />
         </div>
 
         <div class="inline-block">
@@ -99,7 +111,7 @@ const submit = () => {
             />
 
             <span class="ms-2 text-sm text-gray-600">
-              Remember me
+              {{ $ucfirst($trans('Remember me')) }}
             </span>
           </label>
         </div>
@@ -110,27 +122,27 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            Log in
+            {{ $trans('Login') }}
           </PrimaryButton>
 
           <Link
             :href="route('password.forgot')"
             class="inline text-sm text-sky-600 hover:text-sky-700 focus:text-sky-800 font-medium transition duration-200"
           >
-            Forgot your password?
+            {{ $trans('Forgot password?') }}
           </Link>
         </div>
       </form>
 
       <div class="w-full max-w-lg bg-white p-6 flex justify-center">
         <p class="font-medium text-xs sm:text-sm text-gray-600">
-          Have no account yet?
+          {{ $trans('Have no account yet?') }}
 
           <Link
             :href="route('register.form')"
             class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200"
           >
-            Register
+            {{ $trans('Register') }}
           </Link>
         </p>
       </div>

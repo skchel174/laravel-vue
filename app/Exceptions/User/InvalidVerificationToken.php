@@ -10,6 +10,6 @@ class InvalidVerificationToken extends DomainException
 {
     public function __construct()
     {
-        parent::__construct('Invalid verification token');
+        parent::__construct(trans('user.invalid_token'));
     }
 }

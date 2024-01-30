@@ -28,7 +28,7 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <Head title="Reset Password"/>
+    <Head :title="$trans('Password Reset')"/>
 
     <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
       <form
@@ -37,14 +37,14 @@ const submit = () => {
       >
         <header class="mb-8 sm:mb-4">
           <h2 class="text-xl font-black">
-            Reset Password
+            {{ $trans('Password Reset') }}
           </h2>
         </header>
 
         <div class="mt-4">
           <InputLabel
             for="password"
-            value="Password"
+            :value="$trans('Password')"
           />
 
           <TextInput
@@ -53,7 +53,6 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.password"
             required
-            autocomplete="new-password"
           />
 
           <InputError
@@ -65,7 +64,7 @@ const submit = () => {
         <div class="mt-4">
           <InputLabel
             for="password_confirmation"
-            value="Confirm Password"
+            :value="$trans('Confirm password')"
           />
 
           <TextInput
@@ -74,7 +73,6 @@ const submit = () => {
             class="mt-1 block w-full"
             v-model="form.password_confirmation"
             required
-            autocomplete="new-password"
           />
 
           <InputError
@@ -89,7 +87,7 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            Reset Password
+            {{ $trans('Reset password') }}
           </PrimaryButton>
         </div>
       </form>

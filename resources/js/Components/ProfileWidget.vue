@@ -48,7 +48,7 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
       </h3>
 
       <p class="mt-1 text-sm text-gray-500 font-medium capitalize">
-        {{ user.about ?? 'user' }}
+        {{ user.about ?? $trans('User') }}
       </p>
     </div>
 
@@ -61,7 +61,7 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
         v-if="subscription"
         @click="() => unfollow(user.id)"
       >
-        Following
+        {{ $trans('Following') }}
       </SuccessButton>
 
       <SuccessOutlineButton
@@ -69,7 +69,7 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
         @click="() => follow(user.id)"
         v-else
       >
-        Follow
+        {{ $trans('Follow') }}
       </SuccessOutlineButton>
 
       <NeutralButton class="ml-2 sm:ml-0 h-7 w-7">

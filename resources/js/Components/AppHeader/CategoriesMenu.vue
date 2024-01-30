@@ -5,15 +5,17 @@ import CategoriesMenuLink from "@/Components/AppHeader/CategoriesMenuLink.vue";
 <template>
   <div class="flex flex-col">
     <h3 class="px-6 py-4 uppercase text-sm text-gray-500 font-medium">
-      Categories
+      {{ $trans('Categories') }}
     </h3>
 
+    <!--   TODO: add links   -->
+
     <CategoriesMenuLink href="#" selected>
-      My feed
+      {{ $trans('My feed') }}
     </CategoriesMenuLink>
 
     <CategoriesMenuLink href="#">
-      All categories
+      {{ $trans('All categories') }}
     </CategoriesMenuLink>
 
     <CategoriesMenuLink
@@ -21,6 +23,7 @@ import CategoriesMenuLink from "@/Components/AppHeader/CategoriesMenuLink.vue";
       :key="category.id"
       href="#"
     >
+      <!--   TODO: add localization   -->
       {{ category.name }}
     </CategoriesMenuLink>
   </div>

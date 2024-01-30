@@ -35,7 +35,9 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropColumns('articles', 'article_media_id');
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('article_media_id');
+        });
 
         Schema::dropIfExists('article_media');
     }

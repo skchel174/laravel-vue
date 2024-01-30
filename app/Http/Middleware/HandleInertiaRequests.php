@@ -8,6 +8,8 @@ use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Category\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -33,12 +35,16 @@ class HandleInertiaRequests extends Middleware
 
             'app' => [
                 'name' => config('app.name'),
+                'locale' => App::getLocale(),
+                'content_langs' => Session::get('content_langs', [App::getLocale()]),
                 'categories' => CategoryResource::collection(Category::all()),
             ],
 
             'auth' => [
                 'user' => $request->user() ? UserResource::make($request->user()) : null,
             ],
+
+            'trans' => fn () => trans('components'),
 
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

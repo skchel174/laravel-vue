@@ -98,8 +98,9 @@ watch(commentable, () => {
           id="comments"
           class="mt-4 bg-white"
         >
-          <h3 class="p-4 text-lg text-gray-700 font-bold">
-            Comments
+          <h3 class="p-4 text-lg text-gray-700 font-bold capitalize">
+            {{ $trans('comments') }}
+
             <span class="ml-2 text-sky-600">
               {{ article.comments_count }}
             </span>

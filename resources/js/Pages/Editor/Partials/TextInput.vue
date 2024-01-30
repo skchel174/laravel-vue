@@ -5,6 +5,7 @@ import ImageUploader from "quill-image-uploader";
 import BlotFormatter from "quill-blot-formatter";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import 'quill-image-uploader/dist/quill.imageUploader.min.css';
+import {usePage} from "@inertiajs/vue3";
 
 Quill.debug('error');
 Quill.register("modules/imageUploader", ImageUploader);
@@ -51,9 +52,10 @@ const uploadImage = async (file) => {
   }
 }
 
+const page = usePage();
+
 const options = {
   debug: 'error',
-  placeholder: 'Write article',
   scrollingContainer: 'html',
 };
 
@@ -78,6 +80,7 @@ const modules = [
     :options="options"
     :modules="modules"
     :content="text"
+    :placeholder="$trans('Write article')"
     @update:content="value => $emit('update:content', value)"
     @focus="$emit('focus')"
     @blur="$emit('blur')"
