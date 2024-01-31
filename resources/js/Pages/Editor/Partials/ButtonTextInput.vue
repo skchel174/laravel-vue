@@ -22,7 +22,7 @@ defineEmits(['update:text']);
       />
 
       <InputLength
-        :input="text"
+        :input="text || ''"
         max-length="30"
       />
     </div>
