@@ -9,8 +9,9 @@ import PageFooter from "@/Pages/Editor/Partials/PageFooter.vue";
 import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import Modal from "@/Components/Modal.vue";
 import LangSelect from "@/Pages/Editor/Partials/LangSelect.vue";
+import ButtonTextInput from "@/Pages/Editor/Partials/ButtonTextInput.vue";
+import Modal from "@/Components/Modal.vue";
 
 const props = defineProps({
   article: {
@@ -43,7 +44,7 @@ const saveToDrafts = () => {
 
 <template>
   <div class="bg-white">
-    <div class="p-4 lg:py-6 lg:px-8 space-y-8">
+    <div class="p-4 sm:py-8 lg:px-8 space-y-8">
       <div class="space-y-4">
         <h3 class="text-base sm:text-lg font-medium pb-1 border-b border-gray-200">
           {{ $trans('Article Settings') }}
@@ -79,12 +80,17 @@ const saveToDrafts = () => {
 
         <ImageInput
           :src="article?.image"
-          @update="(value) => $emit('updateForm', 'image', value)"
+          @update="value => $emit('updateForm', 'image', value)"
         />
 
         <SummaryInput
           :model-value="form.summary"
-          @update:modelValue="(value) => $emit('updateForm', 'summary', value)"
+          @update:modelValue="value => $emit('updateForm', 'summary', value)"
+        />
+
+        <ButtonTextInput
+          :text="form.button_text"
+          @update:text="value => $emit('updateForm', 'button_text', value)"
         />
       </div>
     </div>

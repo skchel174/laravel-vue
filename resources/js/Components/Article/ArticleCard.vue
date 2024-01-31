@@ -70,13 +70,16 @@ const openArticle = () => {
 
     <PrimaryOutlineButton
       class="mb-6 inline-block"
-      v-if="readable"
       @click="openArticle"
     >
-      <span>Read more</span>
-      <span class="material-icons ml-2">
-        arrow_right_alt
-      </span>
+      <div v-if="article.button_text">
+        {{ article.button_text }}
+      </div>
+
+      <div v-else>
+        {{ $trans('Read more') }}
+        <span class="material-icons ml-2">arrow_right_alt</span>
+      </div>
     </PrimaryOutlineButton>
 
     <footer class="w-full w-full flex text-gray-400 justify-between sm:justify-start sm:space-x-8">
