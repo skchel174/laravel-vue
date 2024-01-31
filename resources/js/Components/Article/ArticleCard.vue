@@ -70,7 +70,6 @@ const openArticle = () => {
 
     <PrimaryOutlineButton
       class="mb-6 inline-block"
-      v-if="readable"
       @click="openArticle"
     >
       <div v-if="article.button_text">
