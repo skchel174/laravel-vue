@@ -42,6 +42,7 @@ use Throwable;
  * @property FeedImage|null $feed_image
  * @property Difficulty|null $difficulty
  * @property string $lang
+ * @property string|null $button_text
  * @property int $views
  * @property User $author
  * @property-read Collection<Tag> $tags
@@ -71,6 +72,7 @@ class Article extends Model
         'difficulty',
         'lang',
         'views',
+        'button_text',
         'feed_image',
         'published_at',
     ];

@@ -76,6 +76,8 @@ return [
 
     'Login to bookmark' => 'Для этого действия необходима регистрация',
 
+    'Read more' => 'Читать далее',
+
     'min' => 'мин',
 
     // Profile settings
@@ -118,6 +120,7 @@ return [
     'Select tags' => 'Выбрать теги',
     'Select topics' => 'Выбрать темы',
     'Difficulty level' => 'Уровень сложности',
+    'Read more button text' => 'Текст кнопки "Читать далее"',
 
     'saved' => 'сохранено',
     'Untitled' => 'Без названия',

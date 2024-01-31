@@ -9,8 +9,9 @@ function useForm(article = null) {
     summary: article?.summary ?? '',
     tags: article?.tags ?? [],
     topics: article?.topics ?? [],
-    difficulty: article?.difficulty ?? null,
     lang: article?.lang ?? 'en',
+    difficulty: article?.difficulty ?? null,
+    button_text: article?.button_text ?? null,
     image: undefined,
     media: null,
     status: null,
@@ -34,7 +35,9 @@ function useForm(article = null) {
     form.tags = backup.value.tags;
     form.topics = backup.value.topics;
     form.media = backup.value.media;
+    form.lang = backup.value.lang;
     form.difficulty = backup.value.difficulty;
+    form.button_lang = backup.value.button_lang;
   };
 
   const send = (params) => {
