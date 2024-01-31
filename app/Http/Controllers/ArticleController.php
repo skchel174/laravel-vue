@@ -59,6 +59,7 @@ class ArticleController extends Controller
             'summary' => $request->summary,
             'difficulty' => $request->difficulty,
             'lang' => $request->lang,
+            'button_text' => $request->button_text,
             'feed_image' => $request->image ? FeedImage::create($request->image) : null,
             'status' => $request->status,
         ]);
@@ -92,6 +93,7 @@ class ArticleController extends Controller
             'summary' => $request->summary,
             'difficulty' => $request->difficulty,
             'lang' => $request->lang,
+            'button_text' => $request->button_text,
             'status' => $request->status,
         ]);
 

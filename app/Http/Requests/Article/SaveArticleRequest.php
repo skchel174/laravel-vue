@@ -20,6 +20,7 @@ use Illuminate\Validation\Rule;
  * @property-read array $topics
  * @property-read Difficulty|null $difficulty
  * @property-read string $lang
+ * @property-read string|null $button_text
  * @property-read int|null $media
  * @property-read Status|null $status
  */
@@ -38,6 +39,7 @@ class SaveArticleRequest extends FormRequest
             'difficulty' => ['nullable', Rule::enum(Difficulty::class)],
             'lang' => ['required', Rule::enum(Locale::class)],
             'status' => [Rule::enum(Status::class), Rule::in([Status::Draft, Status::Moderated])],
+            'button_text' => 'nullable|string|max:30',
         ];
     }
 }

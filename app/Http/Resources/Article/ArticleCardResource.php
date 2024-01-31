@@ -29,6 +29,7 @@ class ArticleCardResource extends JsonResource
             'difficulty' => $this->resource->difficulty?->value,
             'summary' => $this->resource->summary,
             'views' => $this->resource->views,
+            'button_text' => $this->resource->button_text,
             'is_bookmarked' => (bool)$this->resource->is_bookmarked,
             'is_liked' => (bool)$this->resource->is_liked,
             'likes_count' => (int) $this->resource->likes_count,
