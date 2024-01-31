@@ -28,7 +28,7 @@ const tabs = {
   Settings,
 };
 
-const currentTab = ref('Editor');
+const currentTab = ref('Settings');
 
 const {form, backup, update, send, restore} = useForm(props.article);
 
