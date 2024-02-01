@@ -82,11 +82,4 @@ class ArticleMedia extends Model implements HasMedia
     {
         return $this->hasOne(Article::class, 'article_media_id');
     }
-
-    public function delete(): ?bool
-    {
-        $this->media->each(fn (Media $media) => $media->delete());
-
-        return parent::delete();
-    }
 }
