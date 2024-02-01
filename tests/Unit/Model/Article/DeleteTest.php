@@ -6,11 +6,10 @@ namespace Tests\Unit\Model\Article;
 
 use App\Models\Article\Article;
 use App\Models\Article\Status;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class RemoveTest extends TestCase
+class DeleteTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,7 +20,7 @@ class RemoveTest extends TestCase
             ->draft()
             ->create();
 
-        $article->remove();
+        $article->delete();
 
         $this->assertModelMissing($article);
     }
@@ -31,23 +30,9 @@ class RemoveTest extends TestCase
         /** @var Article $article */
         $article = Article::factory()->create();
 
-        $article->remove();
+        $article->delete();
 
         $this->assertModelExists($article);
-        $this->assertSoftDeleted($article);
         $this->assertTrue($article->status === Status::Deleted);
-    }
-
-    public function testDeleteSoftDeletedArticle(): void
-    {
-        /** @var Article $article */
-        $article = Article::factory()->create([
-            'status' => Status::Deleted,
-            'deleted_at' => Carbon::now(),
-        ]);
-
-        $article->remove();
-
-        $this->assertModelMissing($article);
     }
 }

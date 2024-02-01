@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -62,7 +61,7 @@ use Throwable;
  */
 class Article extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'title',
@@ -165,25 +164,27 @@ class Article extends Model
         $this->likes()->detach($user);
     }
 
-    public function remove(): void
+    public function delete(): void
     {
-        if ($this->status->isDraft() || $this->trashed()) {
-            $this->media->delete();
-            $this->forceDelete();
+        if (!$this->status->isDraft()) {
+            $this->update(['status' => Status::Deleted]);
+            return;
         }
 
-        $this->update(['status' => Status::Deleted]);
-        $this->delete();
+        if ($this->media) {
+            $this->media->delete();
+        }
+
+        parent::delete();
     }
 
-    public function recover(): void
+    public function restore(): void
     {
         if (!$this->status->isDeleted()) {
             throw new ArticleNotDeleted();
         }
 
         $this->moderate();
-        $this->restore();
     }
 
     public function tags(): BelongsToMany
