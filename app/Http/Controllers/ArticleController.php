@@ -18,19 +18,34 @@ use App\Models\Article\Status;
 use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ArticleController extends Controller
 {
-    public function index(int $article): Response
+    public function index(Request $request, int $article): Response
     {
         $article = $this->getArticleById($article);
 
         if ($user = Auth::user()) {
             $subscription = $user->isFollow($article->author);
+
+            if (!$article->author->is($user)) {
+                $key = sprintf(
+                    'article.%d.views.%s',
+                    $article->id,
+                    $request->server('REMOTE_ADDR'),
+                );
+
+                if (!RateLimiter::tooManyAttempts($key, 1)) {
+                    $article->increment('views');
+                    RateLimiter::hit($key, 86400); // 24 hours
+                }
+            }
         }
 
         return Inertia::render('Article/ArticlePage', [
