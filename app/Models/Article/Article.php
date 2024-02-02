@@ -94,7 +94,8 @@ class Article extends Model
         ?string $summary = null,
         ?Difficulty $difficulty = null,
         ?FeedImage $image = null,
-    ): static {
+    ): static
+    {
         $article = static::make([
             'title' => $title,
             'text' => $text,
@@ -164,20 +165,6 @@ class Article extends Model
         $this->likes()->detach($user);
     }
 
-    public function delete(): void
-    {
-        if (!$this->status->isDeleted() && !$this->status->isDraft()) {
-            $this->update(['status' => Status::Deleted]);
-            return;
-        }
-
-        if ($this->media) {
-            $this->media->delete();
-        }
-
-        parent::delete();
-    }
-
     public function restore(): void
     {
         if (!$this->status->isDeleted()) {
@@ -185,6 +172,22 @@ class Article extends Model
         }
 
         $this->moderate();
+    }
+
+    public function delete(): bool
+    {
+        if (!$this->status->isDeleted() && !$this->status->isDraft()) {
+            return $this->update([
+                'published_at' => null,
+                'status' => Status::Deleted,
+            ]);
+        }
+
+        if ($this->media) {
+            $this->media->delete();
+        }
+
+        return parent::delete();
     }
 
     public function tags(): BelongsToMany

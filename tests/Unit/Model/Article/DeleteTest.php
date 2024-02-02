@@ -45,5 +45,6 @@ class DeleteTest extends TestCase
 
         $this->assertModelExists($article);
         $this->assertTrue($article->status === Status::Deleted);
+        $this->assertNull($article->published_at);
     }
 }
