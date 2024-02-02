@@ -75,6 +75,7 @@ class UserController extends Controller
             'articles' => new ArticlesResource($articles),
             'status' => $status->value,
             'statuses' => Status::cases(),
+            'notice' => session('notice'),
         ]);
     }
 

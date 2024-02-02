@@ -69,16 +69,24 @@ Route::prefix('/articles')->group(function () {
         Route::get('/editor', [ArticleController::class, 'editor'])
             ->name('editor');
 
+        Route::post('/create', [ArticleController::class, 'create'])
+            ->name('article.create');
+
         Route::get('/{article}/editor', [ArticleController::class, 'editor'])
             ->middleware('can:update,article')
             ->name('article.editor');
 
-        Route::post('/create', [ArticleController::class, 'create'])
-            ->name('article.create');
-
         Route::patch('/{article}/update', [ArticleController::class, 'update'])
             ->middleware('can:update,article')
             ->name('article.update');
+
+        Route::patch('/{article}/restore', [ArticleController::class, 'restore'])
+            ->middleware('can:delete,article')
+            ->name('article.restore');
+
+        Route::delete('/{article}/delete', [ArticleController::class, 'delete'])
+            ->middleware('can:delete,article')
+            ->name('article.delete');
     });
 
     Route::prefix('/{article}/comments')->group(function () {
