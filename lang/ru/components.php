@@ -80,6 +80,9 @@ return [
 
     'min' => 'мин',
 
+    'Are you sure you want to delete article?' => 'Вы уверены, что хотите удалить статью?',
+    'article_delete_confirmation' => 'Удаленную статью можно восстановить на удаленной странице. Если вы попытаетесь удалить удаленную статью, она исчезнет навсегда.',
+
     // Profile settings
     'Profile settings' => 'Настройки профиля',
     'Avatar' => 'Аватар',

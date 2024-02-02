@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
@@ -25,6 +25,10 @@ const props = defineProps({
   user: {
     type: Object,
     required: true,
+  },
+
+  notice: {
+    type: String,
   },
 });
 
