@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('views')->unsigned()->default(0);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('author_id')
                 ->references('id')

@@ -76,8 +76,8 @@ const openArticle = () => {
         {{ article.button_text }}
       </div>
 
-      <div v-else>
-        {{ $trans('Read more') }}
+      <div v-else class="flex items-center">
+        <span>{{ $trans('Read more') }}</span>
         <span class="material-icons ml-2">arrow_right_alt</span>
       </div>
     </PrimaryOutlineButton>

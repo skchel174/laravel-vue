@@ -31,4 +31,5 @@ return [
     'article_backup_confirmation' => 'Are you sure you want to restore autosave?',
     'article_save_notice' => 'Are you sure you want to publish this article?',
     'article_image_rules' => 'format: jpg, bmp, png, maximum filesize: 1Mb',
+    'article_delete_confirmation' => 'Deleted article can be restored in the deleted page. If you try to delete a deleted article, it will disappear forever.',
 ];

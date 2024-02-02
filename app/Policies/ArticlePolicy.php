@@ -13,4 +13,9 @@ class ArticlePolicy
     {
         return $article->author->is($user);
     }
+
+    public function delete(User $user, Article $article): bool
+    {
+        return $article->author->is($user);
+    }
 }

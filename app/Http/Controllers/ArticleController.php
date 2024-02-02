@@ -134,6 +134,22 @@ class ArticleController extends Controller
             ->with('status', $status);
     }
 
+    public function delete(Article $article): RedirectResponse
+    {
+        $article->delete();
+
+        return redirect()->back()
+            ->with('notice', trans('article.deleted'));
+    }
+
+    public function restore(Article $article): RedirectResponse
+    {
+        $article->restore();
+
+        return redirect()->back()
+            ->with('notice', trans('article.restore'));
+    }
+
     public function comments(int $article): Response
     {
         $article = $this->getArticleById($article);

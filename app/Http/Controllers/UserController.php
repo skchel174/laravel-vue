@@ -65,7 +65,6 @@ class UserController extends Controller
 
         $articles = $query->with(['topics'])
             ->withCount(['likes', 'relatedComments'])
-            ->withTrashed($status === Status::Deleted)
             ->whereStatus($status)
             ->orderBy('id', 'desc')
             ->paginate()
@@ -76,6 +75,7 @@ class UserController extends Controller
             'articles' => new ArticlesResource($articles),
             'status' => $status->value,
             'statuses' => Status::cases(),
+            'notice' => session('notice'),
         ]);
     }
 

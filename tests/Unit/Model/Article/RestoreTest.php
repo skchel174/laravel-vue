@@ -7,11 +7,10 @@ namespace Tests\Unit\Model\Article;
 use App\Exceptions\Article\ArticleNotDeleted;
 use App\Models\Article\Article;
 use App\Models\Article\Status;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class RecoverTest extends TestCase
+class RestoreTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,13 +19,11 @@ class RecoverTest extends TestCase
         /** @var Article $post */
         $post = Article::factory()->create([
             'status' => Status::Deleted,
-            'deleted_at' => Carbon::now(),
         ]);
 
-        $post->recover();
+        $post->restore();
 
         $this->assertTrue($post->status === Status::Moderated);
-        $this->assertNotSoftDeleted($post);
     }
 
     public function testRestoreNotDeletedArticle(): void
@@ -36,6 +33,6 @@ class RecoverTest extends TestCase
         /** @var Article $post */
         $post = Article::factory()->create();
 
-        $post->recover();
+        $post->restore();
     }
 }
