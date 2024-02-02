@@ -166,7 +166,7 @@ class Article extends Model
 
     public function delete(): void
     {
-        if (!$this->status->isDraft()) {
+        if (!$this->status->isDeleted() && !$this->status->isDraft()) {
             $this->update(['status' => Status::Deleted]);
             return;
         }
