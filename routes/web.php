@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Articles\ArticlesController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LocaleController;
@@ -61,6 +62,9 @@ Route::prefix('/users/{user:login}')->group(function () {
 });
 
 Route::prefix('/articles')->group(function () {
+    Route::get('/feed', [ArticlesController::class, 'feed'])
+        ->name('articles.feed');
+
     Route::get('/{article}', [ArticleController::class, 'index'])
         ->whereNumber('article')
         ->name('article');
