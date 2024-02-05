@@ -16,8 +16,9 @@ return [
     'Select' => 'Выбрать',
     'Cancel' => 'Отмена',
     'Look' => 'Просмотр',
-
     'More' => 'ещё',
+
+    'The link was copied to the clipboard' => 'Ссылка скопирована в буфер обмена',
 
     // User info
     'User' => 'Пользователь',

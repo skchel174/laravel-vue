@@ -7,7 +7,10 @@ import CategoriesNavLink from "@/Components/AppHeader/CategoriesNavLink.vue";
 
     <!--   TODO: add links   -->
 
-    <CategoriesNavLink href="#" selected>
+    <CategoriesNavLink
+      :href="route('articles.feed')"
+      :selected="route('articles.feed') === $page.props.ziggy.location"
+    >
       {{ $trans('My feed') }}
     </CategoriesNavLink>
 
