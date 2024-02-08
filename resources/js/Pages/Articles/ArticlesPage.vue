@@ -5,8 +5,8 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import PageNavigation from "@/Pages/Articles/Partials/PageNavigation.vue";
-import ArticlesFilters from "@/Pages/Articles/Partials/ArticlesFilters.vue";
-import EmptyArticles from "@/Pages/Articles/Partials/EmptyArticles.vue";
+import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
+import Placeholder from "@/Components/ArticleFeed/Placeholder.vue";
 
 defineProps({
   articles: {
@@ -62,6 +62,6 @@ const applyFilters = (filters) => {
       />
     </div>
 
-    <EmptyArticles v-else class="mt-24"/>
+    <Placeholder v-else class="mt-24"/>
   </MainLayout>
 </template>
