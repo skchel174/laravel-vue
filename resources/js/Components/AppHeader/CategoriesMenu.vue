@@ -1,5 +1,15 @@
 <script setup>
+import {computed} from "vue";
 import CategoriesMenuLink from "@/Components/AppHeader/CategoriesMenuLink.vue";
+
+const categories = computed(() => {
+  return page.props.app.categories.map(category => {
+    const url = route('category.articles', {category: category.slug});
+    const selected = url === page.props.ziggy.location;
+
+    return {...category, url, selected}
+  });
+});
 </script>
 
 <template>
@@ -7,8 +17,6 @@ import CategoriesMenuLink from "@/Components/AppHeader/CategoriesMenuLink.vue";
     <h3 class="px-6 py-4 uppercase text-sm text-gray-500 font-medium">
       {{ $trans('Categories') }}
     </h3>
-
-    <!--   TODO: add links   -->
 
     <CategoriesMenuLink
       :href="route('articles.feed')"
@@ -25,11 +33,11 @@ import CategoriesMenuLink from "@/Components/AppHeader/CategoriesMenuLink.vue";
     </CategoriesMenuLink>
 
     <CategoriesMenuLink
-      v-for="category in $page.props.app.categories"
+      v-for="category in categories"
       :key="category.id"
-      href="#"
+      :href="category.url"
+      :selected="category.selected"
     >
-      <!--   TODO: add localization   -->
       {{ category.name }}
     </CategoriesMenuLink>
   </div>
