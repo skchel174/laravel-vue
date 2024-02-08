@@ -1,8 +1,9 @@
 <script setup>
-import FeedLayout from "@/Layouts/FeedLayout.vue";
+import MainLayout from "@/Layouts/MainLayout.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
-import PageHeader from "@/Pages/User/Articles/Partials/PageHeader.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
 
 defineProps({
   articles: {
@@ -13,9 +14,22 @@ defineProps({
 </script>
 
 <template>
-  <FeedLayout>
+  <MainLayout>
     <div class="space-y-4">
-      <PageHeader/>
+      <header class="w-full p-4 sm:px-6 bg-white flex justify-between items-center">
+        <h1 class="text-xl text-gray-700 font-semibold">
+          {{ $trans('My feed') }}
+        </h1>
+
+        <!-- TODO: add link to topics subscriptions -->
+        <SuccessOutlineButton class="!py-0.5 space-x-2">
+          <MaterialIcon class="material-icons !text-xl !text-inherit">
+            settings
+          </MaterialIcon>
+
+          <span>Subscriptions</span>
+        </SuccessOutlineButton>
+      </header>
 
       <ArticleCard
         v-for="article in articles.items"
@@ -28,8 +42,8 @@ defineProps({
         :query-params="articles.query"
         :total-pages="articles.totalPages"
         :current-page="articles.currentPage"
-        route-name="articles.feed"
+        route-name="articles"
       />
     </div>
-  </FeedLayout>
+  </MainLayout>
 </template>
