@@ -12,12 +12,15 @@ import CategoriesMenuLink from "@/Components/AppHeader/CategoriesMenuLink.vue";
 
     <CategoriesMenuLink
       :href="route('articles.feed')"
-      :selected="route('articles.feed') === $page.props.ziggy.location"
+      :selected="$page.props.ziggy.location === route('articles.feed')"
     >
       {{ $trans('My feed') }}
     </CategoriesMenuLink>
 
-    <CategoriesMenuLink href="#">
+    <CategoriesMenuLink
+      :href="route('articles')"
+      :selected="$page.props.ziggy.location === route('articles')"
+    >
       {{ $trans('All categories') }}
     </CategoriesMenuLink>
 
