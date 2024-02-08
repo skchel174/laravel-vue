@@ -16,8 +16,23 @@ return [
     'Select' => 'Выбрать',
     'Cancel' => 'Отмена',
     'Look' => 'Просмотр',
-
     'More' => 'ещё',
+    'Apply' => 'Применить',
+
+    'day' => 'День',
+    'week' => 'Неделя',
+    'month' => 'Месяц',
+    'year' => 'Год',
+    'all time' => 'Все время',
+
+    'all' => 'Все',
+    'new' => 'Новые',
+    'top' => 'Лучшие',
+    'Period' => 'Период',
+    'Show first' => 'Сначала показывать',
+    'Level of difficulty' => 'Уровень сложности',
+
+    'The link was copied to the clipboard' => 'Ссылка скопирована в буфер обмена',
 
     // User info
     'User' => 'Пользователь',
@@ -32,6 +47,8 @@ return [
 
     'profile' => 'профиль',
     'articles' => 'статьи',
+    'topics' => 'темы',
+    'authors' => 'авторы',
     'comments' => 'комментарии',
     'bookmarks' => 'закладки',
     'following' => 'подписки',
@@ -51,6 +68,7 @@ return [
     // Article
     'Tags' => 'Теги',
     'Topics' => 'Темы',
+    'Filters' => 'Фильтры',
 
     'moderated' => 'Модерация',
     'published' => 'Опубликовано',

@@ -6,7 +6,9 @@ namespace App\Http\Controllers;
 
 use App\Events\Article\ArticleModerated;
 use App\Http\Requests\Article\SaveArticleRequest;
+use App\Http\Requests\ArticlesRequest;
 use App\Http\Resources\Article\ArticleResource;
+use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Comment\CommentsCollection;
 use App\Http\Resources\Topic\TopicResource;
 use App\Http\Resources\User\UserResource;
@@ -14,6 +16,7 @@ use App\Models\Article\Article;
 use App\Models\Article\Difficulty;
 use App\Models\Article\FeedImage;
 use App\Models\Article\ArticleMedia;
+use App\Models\Article\Period;
 use App\Models\Article\Status;
 use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,6 +54,65 @@ class ArticleController extends Controller
         return Inertia::render('Article/ArticlePage', [
             'article' => new ArticleResource($article),
             'authorSubscription' => $subscription ?? false,
+        ]);
+    }
+
+    public function articles(ArticlesRequest $request): Response
+    {
+        $query = Article::query();
+
+        if ($user = Auth::user()) {
+            $query->withExists([
+                'likes as is_liked' => fn(Builder $query) => $query->where('id', $user->id),
+                'bookmarks as is_bookmarked' => fn(Builder $query) => $query->where('id', $user->id),
+            ]);
+        }
+
+        if ($request->period) {
+            $query->forPeriod(Period::from($request->period));
+        }
+
+        if ($request->difficulty) {
+            $query->whereDifficulty(Difficulty::from($request->difficulty));
+        }
+
+        $articles = $query->whereStatus(Status::Published)
+            ->withCount(['likes', 'relatedComments'])
+            ->with(['topics'])
+            ->orderByDesc('id')
+            ->paginate()
+            ->withQueryString();
+
+        return Inertia::render('Articles/ArticlesPage', [
+            'articles' => new ArticlesResource($articles),
+        ]);
+    }
+
+    public function feed(): Response
+    {
+        $query = Article::query();
+
+        if ($user = Auth::user()) {
+            $query->withExists([
+                'likes as is_liked' => fn(Builder $query) => $query->where('id', $user->id),
+                'bookmarks as is_bookmarked' => fn(Builder $query) => $query->where('id', $user->id),
+            ]);
+
+            $query->whereRelation('topics', function (Builder $query) use ($user) {
+                $query->whereIn('id', $user->topics()->pluck('id'));
+            })->orWhereRelation('author', function (Builder $query) use ($user) {
+                $query->whereIn('id', $user->followings()->pluck('id'));
+            });
+        }
+
+        $articles = $query->whereStatus(Status::Published)
+            ->withCount(['likes', 'relatedComments'])
+            ->with(['topics'])
+            ->orderByDesc('id')
+            ->paginate();
+
+        return Inertia::render('Feed/FeedPage', [
+            'articles' => new ArticlesResource($articles),
         ]);
     }
 

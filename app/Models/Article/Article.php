@@ -17,6 +17,7 @@ use App\Models\Tag\Tag;
 use App\Models\Topic\Topic;
 use App\Models\User\User;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -108,6 +110,15 @@ class Article extends Model
         $article->save();
 
         return $article;
+    }
+
+    public static function scopeForPeriod(Builder $builder, Period $period): void
+    {
+        $from = Carbon::now()
+            ->sub(sprintf('1 %s', $period->value))
+            ->format('Y-m-d H:i:s');
+
+        $builder->where('created_at', '>=', $from);
     }
 
     public function moderate(): void
