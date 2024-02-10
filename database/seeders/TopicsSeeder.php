@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Category\Category;
 use App\Models\Localization\Locale;
+use App\Models\Tag\Tag;
 use App\Models\Topic\Topic;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -14,6 +15,8 @@ class TopicsSeeder extends Seeder
 {
     public function run(): void
     {
+        $tags = Tag::all();
+
         foreach ($this->getCategories() as $category => $categoryProps) {
             $category = Category::factory()
                 ->withLocalization(Locale::Ru, $categoryProps['localization'])
@@ -24,6 +27,7 @@ class TopicsSeeder extends Seeder
 
             foreach ($categoryProps['topics'] as $topic => $topicProps) {
                 Topic::factory()
+                    ->withtags($tags->random(rand(0, 20)))
                     ->withLocalization(Locale::Ru, $topicProps['localization'])
                     ->create([
                         'name' => $topic,

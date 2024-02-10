@@ -10,7 +10,7 @@ use App\Models\Localization\Localization;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -36,8 +36,8 @@ class Tag extends Model
         ]);
     }
 
-    public function articles(): BelongsToMany
+    public function articles(): MorphToMany
     {
-        return $this->belongsToMany(Article::class);
+        return $this->morphedByMany(Article::class, 'taggable');
     }
 }

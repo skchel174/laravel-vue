@@ -201,9 +201,9 @@ class Article extends Model
         return parent::delete();
     }
 
-    public function tags(): BelongsToMany
+    public function tags(): MorphToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function topics(): BelongsToMany

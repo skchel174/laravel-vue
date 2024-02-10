@@ -21,13 +21,13 @@ class ArticlesSeeder extends Seeder
         $users = User::all();
 
         foreach ($users as $user) {
-            $userTags = $tags->random(rand(10, 20));
-            $userTopics = $topics->random(rand(1, 10));
-
             for ($i = 0; $i < rand(0, 20); $i++) {
+                $articleTags = $tags->random(rand(10, 20));
+                $articleTopics = $topics->random(rand(5, 10));
+
                 Article::factory()
-                    ->hasAttached($userTags->random(rand(5, $userTags->count())))
-                    ->hasAttached($userTopics->random(rand(1, $userTopics->count())))
+                    ->hasAttached($articleTags->random(rand(5, 10)))
+                    ->hasAttached($articleTopics->random(rand(1, 5)))
                     ->hasAttached($users->random(rand(0, $user->count())), relationship: 'likes')
                     ->hasAttached($users->random(rand(0, 5)), relationship: 'bookmarks')
                     ->create(['author_id' => $user]);
