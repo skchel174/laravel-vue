@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticlesRequest;
+use App\Http\Requests\Topics\TopicsRequest;
 use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Category\CategoryResource;
+use App\Http\Resources\Topic\TopicsResource;
 use App\Models\Article\Article;
 use App\Models\Article\Difficulty;
 use App\Models\Article\Period;
@@ -45,9 +47,33 @@ class CategoryController extends Controller
             ->paginate()
             ->withQueryString();
 
+        Inertia::share('nav_location', $category->slug);
+
         return Inertia::render('Category/Articles/ArticlesPage', [
             'category' => new CategoryResource($category),
             'articles' => new ArticlesResource($articles),
+        ]);
+    }
+
+    public function topics(TopicsRequest $request, Category $category): Response
+    {
+        $sort = $request->sort ?? 'articles_count';
+        $order = $request->order ?? 'desc';
+
+        $topics = $category->topics()
+            ->withCount(['articles', 'subscribers'])
+            ->with('tags')
+            ->orderBy($sort, $order)
+            ->paginate()
+            ->withQueryString();
+
+        Inertia::share('nav_location', $category->slug);
+
+        return Inertia::render('Category/Topics/TopicsPage', [
+            'category' => new CategoryResource($category),
+            'topics' => new TopicsResource($topics),
+            'order' => $order,
+            'sort' => $sort,
         ]);
     }
 }
