@@ -1,8 +1,8 @@
 <script setup>
 import {ref} from "vue";
 import ExpandButton from "@/Components/Buttons/ExpandButton.vue";
-import ArticleFilter from "@/Pages/Articles/Partials/ArticleFilter.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
+import ArticleFilter from "@/Components/ArticleFeed/ArticleFilter.vue";
 
 const emit = defineEmits(['apply']);
 

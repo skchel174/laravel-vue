@@ -2,12 +2,11 @@
 import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import Tabs from "@/Components/Tabs/Tabs.vue";
-import Tab from "@/Components/Tabs/Tab.vue";
 import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import Placeholder from "@/Components/ArticleFeed/Placeholder.vue";
+import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
 
 const props = defineProps({
   category: {
@@ -38,18 +37,10 @@ const navigationTabs = {
       </h1>
     </header>
 
-    <nav>
-      <Tabs>
-        <Tab
-          v-for="(_, tab) in navigationTabs"
-          :key="tab"
-          :selected="tab === currentTab"
-          @click="currentTab = tab"
-        >
-          {{ $trans(tab) }}
-        </Tab>
-      </Tabs>
-    </nav>
+    <NavigationTabs
+      :category="category"
+      current-tab="articles"
+    />
 
     <ArticlesFilters
       @apply="filters => router.get(route('articles', filters))"
@@ -67,10 +58,10 @@ const navigationTabs = {
 
       <Pagination
         v-if="articles.totalPages > 1"
-        :query-params="articles.query"
+        :query-params="{...articles.query, category: category.slug}"
         :total-pages="articles.totalPages"
         :current-page="articles.currentPage"
-        route-name="articles"
+        route-name="category.articles"
       />
     </div>
 

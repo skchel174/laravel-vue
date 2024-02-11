@@ -65,6 +65,9 @@ return [
     'empty_followings' => 'Вы еще ни на кого не подписаны',
     'empty_followers' => 'На вас никто не подписан',
 
+    'Unfortunately no topics found' => 'К сожаление тем не найдено',
+    'Suggest a new topic' => 'Предложить новую тему',
+
     // Article
     'Tags' => 'Теги',
     'Topics' => 'Темы',
