@@ -37,19 +37,49 @@ class HandleInertiaRequests extends Middleware
                 'name' => config('app.name'),
                 'locale' => App::getLocale(),
                 'content_langs' => Session::get('content_langs', [App::getLocale()]),
-                'categories' => CategoryResource::collection(Category::all()),
             ],
 
             'auth' => [
-                'user' => $request->user() ? UserResource::make($request->user()) : null,
+                'user' => $request->user()
+                    ? UserResource::make($request->user())
+                    : null,
             ],
 
-            'trans' => fn () => trans('components'),
+            'nav_location' => null,
 
-            'ziggy' => fn () => [
+            'nav_items' => $this->getNavItems(),
+
+            'categories' => fn() => CategoryResource::collection(Category::all()),
+
+            'trans' => fn() => trans('components'),
+
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+        ];
+    }
+
+    private function getNavItems(): array
+    {
+        return [
+            [
+                'id' => 'feed',
+                'title' => 'My feed',
+                'url' => route('articles.feed'),
+            ],
+
+            [
+                'id' => 'articles',
+                'title' => 'All categories',
+                'url' => route('articles'),
+            ],
+
+            ...Category::all()->map(fn(Category $category) => [
+                'id' => $category->slug,
+                'title' => $category->getLocalizedValue('name'),
+                'url' => route('category.articles', ['category' => $category->slug]),
+            ]),
         ];
     }
 }

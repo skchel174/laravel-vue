@@ -83,6 +83,8 @@ class ArticleController extends Controller
             ->paginate()
             ->withQueryString();
 
+        Inertia::share('nav_location', 'articles');
+
         return Inertia::render('Articles/ArticlesPage', [
             'articles' => new ArticlesResource($articles),
         ]);
@@ -110,6 +112,8 @@ class ArticleController extends Controller
             ->with(['topics'])
             ->orderByDesc('id')
             ->paginate();
+
+        Inertia::share('nav_location', 'feed');
 
         return Inertia::render('Feed/FeedPage', [
             'articles' => new ArticlesResource($articles),
