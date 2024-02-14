@@ -18,6 +18,7 @@ return [
     'Look' => 'Просмотр',
     'More' => 'ещё',
     'Apply' => 'Применить',
+    'Search' => 'Поиск',
 
     'day' => 'День',
     'week' => 'Неделя',
@@ -35,6 +36,7 @@ return [
     'The link was copied to the clipboard' => 'Ссылка скопирована в буфер обмена',
 
     // User info
+    'Name' => 'Имя',
     'User' => 'Пользователь',
     'Information' => 'Информация',
     'Activity' => 'Активность',
@@ -64,6 +66,7 @@ return [
     'empty_comments' => 'К сожалению, здесь пока нет комментариев',
     'empty_followings' => 'Вы еще ни на кого не подписаны',
     'empty_followers' => 'На вас никто не подписан',
+    'empty_request_result' => 'К сожалению, по этому запросу нет результатов',
 
     'Unfortunately no topics found' => 'К сожаление тем не найдено',
     'Suggest a new topic' => 'Предложить новую тему',

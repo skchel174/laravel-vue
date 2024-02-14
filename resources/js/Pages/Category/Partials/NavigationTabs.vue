@@ -1,8 +1,8 @@
 <script setup>
 import {ref} from "vue";
+import {router} from "@inertiajs/vue3";
 import Tabs from "@/Components/Tabs/Tabs.vue";
 import Tab from "@/Components/Tabs/Tab.vue";
-import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
   category: {
@@ -21,7 +21,7 @@ const currentTab = ref(props.currentTab);
 const navigationTabs = {
   articles: 'category.articles',
   topics: 'category.topics',
-  authors: '#',
+  authors: 'category.authors',
 };
 
 const selectTab = (tab) => {

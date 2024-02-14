@@ -10,6 +10,7 @@ return [
     'empty_comments' => 'Unfortunately there are no comments here yet',
     'empty_followings' => 'You haven\'t subscribed to anyone yet',
     'empty_followers' => 'Nobody follows you',
+    'empty_request_result' => 'Unfortunately, but there\'s no results for this query',
 
     // Auth
 

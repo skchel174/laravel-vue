@@ -1,7 +1,11 @@
 <script setup>
 import {ref} from "vue";
 
-const props = defineProps({
+defineOptions({
+  inheritAttrs: false
+});
+
+defineProps({
   modelValue: {
     type: String,
     required: true,
@@ -13,8 +17,8 @@ const isFocused = ref(false);
 
 <template>
   <div
-    class="flex border border-gray-300 rounded-sm transition duration-400"
-    :class="{'border-sky-500/70': isFocused}"
+    class="w-full flex border border-gray-300 rounded-sm transition duration-400"
+    :class="{'border-sky-600/75': isFocused}"
   >
     <slot name="before"/>
 
