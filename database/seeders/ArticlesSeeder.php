@@ -26,8 +26,8 @@ class ArticlesSeeder extends Seeder
                 $articleTopics = $topics->random(rand(5, 10));
 
                 Article::factory()
-                    ->hasAttached($articleTags->random(rand(5, 10)))
-                    ->hasAttached($articleTopics->random(rand(1, 5)))
+                    ->withTags($articleTags->random(rand(5, 10)))
+                    ->withTopics($articleTopics->random(rand(1, 5)))
                     ->hasAttached($users->random(rand(0, $user->count())), relationship: 'likes')
                     ->hasAttached($users->random(rand(0, 5)), relationship: 'bookmarks')
                     ->create(['author_id' => $user]);

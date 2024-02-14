@@ -9,10 +9,9 @@ use App\Http\Requests\Topics\TopicsRequest;
 use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Topic\TopicsResource;
-use App\Models\Article\Article;
 use App\Models\Article\Difficulty;
 use App\Models\Article\Period;
-use App\Models\Article\Status;
+use App\Models\Article\Status as ArticleStatus;
 use App\Models\Category\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +22,7 @@ class CategoryController extends Controller
 {
     public function articles(ArticlesRequest $request, Category $category): Response
     {
-        $query = Article::whereRelation('topics', 'category_id', $category->id);
+        $query = $category->articles();
 
         if ($user = Auth::user()) {
             $query->withExists([
@@ -42,7 +41,7 @@ class CategoryController extends Controller
 
         $articles = $query->with(['topics'])
             ->withCount(['likes', 'relatedComments'])
-            ->whereStatus(Status::Published)
+            ->whereStatus(ArticleStatus::Published)
             ->orderByDesc('id')
             ->paginate()
             ->withQueryString();
