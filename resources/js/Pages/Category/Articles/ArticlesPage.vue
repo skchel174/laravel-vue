@@ -2,13 +2,18 @@
 import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
+import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
-import PageNavigation from "@/Pages/Articles/Partials/PageNavigation.vue";
-import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
 import Placeholder from "@/Components/ArticleFeed/Placeholder.vue";
+import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
 
-defineProps({
+const props = defineProps({
+  category: {
+    type: Object,
+    required: true,
+  },
+
   articles: {
     type: Object,
     required: true,
@@ -18,13 +23,9 @@ defineProps({
 const currentTab = ref('articles');
 
 const navigationTabs = {
-  articles: route('articles'),
+  articles: route('category.articles', {category: props.category.slug}),
   topics: '#',
   authors: '#',
-};
-
-const applyFilters = (filters) => {
-  router.get(route('articles', filters));
 };
 </script>
 
@@ -32,16 +33,18 @@ const applyFilters = (filters) => {
   <MainLayout>
     <header class="w-full p-4 sm:px-6 bg-white">
       <h1 class="text-xl text-gray-700 font-semibold">
-        {{ $trans('All categories') }}
+        {{ category.name }}
       </h1>
     </header>
 
-    <PageNavigation
-      :tabs="navigationTabs"
-      :current-tab="currentTab"
+    <NavigationTabs
+      :category="category"
+      current-tab="articles"
     />
 
-    <ArticlesFilters @apply="applyFilters"/>
+    <ArticlesFilters
+      @apply="filters => router.get(route('articles', filters))"
+    />
 
     <div
       class="mt-4 space-y-4"
@@ -55,10 +58,10 @@ const applyFilters = (filters) => {
 
       <Pagination
         v-if="articles.totalPages > 1"
-        :query-params="articles.query"
+        :query-params="{...articles.query, category: category.slug}"
         :total-pages="articles.totalPages"
         :current-page="articles.currentPage"
-        route-name="articles"
+        route-name="category.articles"
       />
     </div>
 

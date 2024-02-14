@@ -22,6 +22,7 @@ use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
@@ -83,6 +84,8 @@ class ArticleController extends Controller
             ->paginate()
             ->withQueryString();
 
+        Inertia::share('nav_location', 'articles');
+
         return Inertia::render('Articles/ArticlesPage', [
             'articles' => new ArticlesResource($articles),
         ]);
@@ -110,6 +113,8 @@ class ArticleController extends Controller
             ->with(['topics'])
             ->orderByDesc('id')
             ->paginate();
+
+        Inertia::share('nav_location', 'feed');
 
         return Inertia::render('Feed/FeedPage', [
             'articles' => new ArticlesResource($articles),
@@ -141,7 +146,15 @@ class ArticleController extends Controller
             'status' => $request->status,
         ]);
 
+        // TODO: add tests
+        $categories = Collection::make($request->topics)
+            ->map(fn (Topic $topic) => $topic->category_id)
+            ->unique();
+
+        $article->categories()->attach($categories);
+
         $article->topics()->attach($request->topics);
+
         $article->tags()->attach($request->tags);
 
         if ($request->media) {

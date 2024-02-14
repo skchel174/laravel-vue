@@ -25,6 +25,7 @@ class UserResource extends JsonResource
             'login_at' => $this->resource->login_at->format('d-m-Y H:i'),
             'created_at' => $this->resource->created_at->format('d-m-Y H:i'),
             'avatar' => $this->resource->avatar?->getUrl(),
+            'articles_count' => $this->resource->articles_count ?? null,
         ];
     }
 }

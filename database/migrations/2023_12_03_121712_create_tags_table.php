@@ -17,14 +17,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('article_tag', function (Blueprint $table) {
-            $table->foreignId('article_id');
+        Schema::create('taggables', function (Blueprint $table) {
+            $table->morphs('taggable');
             $table->foreignId('tag_id');
-
-            $table->foreign('article_id')
-                ->references('id')
-                ->on('articles')
-                ->onDelete('CASCADE');
 
             $table->foreign('tag_id')
                 ->references('id')
@@ -35,7 +30,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('article_tag');
+        Schema::dropIfExists('taggables');
         Schema::dropIfExists('tags');
     }
 };

@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
@@ -201,9 +200,9 @@ class Article extends Model
         return parent::delete();
     }
 
-    public function tags(): BelongsToMany
+    public function tags(): MorphToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function topics(): BelongsToMany
@@ -211,9 +210,9 @@ class Article extends Model
         return $this->belongsToMany(Topic::class);
     }
 
-    public function categories(): HasManyThrough
+    public function categories(): BelongsToMany
     {
-        return $this->hasManyThrough(Category::class, Topic::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public function comments(): MorphMany

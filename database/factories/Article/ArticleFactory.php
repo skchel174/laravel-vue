@@ -64,7 +64,11 @@ class ArticleFactory extends Factory
 
     public function withTopics(Collection $topics): ArticleFactory
     {
-        return $this->hasAttached($topics, relationship: 'topics');
+        $categories = $topics->pluck('category_id')->unique();
+
+        return $this
+            ->hasAttached($topics, relationship: 'topics')
+            ->hasAttached($categories, relationship: 'categories');
     }
 
     public function withTags(Collection $tags): ArticleFactory

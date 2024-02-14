@@ -8,29 +8,13 @@ import CategoriesMenuLink from "@/Components/AppHeader/CategoriesMenuLink.vue";
       {{ $trans('Categories') }}
     </h3>
 
-    <!--   TODO: add links   -->
-
     <CategoriesMenuLink
-      :href="route('articles.feed')"
-      :selected="$page.props.ziggy.location === route('articles.feed')"
+      v-for="item in $page.props.nav_items"
+      :key="item.id"
+      :href="item.url"
+      :selected="$page.props.nav_location === item.id"
     >
-      {{ $trans('My feed') }}
-    </CategoriesMenuLink>
-
-    <CategoriesMenuLink
-      :href="route('articles')"
-      :selected="$page.props.ziggy.location === route('articles')"
-    >
-      {{ $trans('All categories') }}
-    </CategoriesMenuLink>
-
-    <CategoriesMenuLink
-      v-for="category in $page.props.app.categories"
-      :key="category.id"
-      href="#"
-    >
-      <!--   TODO: add localization   -->
-      {{ category.name }}
+      {{ $trans(item.title) }}
     </CategoriesMenuLink>
   </div>
 </template>

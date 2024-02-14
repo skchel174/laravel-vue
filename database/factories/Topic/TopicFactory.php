@@ -8,6 +8,7 @@ use App\Models\Category\Category;
 use App\Models\Localization\Locale;
 use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class TopicFactory extends Factory
@@ -30,6 +31,13 @@ class TopicFactory extends Factory
                 'locale' => $locale,
                 'value' => $localization,
             ]);
+        });
+    }
+
+    public function withTags(Collection $tags): static
+    {
+        return $this->afterCreating(function (Topic $topic) use ($tags) {
+           $topic->tags()->attach($tags);
         });
     }
 }

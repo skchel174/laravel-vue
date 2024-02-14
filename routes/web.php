@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\UserController;
@@ -105,6 +106,17 @@ Route::prefix('/articles')->group(function () {
                 ->name('articles.comment.reply');
         });
     });
+});
+
+Route::prefix('/categories/{category:slug}')->group(function () {
+    Route::get('/articles', [CategoryController::class, 'articles'])
+        ->name('category.articles');
+
+    Route::get('/topics', [CategoryController::class, 'topics'])
+        ->name('category.topics');
+
+    Route::get('/authors', [CategoryController::class, 'authors'])
+        ->name('category.authors');
 });
 
 require __DIR__ . '/auth.php';
