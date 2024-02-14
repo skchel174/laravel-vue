@@ -1,5 +1,6 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 defineProps({
   topic: {
@@ -32,7 +33,7 @@ defineProps({
         </p>
 
         <div
-          class="flex flex-wrap"
+          class="hidden lg:flex flex-wrap"
           v-if="topic.tags.length > 0"
         >
           <!-- TODO: add link for tag -->
@@ -45,16 +46,38 @@ defineProps({
             {{ tag.name }}
           </Link>
         </div>
+
+        <div class="flex lg:hidden items-center space-x-6">
+          <div class="flex items-center space-x-2.5">
+            <MaterialIcon class="!text-xl">
+              article
+            </MaterialIcon>
+
+            <span class="text-pink-600/75 text-base">
+              {{ $formatCount(topic.articles_count) }}
+            </span>
+          </div>
+
+          <div class="flex items-center space-x-2.5">
+            <MaterialIcon class="!text-xl">
+              people
+            </MaterialIcon>
+
+            <span class="text-gray-500/75 text-base">
+              {{ $formatCount(topic.subscribers_count) }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="min-w-[8rem] flex justify-end">
+    <div class="min-w-[8rem] hidden lg:flex justify-end">
       <span class="text-pink-600/75 text-base">
         {{ $formatCount(topic.articles_count) }}
       </span>
     </div>
 
-    <div class="min-w-[8rem] flex justify-end">
+    <div class="min-w-[8rem] hidden lg:flex justify-end">
       <span class="text-gray-500/75 text-base">
         {{ $formatCount(topic.subscribers_count) }}
       </span>
