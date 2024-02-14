@@ -114,6 +114,9 @@ Route::prefix('/categories/{category:slug}')->group(function () {
 
     Route::get('/topics', [CategoryController::class, 'topics'])
         ->name('category.topics');
+
+    Route::get('/authors', [CategoryController::class, 'authors'])
+        ->name('category.authors');
 });
 
 require __DIR__ . '/auth.php';
