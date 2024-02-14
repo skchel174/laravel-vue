@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
  * @property string $slug
  * @property string $description
  * @property string $icon
+ * @property int $category_id
  * @property-read int|null $subscribers_count
  * @property-read int|null $articles_count
  * @property-read Category $category
