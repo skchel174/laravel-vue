@@ -1,5 +1,4 @@
 <script setup>
-import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
@@ -19,14 +18,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const currentTab = ref('articles');
-
-const navigationTabs = {
-  articles: route('category.articles', {category: props.category.slug}),
-  topics: '#',
-  authors: '#',
-};
 </script>
 
 <template>
@@ -43,7 +34,7 @@ const navigationTabs = {
     />
 
     <ArticlesFilters
-      @apply="filters => router.get(route('articles', filters))"
+      @apply="filters => router.get(route('category.articles', filters))"
     />
 
     <div
