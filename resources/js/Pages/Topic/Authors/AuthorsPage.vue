@@ -1,7 +1,7 @@
 <script setup>
 import {router} from "@inertiajs/vue3";
 import Search from "@/Components/Search.vue";
-import AuthorsList from "@/Components/Authors/AuthorsList.vue";
+import AuthorsList from "@/Components/Author/AuthorsList.vue";
 import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
 import TopicNavigation from "@/Pages/Topic/Partials/TopicNavigation.vue";
 import MainLayout from "@/Layouts/MainLayout.vue";

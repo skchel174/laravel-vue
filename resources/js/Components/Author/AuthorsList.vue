@@ -1,7 +1,7 @@
 <script setup>
-import AuthorsListItem from "@/Components/Authors/AuthorsListItem.vue";
-import nothingHere from 'img/nothing-here.svg';
+import AuthorsListItem from "@/Components/Author/AuthorsListItem.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
+import nothingHere from 'img/nothing-here.svg';
 
 defineProps({
   authors: {
