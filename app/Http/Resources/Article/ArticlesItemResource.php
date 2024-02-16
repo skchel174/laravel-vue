@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property-read Article $resource
  */
-class ArticleCardResource extends JsonResource
+class ArticlesItemResource extends JsonResource
 {
     public function __construct(Article $resource)
     {

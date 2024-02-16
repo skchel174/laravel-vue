@@ -21,7 +21,7 @@ class ArticlesResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'items' => ArticleCardResource::collection($this->resource->items()),
+            'items' => ArticlesItemResource::collection($this->resource->items()),
             'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
             'currentPage' => $this->resource->currentPage(),
             'perPage' => $this->resource->perPage(),

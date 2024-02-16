@@ -1,4 +1,5 @@
 <script setup>
+import {computed} from "vue";
 import {router} from "@inertiajs/vue3";
 import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
@@ -11,15 +12,12 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-
-  readable: {
-    type: Boolean,
-    default: true,
-  },
 });
 
+const readable = computed(() => props.article.status === 'published');
+
 const openArticle = () => {
-  if (props.readable) {
+  if (readable.value) {
     router.get(route('article', {article: props.article.id}));
   }
 };
