@@ -7,11 +7,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticlesRequest;
 use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Topic\TopicResource;
+use App\Http\Resources\User\UsersCollection;
 use App\Models\Article\Difficulty;
 use App\Models\Article\Period;
 use App\Models\Article\Status as ArticleStatus;
 use App\Models\Topic\Topic;
+use App\Models\User\Status as UserStatus;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -50,6 +54,40 @@ class TopicController extends Controller
             'topic' => new TopicResource($topic),
             'articles' => new ArticlesResource($articles),
             'subscription' => $user && $topic->isSubscribed($user),
+        ]);
+    }
+
+    public function authors(Request $request, Topic $topic): Response
+    {
+        $topic->loadCount(['articles', 'subscribers']);
+
+        $query = User::query();
+
+        if ($search = $request->query('search')) {
+            $query
+                ->where('login', 'like', "%$search%")
+                ->orWhere('name', 'like', "%$search%");
+        }
+
+        $authors = $query
+            ->whereRelation('articles', function (Builder $query) use ($topic) {
+                $query->whereRelation('topics', function (Builder $query) use ($topic) {
+                    $query->whereId($topic->id);
+                })->whereStatus(ArticleStatus::Published);
+            })
+            ->withCount(['articles' => function (Builder $query) {
+                $query->whereStatus(ArticleStatus::Published);
+            }])
+            ->whereStatus(UserStatus::Active)
+            ->orderByDesc('articles_count')
+            ->paginate()
+            ->withQueryString();
+
+        return Inertia::render('Topic/Authors/AuthorsPage', [
+            'topic' => new TopicResource($topic),
+            'authors' => new UsersCollection($authors),
+            'subscription' => Auth::check() && $topic->isSubscribed(Auth::user()),
+            'search' => $search,
         ]);
     }
 }

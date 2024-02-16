@@ -1,9 +1,11 @@
 <script setup>
 import {router} from "@inertiajs/vue3";
-import TopicLayout from "@/Pages/Topic/TopicLayout.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
+import MainLayout from "@/Layouts/MainLayout.vue";
+import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
+import TopicNavigation from "@/Pages/Topic/Partials/TopicNavigation.vue";
 
 const props = defineProps({
   topic: {
@@ -24,11 +26,17 @@ const props = defineProps({
 </script>
 
 <template>
-  <TopicLayout
-    :topic="topic"
-    :subscription="subscription"
-    current-tab="articles"
-  >
+  <MainLayout>
+    <TopicHeader
+      :topic="topic"
+      :subscription="subscription"
+    />
+
+    <TopicNavigation
+      :topic="topic"
+      current-tab="articles"
+    />
+
     <ArticlesFilters
       @apply="filters => router.get(route('articles', filters))"
     />
@@ -45,5 +53,5 @@ const props = defineProps({
 
       <Pagination :items="articles"/>
     </div>
-  </TopicLayout>
+  </MainLayout>
 </template>
