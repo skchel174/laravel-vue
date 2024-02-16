@@ -47,13 +47,7 @@ const props = defineProps({
         :article="article"
       />
 
-      <Pagination
-        v-if="articles.totalPages > 1"
-        :query-params="{...articles.query, category: category.slug}"
-        :total-pages="articles.totalPages"
-        :current-page="articles.currentPage"
-        route-name="category.articles"
-      />
+      <Pagination :items="articles"/>
     </div>
 
     <Placeholder v-else class="mt-24"/>

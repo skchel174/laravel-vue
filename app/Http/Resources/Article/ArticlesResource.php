@@ -27,11 +27,12 @@ class ArticlesResource extends JsonResource
         );
 
         return [
-            'query' => $query,
-            'perPage' => $this->resource->perPage(),
-            'currentPage' => $this->resource->currentPage(),
-            'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
             'items' => ArticleCardResource::collection($this->resource->items()),
+            'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
+            'currentPage' => $this->resource->currentPage(),
+            'perPage' => $this->resource->perPage(),
+            'path' => $this->resource->path(),
+            'options' => $request->query(),
         ];
     }
 }

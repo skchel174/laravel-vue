@@ -37,13 +37,7 @@ defineProps({
         :article="article"
       />
 
-      <Pagination
-        v-if="articles.totalPages > 1"
-        :query-params="articles.query"
-        :total-pages="articles.totalPages"
-        :current-page="articles.currentPage"
-        route-name="articles"
-      />
+      <Pagination :items="articles"/>
     </div>
   </MainLayout>
 </template>

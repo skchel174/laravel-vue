@@ -31,14 +31,7 @@ const props = defineProps({
         :comment="comment"
       />
 
-      <Pagination
-        v-if="comments.totalPages > 1"
-        :query-params="comments.query"
-        :total-pages="comments.totalPages"
-        :current-page="comments.currentPage"
-        route-name="user.comments"
-        :queryParams="{user: user.login}"
-      />
+      <Pagination :items="comments"/>
     </div>
 
     <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">

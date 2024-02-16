@@ -50,14 +50,7 @@ const selectLink = (value) => {
           :article="article"
         />
 
-        <Pagination
-          v-if="articles.totalPages > 1"
-          :query-params="articles.query"
-          :total-pages="articles.totalPages"
-          :current-page="articles.currentPage"
-          route-name="user.bookmarks.articles"
-          :queryParams="{user: user.login}"
-        />
+        <Pagination :items="articles"/>
       </div>
 
       <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">

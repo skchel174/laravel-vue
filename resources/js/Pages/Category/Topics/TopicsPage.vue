@@ -113,13 +113,7 @@ const searchTopics = (value) => {
         />
       </List>
 
-      <Pagination
-        v-if="topics.totalPages > 1"
-        :total-pages="topics.totalPages"
-        :current-page="topics.currentPage"
-        route-name="category.topics"
-        :query-params="{...topics.query, category: category.slug}"
-      />
+      <Pagination :items="topics"/>
     </div>
 
     <ListPlaceholder v-else class="mt-24">
