@@ -112,7 +112,8 @@ class ArticleController extends Controller
             ->withCount(['likes', 'relatedComments'])
             ->with(['topics'])
             ->orderByDesc('id')
-            ->paginate();
+            ->paginate()
+            ->withQueryString();
 
         Inertia::share('nav_location', 'feed');
 

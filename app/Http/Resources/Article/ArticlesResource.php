@@ -20,12 +20,6 @@ class ArticlesResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $query = array_filter(
-            $request->query(),
-            fn (string $key) => $key !== $this->resource->getPageName(),
-        ARRAY_FILTER_USE_KEY,
-        );
-
         return [
             'items' => ArticleCardResource::collection($this->resource->items()),
             'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),

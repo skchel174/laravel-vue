@@ -2,11 +2,9 @@
 import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import ArticleCard from "@/Components/Article/ArticleCard.vue";
-import Pagination from "@/Components/Pagination/Pagination.vue";
 import PageNavigation from "@/Pages/Articles/Partials/PageNavigation.vue";
-import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
-import Placeholder from "@/Components/ArticleFeed/Placeholder.vue";
+import ArticlesFilters from "@/Components/Article/Filters/ArticlesFilters.vue";
+import ArticlesList from "@/Components/Article/ArticlesList.vue";
 
 defineProps({
   articles: {
@@ -43,19 +41,9 @@ const applyFilters = (filters) => {
 
     <ArticlesFilters @apply="applyFilters"/>
 
-    <div
-      class="mt-4 space-y-4"
-      v-if="articles.items.length > 0"
-    >
-      <ArticleCard
-        v-for="article in articles.items"
-        :key="article.id"
-        :article="article"
-      />
-
-      <Pagination :items="articles"/>
-    </div>
-
-    <Placeholder v-else class="mt-24"/>
+    <ArticlesList
+      class="mt-4"
+      :articles="articles"
+    />
   </MainLayout>
 </template>

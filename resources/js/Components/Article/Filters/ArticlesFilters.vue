@@ -2,7 +2,7 @@
 import {ref} from "vue";
 import ExpandButton from "@/Components/Buttons/ExpandButton.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
-import ArticleFilter from "@/Components/ArticleFeed/ArticleFilter.vue";
+import ArticleFilter from "@/Components/Article/Filters/ArticleFilter.vue";
 
 const emit = defineEmits(['apply']);
 
