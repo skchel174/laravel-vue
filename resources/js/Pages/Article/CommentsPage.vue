@@ -121,14 +121,7 @@ watch(commentable, () => {
           />
         </div>
 
-        <Pagination
-          class="mt-4"
-          v-if="comments.totalPages > 1"
-          :total-pages="comments.totalPages"
-          :current-page="comments.currentPage"
-          :queryParams="{article: article.id}"
-          route-name="article.comments"
-        />
+        <Pagination :items="comments"/>
       </AdvertWrapper>
     </MainWrapper>
   </NotificationWrapper>

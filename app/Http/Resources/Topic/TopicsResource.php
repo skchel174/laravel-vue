@@ -20,18 +20,13 @@ class TopicsResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $query = array_filter(
-            $request->query(),
-            fn (string $key) => $key !== $this->resource->getPageName(),
-        ARRAY_FILTER_USE_KEY,
-        );
-
         return [
-            'query' => $query,
-            'perPage' => $this->resource->perPage(),
-            'currentPage' => $this->resource->currentPage(),
-            'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
             'items' => TopicResource::collection($this->resource->items()),
+            'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
+            'currentPage' => $this->resource->currentPage(),
+            'perPage' => $this->resource->perPage(),
+            'path' => $this->resource->path(),
+            'options' => $request->query(),
         ];
     }
 }

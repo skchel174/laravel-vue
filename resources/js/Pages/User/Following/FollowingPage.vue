@@ -36,11 +36,7 @@ const props = defineProps({
 
       <Pagination
         class="mt-4"
-        v-if="users.totalPages > 1"
-        route-name="user.following"
-        :query-params="{user: user.login}"
-        :total-pages="users.totalPages"
-        :current-page="users.currentPage"
+        :items="users"
       />
     </div>
 

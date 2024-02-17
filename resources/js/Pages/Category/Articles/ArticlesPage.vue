@@ -1,12 +1,9 @@
 <script setup>
-import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import ArticlesFilters from "@/Components/ArticleFeed/ArticlesFilters.vue";
-import ArticleCard from "@/Components/Article/ArticleCard.vue";
-import Pagination from "@/Components/Pagination/Pagination.vue";
-import Placeholder from "@/Components/ArticleFeed/Placeholder.vue";
 import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
+import ArticlesFilters from "@/Components/Article/Filters/ArticlesFilters.vue";
+import ArticlesList from "@/Components/Article/ArticlesList.vue";
 
 const props = defineProps({
   category: {
@@ -19,14 +16,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const currentTab = ref('articles');
-
-const navigationTabs = {
-  articles: route('category.articles', {category: props.category.slug}),
-  topics: '#',
-  authors: '#',
-};
 </script>
 
 <template>
@@ -43,28 +32,12 @@ const navigationTabs = {
     />
 
     <ArticlesFilters
-      @apply="filters => router.get(route('articles', filters))"
+      @apply="filters => router.get(route('category.articles', filters))"
     />
 
-    <div
-      class="mt-4 space-y-4"
-      v-if="articles.items.length > 0"
-    >
-      <ArticleCard
-        v-for="article in articles.items"
-        :key="article.id"
-        :article="article"
-      />
-
-      <Pagination
-        v-if="articles.totalPages > 1"
-        :query-params="{...articles.query, category: category.slug}"
-        :total-pages="articles.totalPages"
-        :current-page="articles.currentPage"
-        route-name="category.articles"
-      />
-    </div>
-
-    <Placeholder v-else class="mt-24"/>
+    <ArticlesList
+      class="mt-4"
+      :articles="articles"
+    />
   </MainLayout>
 </template>

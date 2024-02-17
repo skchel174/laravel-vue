@@ -1,10 +1,9 @@
 <script setup>
-import {computed, ref, watch} from "vue";
+import {computed, ref} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
-import Pagination from "@/Components/Pagination/Pagination.vue";
-import ArticleCard from "@/Components/Article/ArticleCard.vue";
 import UserLayout from "@/Layouts/User/UserLayout.vue";
 import NavigationSelect from "@/Pages/User/Partials/NavigationSelect.vue";
+import ArticlesList from "@/Components/Article/ArticlesList.vue";
 
 const props = defineProps({
   status: {
@@ -55,30 +54,10 @@ const selectLink = (value) => {
       :current-link="currentLink"
       @select="selectLink"
     >
-      <div
-        class="mt-4 space-y-4"
-        v-if="articles.items.length > 0"
-      >
-        <ArticleCard
-          v-for="article in articles.items"
-          :key="article.id"
-          :article="article"
-          :readable="status === 'published'"
-        />
-
-        <Pagination
-          v-if="articles.totalPages > 1"
-          :query-params="articles.query"
-          :total-pages="articles.totalPages"
-          :current-page="articles.currentPage"
-          route-name="user.articles"
-          :queryParams="{user: user.login, status}"
-        />
-      </div>
-
-      <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">
-        {{ $trans('empty_articles') }}
-      </div>
+      <ArticlesList
+        class="mt-4"
+        :articles="articles"
+      />
     </NavigationSelect>
   </UserLayout>
 </template>

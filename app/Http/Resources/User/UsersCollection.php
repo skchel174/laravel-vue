@@ -21,10 +21,12 @@ class UsersCollection extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'perPage' => $this->resource->perPage(),
-            'currentPage' => $this->resource->currentPage(),
-            'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
             'items' => UserResource::collection($this->resource->items()),
+            'totalPages' => ceil($this->resource->total() / $this->resource->perPage()),
+            'currentPage' => $this->resource->currentPage(),
+            'perPage' => $this->resource->perPage(),
+            'path' => $this->resource->path(),
+            'options' => $request->query(),
         ];
     }
 }

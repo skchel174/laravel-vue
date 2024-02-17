@@ -2,7 +2,7 @@
 import {ref} from "vue";
 import ExpandButton from "@/Components/Buttons/ExpandButton.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
-import ArticleFilter from "@/Components/ArticleFeed/ArticleFilter.vue";
+import ArticleFilter from "@/Components/Article/Filters/ArticleFilter.vue";
 
 const emit = defineEmits(['apply']);
 
@@ -31,7 +31,7 @@ const apply = () => {
 
 <template>
   <div>
-    <div class="px-4 sm:px-6 bg-white">
+    <div class="px-4 bg-white">
       <ExpandButton
         class="w-full py-4 text-sm text-gray-500 font-medium capitalize"
         :expand="isOpen"
@@ -45,7 +45,7 @@ const apply = () => {
       class="w-full max-h-0 overflow-hidden bg-stone-50 transition-[max-height] duration-500"
       :class="{'max-h-96 ease-in': isOpen}"
     >
-      <div class="px-4 sm:px-6 py-4 space-y-4">
+      <div class="p-4 space-y-4">
         <ArticleFilter
           heading="Show first"
           v-model="order"
