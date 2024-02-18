@@ -52,7 +52,7 @@ class CategoryController extends Controller
 
         Inertia::share('nav_location', $category->slug);
 
-        return Inertia::render('Category/Articles/ArticlesPage', [
+        return Inertia::render('Category/ArticlesPage', [
             'category' => new CategoryResource($category),
             'articles' => new ArticlesResource($articles),
         ]);
@@ -72,7 +72,7 @@ class CategoryController extends Controller
 
         Inertia::share('nav_location', $category->slug);
 
-        return Inertia::render('Category/Topics/TopicsPage', [
+        return Inertia::render('Category/TopicsPage', [
             'category' => new CategoryResource($category),
             'topics' => new TopicsResource($topics),
             'order' => $order,
@@ -108,7 +108,7 @@ class CategoryController extends Controller
 
         Inertia::share('nav_location', $category->slug);
 
-        return Inertia::render('Category/Authors/AuthorsPage', [
+        return Inertia::render('Category/AuthorsPage', [
             'category' => new CategoryResource($category),
             'authors' => new UsersCollection($authors),
             'search' => $search,

@@ -1,9 +1,11 @@
 <script setup>
-import {router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
 import ArticlesFilters from "@/Components/Article/Filters/ArticlesFilters.vue";
 import ArticlesList from "@/Components/Article/ArticlesList.vue";
+import PageHeader from "@/Pages/Category/Partials/PageHeader.vue";
+import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 
 const props = defineProps({
   category: {
@@ -20,11 +22,9 @@ const props = defineProps({
 
 <template>
   <MainLayout>
-    <header class="w-full p-4 sm:px-6 bg-white">
-      <h1 class="text-xl text-gray-700 font-semibold">
-        {{ category.name }}
-      </h1>
-    </header>
+    <Head :title="category.name"/>
+
+    <PageHeader :category="category"/>
 
     <NavigationTabs
       :category="category"
@@ -39,5 +39,9 @@ const props = defineProps({
       class="mt-4"
       :articles="articles"
     />
+
+    <template v-slot:sidebar>
+      <AdvertPlaceholder/>
+    </template>
   </MainLayout>
 </template>
