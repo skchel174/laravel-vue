@@ -1,5 +1,5 @@
 <script setup>
-import {router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 import Search from "@/Components/Search.vue";
 import AuthorsList from "@/Components/Author/AuthorsList.vue";
 import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
@@ -40,6 +40,8 @@ const searchAuthors = (value) => {
 
 <template>
   <MainLayout>
+    <Head :title="topic.name"/>
+
     <TopicHeader
       :topic="topic"
       :subscription="subscription"

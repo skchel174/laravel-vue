@@ -1,5 +1,5 @@
 <script setup>
-import {router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
 import TopicNavigation from "@/Pages/Topic/Partials/TopicNavigation.vue";
@@ -30,6 +30,8 @@ const applyArticlesFilters = (filters) => {
 
 <template>
   <MainLayout>
+    <Head :title="topic.name"/>
+
     <TopicHeader
       :topic="topic"
       :subscription="subscription"

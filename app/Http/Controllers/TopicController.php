@@ -50,7 +50,7 @@ class TopicController extends Controller
             ->paginate()
             ->withQueryString();
 
-        return Inertia::render('Topic/Articles/ArticlesPage', [
+        return Inertia::render('Topic/ArticlesPage', [
             'topic' => new TopicResource($topic),
             'articles' => new ArticlesResource($articles),
             'subscription' => $user && $topic->isSubscribed($user),
@@ -83,7 +83,7 @@ class TopicController extends Controller
             ->paginate()
             ->withQueryString();
 
-        return Inertia::render('Topic/Authors/AuthorsPage', [
+        return Inertia::render('Topic/AuthorsPage', [
             'topic' => new TopicResource($topic),
             'authors' => new UsersCollection($authors),
             'subscription' => Auth::check() && $topic->isSubscribed(Auth::user()),
