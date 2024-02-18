@@ -24,7 +24,7 @@ const openArticle = () => {
 </script>
 
 <template>
-  <article class="p-4 sm:p-6 bg-white flex flex-col items-start">
+  <article class="p-4 bg-white flex flex-col items-start">
     <ArticleAuthor
       class="mb-2"
       :article-id="article.id"

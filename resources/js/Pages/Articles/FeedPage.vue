@@ -3,6 +3,7 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
 import ArticlesList from "@/Components/Article/ArticlesList.vue";
+import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 
 defineProps({
   articles: {
@@ -15,7 +16,7 @@ defineProps({
 <template>
   <MainLayout>
     <div class="space-y-4">
-      <header class="w-full p-4 sm:px-6 bg-white flex justify-between items-center">
+      <header class="w-full p-4 bg-white flex justify-between items-center">
         <h1 class="text-xl text-gray-700 font-semibold">
           {{ $trans('My feed') }}
         </h1>
@@ -33,6 +34,8 @@ defineProps({
       <ArticlesList :articles="articles"/>
     </div>
 
-
+    <template v-slot:sidebar>
+      <AdvertPlaceholder/>
+    </template>
   </MainLayout>
 </template>

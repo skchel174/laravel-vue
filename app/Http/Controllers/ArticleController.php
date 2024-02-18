@@ -117,7 +117,7 @@ class ArticleController extends Controller
 
         Inertia::share('nav_location', 'feed');
 
-        return Inertia::render('Feed/FeedPage', [
+        return Inertia::render('Articles/FeedPage', [
             'articles' => new ArticlesResource($articles),
         ]);
     }

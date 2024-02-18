@@ -28,7 +28,7 @@ const props = defineProps({
 
     <div
       v-else
-      class="px-4 sm:px-6 flex flex-col items-center justify-center space-y-4"
+      class="px-4 flex flex-col items-center justify-center space-y-4"
     >
       <img
         class="mt-10 w-64"
