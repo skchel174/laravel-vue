@@ -32,5 +32,7 @@ defineProps({
 
       <ArticlesList :articles="articles"/>
     </div>
+
+
   </MainLayout>
 </template>

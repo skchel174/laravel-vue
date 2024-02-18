@@ -43,7 +43,7 @@ const {openLangSettings} = inject('langSettings');
     <MenuList class="py-3.5">
       <Link :href="route('editor')">
         <MenuItem class="px-6 py-3.5">
-          <MaterialIcon class="text-inherit">
+          <MaterialIcon class="!text-inherit">
             post_add
           </MaterialIcon>
 
@@ -53,7 +53,7 @@ const {openLangSettings} = inject('langSettings');
 
       <Link :href="route('user.articles', {user: props.user.login})">
         <MenuItem class="px-6 py-3.5">
-          <MaterialIcon class="text-inherit">
+          <MaterialIcon class="!text-inherit">
             article
           </MaterialIcon>
 
@@ -63,7 +63,7 @@ const {openLangSettings} = inject('langSettings');
 
       <Link :href="route('user.comments', {user: props.user.login})">
         <MenuItem class="px-6 py-3.5 capitalize">
-          <MaterialIcon class="text-inherit">
+          <MaterialIcon class="!text-inherit">
             question_answer
           </MaterialIcon>
 
@@ -73,7 +73,7 @@ const {openLangSettings} = inject('langSettings');
 
       <Link :href="route('user.bookmarks.articles', {user: props.user.login})">
         <MenuItem class="px-6 py-3.5 capitalize">
-          <MaterialIcon class="text-inherit">
+          <MaterialIcon class="!text-inherit">
             bookmarks
           </MaterialIcon>
 
@@ -85,7 +85,7 @@ const {openLangSettings} = inject('langSettings');
 
       <Link :href="route('profile')">
         <MenuItem class="px-6 py-3.5">
-          <MaterialIcon class="text-inherit">
+          <MaterialIcon class="!text-inherit">
             manage_accounts
           </MaterialIcon>
 
@@ -97,7 +97,7 @@ const {openLangSettings} = inject('langSettings');
         class="px-6 py-3.5"
         @click="openLangSettings"
       >
-        <MaterialIcon class="text-inherit">
+        <MaterialIcon class="!text-inherit">
           language
         </MaterialIcon>
 
@@ -106,7 +106,7 @@ const {openLangSettings} = inject('langSettings');
 
       <Link :href="route('logout')">
         <MenuItem class="px-6 py-3.5">
-          <MaterialIcon class="text-inherit">
+          <MaterialIcon class="!text-inherit">
             logout
           </MaterialIcon>
 

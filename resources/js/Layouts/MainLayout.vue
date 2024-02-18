@@ -1,18 +1,17 @@
 <script setup>
-import NotificationWrapper from "@/Components/NotificationWrapper.vue";
-import AppHeader from "@/Components/AppHeader/AppHeader.vue";
-import MainWrapper from "@/Components/MainWrapper.vue";
-import AdvertWrapper from "@/Components/Advert/AdvertWrapper.vue";
+import BaseLayout from "@/Layouts/BaseLayout.vue";
 </script>
 
 <template>
-  <NotificationWrapper>
-    <AppHeader/>
-
-    <MainWrapper>
-      <AdvertWrapper>
+  <BaseLayout>
+    <div class="w-full flex flex-row justify-between">
+      <div class="flex-1 w-full">
         <slot/>
-      </AdvertWrapper>
-    </MainWrapper>
-  </NotificationWrapper>
+      </div>
+
+      <div class="ml-4 w-75 hidden lg:block">
+        <slot name="sidebar"/>
+      </div>
+    </div>
+  </BaseLayout>
 </template>

@@ -1,27 +1,16 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
-import {provide, ref} from "vue";
+import {ref} from "vue";
 import useMedia from "@/Hooks/useMedia.js";
 import Sidebar from "@/Components/Sidebar.vue";
 import ProfileMenu from "@/Components/AppHeader/ProfileMenu.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
-import LanguageSettings from "@/Components/LanguageSettings.vue";
-import Modal from "@/Components/Modal.vue";
 import MenuList from "@/Components/Menu/MenuList.vue";
 import MenuItem from "@/Components/Menu/MenuItem.vue";
 
 const isMenuOpen = ref(false);
 
 const isTablet = useMedia('(max-width: 1024px)');
-
-const isLangSettingsOpen = ref(false);
-const openLangSettings = () => isLangSettingsOpen.value = true;
-const closeLangSettings = () => isLangSettingsOpen.value = false;
-
-provide('langSettings', {
-  openLangSettings,
-  closeLangSettings,
-});
 </script>
 
 <template>
@@ -95,21 +84,5 @@ provide('langSettings', {
         </MenuList>
       </div>
     </Sidebar>
-
-    <Sidebar
-      v-if="isTablet"
-      v-model:open="isLangSettingsOpen"
-      side="top"
-    >
-      <LanguageSettings @close="closeLangSettings"/>
-    </Sidebar>
-
-    <Modal
-      v-else
-      max-width="sm"
-      v-model:open="isLangSettingsOpen"
-    >
-      <LanguageSettings @close="closeLangSettings"/>
-    </Modal>
   </header>
 </template>
