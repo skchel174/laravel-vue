@@ -65,6 +65,7 @@ const searchTopics = (value) => {
     />
 
     <TopicsList
+      class="mt-4"
       :topics="topics"
       :order="order"
       :sort="sort"

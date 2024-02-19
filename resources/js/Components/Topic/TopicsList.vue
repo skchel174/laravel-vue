@@ -31,8 +31,8 @@ const sortList = (name) => {
 
 <template>
   <div
+    class="space-y-4"
     v-if="topics.items.length > 0"
-    class="mt-4 space-y-4"
   >
     <div class="p-4 pt-1 lg:pt-2 bg-white">
       <div class="pt-2 pb-1 border-b border-gray-200 hidden lg:flex">
