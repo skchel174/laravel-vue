@@ -23,14 +23,13 @@ const {subscribed, subscribe, unsubscribe} = useSubscription(props.topic.is_subs
 <template>
   <div
     ref="topicEl"
-    class="mb-2 mr-2 px-2 py-0.5 bg-blue-200 rounded-sm cursor-pointer text-sm text-gray-600 font-medium hover:text-sky-600 transition duration-400 select-none"
-    :class="{
-      '!text-sky-600': isPopoverOpen,
-      '!bg-lime-200': subscribed,
-    }"
-    @click="() => isPopoverOpen = !isPopoverOpen"
+    class="mb-2 mr-2 px-2 py-0.5 bg-blue-200 rounded-sm cursor-pointer select-none"
+    :class="{'!bg-lime-200': subscribed}"
+    @click="isPopoverOpen = !isPopoverOpen"
   >
-    {{ topic.name }}
+    <span class="text-sm text-gray-600 font-medium">
+      {{ topic.name }}
+    </span>
 
     <Popover
       :anchor-el="topicEl"
@@ -43,10 +42,10 @@ const {subscribed, subscribe, unsubscribe} = useSubscription(props.topic.is_subs
             :src="topic.icon"
             :alt="topic.slug"
           >
-          <!-- TODO: set topic route url -->
+
           <Link
-            href="#"
-            class="text-base text-sky-600 font-bold hover:text-sky-500 transition"
+            :href="route('topic.articles', {topic: topic.slug})"
+            class="text-base text-gray-700 font-bold"
           >
             {{ topic.name }}
           </Link>
@@ -58,14 +57,14 @@ const {subscribed, subscribe, unsubscribe} = useSubscription(props.topic.is_subs
           <div v-if="$page.props.auth.user">
             <SuccessButton
               v-if="subscribed"
-              @click="() => unsubscribe(topic.id)"
+              @click="unsubscribe(topic.id)"
             >
               {{ $trans('Subscribed') }}
             </SuccessButton>
 
             <SuccessOutlineButton
               v-else
-              @click="() => subscribe(topic.id)"
+              @click="subscribe(topic.id)"
             >
               {{ $trans('Subscribe') }}
             </SuccessOutlineButton>

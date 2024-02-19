@@ -1,4 +1,4 @@
-<script setup>
+ <script setup>
 import {computed} from "vue";
 import {router} from "@inertiajs/vue3";
 import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";

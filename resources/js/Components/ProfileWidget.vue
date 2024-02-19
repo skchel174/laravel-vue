@@ -40,7 +40,7 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
         </span>
 
         <Link
-          class="text-sky-600"
+          class="text-sky-700/75"
           :href="route('user', {user: user.login})"
         >
           @{{ user.login }}

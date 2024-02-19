@@ -8,23 +8,21 @@ defineProps({
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-4 text-sm">
     <div class="space-y-2">
-      <h5 class="text-sm text-gray-700 font-bold">
+      <h5 class=" text-gray-700 font-bold">
         {{ $trans('Registered') }}
       </h5>
-
-      <p class="text-sm text-gray-500 font-medium">
-        {{ user.created_at }}
+      <p class="text-gray-500">
+        {{ $formatDate(user.created_at, 'DD MMM YYYY') }}
       </p>
     </div>
 
     <div class="space-y-2">
-      <h5 class="text-sm text-gray-700 font-bold">
+      <h5 class="text-gray-700 font-bold">
         {{ $trans('Activity') }}
       </h5>
-
-      <p class="text-sm text-gray-500 font-medium">
+      <p class="text-gray-500">
         {{ $formatDate(user.login_at, 'DD MMM YYYY') }}
       </p>
     </div>
