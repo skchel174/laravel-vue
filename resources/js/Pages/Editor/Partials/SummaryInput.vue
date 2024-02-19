@@ -41,8 +41,8 @@ const summary = ref(props.modelValue);
       rows="10"
       v-model="summary"
       @update:modelValue="$emit('update:modelValue', summary)"
-      @focus="() => focus = true"
-      @blur="() => focus = false"
+      @focus="focus = true"
+      @blur="focus = false"
     />
   </div>
 </template>

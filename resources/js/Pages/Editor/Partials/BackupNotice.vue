@@ -1,8 +1,8 @@
 <script setup>
 import {usePage} from "@inertiajs/vue3";
-import moment from "moment";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
-const props = defineProps({
+defineProps({
   backup: {
     type: [Object, null],
     required: true,
@@ -11,10 +11,10 @@ const props = defineProps({
 
 const emit = defineEmits(['restore', 'close']);
 
-const page = usePage();
+const trans = usePage().props.trans;
 
 const restore = () => {
-  const confirmation = confirm(page.props.trans['article_backup_confirmation']);
+  const confirmation = confirm(trans['article_backup_confirmation']);
 
   if (confirmation) {
     emit('restore');
@@ -24,31 +24,31 @@ const restore = () => {
 </script>
 
 <template>
-  <div class="relative p-4 flex items-center bg-sky-50 border border-sky-500 text-sm text-gray-700 space-x-4">
-    <span class="material-icons !text-[1.75rem] text-sky-600">
+  <div class="relative p-4 flex items-center bg-sky-50 border border-sky-600/75 text-sm text-gray-700 space-x-4">
+    <MaterialIcon class="!text-[1.75rem] !text-sky-700/75">
       error
-    </span>
+    </MaterialIcon>
 
     <p class="text-sm text-gray-500">
       {{ $trans('You have a backup') }}: "{{ backup.title ? backup.title : $trans('Untitled') }}", {{ $trans('saved') }}
 
-      <span class="font-semibold">
+      <span class="font-semibold mr-1">
         {{ $formatDate(backup.save_date) }}.
       </span>
 
       <span
-        class="ml-1 font-bold tracking-wide text-sky-600 hover:text-sky-400 transition duration-300 cursor-pointer"
+        class="font-bold tracking-wide text-sky-700/75 hover:text-sky-500 transition duration-200 cursor-pointer"
         @click="restore"
       >
         {{ $trans('Restore') }}
       </span>
     </p>
 
-    <span
-      class="material-icons absolute top-0.5 right-1.5 !text-xl text-sky-600 hover:text-sky-500 transition duration-300 cursor-pointer"
+    <MaterialIcon
+      class="absolute top-0 right-1 !text-xl !text-sky-700/75 hover:text-sky-500 transition duration-200 cursor-pointer"
       @click="$emit('close')"
     >
       close
-    </span>
+    </MaterialIcon>
   </div>
 </template>

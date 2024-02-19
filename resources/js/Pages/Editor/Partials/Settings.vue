@@ -5,7 +5,6 @@ import SummaryInput from "@/Pages/Editor/Partials/SummaryInput.vue";
 import ImageInput from "@/Pages/Editor/Partials/ImageInput.vue";
 import TopicsSelect from "@/Pages/Editor/Partials/TopicsSelect.vue";
 import DifficultSelect from "@/Pages/Editor/Partials/DifficultSelect.vue";
-import PageFooter from "@/Pages/Editor/Partials/PageFooter.vue";
 import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
 import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
@@ -13,7 +12,7 @@ import LangSelect from "@/Pages/Editor/Partials/LangSelect.vue";
 import ButtonTextInput from "@/Pages/Editor/Partials/ButtonTextInput.vue";
 import Modal from "@/Components/Modal.vue";
 
-const props = defineProps({
+defineProps({
   article: {
     type: [Object, null],
     required: true,
@@ -44,7 +43,7 @@ const saveToDrafts = () => {
 
 <template>
   <div class="bg-white">
-    <div class="p-4 sm:py-8 lg:px-8 space-y-8">
+    <div class="p-4 space-y-8">
       <div class="space-y-4">
         <h3 class="text-base sm:text-lg font-medium pb-1 border-b border-gray-200">
           {{ $trans('Article Settings') }}
@@ -95,18 +94,18 @@ const saveToDrafts = () => {
       </div>
     </div>
 
-    <PageFooter class="justify-between">
+    <div class="h-14 px-4 flex items-center justify-between bg-white border-t border-gray-200">
       <NeutralButton @click="$emit('openTab', 'Editor')">
         {{ $trans('Back to editor') }}
       </NeutralButton>
 
       <SuccessButton
         :disabled="form.topics.length === 0"
-        @click="() => isConfirmationOpen = true"
+        @click="isConfirmationOpen = true"
       >
         {{ $trans('Save') }}
       </SuccessButton>
-    </PageFooter>
+    </div>
 
     <Modal
       v-model:open="isConfirmationOpen"

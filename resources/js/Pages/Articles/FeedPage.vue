@@ -1,4 +1,5 @@
 <script setup>
+import {Head} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
@@ -15,6 +16,8 @@ defineProps({
 
 <template>
   <MainLayout>
+    <Head :title="$trans('My feed')"/>
+
     <div class="space-y-4">
       <header class="w-full p-4 bg-white flex justify-between items-center">
         <h1 class="text-xl text-gray-700 font-semibold">

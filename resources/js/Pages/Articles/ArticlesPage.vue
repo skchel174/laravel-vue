@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import ArticlesFilters from "@/Components/Article/Filters/ArticlesFilters.vue";
 import ArticlesList from "@/Components/Article/ArticlesList.vue";
@@ -35,6 +35,8 @@ const applyFilters = (filters) => {
 
 <template>
   <MainLayout>
+    <Head :title="$trans('Articles')"/>
+
     <header class="w-full p-4 bg-white">
       <h1 class="text-xl text-gray-700 font-semibold">
         {{ $trans('All categories') }}

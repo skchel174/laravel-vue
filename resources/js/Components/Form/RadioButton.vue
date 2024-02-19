@@ -28,7 +28,7 @@ defineEmits(['select'])
         leave-to-class="scale-0"
       >
         <div
-          class="h-2.5 w-2.5 bg-sky-600 rounded-full"
+          class="h-2.5 w-2.5 bg-sky-700/75 rounded-full"
           v-if="selected"
         />
       </Transition>

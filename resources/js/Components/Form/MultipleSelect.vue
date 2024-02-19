@@ -66,10 +66,10 @@ const removeItem = (item) => {
       :class="{['rounded-b-none']: focus && sortedOptions.length > 0}"
     >
       <div
-        class="px-2 py-1 my-1 mr-1 border border-sky-600 flex items-center text-xs text-sky-700 cursor-pointer space-x-2"
+        class="px-2 py-1 my-1 mr-1 border border-sky-700/75 flex items-center text-xs text-sky-700 cursor-pointer space-x-2"
         v-for="option in selection"
         :key="option.id"
-        @click="() => removeItem(option)"
+        @click="removeItem(option)"
       >
         <span>{{ option.value }}</span>
 
@@ -94,7 +94,7 @@ const removeItem = (item) => {
         class="w-full px-4 py-1 hover:bg-gray-200 transition duration-200 text-sm cursor-pointer"
         v-for="option in sortedOptions"
         :key="option.id"
-        @click="() => addItem(option)"
+        @click="addItem(option)"
       >
         {{ option.value }}
       </div>

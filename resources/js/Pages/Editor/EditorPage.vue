@@ -3,13 +3,11 @@ import {Head} from "@inertiajs/vue3";
 import {onMounted, provide, ref} from "vue";
 import useForm from "@/Hooks/Article/useForm.js";
 import useNotification from "@/Hooks/useNotification.js";
-import AppHeader from "@/Components/AppHeader/AppHeader.vue";
-import MainWrapper from "@/Components/MainWrapper.vue";
 import Editor from "@/Pages/Editor/Partials/Editor.vue";
 import Settings from "@/Pages/Editor/Partials/Settings.vue";
 import Notification from "@/Components/Notification.vue";
 import BackupNotice from "@/Pages/Editor/Partials/BackupNotice.vue";
-import PageHeader from "@/Pages/Editor/Partials/PageHeader.vue";
+import BaseLayout from "@/Layouts/BaseLayout.vue";
 
 const props = defineProps({
   article: {
@@ -23,12 +21,9 @@ const props = defineProps({
   },
 });
 
-const tabs = {
-  Editor,
-  Settings,
-};
+const tabs = {Editor, Settings};
 
-const currentTab = ref('Settings');
+const currentTab = ref('Editor');
 
 const {form, backup, update, send, restore} = useForm(props.article);
 
@@ -49,21 +44,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <Head :title="$trans('Article Editor')"/>
+  <BaseLayout>
+    <div class="flex-1 flex flex-col space-y-4">
+      <Head :title="$trans('Article Editor')"/>
 
-  <AppHeader/>
-
-  <MainWrapper>
-    <div class="flex-1 w-full flex flex-col space-y-4">
-      <PageHeader>
-        {{ $trans('Article Editor') }}
-      </PageHeader>
+      <header class="p-4 bg-white">
+        <h1 class="font-semibold text-2xl text-gray-700">
+          {{ $trans('Article Editor') }}
+        </h1>
+      </header>
 
       <BackupNotice
         v-if="backupVisible"
         :backup="backup"
         @restore="restore"
-        @close="() => backupVisible = false"
+        @close="backupVisible = false"
       />
 
       <KeepAlive>
@@ -90,5 +85,5 @@ onMounted(() => {
         </p>
       </div>
     </Notification>
-  </MainWrapper>
+  </BaseLayout>
 </template>

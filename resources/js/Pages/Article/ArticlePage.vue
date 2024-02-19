@@ -12,6 +12,7 @@ import ArticleFooter from "@/Pages/Article/Partials/ArticleFooter.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import CommentsButton from "@/Pages/Article/Partials/CommentsButton.vue";
 import ProfileWidget from "@/Components/ProfileWidget.vue";
+import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 
 const props = defineProps({
   article: {
@@ -35,12 +36,9 @@ const props = defineProps({
     <MainWrapper>
       <div class="bg-white">
         <div class="p-4">
-          <ArticleAuthor
+          <ArticleHeader
             class="mb-4"
-            :article-id="article.id"
-            :status="article.status"
-            :author="article.author"
-            :publish-date="article.publish_date"
+            :article="article"
           />
 
           <h2 class="mb-1 text-lg sm:text-xl text-gray-700 font-black">

@@ -2,9 +2,7 @@
 import {ref} from "vue";
 import TitleInput from "@/Pages/Editor/Partials/TitleInput.vue";
 import TextInput from "@/Pages/Editor/Partials/TextInput.vue";
-import PageFooter from "@/Pages/Editor/Partials/PageFooter.vue";
-import ArticleAuthor from "@/Pages/Editor/Partials/Author.vue"
-import EditorToolbar from "@/Pages/Editor/Partials/EditorToolbar.vue";
+import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
 
 const props = defineProps({
@@ -19,16 +17,17 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['openTab', 'updateForm']);
+defineEmits(['openTab', 'updateForm']);
 
 const focus = ref(false);
 </script>
 
 <template>
   <div class="flex-1 flex flex-col">
-    <div class="p-4 lg:py-6 lg:px-8 flex-1 bg-white">
+    <div class="p-4 flex-1 bg-white">
       <ArticleAuthor
-        class="mb-2 lg:mb-4"
+        class="mb-4"
+        :author="$page.props.auth.user"
         :publish-date="article?.publish_date"
       />
 
@@ -41,23 +40,51 @@ const focus = ref(false);
         toolbar="#toolbar"
         :text="form.text"
         @update:content="value => $emit('updateForm', 'text', value)"
-        @focus="() => focus = true"
-        @blur="() => focus = false"
+        @focus="focus = true"
+        @blur="focus = false"
       />
     </div>
 
-    <EditorToolbar
-      id="toolbar"
-      :visible="focus"
-    />
+    <div
+      v-show="focus"
+      class="sticky bottom-0 h-10 w-full overflow-x-auto border-t border-gray-200 bg-gray-50 z-20 toolbar-container"
+    >
+      <div class="w-full max-w-[64rem] px-2">
+        <div id="toolbar" class="w-[26.5rem] !px-0 !border-0">
+          <button class="ql-bold"/>
+          <button class="ql-italic"/>
+          <button class="ql-underline"/>
+          <button class="ql-header" value="1"/>
+          <button class="ql-header" value="2"/>
+          <button class="ql-list" value="ordered"/>
+          <button class="ql-list" value="bullet"/>
+          <button class="ql-indent" value="-1"/>
+          <button class="ql-indent" value="+1"/>
+          <button class="ql-blockquote"/>
+          <button class="ql-code-block"/>
+          <button class="ql-link"/>
+          <button class="ql-image"/>
+          <button class="ql-video"/>
+        </div>
+      </div>
+    </div>
 
-    <PageFooter class="justify-end">
+    <div v-if="!focus" class="bg-white h-10"/>
+
+    <div class="h-14 px-4 flex items-center justify-end bg-white border-t border-gray-200">
       <PrimaryOutlineButton
         :disabled="form.title.length === 0 || form.text.length < 10"
         @click="$emit('openTab', 'Settings')"
       >
         {{ $trans('Proceed to settings') }}
       </PrimaryOutlineButton>
-    </PageFooter>
+    </div>
   </div>
 </template>
+
+<style>
+.toolbar-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+</style>

@@ -11,6 +11,7 @@ import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import CommentForm from "@/Components/Comment/CommentForm.vue";
 import Comment from "@/Components/Comment/Comment.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
+import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 
 const props = defineProps({
   article: {
@@ -57,12 +58,9 @@ watch(commentable, () => {
   <NotificationWrapper>
     <MainWrapper>
       <div class="p-4 pb-2 bg-white">
-        <ArticleAuthor
+        <ArticleHeader
           class="mb-4"
-          :article-id="article.id"
-          :status="article.status"
-          :author="article.author"
-          :publish-date="article.publish_date"
+          :article="article"
         />
 
         <Link :href="route('article', {article: article.id})">

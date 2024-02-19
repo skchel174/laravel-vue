@@ -3,9 +3,9 @@ import {computed} from "vue";
 import {router} from "@inertiajs/vue3";
 import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
-import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleInfo from "@/Components/Article/ArticleInfo.vue";
 import ArticleTopics from "@/Components/Article/ArticleTopics.vue";
+import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 
 const props = defineProps({
   article: {
@@ -25,12 +25,9 @@ const openArticle = () => {
 
 <template>
   <article class="p-4 bg-white flex flex-col items-start">
-    <ArticleAuthor
+    <ArticleHeader
       class="mb-2"
-      :article-id="article.id"
-      :status="article.status"
-      :author="article.author"
-      :publish-date="article.publish_date"
+      :article="article"
     />
 
     <h2

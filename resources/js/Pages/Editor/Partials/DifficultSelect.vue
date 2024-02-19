@@ -24,7 +24,7 @@ defineEmits(['select']);
     <div class="flex flex-col sm:flex-row">
       <RadioButton
         class="mr-6 mb-1"
-        :label="$ucfirst($trans('Not selected'))"
+        :label="$trans('Not selected')"
         :selected="value === null"
         @select="$emit('select', null)"
       />
