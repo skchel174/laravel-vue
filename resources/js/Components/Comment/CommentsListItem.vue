@@ -1,6 +1,5 @@
 <script setup>
-import {inject} from "vue";
-import {Link, usePage} from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import useBookmark from "@/Hooks/useBookmark.js";
 import Divider from "@/Components/Divider.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
@@ -15,22 +14,17 @@ const props = defineProps({
   },
 });
 
-const trans = usePage().props.trans;
-
-const notify = inject('notify');
-
-const {isBookmarked, toggleBookmark} = useBookmark(props.comment.is_bookmarked);
+const {
+  loading,
+  isBookmarked,
+  toggleBookmark,
+} = useBookmark(props.comment.isBookmarked);
 
 const onBookmarked = () => {
-  const url = route('api.comments.bookmark', {
+  toggleBookmark(route('api.comments.bookmark', {
     article: props.comment.article_id,
     comment: props.comment.id,
-  });
-
-  toggleBookmark(url)
-    /* TODO: add localization */
-    .then(() => notify('success', 'Comment added to bookmarks'))
-    .catch(error => notify('error', error.message))
+  }));
 };
 </script>
 
@@ -57,6 +51,7 @@ const onBookmarked = () => {
 
     <CommentFooter>
       <BookmarkIcon
+        :loading="loading"
         :is-bookmarked="isBookmarked"
         @toggle="onBookmarked"
       />

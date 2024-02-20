@@ -1,5 +1,4 @@
 <script setup>
-import {usePage} from "@inertiajs/vue3";
 import {inject, onMounted, ref} from "vue";
 import useBookmark from "@/Hooks/useBookmark.js";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
@@ -35,9 +34,6 @@ const props = defineProps({
   },
 });
 
-const page = usePage();
-const user = page.props.auth.user;
-
 const notify = inject('notify');
 
 const copyLink = () => {
@@ -46,17 +42,17 @@ const copyLink = () => {
   notify('success', 'Link was copied');
 };
 
-const {isBookmarked, toggleBookmark} = useBookmark();
+const {
+  loading,
+  isBookmarked,
+  toggleBookmark,
+} = useBookmark();
 
 const onBookmarked = () => {
-  const url = route('api.comments.bookmark', {
+  toggleBookmark(route('api.comments.bookmark', {
     article: props.articleId,
     comment: props.comment.id,
-  });
-
-  toggleBookmark(url)
-    .then(() => notify('success', 'Comment added to bookmarks'))
-    .catch(error => notify('error', error.message))
+  }))
 };
 
 onMounted(() => {
@@ -114,6 +110,7 @@ const toggleVisibility = () => {
 
         <CommentFooter class="mt-2">
           <BookmarkIcon
+            :loading="loading"
             :is-bookmarked="isBookmarked"
             @toggle="onBookmarked"
           />

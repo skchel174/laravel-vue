@@ -93,6 +93,7 @@ return [
 
     'Your comment' => 'Ваш комментарий',
     'Show comments' => 'Показать комментарии',
+    'Authorization required' => 'Требуется авторизация',
     'Comment added to bookmarks' => 'Комментарий добавлен в избранное',
     'Comment successfully created' => 'Комментарий успешно создан',
     'Comment successfully updated' => 'Комментарий успешно обновлен',
