@@ -26,10 +26,6 @@ Route::get('/', function () {
     return redirect()->route('articles.feed');
 })->name('main');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'auth.session', 'verified'])->name('dashboard');
-
 Route::post('/locale', LocaleController::class)
     ->name('locale');
 
