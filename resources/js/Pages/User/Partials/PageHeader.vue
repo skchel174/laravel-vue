@@ -24,11 +24,11 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
 </script>
 
 <template>
-  <div class="p-4 flex flex-col sm:flex-row bg-white">
+  <header class="p-4 flex flex-col sm:flex-row bg-white">
     <div class="flex-1 mb-2 sm:mb-0">
       <Avatar
-        :src="user.avatar"
         size="md"
+        :src="user.avatar"
       />
 
       <h3 class="mt-2 text-base sm:text-lg">
@@ -71,12 +71,6 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
       >
         {{ $trans('Follow') }}
       </SuccessOutlineButton>
-
-      <NeutralButton class="ml-2 sm:ml-0 h-7 w-7">
-        <span class="material-icons !text-lg text-gray-400">
-          email
-        </span>
-      </NeutralButton>
     </div>
-  </div>
+  </header>
 </template>

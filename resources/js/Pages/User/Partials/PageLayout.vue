@@ -1,9 +1,9 @@
 <script setup>
-import ProfileWidget from "@/Components/ProfileWidget.vue";
 import NavigationTabs from "@/Pages/User/Partials/NavigationTabs.vue";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import UserInformation from "@/Pages/User/Partials/UserInformation.vue";
 import UserContribution from "@/Pages/User/Partials/UserContribution.vue";
+import PageHeader from "@/Pages/User/Partials/PageHeader.vue";
 
 const props = defineProps({
   currentTab: {
@@ -20,7 +20,7 @@ const props = defineProps({
 
 <template>
   <MainLayout>
-    <ProfileWidget
+    <PageHeader
       :user="user"
       :subscription="$page.props.subscription"
     />

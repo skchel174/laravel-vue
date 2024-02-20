@@ -16,7 +16,7 @@ defineProps({
 
 <template>
   <Link
-    class="w-full flex justify-center p-4 bg-white text-base text-sky-600 font-bold hover:text-sky-700 transition duration-300"
+    class="w-full flex justify-center p-4 bg-white text-base font-bold text-sky-700/75 hover:text-sky-600 transition duration-200"
     :href="route('article.comments', {article: articleId})"
     as="button"
   >

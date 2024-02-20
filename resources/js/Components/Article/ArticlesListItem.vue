@@ -6,6 +6,9 @@ import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import ArticleInfo from "@/Components/Article/ArticleInfo.vue";
 import ArticleTopics from "@/Components/Article/ArticleTopics.vue";
 import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
+import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
+import ArticleActions from "@/Components/Article/ArticleActions.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 const props = defineProps({
   article: {
@@ -25,14 +28,24 @@ const openArticle = () => {
 
 <template>
   <article class="p-4 bg-white flex flex-col items-start">
-    <ArticleHeader
-      class="mb-2"
-      :article="article"
-    />
+    <ArticleHeader class="mb-4">
+      <ArticleAuthor
+        :author="article.author"
+        :publish-date="article.publish_date"
+      />
+
+      <template v-slot:actions>
+        <ArticleActions
+          v-if="article.author.id === $page.props.auth.user?.id"
+          :article-id="article.id"
+          :article-status="article.status"
+        />
+      </template>
+    </ArticleHeader>
 
     <h2
       class="mb-1 text-lg sm:text-xl text-gray-700 font-black"
-      :class="{'hover:text-sky-600 transition duration-200 cursor-pointer': readable}"
+      :class="{'hover:text-sky-700/75 transition duration-200 cursor-pointer': readable}"
       @click="openArticle"
     >
       {{ article.title }}
@@ -51,14 +64,15 @@ const openArticle = () => {
     />
 
     <img
-      class="mb-2 w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm cursor-pointer"
-      :src="article.image ?? 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg'"
+      class="mb-4 w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm cursor-pointer"
+      :src="article.image ?? 'https://loremflickr.com/640/480/business?lock=' + article.id"
       alt="img"
+      @click="openArticle"
     />
 
     <p
       v-if="article.summary"
-      class="mb-4 text-sm sm:text-base text-gray-800 break-words"
+      class="mb-12 text-sm sm:text-base text-gray-700 break-words"
     >
       {{ article.summary }}
     </p>
@@ -73,7 +87,9 @@ const openArticle = () => {
 
       <div v-else class="flex items-center">
         <span>{{ $trans('Read more') }}</span>
-        <span class="material-icons ml-2">arrow_right_alt</span>
+        <MaterialIcon class="ml-2">
+          arrow_right_alt
+        </MaterialIcon>
       </div>
     </PrimaryOutlineButton>
 

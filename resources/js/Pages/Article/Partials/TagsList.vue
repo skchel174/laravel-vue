@@ -11,12 +11,13 @@ defineProps({
 
 <template>
   <div class="flex flex-wrap space-x-2 items-center">
-    <span class="mr-1 text-base font-bold">
+    <span class="mr-1 text-sm sm:text-base font-semibold">
       {{ $trans('Tags') }}:
     </span>
 
+    <!--  TODO: add tag link  -->
     <Link
-      class="text-sky-600 text-base font-medium hover:text-sky-500 transition duration-300 after:content-[','] after:last:content-['']"
+      class="text-sm sm:text-base font-medium text-sky-700/75 hover:text-sky-600 transition duration-200 after:content-[','] after:last:content-['']"
       v-for="tag in tags"
       :key="tag.id"
       href="#"

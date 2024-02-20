@@ -3,7 +3,7 @@ import ArticlesListItem from "@/Components/Article/ArticlesListItem.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import nothingHere from 'img/nothing-here.svg';
 
-const props = defineProps({
+defineProps({
   articles: {
     type: Object,
     required: true,
