@@ -2,7 +2,7 @@
 import {computed} from 'vue';
 import {Head, Link, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   status: {
@@ -39,12 +39,13 @@ const verificationLinkSent = computed(() => {
 
       <form @submit.prevent="submit">
         <div class="mt-4 flex items-center justify-between">
-          <PrimaryButton
+          <FilledButton
+            color="primary"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
             {{ $trans('Resend verification email') }}
-          </PrimaryButton>
+          </FilledButton>
 
           <Link
             class="underline text-sm text-gray-600 hover:text-gray-900"

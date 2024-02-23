@@ -1,8 +1,8 @@
 <script setup>
 import {ref} from "vue";
 import ExpandButton from "@/Components/Buttons/ExpandButton.vue";
-import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
 import ArticleFilter from "@/Components/Article/Filters/ArticleFilter.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const emit = defineEmits(['apply']);
 
@@ -65,12 +65,13 @@ const apply = () => {
           :values="['all', 'ease', 'medium', 'hard']"
         />
 
-        <SuccessButton
+        <FilledButton
+          color="success"
           class="!mt-8"
           @click="apply"
         >
           {{ $trans('Apply') }}
-        </SuccessButton>
+        </FilledButton>
       </div>
     </div>
   </div>

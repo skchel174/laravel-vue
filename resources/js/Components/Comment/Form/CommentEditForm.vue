@@ -4,8 +4,8 @@ import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
 import InputError from "@/Components/InputError.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   articleId: {
@@ -77,11 +77,12 @@ const onSubmit = () => {
       :message="form.errors.text"
     />
 
-    <PrimaryButton
+    <FilledButton
+      color="primary"
       class="mt-4"
       :disabled="form.text.length === 0"
     >
       {{ $trans('Save') }}
-    </PrimaryButton>
+    </FilledButton>
   </form>
 </template>

@@ -3,8 +3,8 @@ import {ref} from "vue";
 import Avatar from "@/Components/Avatar.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
-import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
-import DangerOutlineButton from "@/Components/Buttons/DangerOutlineButton.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   avatar: {
@@ -72,28 +72,33 @@ const deleteImage = () => {
 
       <InputError :message="error"/>
 
-      <NeutralButton
+      <FilledButton
         v-if="isAvatarUpdated"
+        color="light"
         class="w-full flex flex-col space-y-1.5"
         @click.prevent="resetImage"
       >
         {{ $trans('Reset') }}
-      </NeutralButton>
+      </FilledButton>
 
       <div
         v-else
         class="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-1.5"
       >
-        <NeutralButton @click.prevent="triggerInput">
+        <FilledButton
+          color="light"
+          @click.prevent="triggerInput"
+        >
           {{ $trans('Select') }}
-        </NeutralButton>
+        </FilledButton>
 
-        <DangerOutlineButton
+        <OutlineButton
           v-if="avatar"
+          color="danger"
           @click.prevent="deleteImage"
         >
           {{ $trans('Delete') }}
-        </DangerOutlineButton>
+        </OutlineButton>
       </div>
     </div>
 

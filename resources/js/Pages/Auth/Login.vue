@@ -5,7 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {Head, Link, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 defineProps({
   canResetPassword: {
@@ -117,13 +117,14 @@ const submit = () => {
         </div>
 
         <div class="flex flex-col items-start justify-end space-y-4">
-          <PrimaryButton
+          <FilledButton
+            color="primary"
             class="w-full !py-4 !text-sm"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
             {{ $trans('Login') }}
-          </PrimaryButton>
+          </FilledButton>
 
           <Link
             :href="route('password.forgot')"

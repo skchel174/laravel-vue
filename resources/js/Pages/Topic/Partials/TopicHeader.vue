@@ -1,6 +1,6 @@
 <script setup>
-import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
-import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 
 defineProps({
   topic: {
@@ -49,13 +49,21 @@ defineProps({
       </div>
 
       <div v-if="$page.props.auth.user">
-        <SuccessButton v-if="subscription" class="!px-8">
+        <FilledButton
+          v-if="subscription"
+          color="success"
+          class="!px-8"
+        >
           {{ $trans('Subscribed') }}
-        </SuccessButton>
+        </FilledButton>
 
-        <SuccessOutlineButton v-else class="!px-8">
+        <OutlineButton
+          v-else
+          color="success"
+          class="!px-8"
+        >
           {{ $trans('Subscribe') }}
-        </SuccessOutlineButton>
+        </OutlineButton>
       </div>
     </div>
 

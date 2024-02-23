@@ -4,7 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {Head, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 defineProps({
   status: {
@@ -62,13 +62,14 @@ const submit = () => {
         </div>
 
         <div class="flex items-center justify-end mt-4">
-          <PrimaryButton
+          <FilledButton
+            color="primary"
             class="w-full !py-4 !text-sm"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
             {{ $trans('Send password reset mail') }}
-          </PrimaryButton>
+          </FilledButton>
         </div>
       </form>
     </div>

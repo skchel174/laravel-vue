@@ -5,7 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLength from "@/Components/Form/InputLength.vue";
 import AvatarInput from "@/Pages/Profile/Partials/AvatarInput.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 defineProps({
   status: {
@@ -137,9 +137,12 @@ const submit = () => {
         </div>
 
         <div class="mt-6 flex items-center">
-          <PrimaryButton :disabled="form.processing">
+          <FilledButton
+            color="primary"
+            :disabled="form.processing"
+          >
             {{ $trans('Save') }}
-          </PrimaryButton>
+          </FilledButton>
 
           <Transition
             enter-from-class="opacity-0"

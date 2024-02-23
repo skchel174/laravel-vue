@@ -3,7 +3,7 @@ import {ref} from "vue";
 import TitleInput from "@/Pages/Editor/Partials/TitleInput.vue";
 import TextInput from "@/Pages/Editor/Partials/TextInput.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
-import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 
 const props = defineProps({
   article: {
@@ -72,12 +72,13 @@ const focus = ref(false);
     <div v-if="!focus" class="bg-white h-10"/>
 
     <div class="h-14 px-4 flex items-center justify-end bg-white border-t border-gray-200">
-      <PrimaryOutlineButton
+      <OutlineButton
+        color="primary"
         :disabled="form.title.length === 0 || form.text.length < 10"
         @click="$emit('openTab', 'Settings')"
       >
         {{ $trans('Proceed to settings') }}
-      </PrimaryOutlineButton>
+      </OutlineButton>
     </div>
   </div>
 </template>

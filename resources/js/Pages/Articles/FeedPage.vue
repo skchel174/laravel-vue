@@ -2,9 +2,9 @@
 import {Head} from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
-import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
 import ArticlesList from "@/Components/Article/ArticlesList.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 
 defineProps({
   articles: {
@@ -24,14 +24,17 @@ defineProps({
           {{ $trans('My feed') }}
         </h1>
 
-        <!-- TODO: add link to topics subscriptions -->
-        <SuccessOutlineButton class="!py-0.5 space-x-2">
+<!--         TODO: add link to topics subscriptions-->
+        <OutlineButton
+          color="success"
+          class="!py-0.5 space-x-2"
+        >
           <MaterialIcon class="material-icons !text-xl !text-inherit">
             settings
           </MaterialIcon>
 
           <span>Subscriptions</span>
-        </SuccessOutlineButton>
+        </OutlineButton>
       </header>
 
       <ArticlesList :articles="articles"/>

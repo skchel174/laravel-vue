@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const form = useForm({
   login: '',
@@ -116,13 +116,14 @@ const submit = () => {
         </div>
 
         <div class="flex items-center justify-end !mt-12">
-          <PrimaryButton
+          <FilledButton
+            color="primary"
             class="w-full !py-4 !text-sm"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
             {{ $trans('Register') }}
-          </PrimaryButton>
+          </FilledButton>
         </div>
       </form>
 

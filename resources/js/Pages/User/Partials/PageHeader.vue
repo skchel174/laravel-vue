@@ -1,10 +1,9 @@
 <script setup>
 import {Link, usePage} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
-import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
-import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
-import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
 import useSubscription from "@/Hooks/User/useSubscription.js";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   user: {
@@ -56,21 +55,23 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
       class="flex justify-start sm:flex-row-reverse"
       v-if="auth.user && auth.user.id !== user.id"
     >
-      <SuccessButton
-        class="sm:ml-2 h-7 !px-10"
+      <FilledButton
         v-if="subscription"
+        color="success"
+        class="sm:ml-2 h-7 !px-10"
         @click="() => unfollow(user.id)"
       >
         {{ $trans('Following') }}
-      </SuccessButton>
+      </FilledButton>
 
-      <SuccessOutlineButton
+      <OutlineButton
+        v-else
+        color="success"
         class="sm:ml-2 h-7 !px-10"
         @click="() => follow(user.id)"
-        v-else
       >
         {{ $trans('Follow') }}
-      </SuccessOutlineButton>
+      </OutlineButton>
     </div>
   </header>
 </template>

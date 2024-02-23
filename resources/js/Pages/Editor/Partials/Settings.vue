@@ -5,12 +5,10 @@ import SummaryInput from "@/Pages/Editor/Partials/SummaryInput.vue";
 import ImageInput from "@/Pages/Editor/Partials/ImageInput.vue";
 import TopicsSelect from "@/Pages/Editor/Partials/TopicsSelect.vue";
 import DifficultSelect from "@/Pages/Editor/Partials/DifficultSelect.vue";
-import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
-import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import LangSelect from "@/Pages/Editor/Partials/LangSelect.vue";
 import ButtonTextInput from "@/Pages/Editor/Partials/ButtonTextInput.vue";
 import Modal from "@/Components/Modal.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 defineProps({
   article: {
@@ -95,16 +93,20 @@ const saveToDrafts = () => {
     </div>
 
     <div class="h-14 px-4 flex items-center justify-between bg-white border-t border-gray-200">
-      <NeutralButton @click="$emit('openTab', 'Editor')">
+      <FilledButton
+        color="light"
+        @click="$emit('openTab', 'Editor')"
+      >
         {{ $trans('Back to editor') }}
-      </NeutralButton>
+      </FilledButton>
 
-      <SuccessButton
+      <FilledButton
+        color="success"
         :disabled="form.topics.length === 0"
         @click="isConfirmationOpen = true"
       >
         {{ $trans('Save') }}
-      </SuccessButton>
+      </FilledButton>
     </div>
 
     <Modal
@@ -117,13 +119,19 @@ const saveToDrafts = () => {
         </h2>
 
         <div class="flex justify-start space-x-2">
-          <PrimaryButton @click="sendToModeration">
+          <FilledButton
+            color="primary"
+            @click="sendToModeration"
+          >
             {{ $trans('Send to moderation') }}
-          </PrimaryButton>
+          </FilledButton>
 
-          <NeutralButton @click="saveToDrafts">
+          <FilledButton
+            color="light"
+            @click="saveToDrafts"
+          >
             {{ $trans('Save to drafts') }}
-          </NeutralButton>
+          </FilledButton>
         </div>
       </div>
 

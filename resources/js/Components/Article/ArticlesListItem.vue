@@ -1,7 +1,6 @@
  <script setup>
 import {computed} from "vue";
 import {router} from "@inertiajs/vue3";
-import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import ArticleInfo from "@/Components/Article/ArticleInfo.vue";
 import ArticleTopics from "@/Components/Article/ArticleTopics.vue";
@@ -9,6 +8,7 @@ import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleActions from "@/Components/Article/ArticleActions.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 
 const props = defineProps({
   article: {
@@ -72,13 +72,14 @@ const openArticle = () => {
 
     <p
       v-if="article.summary"
-      class="mb-12 text-sm sm:text-base text-gray-700 break-words"
+      class="mb-10 text-sm sm:text-base text-gray-700 break-words"
     >
       {{ article.summary }}
     </p>
 
-    <PrimaryOutlineButton
-      class="mb-6 inline-block"
+    <OutlineButton
+      color="primary"
+      class="mb-6 inline-block !py-1.5"
       @click="openArticle"
     >
       <div v-if="article.button_text">
@@ -91,7 +92,7 @@ const openArticle = () => {
           arrow_right_alt
         </MaterialIcon>
       </div>
-    </PrimaryOutlineButton>
+    </OutlineButton>
 
     <footer class="w-full w-full flex text-gray-400 justify-between sm:justify-start sm:space-x-8">
       <ArticleReaction

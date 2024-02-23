@@ -2,9 +2,9 @@
 import {ref} from "vue";
 import {Link} from "@inertiajs/vue3";
 import Popover from "@/Components/Popover.vue";
-import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
-import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 import useSubscription from "@/Hooks/Topic/useSubscription.js";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   topic: {
@@ -55,19 +55,21 @@ const {subscribed, subscribe, unsubscribe} = useSubscription(props.topic.is_subs
           </p>
 
           <div v-if="$page.props.auth.user">
-            <SuccessButton
+            <FilledButton
               v-if="subscribed"
+              color="success"
               @click="unsubscribe(topic.id)"
             >
               {{ $trans('Subscribed') }}
-            </SuccessButton>
+            </FilledButton>
 
-            <SuccessOutlineButton
+            <OutlineButton
               v-else
+              color="success"
               @click="subscribe(topic.id)"
             >
               {{ $trans('Subscribe') }}
-            </SuccessOutlineButton>
+            </OutlineButton>
           </div>
         </div>
 

@@ -5,8 +5,7 @@ import EditIcon from "@/Components/Icons/EditIcon.vue";
 import RestoreIcon from "@/Components/Icons/RestoreIcon.vue";
 import DeleteIcon from "@/Components/Icons/DeleteIcon.vue";
 import Modal from "@/Components/Modal.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
-import DangerButton from "@/Components/DangerButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   articleId: {
@@ -57,13 +56,19 @@ const deleteArticle = () => {
       </div>
 
       <div class="flex justify-end space-x-2">
-        <SecondaryButton @click="isDeleteModalOpen = false">
+        <FilledButton
+          color="secondary"
+          @click="isDeleteModalOpen = false"
+        >
           Cancel
-        </SecondaryButton>
+        </FilledButton>
 
-        <DangerButton @click="deleteArticle">
+        <FilledButton
+          color="danger"
+          @click="deleteArticle"
+        >
           Delete
-        </DangerButton>
+        </FilledButton>
       </div>
     </div>
   </Modal>

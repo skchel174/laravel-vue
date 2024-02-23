@@ -2,8 +2,8 @@
 import useLocale from "@/Hooks/useLocale.js";
 import Checkbox from "@/Components/Form/Checkbox.vue";
 import RadioButton from "@/Components/Form/RadioButton.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const emit = defineEmits(['close']);
 
@@ -81,12 +81,13 @@ const savePreferences = () => {
     </div>
 
     <div class="p-4">
-      <PrimaryButton
+      <FilledButton
+        color="primary"
         class="w-full !py-2.5"
         @click="savePreferences"
       >
         {{ $trans('Save preferences') }}
-      </PrimaryButton>
+      </FilledButton>
     </div>
   </div>
 </template>

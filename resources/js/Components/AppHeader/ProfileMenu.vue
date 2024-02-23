@@ -7,7 +7,7 @@ import Sidebar from "@/Components/Sidebar.vue";
 import Popover from "@/Components/Popover.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 import ProfileNavigation from "@/Components/AppHeader/ProfileNavigation.vue";
-import PrimaryOutlineButton from "@/Components/Buttons/PrimaryOutlineButton.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 
 const user = usePage().props.auth.user;
 
@@ -25,13 +25,14 @@ const isMenuOpen = ref(false);
       search
     </MaterialIcon>
 
-    <PrimaryOutlineButton
+    <OutlineButton
       v-if="!user"
+      color="primary"
       class="!py-1.25"
       @click="router.get(route('login'))"
     >
       {{ $trans('Log in') }}
-    </PrimaryOutlineButton>
+    </OutlineButton>
 
     <div v-else class="flex items-center space-x-3">
       <MaterialIcon clickable class="!text-inherit">
