@@ -19,8 +19,7 @@ const isTablet = useMedia('(max-width: 1024px)');
       <div class="w-full h-full max-w-3xl lg:max-w-6xl px-4 md:px-0 lg:px-6 flex justify-between">
         <div class="flex items-center">
           <MaterialIcon
-            class="md:!hidden mr-3 !text-3xl text-white hover:!text-white"
-            clickable
+            class="md:!hidden mr-3 !text-3xl text-white hover:!text-white cursor-pointer"
             @click="isMenuOpen = !isMenuOpen"
           >
             menu

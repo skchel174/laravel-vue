@@ -56,7 +56,7 @@ watch(searchInput, () => {
         class="absolute right-0 h-12 lg:h-10 px-2 flex items-center justify-center"
         @click="search"
       >
-        <MaterialIcon clickable class="!text-2xl text-gray-400 bg-white">
+        <MaterialIcon class="!text-2xl text-gray-400 bg-white cursor-pointer">
           search
         </MaterialIcon>
       </button>

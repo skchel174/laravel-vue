@@ -24,7 +24,7 @@ const savePreferences = () => {
       </h3>
 
       <MaterialIcon
-        clickable
+        class="cursor-pointer"
         @click="$emit('close')"
       >
         close
@@ -63,13 +63,13 @@ const savePreferences = () => {
         class="mb-6"
         label="English"
         :checked="langs.includes('en')"
-        @toggle="() => toggleLang('en')"
+        @toggle="toggleLang('en')"
       />
 
       <Checkbox
         label="Русский"
         :checked="langs.includes('ru')"
-        @toggle="() => toggleLang('ru')"
+        @toggle="toggleLang('ru')"
       />
 
       <p
