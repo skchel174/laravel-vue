@@ -23,7 +23,7 @@ defineProps({
 
       <div class="space-y-1">
         <Link
-          class="mr-0.5 text-sm text-gray-800 hover:text-sky-700/75 transition duration-300"
+          class="mr-0.5 text-sm text-gray-800 hover:text-sky-775 transition duration-300"
           :href="route('user', {user: author.login})"
         >
           {{ author.name }}
@@ -45,7 +45,7 @@ defineProps({
             star
           </MaterialIcon>
 
-          <span class="text-sky-700/75">
+          <span class="text-sky-675">
             {{ $formatCount(author.articles_count) }}
           </span>
         </div>
@@ -53,7 +53,7 @@ defineProps({
     </div>
 
     <div class="max-w-10 hidden lg:block">
-      <span class="text-sky-700/75">
+      <span class="text-sky-675">
         {{ $formatCount(author.articles_count) }}
       </span>
     </div>

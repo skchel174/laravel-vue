@@ -72,6 +72,7 @@ const submit = () => {
           <TextInput
             id="login"
             type="text"
+            class="mt-1 block w-full"
             v-model="form.login"
             required
           />
@@ -130,7 +131,7 @@ const submit = () => {
 
           <Link
             :href="route('password.forgot')"
-            class="inline text-sm text-sky-600 hover:text-sky-700 focus:text-sky-800 font-medium transition duration-200"
+            class="inline text-sm text-sky-675 hover:text-sky-775 font-medium transition duration-200"
           >
             {{ $trans('Forgot password?') }}
           </Link>
@@ -143,7 +144,7 @@ const submit = () => {
 
           <Link
             :href="route('register.form')"
-            class="ml-1 text-sky-700/75 hover:text-sky-700 font-semibold transition duration-200"
+            class="ml-1 text-sky-675 hover:text-sky-775 font-semibold transition duration-200"
           >
             {{ $trans('Register') }}
           </Link>

@@ -12,7 +12,7 @@ defineProps({
 <template>
   <div class="flex flex-wrap">
     <Link
-      class="mr-2 text-sm text-gray-500 font-medium hover:text-sky-700/75 transition after:content-[','] after:last:content-['']"
+      class="mr-2 text-sm text-gray-500 font-medium hover:text-sky-775 transition after:content-[','] after:last:content-['']"
       v-for="topic in topics"
       :key="topic.id"
       :href="route('topic.articles', {topic: topic.slug})"

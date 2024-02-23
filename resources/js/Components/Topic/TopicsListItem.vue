@@ -21,7 +21,7 @@ defineProps({
 
       <div class="space-y-1.5">
         <Link
-          class="text-base text-gray-700 font-medium cursor-pointer hover:text-sky-700/75 transition duration-300"
+          class="text-base text-gray-700 font-medium cursor-pointer hover:text-sky-775 transition duration-300"
           :href="route('topic.articles', {topic: topic.slug})"
         >
           {{ topic.name }}
@@ -37,7 +37,7 @@ defineProps({
         >
           <!-- TODO: add link for tag -->
           <Link
-            class="mr-1 text-sm text-sky-700/75 leading-4 after:content-[','] after:last:content-['']"
+            class="mr-1 text-sm text-sky-675 leading-4 after:content-[','] after:last:content-['']"
             v-for="tag in topic.tags"
             :key="tag.id"
             href="#"

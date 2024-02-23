@@ -24,8 +24,8 @@ onMounted(() => {
   <component
     :is="component"
     ref="el"
-    class="h-full flex justify-center items-center text-sm font-semibold text-gray-700 hover:text-sky-700/75 transition duration-200"
-    :class="{'!text-gray-400/75': !active}"
+    class="h-full flex justify-center items-center text-sm font-semibold text-gray-700 hover:text-sky-775 transition duration-200"
+    :class="{'!text-gray-400': !active}"
   >
     <slot/>
   </component>

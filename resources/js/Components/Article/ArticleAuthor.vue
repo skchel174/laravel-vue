@@ -25,7 +25,7 @@ const props = defineProps({
 
     <div class="flex flex-wrap items-center">
       <Link
-        class="text-sm text-gray-600 font-semibold !leading-4 mr-2 hover:text-sky-700/75 transition duration-200"
+        class="text-sm text-gray-600 font-semibold !leading-4 mr-2 hover:text-sky-775 transition duration-200"
         :href="route('user', {user: author.login})"
       >
         {{ author.login }}

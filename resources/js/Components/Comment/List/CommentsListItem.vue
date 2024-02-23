@@ -29,7 +29,7 @@ const onBookmarked = () => {
 <template>
   <div class="p-4 bg-white">
     <Link
-      class="mb-6 text-lg font-bold hover:text-sky-600 transition duration-300"
+      class="mb-6 text-lg font-bold hover:text-sky-775 transition duration-300"
       :href="route('article', {article: comment.article_id})"
     >
       {{ comment.article_title }}

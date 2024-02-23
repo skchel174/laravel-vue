@@ -47,8 +47,8 @@ const isTablet = useMedia('(max-width: 1024px)');
             v-for="item in $page.props.nav_items"
             :key="item.id"
             :href="item.url"
-            class="text-sm text-gray-500/75 font-medium hover:text-sky-700/75 transition duration-200"
-            :class="{'text-sky-700/75': $page.props.nav_location === item.id}"
+            class="text-sm text-gray-500 font-medium hover:text-sky-775 transition duration-200"
+            :class="{'text-sky-675': $page.props.nav_location === item.id}"
           >
             {{ $trans(item.title) }}
           </Link>

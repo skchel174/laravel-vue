@@ -16,7 +16,7 @@ defineProps({
     </span>
 
     <Link
-      class="text-sm sm:text-base font-medium text-sky-700/75 hover:text-sky-600 transition duration-200 after:content-[','] after:last:content-['']"
+      class="text-sm sm:text-base font-medium text-sky-675 hover:text-sky-775 transition duration-200 after:content-[','] after:last:content-['']"
       v-for="topic in topics"
       :key="topic.id"
       :href="route('topic.articles', {topic: topic.slug})"

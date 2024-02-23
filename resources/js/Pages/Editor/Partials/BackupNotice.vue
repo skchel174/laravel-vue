@@ -24,8 +24,8 @@ const restore = () => {
 </script>
 
 <template>
-  <div class="relative p-4 flex items-center bg-sky-50 border border-sky-600/75 text-sm text-gray-700 space-x-4">
-    <MaterialIcon class="!text-[1.75rem] !text-sky-700/75">
+  <div class="relative p-4 flex items-center bg-sky-50 border border-sky-600 text-sm text-gray-700 space-x-4">
+    <MaterialIcon class="!text-[1.75rem] !text-sky-675">
       error
     </MaterialIcon>
 
@@ -37,7 +37,7 @@ const restore = () => {
       </span>
 
       <span
-        class="font-bold tracking-wide text-sky-700/75 hover:text-sky-500 transition duration-200 cursor-pointer"
+        class="font-bold tracking-wide text-sky-675 hover:text-sky-775 transition duration-200 cursor-pointer"
         @click="restore"
       >
         {{ $trans('Restore') }}
@@ -45,7 +45,7 @@ const restore = () => {
     </p>
 
     <MaterialIcon
-      class="absolute top-0 right-1 !text-xl !text-sky-700/75 hover:text-sky-500 transition duration-200 cursor-pointer"
+      class="absolute top-0 right-1 !text-xl !text-sky-675 hover:text-sky-775 transition duration-200 cursor-pointer"
       @click="$emit('close')"
     >
       close

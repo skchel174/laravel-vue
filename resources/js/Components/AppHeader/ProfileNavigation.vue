@@ -30,7 +30,7 @@ const {openLangSettings} = inject('langSettings');
         </p>
 
         <Link
-          class="text-sky-700/75"
+          class="text-sky-675"
           :href="route('user', {user})"
         >
           @{{ user.login }}

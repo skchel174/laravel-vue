@@ -45,7 +45,7 @@ const openArticle = () => {
 
     <h2
       class="mb-1 text-lg sm:text-xl text-gray-700 font-black"
-      :class="{'hover:text-sky-700/75 transition duration-200 cursor-pointer': readable}"
+      :class="{'hover:text-sky-775 transition duration-200 cursor-pointer': readable}"
       @click="openArticle"
     >
       {{ article.title }}

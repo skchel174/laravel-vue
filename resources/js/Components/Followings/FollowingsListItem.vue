@@ -21,7 +21,7 @@ const url = route('user', {user: props.user.login});
     <div class="text-sm font-medium">
       <p class="space-x-0.5">
         <Link
-          class="text-gray-700 hover:text-sky-700/75 transition duration-200"
+          class="text-gray-700 hover:text-sky-775 transition duration-200"
           v-if="user.name"
           :href="url"
         >
@@ -29,7 +29,7 @@ const url = route('user', {user: props.user.login});
         </Link>
 
         <Link
-          class="text-sky-700/75"
+          class="text-sky-675"
           :href="url"
         >
           @{{ user.login }}

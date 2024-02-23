@@ -24,7 +24,7 @@ defineProps({
 
     <div class="mr-4 flex flex-wrap items-center">
       <Link
-        class="text-sm text-gray-600 hover:text-sky-700/75 transition font-semibold mr-2"
+        class="text-sm text-gray-600 hover:text-sky-775 transition font-semibold mr-2"
         :href="route('user', {user: author.login})"
       >
         {{ author.login }}

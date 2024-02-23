@@ -66,7 +66,7 @@ const removeItem = (item) => {
       :class="{['rounded-b-none']: focus && sortedOptions.length > 0}"
     >
       <div
-        class="px-2 py-1 my-1 mr-1 border border-sky-700/75 flex items-center text-xs text-sky-700 cursor-pointer space-x-2"
+        class="px-2 py-1 my-1 mr-1 border border-sky-675 flex items-center text-xs text-sky-700 cursor-pointer space-x-2"
         v-for="option in selection"
         :key="option.id"
         @click="removeItem(option)"

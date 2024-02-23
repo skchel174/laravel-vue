@@ -63,7 +63,7 @@ const isHiddenTabsOpen = ref(false);
       <span>{{ $trans(tab) }}</span>
 
       <span
-        class="ml-1 text-sky-700/75"
+        class="ml-1 text-sky-675"
         v-if="indicators[tab] && indicators[tab] > 0"
       >
         {{ $formatCount(indicators[tab]) }}
@@ -98,7 +98,7 @@ const isHiddenTabsOpen = ref(false);
             <span>{{ $trans(tab) }}</span>
 
             <span
-              class="ml-2 text-sky-700/75"
+              class="ml-2 text-sky-675"
               v-if="indicators[tab] && indicators[tab] > 0"
             >
               {{ $formatCount(indicators[tab]) }}

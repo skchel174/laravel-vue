@@ -20,12 +20,12 @@ defineEmits(['select'])
     <div class="inline-flex shrink-0 border border-gray-300 rounded">
       <div
         class="h-11 w-20 flex justify-center items-center cursor-pointer m-[-1px]"
-        :class="{'border border-sky-700/75 text-sky-700/75 rounded-l': lang === 'en'}"
+        :class="{'border border-sky-675 text-sky-675 rounded-l': lang === 'en'}"
         @click="$emit('select', 'en')"
       >
         <span
           class="text-sm text-gray-500 select-none"
-          :class="{'text-sky-700/75': lang === 'en'}"
+          :class="{'text-sky-675': lang === 'en'}"
         >
           {{ $trans('English') }}
         </span>
@@ -33,12 +33,12 @@ defineEmits(['select'])
 
       <div
         class="h-11 w-20 flex justify-center items-center cursor-pointer m-[-1px]"
-        :class="{'border border-sky-700/75 text-sky-700/75 rounded-r': lang === 'ru'}"
+        :class="{'border border-sky-675 text-sky-675 rounded-r': lang === 'ru'}"
         @click="$emit('select', 'ru')"
       >
         <span
           class="text-sm text-gray-500 select-none"
-          :class="{'text-sky-700/75': lang === 'ru'}"
+          :class="{'text-sky-675': lang === 'ru'}"
         >
           {{ $trans('Russian') }}
         </span>

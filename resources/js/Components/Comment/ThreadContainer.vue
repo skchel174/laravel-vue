@@ -55,7 +55,7 @@ const isThreadOpen = ref(true);
         />
 
         <div
-          class="h-8 pt-1 flex items-center text-sm font-semibold text-sky-700/75 cursor-pointer leading-none"
+          class="h-8 pt-1 flex items-center text-sm font-semibold text-sky-675 cursor-pointer leading-none"
           @click="isThreadOpen = true"
         >
           {{ $trans('Show comments') }} ({{ commentsCount + 1 }})

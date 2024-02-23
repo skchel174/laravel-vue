@@ -40,6 +40,7 @@ defineProps({
       <ArticlesList :articles="articles"/>
     </div>
 
+
     <template v-slot:sidebar>
       <AdvertPlaceholder/>
     </template>

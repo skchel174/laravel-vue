@@ -23,7 +23,7 @@ defineProps({
             {{ $trans('Name') }}
           </div>
 
-          <div class="max-w-10 text-sky-700/75 text-sm capitalize">
+          <div class="max-w-10 text-sky-675 text-sm capitalize">
             {{ $trans('Contribution to topics') }}
           </div>
         </div>

@@ -42,7 +42,7 @@ const sortList = (name) => {
         >
           <span
             class="mr-px text-gray-600 text-sm capitalize"
-            :class="{'text-sky-700/75': sort === 'name'}"
+            :class="{'text-sky-675': sort === 'name'}"
           >
             {{ $trans('Title') }}
           </span>
@@ -61,7 +61,7 @@ const sortList = (name) => {
         >
           <span
             class="mr-px text-gray-600 text-sm capitalize"
-            :class="{'text-sky-700/75': sort === 'name'}"
+            :class="{'text-sky-675': sort === 'name'}"
           >
             {{ $trans('articles') }}
           </span>
@@ -80,7 +80,7 @@ const sortList = (name) => {
         >
           <span
             class="mr-px text-gray-600 text-sm capitalize"
-            :class="{'text-sky-700/75': sort === 'name'}"
+            :class="{'text-sky-675': sort === 'name'}"
           >
             {{ $trans('Subscribers') }}
           </span>

@@ -37,9 +37,9 @@ const depthWidth = computed(() => props.depth * 16);
 
       <div
         v-else
-        class="mx-0.5 w-3 h-3 rounded-full border-2 border-sky-700/75 flex items-center justify-center"
+        class="mx-0.5 w-3 h-3 rounded-full border-2 border-sky-675 flex items-center justify-center"
       >
-        <div class="h-1 w-1 rounded-full bg-sky-700/75"/>
+        <div class="h-1 w-1 rounded-full bg-sky-675"/>
       </div>
     </div>
   </div>

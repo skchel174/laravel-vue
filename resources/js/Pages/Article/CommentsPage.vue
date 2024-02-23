@@ -60,7 +60,7 @@ watch(commentable, () => {
       </ArticleHeader>
 
       <Link
-        class="mb-2 text-lg sm:text-xl text-gray-700 font-black hover:text-sky-700/75 transition duration-200"
+        class="mb-2 text-lg sm:text-xl text-gray-700 font-black hover:text-sky-775 transition duration-200"
         :href="route('article', {article: article.id})"
       >
         {{ article.title }}
@@ -91,7 +91,7 @@ watch(commentable, () => {
       <h3 class="p-4 pb-0 text-lg text-gray-700 font-bold capitalize">
         {{ $trans('comments') }}
 
-        <span class="ml-2 text-sky-700/75">
+        <span class="ml-2 text-sky-675">
           {{ article.comments_count }}
         </span>
       </h3>
