@@ -1,9 +1,9 @@
 <script setup>
 import {Head, Link, useForm} from '@inertiajs/vue3';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
-import AuthLayout from "@/Layouts/AuthLayout.vue";
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
+import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const form = useForm({

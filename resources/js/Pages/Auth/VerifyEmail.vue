@@ -1,7 +1,7 @@
 <script setup>
 import {computed} from 'vue';
 import {Head, Link, useForm} from '@inertiajs/vue3';
-import AuthLayout from "@/Layouts/AuthLayout.vue";
+import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({

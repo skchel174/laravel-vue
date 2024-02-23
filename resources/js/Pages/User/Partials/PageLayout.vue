@@ -1,6 +1,6 @@
 <script setup>
 import NavigationTabs from "@/Pages/User/Partials/NavigationTabs.vue";
-import MainLayout from "@/Layouts/MainLayout.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import UserInformation from "@/Pages/User/Partials/UserInformation.vue";
 import UserContribution from "@/Pages/User/Partials/UserContribution.vue";
 import PageHeader from "@/Pages/User/Partials/PageHeader.vue";

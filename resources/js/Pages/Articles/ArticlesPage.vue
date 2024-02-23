@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import {router, Head} from "@inertiajs/vue3";
-import MainLayout from "@/Layouts/MainLayout.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import ArticlesFilters from "@/Components/Article/Filters/ArticlesFilters.vue";
 import ArticlesList from "@/Components/Article/ArticlesList.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";

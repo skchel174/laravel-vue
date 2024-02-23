@@ -1,6 +1,6 @@
 <script setup>
 import {Head} from "@inertiajs/vue3";
-import MainLayout from "@/Layouts/MainLayout.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 import ArticlesList from "@/Components/Article/ArticlesList.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";

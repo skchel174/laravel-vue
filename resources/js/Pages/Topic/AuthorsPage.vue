@@ -4,7 +4,7 @@ import Search from "@/Components/Search.vue";
 import AuthorsList from "@/Components/Author/AuthorsList.vue";
 import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
 import TopicNavigation from "@/Pages/Topic/Partials/TopicNavigation.vue";
-import MainLayout from "@/Layouts/MainLayout.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
 
 const props = defineProps({
   topic: {

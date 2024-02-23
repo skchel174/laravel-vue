@@ -6,7 +6,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileForm from './Partials/UpdateProfileForm.vue';
 import ChangeEmailForm from "@/Pages/Profile/Partials/ChangeEmailForm.vue";
-import BaseLayout from "@/Layouts/BaseLayout.vue";
+import BaseLayout from "@/Components/Layouts/BaseLayout.vue";
 
 const props = defineProps({
   status: {

@@ -8,7 +8,7 @@ import ArticleFooter from "@/Pages/Article/Partials/ArticleFooter.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import CommentsButton from "@/Pages/Article/Partials/CommentsButton.vue";
 import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
-import MainLayout from "@/Layouts/MainLayout.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 

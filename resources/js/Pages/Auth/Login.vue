@@ -1,10 +1,10 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
+import Checkbox from '@/Components/Form/Checkbox.vue';
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
 import {Head, Link, useForm} from '@inertiajs/vue3';
-import AuthLayout from "@/Layouts/AuthLayout.vue";
+import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 defineProps({
@@ -63,7 +63,7 @@ const submit = () => {
           {{ status }}
         </div>
 
-        <div>
+        <div class="space-y-0.5">
           <InputLabel
             for="login"
             :value="$trans('Login')"
@@ -72,7 +72,6 @@ const submit = () => {
           <TextInput
             id="login"
             type="text"
-            class="mt-1 block w-full"
             v-model="form.login"
             required
           />
@@ -83,7 +82,7 @@ const submit = () => {
           />
         </div>
 
-        <div>
+        <div class="space-y-0.5">
           <InputLabel
             for="password"
             :value="$trans('Password')"
@@ -106,13 +105,16 @@ const submit = () => {
         <div class="inline-block">
           <label class="flex items-center select-none cursor-pointer">
             <Checkbox
-              name="remember"
-              v-model:checked="form.remember"
+              id="remember"
+              :checked="form.remember"
+              @toggle="form.remember = !form.remember"
             />
 
-            <span class="ms-2 text-sm text-gray-600">
-              {{ $ucfirst($trans('Remember me')) }}
-            </span>
+            <InputLabel
+              for="password"
+              class="ml-2 !font-normal"
+              :value="$trans('Remember me')"
+            />
           </label>
         </div>
 
@@ -141,7 +143,7 @@ const submit = () => {
 
           <Link
             :href="route('register.form')"
-            class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200"
+            class="ml-1 text-sky-700/75 hover:text-sky-700 font-semibold transition duration-200"
           >
             {{ $trans('Register') }}
           </Link>

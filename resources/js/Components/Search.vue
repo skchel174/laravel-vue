@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from "vue";
-import TextInput from "@/Components/TextInput.vue";
+import TextInput from "@/Components/Form/TextInput.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 const props = defineProps({
@@ -56,7 +56,7 @@ watch(searchInput, () => {
         class="absolute right-0 h-12 lg:h-10 px-2 flex items-center justify-center"
         @click="search"
       >
-        <MaterialIcon clickable class="!text-[1.825rem] bg-white">
+        <MaterialIcon clickable class="!text-2xl text-gray-400 bg-white">
           search
         </MaterialIcon>
       </button>

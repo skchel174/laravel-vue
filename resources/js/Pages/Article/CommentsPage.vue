@@ -7,7 +7,7 @@ import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import Comment from "@/Components/Comment/Comment.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
-import MainLayout from "@/Layouts/MainLayout.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import CommentForm from "@/Components/Comment/Form/CommentForm.vue";

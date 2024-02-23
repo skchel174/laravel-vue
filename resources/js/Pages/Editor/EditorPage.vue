@@ -7,7 +7,7 @@ import Editor from "@/Pages/Editor/Partials/Editor.vue";
 import Settings from "@/Pages/Editor/Partials/Settings.vue";
 import Notification from "@/Components/Notification.vue";
 import BackupNotice from "@/Pages/Editor/Partials/BackupNotice.vue";
-import BaseLayout from "@/Layouts/BaseLayout.vue";
+import BaseLayout from "@/Components/Layouts/BaseLayout.vue";
 
 const props = defineProps({
   article: {

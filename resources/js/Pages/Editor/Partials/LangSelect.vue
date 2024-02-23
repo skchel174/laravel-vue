@@ -1,5 +1,5 @@
 <script setup>
-import InputLabel from "@/Components/InputLabel.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
 
 defineProps({
   lang: {

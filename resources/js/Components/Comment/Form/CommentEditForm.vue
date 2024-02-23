@@ -1,9 +1,9 @@
 <script setup>
 import {inject} from "vue";
 import {useForm} from "@inertiajs/vue3";
-import InputLabel from "@/Components/InputLabel.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
-import InputError from "@/Components/InputError.vue";
+import InputError from "@/Components/Form/InputError.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 

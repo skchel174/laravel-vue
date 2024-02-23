@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
-import InputLabel from "@/Components/InputLabel.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
 import InputLength from "@/Components/Form/InputLength.vue";
 
 const props = defineProps({

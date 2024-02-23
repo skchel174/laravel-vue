@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import InputLabel from "@/Components/InputLabel.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({

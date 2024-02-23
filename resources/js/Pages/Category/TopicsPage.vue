@@ -1,6 +1,6 @@
 <script setup>
 import {router, Head} from "@inertiajs/vue3";
-import MainLayout from "@/Layouts/MainLayout.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
 import PageHeader from "@/Pages/Category/Partials/PageHeader.vue";
 import TopicsList from "@/Components/Topic/TopicsList.vue";

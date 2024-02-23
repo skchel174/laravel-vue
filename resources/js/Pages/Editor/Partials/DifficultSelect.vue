@@ -1,5 +1,5 @@
 <script setup>
-import InputLabel from "@/Components/InputLabel.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
 import RadioButton from "@/Components/Form/RadioButton.vue";
 
 const props = defineProps({
