@@ -18,10 +18,7 @@ const isMenuOpen = ref(false);
 
 <template>
   <div class="relative flex items-center space-x-3 text-gray-500">
-    <MaterialIcon
-      class="!text-inherit"
-      clickable
-    >
+    <MaterialIcon class="!text-inherit cursor-pointer">
       search
     </MaterialIcon>
 
@@ -35,13 +32,12 @@ const isMenuOpen = ref(false);
     </OutlineButton>
 
     <div v-else class="flex items-center space-x-3">
-      <MaterialIcon clickable class="!text-inherit">
+      <MaterialIcon class="!text-inherit cursor-pointer">
         notifications_none
       </MaterialIcon>
 
       <MaterialIcon
-        class="!text-inherit"
-        clickable
+        class="!text-inherit cursor-pointer"
         @click="router.get(route('editor'))"
       >
         post_add
