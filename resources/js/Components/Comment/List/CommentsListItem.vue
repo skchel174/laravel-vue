@@ -4,8 +4,6 @@ import useBookmark from "@/Hooks/useBookmark.js";
 import Divider from "@/Components/Divider.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
 import BookmarkIcon from "@/Components/Icons/BookmarkIcon.vue";
-import CommentFooter from "@/Components/Comment/CommentFooter.vue";
-import CommentText from "@/Components/Comment/CommentText.vue";
 
 const props = defineProps({
   comment: {
@@ -45,11 +43,11 @@ const onBookmarked = () => {
       :created-date="comment.created_date"
     />
 
-    <CommentText class="mb-4">
+    <div class="mb-4 text-sm font-medium text-gray-700">
       {{ comment.text }}
-    </CommentText>
+    </div>
 
-    <CommentFooter>
+    <footer class="flex items-center space-x-4">
       <BookmarkIcon
         :loading="loading"
         :is-bookmarked="isBookmarked"
@@ -57,11 +55,11 @@ const onBookmarked = () => {
       />
 
       <Link
-        class="text-sm text-gray-400 cursor-pointer hover:text-gray-500 transition duration-200 select-none"
+        class="text-sm text-gray-400 cursor-pointer"
         :href="`${route('article.comments', {article: comment.article_id})}#comment_${comment.id}`"
       >
         {{ $trans('Look') }}
       </Link>
-    </CommentFooter>
+    </footer>
   </div>
 </template>

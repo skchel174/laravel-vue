@@ -2,7 +2,7 @@
 import {ref} from "vue";
 import {router, Head} from "@inertiajs/vue3";
 import MenuSelect from "@/Pages/User/Partials/MenuSelect.vue";
-import CommentsList from "@/Components/Comment/CommentsList.vue";
+import CommentsList from "@/Components/Comment/List/CommentsList.vue";
 import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 
 const props = defineProps({

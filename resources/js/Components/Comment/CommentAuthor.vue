@@ -1,4 +1,5 @@
 <script setup>
+import {Link} from "@inertiajs/vue3";
 import Avatar from "@/Components/Avatar.vue";
 
 defineProps({
@@ -15,20 +16,23 @@ defineProps({
 </script>
 
 <template>
-  <header class="flex items-center space-x-2">
+  <div class="flex items-center space-x-2">
     <Avatar
-      :src="author.avatar"
       size="xs"
+      :src="author.avatar"
     />
 
-    <div class="mr-4 flex flex-wrap items-end">
-      <span class="text-sm text-gray-600 font-semibold !leading-none mr-2">
+    <div class="mr-4 flex flex-wrap items-center">
+      <Link
+        class="text-sm text-gray-600 hover:text-sky-700/75 transition font-semibold mr-2"
+        :href="route('user', {user: author.login})"
+      >
         {{ author.login }}
-      </span>
+      </Link>
 
-      <span class="text-xs text-gray-400 font-bold !leading-none">
+      <span class="text-xs text-gray-400 font-medium !leading-none">
         {{ $formatDate(createdDate, 'MMM D YYYY [at] kk:mm') }}
       </span>
     </div>
-  </header>
+  </div>
 </template>

@@ -31,6 +31,7 @@ class CommentResource extends JsonResource
             'comments' => CommentResource::collection($this->resource->comments),
             'total_comments' => $this->resource->getCommentsCount(),
             'is_bookmarked' => (bool) $this->resource->is_bookmarked,
+            'article_id' => $this->resource->article_id,
         ];
     }
 }
