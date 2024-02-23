@@ -29,7 +29,7 @@ defineEmits(['update:modelValue']);
       <div
         v-for="value in values"
         :key="value"
-        class="py-1.5 px-2.5 border text-xs text-sky-700/75 border-sky-700/75 rounded-sm transition duration-200 cursor-pointer"
+        class="py-1.5 px-2.5 ring-1 ring-sky-700/75 text-xs text-sky-700/75 rounded-sm transition duration-200 cursor-pointer"
         :class="{'text-stone-50 bg-sky-700/75': value === modelValue}"
         @click="$emit('update:modelValue', value)"
       >
