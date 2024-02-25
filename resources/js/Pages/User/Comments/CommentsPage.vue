@@ -1,6 +1,6 @@
 <script setup>
 import {Head} from "@inertiajs/vue3";
-import CommentsList from "@/Components/Comment/List/CommentsList.vue";
+import CommentsList from "@/Components/CommentsList/CommentsList.vue";
 import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 
 const props = defineProps({

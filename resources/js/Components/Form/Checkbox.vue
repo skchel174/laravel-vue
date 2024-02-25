@@ -17,7 +17,7 @@ defineEmits(['toggle']);
   <div class="flex items-center space-x-2">
     <div
       class="h-[1rem] w-[1rem] flex justify-center items-center border border-gray-300 rounded-sm cursor-pointer shrink-0"
-      :class="{'bg-sky-600 border-sky-600': checked}"
+      :class="{'bg-sky-675 border-sky-675': checked}"
       @click="$emit('toggle')"
     >
       <Transition
@@ -29,7 +29,7 @@ defineEmits(['toggle']);
         leave-to-class="opacity-0"
       >
         <div
-          class="h-2.5 w-2.5 bg-sky-600 flex justify-center items-center rounded-sm"
+          class="h-2.5 w-2.5 bg-sky-675 flex justify-center items-center rounded-sm"
           v-if="checked"
         >
           <span class="material-icons !text-base text-white select-none">

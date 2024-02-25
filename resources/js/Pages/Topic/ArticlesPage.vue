@@ -3,8 +3,9 @@ import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
 import TopicNavigation from "@/Pages/Topic/Partials/TopicNavigation.vue";
-import ArticlesList from "@/Components/Article/ArticlesList.vue";
-import ArticlesFilters from "@/Components/Article/Filters/ArticlesFilters.vue";
+import ArticlesList from "@/Components/ArticlesList/ArticlesList.vue";
+import ArticlesFilters from "@/Components/ArticlesList/ArticlesFilters.vue";
+import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 
 const props = defineProps({
   topic: {
@@ -48,5 +49,9 @@ const applyArticlesFilters = (filters) => {
       class="mt-4"
       :articles="articles"
     />
+
+    <template v-slot:sidebar>
+      <AdvertPlaceholder/>
+    </template>
   </MainLayout>
 </template>

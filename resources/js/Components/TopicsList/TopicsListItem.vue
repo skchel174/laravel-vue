@@ -48,7 +48,7 @@ defineProps({
 
         <div class="flex lg:hidden items-center space-x-6">
           <div class="flex items-center space-x-2.5">
-            <MaterialIcon class="!text-xl">
+            <MaterialIcon class="!text-xl text-gray-475">
               article
             </MaterialIcon>
 
@@ -58,11 +58,11 @@ defineProps({
           </div>
 
           <div class="flex items-center space-x-2.5">
-            <MaterialIcon class="!text-xl">
+            <MaterialIcon class="!text-xl text-gray-475">
               people
             </MaterialIcon>
 
-            <span class="text-gray-500/75 text-base">
+            <span class="text-gray-475 text-base">
               {{ $formatCount(topic.subscribers_count) }}
             </span>
           </div>

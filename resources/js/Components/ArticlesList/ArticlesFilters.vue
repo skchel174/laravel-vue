@@ -1,8 +1,8 @@
 <script setup>
 import {ref} from "vue";
 import ExpandButton from "@/Components/Buttons/ExpandButton.vue";
-import ArticleFilter from "@/Components/Article/Filters/ArticleFilter.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import ArticleFilter from "@/Components/ArticlesList/ArticleFilter.vue";
 
 const emit = defineEmits(['apply']);
 

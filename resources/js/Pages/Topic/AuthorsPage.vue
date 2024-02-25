@@ -1,10 +1,11 @@
 <script setup>
 import {router, Head} from "@inertiajs/vue3";
 import Search from "@/Components/Search.vue";
-import AuthorsList from "@/Components/Author/AuthorsList.vue";
+import AuthorsList from "@/Components/AuthorsList/AuthorsList.vue";
 import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
 import TopicNavigation from "@/Pages/Topic/Partials/TopicNavigation.vue";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
+import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 
 const props = defineProps({
   topic: {
@@ -61,5 +62,9 @@ const searchAuthors = (value) => {
       class="mt-4"
       :authors="authors"
     />
+
+    <template v-slot:sidebar>
+      <AdvertPlaceholder/>
+    </template>
   </MainLayout>
 </template>

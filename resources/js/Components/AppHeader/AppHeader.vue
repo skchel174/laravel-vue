@@ -14,74 +14,72 @@ const isTablet = useMedia('(max-width: 1024px)');
 </script>
 
 <template>
-  <header class="relative border-b border-gray-200">
-    <div class="w-full h-12 bg-gray-600 flex justify-center">
-      <div class="w-full h-full max-w-3xl lg:max-w-6xl px-4 md:px-0 lg:px-6 flex justify-between">
-        <div class="flex items-center">
-          <MaterialIcon
-            class="md:!hidden mr-3 !text-3xl text-white hover:!text-white cursor-pointer"
-            @click="isMenuOpen = !isMenuOpen"
-          >
-            menu
-          </MaterialIcon>
+  <header class="w-full h-12 bg-gray-600 flex justify-center">
+    <div class="w-full h-full max-w-3xl lg:max-w-6xl px-4 md:px-0 lg:px-6 flex justify-between">
+      <div class="flex items-center">
+        <MaterialIcon
+          class="md:!hidden mr-3 !text-3xl text-white hover:!text-white cursor-pointer"
+          @click="isMenuOpen = !isMenuOpen"
+        >
+          menu
+        </MaterialIcon>
 
-          <Link
-            class="text-2xl text-white font-black"
-            :href="route('main')"
-          >
-            {{ $trans('Feed') }}
-          </Link>
-        </div>
-
-        <ProfileMenu
-          class="!text-gray-200 hover:[&_span]:!text-gray-200"
-          v-if="isTablet"
-        />
+        <Link
+          class="text-2xl text-white font-black"
+          :href="route('main')"
+        >
+          {{ $trans('Feed') }}
+        </Link>
       </div>
-    </div>
 
-    <nav class="hidden h-12 md:flex justify-center bg-white">
-      <div class="w-full max-w-3xl lg:max-w-6xl px-4 md:px-0 lg:px-6 flex justify-center lg:justify-between">
-        <div class="flex-1 flex justify-between items-center lg:justify-start lg:space-x-6">
-          <Link
-            v-for="item in $page.props.nav_items"
-            :key="item.id"
-            :href="item.url"
-            class="text-sm text-gray-500 font-medium hover:text-sky-775 transition duration-200"
-            :class="{'text-sky-675': $page.props.nav_location === item.id}"
+      <ProfileMenu
+        class="!text-gray-200 hover:[&_span]:!text-gray-200"
+        v-if="isTablet"
+      />
+    </div>
+  </header>
+
+  <nav class="hidden sticky top-0 z-20 h-12 md:flex justify-center bg-white border-b border-gray-200">
+    <div class="w-full max-w-3xl lg:max-w-6xl px-4 md:px-0 lg:px-6 flex justify-center lg:justify-between">
+      <div class="flex-1 flex justify-between items-center lg:justify-start lg:space-x-6">
+        <Link
+          v-for="item in $page.props.nav_items"
+          :key="item.id"
+          :href="item.url"
+          class="text-sm text-gray-500 font-medium hover:text-sky-775 transition duration-200"
+          :class="{'text-sky-675': $page.props.nav_location === item.id}"
+        >
+          {{ $trans(item.title) }}
+        </Link>
+      </div>
+
+      <ProfileMenu v-if="!isTablet"/>
+    </div>
+  </nav>
+
+  <Sidebar
+    side="left"
+    v-model:open="isMenuOpen"
+  >
+    <div class="flex flex-col">
+      <h3 class="px-6 py-4 uppercase text-sm text-gray-500 font-medium">
+        {{ $trans('Categories') }}
+      </h3>
+
+      <MenuList>
+        <Link
+          v-for="item in $page.props.nav_items"
+          :key="item.id"
+          :href="item.url"
+        >
+          <MenuItem
+            class="px-6 py-3.5"
+            :selected="$page.props.nav_location === item.id"
           >
             {{ $trans(item.title) }}
-          </Link>
-        </div>
-
-        <ProfileMenu v-if="!isTablet"/>
-      </div>
-    </nav>
-
-    <Sidebar
-      side="left"
-      v-model:open="isMenuOpen"
-    >
-      <div class="flex flex-col">
-        <h3 class="px-6 py-4 uppercase text-sm text-gray-500 font-medium">
-          {{ $trans('Categories') }}
-        </h3>
-
-        <MenuList>
-          <Link
-            v-for="item in $page.props.nav_items"
-            :key="item.id"
-            :href="item.url"
-          >
-            <MenuItem
-              class="px-6 py-3.5"
-              :selected="$page.props.nav_location === item.id"
-            >
-              {{ $trans(item.title) }}
-            </MenuItem>
-          </Link>
-        </MenuList>
-      </div>
-    </Sidebar>
-  </header>
+          </MenuItem>
+        </Link>
+      </MenuList>
+    </div>
+  </Sidebar>
 </template>

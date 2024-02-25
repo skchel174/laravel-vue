@@ -10,7 +10,7 @@ import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
-import CommentForm from "@/Components/Comment/Form/CommentForm.vue";
+import CommentForm from "@/Components/Comment/CommentForm.vue";
 
 const props = defineProps({
   article: {

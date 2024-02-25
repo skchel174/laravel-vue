@@ -23,7 +23,7 @@ const focus = ref(false);
 </script>
 
 <template>
-  <div class="flex-1 flex flex-col">
+  <div class="min-h-screen flex flex-col">
     <div class="p-4 flex-1 bg-white">
       <ArticleAuthor
         class="mb-4"
@@ -75,7 +75,7 @@ const focus = ref(false);
       <OutlineButton
         color="primary"
         :disabled="form.title.length === 0 || form.text.length < 10"
-        @click="$emit('openTab', 'Settings')"
+        @click="$emit('openTab', 'ArticleSettings')"
       >
         {{ $trans('Proceed to settings') }}
       </OutlineButton>

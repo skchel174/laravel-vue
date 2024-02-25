@@ -95,7 +95,7 @@ const saveToDrafts = () => {
     <div class="h-14 px-4 flex items-center justify-between bg-white border-t border-gray-200">
       <FilledButton
         color="light"
-        @click="$emit('openTab', 'Editor')"
+        @click="$emit('openTab', 'ArticleEditor')"
       >
         {{ $trans('Back to editor') }}
       </FilledButton>

@@ -1,8 +1,8 @@
 <script setup>
 import {inject, onMounted} from "vue";
 import useBookmark from "@/Hooks/useBookmark.js";
-import CommentReplyForm from "@/Components/Comment/Form/CommentReplyForm.vue";
-import CommentEditForm from "@/Components/Comment/Form/CommentEditForm.vue";
+import CommentReplyForm from "@/Components/Comment/CommentReplyForm.vue";
+import CommentEditForm from "@/Components/Comment/CommentEditForm.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
 import BookmarkIcon from "@/Components/Icons/BookmarkIcon.vue";
 import CopyLinkIcon from "@/Components/Icons/CopyLinkIcon.vue";

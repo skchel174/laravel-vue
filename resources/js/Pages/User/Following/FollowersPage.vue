@@ -1,7 +1,7 @@
 <script setup>
 import {Head} from "@inertiajs/vue3";
 import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
-import FollowingsList from "@/Components/Followings/FollowingsList.vue";
+import FollowingsList from "@/Components/FollowingsList/FollowingsList.vue";
 
 const props = defineProps({
   users: {

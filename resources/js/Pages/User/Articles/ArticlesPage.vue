@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import {router, usePage, Head} from "@inertiajs/vue3";
-import ArticlesList from "@/Components/Article/ArticlesList.vue";
+import ArticlesList from "@/Components/ArticlesList/ArticlesList.vue";
 import MenuSelect from "@/Pages/User/Partials/MenuSelect.vue";
 import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 

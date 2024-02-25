@@ -60,7 +60,7 @@ class ArticleController extends Controller
 
     public function articles(ArticlesRequest $request): Response
     {
-        $query = Article::query();
+        $query = Article::whereStatus(Status::Published);
 
         if ($user = Auth::user()) {
             $query->withExists([
@@ -77,7 +77,7 @@ class ArticleController extends Controller
             $query->whereDifficulty(Difficulty::from($request->difficulty));
         }
 
-        $articles = $query->whereStatus(Status::Published)
+        $articles = $query
             ->withCount(['likes', 'relatedComments'])
             ->with(['topics'])
             ->orderByDesc('id')
@@ -93,7 +93,7 @@ class ArticleController extends Controller
 
     public function feed(): Response
     {
-        $query = Article::query();
+        $query = Article::whereStatus(Status::Published);
 
         if ($user = Auth::user()) {
             $query->withExists([
@@ -108,7 +108,7 @@ class ArticleController extends Controller
             });
         }
 
-        $articles = $query->whereStatus(Status::Published)
+        $articles = $query
             ->withCount(['likes', 'relatedComments'])
             ->with(['topics'])
             ->orderByDesc('id')

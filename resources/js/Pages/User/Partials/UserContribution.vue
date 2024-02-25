@@ -16,7 +16,7 @@ const props = defineProps({
     v-if="contribution.length > 0"
   >
     <h2 class="text-sm text-gray-500 font-bold uppercase">
-      {{ $trans('Contribution to topics') }}
+      {{ $trans('Topic contribution') }}
     </h2>
 
     <Divider class="my-4"/>

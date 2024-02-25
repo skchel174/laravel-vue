@@ -1,5 +1,5 @@
 <script setup>
-import ArticlesListItem from "@/Components/Article/ArticlesListItem.vue";
+import ArticlesListItem from "@/Components/ArticlesList/ArticlesListItem.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import nothingHere from 'img/nothing-here.svg';
 

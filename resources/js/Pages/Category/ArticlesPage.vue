@@ -2,8 +2,8 @@
 import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
-import ArticlesFilters from "@/Components/Article/Filters/ArticlesFilters.vue";
-import ArticlesList from "@/Components/Article/ArticlesList.vue";
+import ArticlesFilters from "@/Components/ArticlesList/ArticlesFilters.vue";
+import ArticlesList from "@/Components/ArticlesList/ArticlesList.vue";
 import PageHeader from "@/Pages/Category/Partials/PageHeader.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 

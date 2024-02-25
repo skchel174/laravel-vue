@@ -30,13 +30,13 @@ defineProps({
         </Link>
 
         <Link
-          class="text-sm text-sky-600/75"
+          class="text-sm text-sky-675"
           :href="route('user', {user: author.login})"
         >
           @{{ author.login }}
         </Link>
 
-        <p class="text-sm text-gray-500/75">
+        <p class="text-sm text-gray-475">
           {{ author.about }}
         </p>
 

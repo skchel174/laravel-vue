@@ -3,7 +3,7 @@ import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
 import PageHeader from "@/Pages/Category/Partials/PageHeader.vue";
-import TopicsList from "@/Components/Topic/TopicsList.vue";
+import TopicsList from "@/Components/TopicsList/TopicsList.vue";
 import Search from "@/Components/Search.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 

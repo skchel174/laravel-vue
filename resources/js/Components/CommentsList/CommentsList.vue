@@ -1,5 +1,5 @@
 <script setup>
-import CommentsListItem from "@/Components/Comment/List/CommentsListItem.vue";
+import CommentsListItem from "@/Components/CommentsList/CommentsListItem.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import nothingHere from 'img/nothing-here.svg';
 

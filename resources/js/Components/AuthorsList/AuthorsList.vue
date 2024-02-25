@@ -1,5 +1,5 @@
 <script setup>
-import AuthorsListItem from "@/Components/Author/AuthorsListItem.vue";
+import AuthorsListItem from "@/Components/AuthorsList/AuthorsListItem.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
 import nothingHere from 'img/nothing-here.svg';
 
@@ -23,8 +23,8 @@ defineProps({
             {{ $trans('Name') }}
           </div>
 
-          <div class="max-w-10 text-sky-675 text-sm capitalize">
-            {{ $trans('Contribution to topics') }}
+          <div class="max-w-10 text-sky-675 text-sm">
+            {{ $trans('Topic contribution') }}
           </div>
         </div>
 

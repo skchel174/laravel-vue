@@ -1,6 +1,6 @@
 <script setup>
 import Pagination from "@/Components/Pagination/Pagination.vue";
-import FollowingsListItem from "@/Components/Followings/FollowingsListItem.vue";
+import FollowingsListItem from "@/Components/FollowingsList/FollowingsListItem.vue";
 import nothingHere from 'img/nothing-here.svg';
 
 defineProps({
