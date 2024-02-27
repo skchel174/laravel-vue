@@ -1,6 +1,4 @@
 <script setup>
-import Divider from "@/Components/Divider.vue";
-
 defineProps({
   user: {
     type: Object,
@@ -15,7 +13,7 @@ defineProps({
       {{ $trans('Information') }}
     </h2>
 
-    <Divider class="my-4"/>
+    <hr class="my-4 w-full bg-gray-200"/>
 
     <table class="w-full max-w-xs">
       <tr>

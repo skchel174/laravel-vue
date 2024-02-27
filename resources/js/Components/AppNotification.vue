@@ -1,5 +1,6 @@
 <script setup>
 import {ref, watch} from "vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 const props = defineProps({
   visible: {
@@ -67,15 +68,15 @@ watch(notificationRef, () => {
         class="fixed top-4 px-2 min-w-[24rem] max-w-lg z-50"
       >
         <div
-          class="rounded shadow-md px-6 pt-7 pb-4 text-sm font-medium flex flex-col justify-center items-center"
+          class="rounded shadow-md px-6 pt-4 pb-4 text-sm font-medium flex flex-col justify-center items-center"
           :class="types[type]"
         >
-          <span
-            class="material-icons absolute top-1 right-4 !text-xl cursor-pointer"
+          <MaterialIcon
+            class="absolute top-0.5 right-2.5 !text-lg !leading-none cursor-pointer"
             @click="$emit('update:visible', false)"
           >
             close
-          </span>
+          </MaterialIcon>
 
           <slot/>
         </div>

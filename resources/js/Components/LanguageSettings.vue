@@ -11,7 +11,6 @@ const {locale, langs, toggleLang, save} = useLocale();
 
 const savePreferences = () => {
   save();
-
   emit('close');
 };
 </script>
@@ -37,18 +36,19 @@ const savePreferences = () => {
       </p>
     </div>
 
-    <div class="px-4 py-6">
+    <div class="px-4 py-6 space-y-6">
       <RadioButton
-        class="mb-6"
+        id="en_loc"
         label="English"
-        :selected="locale === 'en'"
-        @select="() => locale = 'en'"
+        :model-value="locale === 'en'"
+        @update:model-value="locale = 'en'"
       />
 
       <RadioButton
+        id="ru_loc"
         label="Русский"
-        :selected="locale === 'ru'"
-        @select="() => locale = 'ru'"
+        :model-value="locale === 'ru'"
+        @update:model-value="locale = 'ru'"
       />
     </div>
 
@@ -58,22 +58,23 @@ const savePreferences = () => {
       </p>
     </div>
 
-    <div class="px-4 py-6">
+    <div class="px-4 py-6 space-y-6">
       <Checkbox
-        class="mb-6"
+        id="en_cb"
         label="English"
-        :checked="langs.includes('en')"
-        @toggle="toggleLang('en')"
+        :model-value="langs.includes('en')"
+        @update:model-value="toggleLang('en')"
       />
 
       <Checkbox
+        id="ru_cb"
         label="Русский"
-        :checked="langs.includes('ru')"
-        @toggle="toggleLang('ru')"
+        :model-value="langs.includes('ru')"
+        @update:model-value="toggleLang('ru')"
       />
 
       <p
-        class="mt-6 text-sm text-red-500"
+        class="text-sm text-red-500"
         v-if="langs.length === 0"
       >
         {{ $trans('language_not_select') }}

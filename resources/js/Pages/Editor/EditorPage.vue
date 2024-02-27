@@ -5,7 +5,7 @@ import useForm from "@/Hooks/Article/useForm.js";
 import useNotification from "@/Hooks/useNotification.js";
 import ArticleEditor from "@/Pages/Editor/Partials/ArticleEditor.vue";
 import ArticleSettings from "@/Pages/Editor/Partials/ArticleSettings.vue";
-import Notification from "@/Components/Notification.vue";
+import AppNotification from "@/Components/AppNotification.vue";
 import BackupNotice from "@/Pages/Editor/Partials/BackupNotice.vue";
 import BaseLayout from "@/Components/Layouts/BaseLayout.vue";
 
@@ -50,7 +50,7 @@ onMounted(() => {
 
 <template>
   <BaseLayout>
-    <div class="space-y-4">
+    <div class="min-h-full flex flex-col space-y-4">
       <Head :title="$trans('Article Editor')"/>
 
       <header class="p-4 bg-white">
@@ -78,7 +78,7 @@ onMounted(() => {
       </KeepAlive>
     </div>
 
-    <Notification
+    <AppNotification
       :type="notice.type"
       v-model:visible="notice.visible"
     >
@@ -89,6 +89,6 @@ onMounted(() => {
           {{ error }}
         </p>
       </div>
-    </Notification>
+    </AppNotification>
   </BaseLayout>
 </template>

@@ -1,18 +1,12 @@
 <script setup>
-import {Link} from "@inertiajs/vue3";
-import Avatar from "@/Components/Avatar.vue";
+import {inject} from "vue";
+import {Link, usePage} from "@inertiajs/vue3";
+import UserAvatar from "@/Components/UserAvatar.vue";
 import MenuList from "@/Components/Menu/MenuList.vue";
 import MenuItem from "@/Components/Menu/MenuItem.vue";
-import Divider from "@/Components/Divider.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
-import {inject} from "vue";
 
-const props = defineProps({
-  user: {
-    type: Object,
-    required: true,
-  },
-});
+const user = usePage().props.auth.user;
 
 const {openLangSettings} = inject('langSettings');
 </script>
@@ -20,8 +14,8 @@ const {openLangSettings} = inject('langSettings');
 <template>
   <div>
     <div class="py-5 px-6 flex items-center space-x-2 bg-gray-50">
-      <Link :href="route('user', {user})">
-        <Avatar :src="user.avatar"/>
+      <Link :href="route('user', {user: user.login})">
+        <UserAvatar :src="user.avatar"/>
       </Link>
 
       <div class="text-sm text-gray-700 font-medium">
@@ -31,14 +25,14 @@ const {openLangSettings} = inject('langSettings');
 
         <Link
           class="text-sky-675"
-          :href="route('user', {user})"
+          :href="route('user', {user: user.login})"
         >
           @{{ user.login }}
         </Link>
       </div>
     </div>
 
-    <Divider/>
+    <hr class="w-full bg-gray-200"/>
 
     <MenuList class="py-3.5">
       <Link :href="route('editor')">
@@ -51,7 +45,7 @@ const {openLangSettings} = inject('langSettings');
         </MenuItem>
       </Link>
 
-      <Link :href="route('user.articles', {user: props.user.login})">
+      <Link :href="route('user.articles', {user: user.login})">
         <MenuItem class="px-6 py-3.5">
           <MaterialIcon class="!text-inherit">
             article
@@ -61,7 +55,7 @@ const {openLangSettings} = inject('langSettings');
         </MenuItem>
       </Link>
 
-      <Link :href="route('user.comments', {user: props.user.login})">
+      <Link :href="route('user.comments', {user: user.login})">
         <MenuItem class="px-6 py-3.5 capitalize">
           <MaterialIcon class="!text-inherit">
             question_answer
@@ -71,7 +65,7 @@ const {openLangSettings} = inject('langSettings');
         </MenuItem>
       </Link>
 
-      <Link :href="route('user.bookmarks.articles', {user: props.user.login})">
+      <Link :href="route('user.bookmarks.articles', {user: user.login})">
         <MenuItem class="px-6 py-3.5 capitalize">
           <MaterialIcon class="!text-inherit">
             bookmarks
@@ -81,7 +75,7 @@ const {openLangSettings} = inject('langSettings');
         </MenuItem>
       </Link>
 
-      <Divider class="my-4"/>
+      <hr class="my-4 w-full bg-gray-200"/>
 
       <Link :href="route('profile')">
         <MenuItem class="px-6 py-3.5">
@@ -98,7 +92,7 @@ const {openLangSettings} = inject('langSettings');
         @click="openLangSettings"
       >
         <MaterialIcon class="!text-inherit">
-          language
+          preview
         </MaterialIcon>
 
         <span>{{ $trans('Language') }}</span>

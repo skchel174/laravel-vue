@@ -1,7 +1,6 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
 import useBookmark from "@/Hooks/useBookmark.js";
-import Divider from "@/Components/Divider.vue";
 import CommentAuthor from "@/Components/Comment/CommentAuthor.vue";
 import BookmarkIcon from "@/Components/Icons/BookmarkIcon.vue";
 
@@ -35,7 +34,7 @@ const onBookmarked = () => {
       {{ comment.article_title }}
     </Link>
 
-    <Divider class="mt-3 mb-4"/>
+    <hr class="mt-3 mb-4 w-full bg-gray-200"/>
 
     <CommentAuthor
       class="mb-2"

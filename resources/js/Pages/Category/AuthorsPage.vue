@@ -5,7 +5,7 @@ import PageHeader from "@/Pages/Category/Partials/PageHeader.vue";
 import NavigationTabs from "@/Pages/Category/Partials/NavigationTabs.vue";
 import AuthorsList from "@/Components/AuthorsList/AuthorsList.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
-import Search from "@/Components/Search.vue";
+import SearchInput from "@/Components/SearchInput.vue";
 
 const props = defineProps({
   category: {
@@ -46,7 +46,7 @@ const searchTopics = (value) => {
       current-tab="authors"
     />
 
-    <Search
+    <SearchInput
       :value="search"
       @search="searchTopics"
     />

@@ -11,10 +11,16 @@ import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
+import AuthorWidget from "@/Pages/Article/Partials/AuthorWidget.vue";
 
 const props = defineProps({
   article: {
     type: Object,
+    required: true,
+  },
+
+  authorSubscription: {
+    type: Boolean,
     required: true,
   },
 });
@@ -75,6 +81,12 @@ const props = defineProps({
         />
       </ArticleFooter>
     </div>
+
+    <AuthorWidget
+      class="mt-4"
+      :author="article.author"
+      :subscription="authorSubscription"
+    />
 
     <CommentsButton
       class="mt-4"

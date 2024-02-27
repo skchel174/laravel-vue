@@ -1,11 +1,11 @@
 <script setup>
 import {router, Head} from "@inertiajs/vue3";
-import Search from "@/Components/Search.vue";
 import AuthorsList from "@/Components/AuthorsList/AuthorsList.vue";
 import TopicHeader from "@/Pages/Topic/Partials/TopicHeader.vue";
 import TopicNavigation from "@/Pages/Topic/Partials/TopicNavigation.vue";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
+import SearchInput from "@/Components/SearchInput.vue";
 
 const props = defineProps({
   topic: {
@@ -53,7 +53,7 @@ const searchAuthors = (value) => {
       current-tab="authors"
     />
 
-    <Search
+    <SearchInput
       :value="search"
       @search="searchAuthors"
     />

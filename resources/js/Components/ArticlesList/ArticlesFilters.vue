@@ -33,7 +33,7 @@ const apply = () => {
   <div>
     <div class="px-4 bg-white">
       <ExpandButton
-        class="w-full py-4 text-sm text-gray-600 font-medium capitalize"
+        class="w-full py-4 text-sm text-gray-500 font-medium"
         :expand="isOpen"
         @click="isOpen = !isOpen"
       >

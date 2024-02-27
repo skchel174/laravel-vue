@@ -1,6 +1,6 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
-import Avatar from "@/Components/Avatar.vue";
+import UserAvatar from "@/Components/UserAvatar.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 defineProps({
@@ -15,7 +15,7 @@ defineProps({
   <div class="flex">
     <div class="flex-1 flex space-x-2.5">
       <Link :href="route('user', {user: author.login})">
-        <Avatar
+        <UserAvatar
           :src="author.avatar"
           size="md"
         />

@@ -23,7 +23,7 @@ const focus = ref(false);
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="flex-1 flex flex-col">
     <div class="p-4 flex-1 bg-white">
       <ArticleAuthor
         class="mb-4"

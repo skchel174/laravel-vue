@@ -1,9 +1,9 @@
 <script setup>
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import Checkbox from '@/Components/Form/Checkbox.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
-import {Head, Link, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
@@ -38,7 +38,7 @@ const submit = () => {
   <AuthLayout>
     <Head :title="$trans('Log in')"/>
 
-    <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-between sm:justify-center">
+    <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-center">
       <form
         class="p-4 sm:p-6 bg-white space-y-10 space-y-6"
         @submit.prevent="submit"
@@ -103,21 +103,11 @@ const submit = () => {
           />
         </div>
 
-        <div class="inline-block">
-          <label class="flex items-center select-none cursor-pointer">
-            <Checkbox
-              id="remember"
-              :checked="form.remember"
-              @toggle="form.remember = !form.remember"
-            />
-
-            <InputLabel
-              for="password"
-              class="ml-2 !font-normal"
-              :value="$trans('Remember me')"
-            />
-          </label>
-        </div>
+        <Checkbox
+          id="remember"
+          v-model="form.remember"
+          :label="$trans('Remember me')"
+        />
 
         <div class="flex flex-col items-start justify-end space-y-4">
           <FilledButton

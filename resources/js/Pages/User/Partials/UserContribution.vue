@@ -1,6 +1,5 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
-import Divider from "@/Components/Divider.vue";
 
 const props = defineProps({
   contribution: {
@@ -19,7 +18,7 @@ const props = defineProps({
       {{ $trans('Topic contribution') }}
     </h2>
 
-    <Divider class="my-4"/>
+    <hr class="my-4 w-full bg-gray-200"/>
 
     <ul class="w-full">
       <li

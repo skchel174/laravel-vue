@@ -1,12 +1,11 @@
 <script setup>
-import {Link, usePage} from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import UserAvatar from "@/Components/UserAvatar.vue";
-import useSubscription from "@/Hooks/User/useSubscription.js";
-import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 
-const props = defineProps({
-  user: {
+defineProps({
+  author: {
     type: Object,
     required: true,
   },
@@ -16,50 +15,46 @@ const props = defineProps({
     required: true,
   }
 });
-
-const auth = usePage().props.auth;
-
-const {subscription, follow, unfollow} = useSubscription(props.subscription);
 </script>
 
 <template>
-  <header class="p-4 flex flex-col sm:flex-row bg-white">
+  <div class="p-4 flex flex-col sm:flex-row bg-white">
     <div class="flex-1 mb-2 sm:mb-0">
       <UserAvatar
         size="md"
-        :src="user.avatar"
+        :src="author.avatar"
       />
 
       <h3 class="mt-2 text-base sm:text-lg">
         <span
           class="text-gray-800 font-black"
-          v-if="user.name"
+          v-if="author.name"
         >
-          {{ user.name }}
+          {{ author.name }}
         </span>
 
         <Link
           class="text-sky-675"
-          :href="route('user', {user: user.login})"
+          :href="route('user', {user: author.login})"
         >
-          @{{ user.login }}
+          @{{ author.login }}
         </Link>
       </h3>
 
       <p class="mt-1 text-sm text-gray-500 font-medium capitalize">
-        {{ user.about ?? $trans('User') }}
+        {{ author.about ?? $trans('User') }}
       </p>
     </div>
 
     <div
       class="flex justify-start sm:flex-row-reverse"
-      v-if="auth.user && auth.user.id !== user.id"
+      v-if="$page.props.auth.user && $page.props.auth.user.id !== author.id"
     >
       <FilledButton
         v-if="subscription"
         color="success"
         class="sm:ml-2 h-7 !px-10"
-        @click="() => unfollow(user.id)"
+        @click="unfollow(author.id)"
       >
         {{ $trans('Following') }}
       </FilledButton>
@@ -68,10 +63,10 @@ const {subscription, follow, unfollow} = useSubscription(props.subscription);
         v-else
         color="success"
         class="sm:ml-2 h-7 !px-10"
-        @click="() => follow(user.id)"
+        @click="follow(author.id)"
       >
         {{ $trans('Follow') }}
       </OutlineButton>
     </div>
-  </header>
+  </div>
 </template>

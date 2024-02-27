@@ -1,19 +1,21 @@
 <script setup>
-import {ref} from "vue";
+import {inject, ref} from "vue";
 import useMedia from "@/Hooks/useMedia.js";
 import {router, usePage} from "@inertiajs/vue3";
-import Avatar from "@/Components/Avatar.vue";
+import UserAvatar from "@/Components/UserAvatar.vue";
 import Sidebar from "@/Components/Sidebar.vue";
 import Popover from "@/Components/Popover.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
-import ProfileNavigation from "@/Components/AppHeader/ProfileNavigation.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import UserMenuItems from "@/Components/UserMenu/UserMenuItems.vue";
 
 const user = usePage().props.auth.user;
 
 const isTablet = useMedia('(max-width: 1024px)');
 
 const isMenuOpen = ref(false);
+
+const {openLangSettings} = inject('langSettings');
 </script>
 
 <template>
@@ -22,16 +24,30 @@ const isMenuOpen = ref(false);
       search
     </MaterialIcon>
 
-    <FilledButton
+    <div
       v-if="!user"
-      color="primary"
-      class="!py-1.5 !px-5"
-      @click="router.get(route('login'))"
+      class="flex items-center space-x-3"
     >
-      {{ $trans('Login') }}
-    </FilledButton>
+      <MaterialIcon
+        class="!text-inherit cursor-pointer"
+        @click="openLangSettings"
+      >
+        preview
+      </MaterialIcon>
 
-    <div v-else class="flex items-center space-x-3">
+      <FilledButton
+        color="primary"
+        class="!py-1.5 !px-5"
+        @click="router.get(route('login'))"
+      >
+        {{ $trans('Login') }}
+      </FilledButton>
+    </div>
+
+    <div
+      v-else
+      class="flex items-center space-x-3"
+    >
       <MaterialIcon class="!text-inherit cursor-pointer">
         notifications_none
       </MaterialIcon>
@@ -43,7 +59,7 @@ const isMenuOpen = ref(false);
         post_add
       </MaterialIcon>
 
-      <Avatar
+      <UserAvatar
         class="cursor-pointer"
         v-if="user"
         :src="user.avatar"
@@ -53,18 +69,18 @@ const isMenuOpen = ref(false);
 
       <Sidebar
         v-if="isTablet"
-        side="right"
         v-model:open="isMenuOpen"
+        side="right"
       >
-        <ProfileNavigation :user="user"/>
+        <UserMenuItems/>
       </Sidebar>
 
       <Popover
         v-else
-        class="top-9 right-0 w-[18rem]"
         v-model:open="isMenuOpen"
+        class="top-9 right-0 w-[18rem]"
       >
-        <ProfileNavigation :user="user"/>
+        <UserMenuItems/>
       </Popover>
     </div>
   </div>
