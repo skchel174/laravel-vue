@@ -95,7 +95,7 @@ const {openLangSettings} = inject('langSettings');
           preview
         </MaterialIcon>
 
-        <span>{{ $trans('Language') }}</span>
+        <span>{{ $trans('Language') }}, {{ $trans('Feed') }}</span>
       </MenuItem>
 
       <Link :href="route('logout')">

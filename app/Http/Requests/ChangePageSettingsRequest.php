@@ -9,16 +9,18 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
+ * @property-read string $view
  * @property-read string $locale
- * @property-read array $content_langs
+ * @property-read array $langs
  */
-class SetLocaleRequest extends FormRequest
+class ChangePageSettingsRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
+            'view' => ['required', 'string', Rule::in(['classic', 'compact'])],
             'locale' => ['required', 'string', Rule::enum(Locale::class)],
-            'content_langs' => ['required', 'array', 'min:1', Rule::in(Locale::cases())],
+            'langs' => ['required', 'array', 'min:1', Rule::in(Locale::cases())],
         ];
     }
 }

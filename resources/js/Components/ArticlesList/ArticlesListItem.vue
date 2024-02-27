@@ -1,4 +1,4 @@
- <script setup>
+<script setup>
 import {computed} from "vue";
 import {router} from "@inertiajs/vue3";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
@@ -58,50 +58,51 @@ const openArticle = () => {
       :difficulty="article.difficulty"
     />
 
-    <ArticleTopics
-      class="mb-4"
-      :topics="article.topics"
-    />
-
-    <img
-      class="mb-4 w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm cursor-pointer"
-      :src="article.image ?? 'https://loremflickr.com/640/480/business?lock=' + article.id"
-      alt="img"
-      @click="openArticle"
-    />
-
-    <p
-      v-if="article.summary"
-      class="mb-10 text-sm sm:text-base text-gray-700 break-words"
+    <div
+      v-if="$page.props.view === 'classic'"
+      class="mb-6 space-y-4"
     >
-      {{ article.summary }}
-    </p>
+      <ArticleTopics :topics="article.topics"/>
 
-    <OutlineButton
-      color="primary"
-      class="mb-6 inline-block !py-1.5"
-      @click="openArticle"
-    >
-      <div v-if="article.button_text">
-        {{ article.button_text }}
-      </div>
-
-      <div v-else class="flex items-center">
-        <span>{{ $trans('Read more') }}</span>
-        <MaterialIcon class="ml-2">
-          arrow_right_alt
-        </MaterialIcon>
-      </div>
-    </OutlineButton>
-
-    <footer class="w-full w-full flex text-gray-400 justify-between sm:justify-start sm:space-x-8">
-      <ArticleReaction
-        :article-id="article.id"
-        :is-liked="article.is_liked"
-        :likes-count="article.likes_count"
-        :is-bookmarked="article.is_bookmarked"
-        :comments-count="article.comments_count"
+      <!--   TODO: remove demo image link  -->
+      <img
+        class="w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm cursor-pointer"
+        :src="article.image ?? 'https://loremflickr.com/640/480/business?lock=' + article.id"
+        alt="img"
+        @click="openArticle"
       />
-    </footer>
+
+      <p
+        v-if="article.summary"
+        class="text-sm sm:text-base text-gray-700 break-words"
+      >
+        {{ article.summary }}
+      </p>
+
+      <OutlineButton
+        color="primary"
+        class="inline-block !py-1.5"
+        @click="openArticle"
+      >
+        <div v-if="article.button_text">
+          {{ article.button_text }}
+        </div>
+
+        <div v-else class="flex items-center">
+          <span>{{ $trans('Read more') }}</span>
+          <MaterialIcon class="ml-2">
+            arrow_right_alt
+          </MaterialIcon>
+        </div>
+      </OutlineButton>
+    </div>
+
+    <ArticleReaction
+      :article-id="article.id"
+      :is-liked="article.is_liked"
+      :likes-count="article.likes_count"
+      :is-bookmarked="article.is_bookmarked"
+      :comments-count="article.comments_count"
+    />
   </article>
 </template>

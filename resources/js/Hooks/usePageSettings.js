@@ -1,10 +1,12 @@
 import {ref} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 
-function useLocale() {
+function usePageSettings() {
   const page = usePage();
-  const locale = ref(page.props.app.locale);
-  const langs = ref(page.props.app.content_langs);
+
+  const view = ref(page.props.view);
+  const locale = ref(page.props.locale);
+  const langs = ref(page.props.langs);
 
   const toggleLang = (locale) => {
     if (langs.value.includes(locale)) {
@@ -16,13 +18,15 @@ function useLocale() {
   };
 
   const save = () => {
-    router.post(route('locale'), {
+    router.post(route('page.settings'), {
+      view: view.value,
       locale: locale.value,
-      content_langs: langs.value,
+      langs: langs.value,
     });
   };
 
   return {
+    view,
     locale,
     langs,
     toggleLang,
@@ -30,4 +34,4 @@ function useLocale() {
   }
 }
 
-export default useLocale;
+export default usePageSettings;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 return [
     'Feed' => 'Лента',
+    'Classic' => 'Классический',
+    'Compact' => 'Компактный',
 
     'Save' => 'Сохранить',
     'Send' => 'Отправить',

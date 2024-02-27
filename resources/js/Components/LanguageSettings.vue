@@ -1,5 +1,5 @@
 <script setup>
-import useLocale from "@/Hooks/useLocale.js";
+import usePageSettings from "@/Hooks/usePageSettings.js";
 import Checkbox from "@/Components/Form/Checkbox.vue";
 import RadioButton from "@/Components/Form/RadioButton.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
@@ -7,7 +7,7 @@ import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const emit = defineEmits(['close']);
 
-const {locale, langs, toggleLang, save} = useLocale();
+const {view, locale, langs, toggleLang, save} = usePageSettings();
 
 const savePreferences = () => {
   save();
@@ -79,6 +79,28 @@ const savePreferences = () => {
       >
         {{ $trans('language_not_select') }}
       </p>
+    </div>
+
+    <div class="px-4 py-2.5 bg-sky-50">
+      <p class="text-gray-500 font-medium">
+        {{ $trans('Feed') }}
+      </p>
+    </div>
+
+    <div class="px-4 py-6 space-y-6">
+      <RadioButton
+        id="classic"
+        :label="$trans('Classic')"
+        :model-value="view === 'classic'"
+        @update:model-value="view = 'classic'"
+      />
+
+      <RadioButton
+        id="compact"
+        :label="$trans('Compact')"
+        :model-value="view === 'compact'"
+        @update:model-value="view = 'compact'"
+      />
     </div>
 
     <div class="p-4">
