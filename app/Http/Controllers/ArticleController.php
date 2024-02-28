@@ -60,11 +60,10 @@ class ArticleController extends Controller
 
     public function articles(ArticlesRequest $request): Response
     {
-        $query = Article::query();
+        $query = Article::whereStatus(Status::Published);
 
         if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->where('id', $user->id),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->where('id', $user->id),
             ]);
         }
@@ -77,14 +76,14 @@ class ArticleController extends Controller
             $query->whereDifficulty(Difficulty::from($request->difficulty));
         }
 
-        $articles = $query->whereStatus(Status::Published)
-            ->withCount(['likes', 'relatedComments'])
+        $articles = $query
+            ->withCount('relatedComments')
             ->with(['topics'])
             ->orderByDesc('id')
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', 'articles');
+        Inertia::share('nav.location', 'articles');
 
         return Inertia::render('Articles/ArticlesPage', [
             'articles' => new ArticlesResource($articles),
@@ -93,11 +92,10 @@ class ArticleController extends Controller
 
     public function feed(): Response
     {
-        $query = Article::query();
+        $query = Article::whereStatus(Status::Published);
 
         if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->where('id', $user->id),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->where('id', $user->id),
             ]);
 
@@ -108,16 +106,16 @@ class ArticleController extends Controller
             });
         }
 
-        $articles = $query->whereStatus(Status::Published)
-            ->withCount(['likes', 'relatedComments'])
+        $articles = $query
+            ->withCount('relatedComments')
             ->with(['topics'])
             ->orderByDesc('id')
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', 'feed');
+        Inertia::share('nav.location', 'feed');
 
-        return Inertia::render('Feed/FeedPage', [
+        return Inertia::render('Articles/FeedPage', [
             'articles' => new ArticlesResource($articles),
         ]);
     }
@@ -252,13 +250,12 @@ class ArticleController extends Controller
 
         if (Auth::check()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->whereId(Auth::id()),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId(Auth::id()),
             ]);
         }
 
         return $query->with(['topics', 'tags'])
-            ->withCount('likes', 'bookmarks', 'relatedComments')
+            ->withCount('bookmarks', 'relatedComments')
             ->whereStatus(Status::Published)
             ->findOrFail($articleId);
     }

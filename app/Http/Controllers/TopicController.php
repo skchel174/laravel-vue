@@ -30,7 +30,6 @@ class TopicController extends Controller
 
         if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->whereId($user->id),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId($user->id),
             ]);
         }
@@ -44,13 +43,14 @@ class TopicController extends Controller
         }
 
         $articles = $query->with(['topics'])
-            ->withCount(['likes', 'relatedComments'])
+            ->withCount('relatedComments')
             ->whereStatus(ArticleStatus::Published)
             ->orderByDesc('id')
             ->paginate()
             ->withQueryString();
 
-        return Inertia::render('Topic/Articles/ArticlesPage', [
+
+        return Inertia::render('Topic/ArticlesPage', [
             'topic' => new TopicResource($topic),
             'articles' => new ArticlesResource($articles),
             'subscription' => $user && $topic->isSubscribed($user),
@@ -83,7 +83,7 @@ class TopicController extends Controller
             ->paginate()
             ->withQueryString();
 
-        return Inertia::render('Topic/Authors/AuthorsPage', [
+        return Inertia::render('Topic/AuthorsPage', [
             'topic' => new TopicResource($topic),
             'authors' => new UsersCollection($authors),
             'subscription' => Auth::check() && $topic->isSubscribed(Auth::user()),

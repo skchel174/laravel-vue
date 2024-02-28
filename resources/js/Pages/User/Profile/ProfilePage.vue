@@ -1,7 +1,8 @@
 <script setup>
-import UserLayout from "@/Layouts/User/UserLayout.vue";
-import ProfileInfo from "@/Pages/User/Profile/Partials/ProfileInfo.vue";
-import ProfileTopics from "@/Pages/User/Profile/Partials/ProfileTopics.vue";
+import {Head} from "@inertiajs/vue3";
+import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
+import TopicsList from "@/Pages/User/Profile/Partials/TopicsList.vue";
+import UserInformation from "@/Pages/User/Profile/Partials/UserInformation.vue";
 
 defineProps({
   user: {
@@ -17,20 +18,19 @@ defineProps({
 </script>
 
 <template>
-  <UserLayout
+  <PageLayout
     current-tab="profile"
     :user="user"
   >
-    <div class="mt-4 p-4 bg-white space-y-4">
-      <ProfileInfo
+    <Head :title="$ucfirst($trans('profile'))"/>
+
+    <div class="mt-4 p-4 bg-white">
+      <UserInformation
         class="mb-4 block lg:hidden"
         :user="user"
       />
 
-      <ProfileTopics
-        :topics="topics"
-        :user="user"
-      />
+      <TopicsList :topics="topics"/>
     </div>
-  </UserLayout>
+  </PageLayout>
 </template>

@@ -1,11 +1,11 @@
 <script setup>
 import {inject} from "vue";
+import {usePage} from "@inertiajs/vue3";
 import {Quill, QuillEditor} from "@vueup/vue-quill";
 import ImageUploader from "quill-image-uploader";
 import BlotFormatter from "quill-blot-formatter";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import 'quill-image-uploader/dist/quill.imageUploader.min.css';
-import {usePage} from "@inertiajs/vue3";
 
 Quill.debug('error');
 Quill.register("modules/imageUploader", ImageUploader);
@@ -25,7 +25,7 @@ defineProps({
 
 defineEmits(['update:content', 'focus', 'blur']);
 
-const showNotification = inject('showNotification');
+const notify = inject('notify');
 
 const uploadImage = async (file) => {
   try {
@@ -47,8 +47,8 @@ const uploadImage = async (file) => {
 
     return response.data.image.md;
   } catch (error) {
-    // TODO: added api errors handler
-    showNotification('error', error.message);
+    //TODO: added api errors handler
+    notify('error', error.message);
   }
 }
 

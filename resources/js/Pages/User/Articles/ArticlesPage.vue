@@ -1,9 +1,9 @@
 <script setup>
-import {computed, ref} from "vue";
-import {router, usePage} from "@inertiajs/vue3";
-import UserLayout from "@/Layouts/User/UserLayout.vue";
-import NavigationSelect from "@/Pages/User/Partials/NavigationSelect.vue";
-import ArticlesList from "@/Components/Article/ArticlesList.vue";
+import {ref} from "vue";
+import {router, usePage, Head} from "@inertiajs/vue3";
+import ArticlesList from "@/Components/ArticlesList/ArticlesList.vue";
+import MenuSelect from "@/Pages/User/Partials/MenuSelect.vue";
+import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 
 const props = defineProps({
   status: {
@@ -35,29 +35,31 @@ const auth = usePage().props.auth;
 
 const currentLink = ref(props.status);
 
-const navigation = computed(() => props.statuses.filter(status => {
-   return status === 'published' || props.user.id === auth.user?.id;
-}));
-
-const selectLink = (value) => {
-  router.get(route('user.articles', {user: props.user.login, status: value}));
+const selectStatus = (status) => {
+  router.get(route('user.articles', {
+    user: props.user.login,
+    status,
+  }));
 };
 </script>
 
 <template>
-  <UserLayout
+  <PageLayout
     current-tab="articles"
     :user="user"
   >
-    <NavigationSelect
-      :navigation="navigation"
-      :current-link="currentLink"
-      @select="selectLink"
-    >
-      <ArticlesList
-        class="mt-4"
-        :articles="articles"
-      />
-    </NavigationSelect>
-  </UserLayout>
+    <Head :title="$ucfirst($trans('articles'))"/>
+
+    <MenuSelect
+      v-if="auth.user?.id === user.id"
+      :items="statuses"
+      :selected-item="currentLink"
+      @select="selectStatus"
+    />
+
+    <ArticlesList
+      class="mt-4"
+      :articles="articles"
+    />
+  </PageLayout>
 </template>

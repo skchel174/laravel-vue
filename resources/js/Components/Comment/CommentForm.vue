@@ -1,10 +1,10 @@
 <script setup>
 import {inject} from "vue";
-import useComment from "@/Hooks/useComment.js";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
+import {useForm} from "@inertiajs/vue3";
+import InputLabel from "@/Components/Form/InputLabel.vue";
+import InputError from "@/Components/Form/InputError.vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   articleId: {
@@ -15,16 +15,21 @@ const props = defineProps({
 
 const notify = inject('notify');
 
-const {form, sendForm} = useComment();
+const form = useForm({
+  text: '',
+});
 
 const onSubmit = () => {
-  const url = route('articles.comment.create', {article: props.articleId});
+  const url = route('articles.comment.create', {
+    article: props.articleId,
+  });
 
-  sendForm('post', url, {
+  form.post(url, {
+    preserveScroll: true,
     onSuccess: () => {
       notify('success', 'Comment successfully created');
       form.reset();
-    }
+    },
   });
 };
 </script>
@@ -52,11 +57,12 @@ const onSubmit = () => {
       :message="form.errors.text"
     />
 
-    <PrimaryButton
+    <FilledButton
+      color="primary"
       class="mt-4"
       :disabled="form.text.length === 0"
     >
       {{ $trans('Send') }}
-    </PrimaryButton>
+    </FilledButton>
   </form>
 </template>

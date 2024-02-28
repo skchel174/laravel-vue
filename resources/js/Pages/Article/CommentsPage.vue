@@ -1,17 +1,15 @@
 <script setup>
-import {Head, Link, usePage} from '@inertiajs/vue3';
 import {provide, ref, watch} from "vue";
-import MainWrapper from "@/Components/MainWrapper.vue";
-import AppHeader from "@/Components/AppHeader/AppHeader.vue";
-import AdvertWrapper from "@/Components/Advert/AdvertWrapper.vue";
-import NotificationWrapper from "@/Components/NotificationWrapper.vue";
+import {Head, Link, usePage} from '@inertiajs/vue3';
 import ArticleInfo from "@/Components/Article/ArticleInfo.vue";
 import ArticleTopics from "@/Components/Article/ArticleTopics.vue";
-import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
-import CommentForm from "@/Components/Comment/CommentForm.vue";
 import Comment from "@/Components/Comment/Comment.vue";
 import Pagination from "@/Components/Pagination/Pagination.vue";
+import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
+import MainLayout from "@/Components/Layouts/MainLayout.vue";
+import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
+import CommentForm from "@/Components/Comment/CommentForm.vue";
 
 const props = defineProps({
   article: {
@@ -32,15 +30,13 @@ const props = defineProps({
 
 const user = usePage().props.auth.user;
 
-const commentable = ref(`article_${props.article.id}`);
+provide('bookmarks', props.bookmarkedComments);
 
-const setCommentable = (value) => {
-  commentable.value = value;
-};
+const commentable = ref(`article_${props.article.id}`);
 
 provide('commentable', {
   commentable,
-  setCommentable,
+  setCommentable: value => commentable.value = value,
 });
 
 watch(commentable, () => {
@@ -51,78 +47,67 @@ watch(commentable, () => {
 </script>
 
 <template>
-  <Head :title="article.title"/>
+  <MainLayout>
+    <Head :title="article.title"/>
 
-  <AppHeader/>
+    <div class="p-4 pb-2 bg-white">
+      <ArticleHeader
+        class="mb-4"
+        :author="article.author"
+        :publish-date="article.publish_date"
+      />
 
-  <NotificationWrapper>
-    <MainWrapper>
-      <AdvertWrapper>
-        <div class="p-4 pb-2 bg-white">
-          <ArticleAuthor
-            class="mb-4"
-            :article-id="article.id"
-            :status="article.status"
-            :author="article.author"
-            :publish-date="article.publish_date"
-          />
+      <Link
+        class="mb-2 text-lg sm:text-xl text-gray-700 font-black hover:text-sky-775 transition duration-200"
+        :href="route('article', {article: article.id})"
+      >
+        {{ article.title }}
+      </Link>
 
-          <Link :href="route('article', {article: article.id})">
-            <h2 class="mb-2 text-lg sm:text-xl text-gray-700 font-black hover:text-sky-600 transition duration-300">
-              {{ article.title }}
-            </h2>
-          </Link>
+      <ArticleInfo
+        class="mb-2"
+        :views-count="article.views"
+        :duration="20"
+        :difficulty="article.difficulty"
+      />
 
-          <ArticleInfo
-            class="mb-2"
-            :views-count="article.views ?? 4352"
-            :duration="20"
-            :difficulty="article.difficulty"
-          />
+      <ArticleTopics
+        class="mb-4"
+        :topics="article.topics"
+      />
 
-          <ArticleTopics
-            class="mb-4"
-            :topics="article.topics"
-          />
+      <ArticleReaction
+        :article-id="article.id"
+        :is-bookmarked="article.is_bookmarked"
+        :comments-count="article.comments_count"
+      />
+    </div>
 
-          <ArticleReaction
-            :article-id="article.id"
-            :is-liked="article.is_liked"
-            :likes-count="article.likes_count"
-            :is-bookmarked="article.is_bookmarked"
-            :comments-count="article.comments_count"
-          />
-        </div>
+    <div id="comments" class="mt-4 bg-white">
+      <h3 class="p-4 text-lg text-gray-700 font-bold capitalize">
+        {{ $trans('comments') }}
 
-        <div
-          id="comments"
-          class="mt-4 bg-white"
-        >
-          <h3 class="p-4 text-lg text-gray-700 font-bold capitalize">
-            {{ $trans('comments') }}
+        <span class="ml-2 text-sky-675">
+          {{ article.comments_count }}
+        </span>
+      </h3>
 
-            <span class="ml-2 text-sky-600">
-              {{ article.comments_count }}
-            </span>
-          </h3>
+      <Comment
+        v-for="comment in comments.items"
+        :key="comment.id"
+        :comment="comment"
+      />
 
-          <Comment
-            class="mb-2"
-            v-for="comment in comments.items"
-            :key="comment.id"
-            :comment="comment"
-            :article-id="article.id"
-            :bookmarked-ids="bookmarkedComments"
-          />
+      <CommentForm
+        v-if="user && commentable === `article_${article.id}`"
+        :article-id="article.id"
+      />
+    </div>
 
-          <CommentForm
-            v-if="user && commentable === `article_${article.id}`"
-            :article-id="article.id"
-          />
-        </div>
+    <Pagination :items="comments"/>
 
-        <Pagination :items="comments"/>
-      </AdvertWrapper>
-    </MainWrapper>
-  </NotificationWrapper>
+    <template v-slot:sidebar>
+      <AdvertPlaceholder/>
+    </template>
+  </MainLayout>
 </template>

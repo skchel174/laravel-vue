@@ -1,9 +1,9 @@
 <script setup>
 import {useForm, usePage} from "@inertiajs/vue3";
-import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
-import InputError from "@/Components/InputError.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
+import TextInput from "@/Components/Form/TextInput.vue";
+import InputError from "@/Components/Form/InputError.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const user = usePage().props.auth.user;
 
@@ -23,7 +23,7 @@ const updatePassword = () => {
 </script>
 
 <template>
-  <section class="space-y-6">
+  <section class="max-w-2xl space-y-6">
     <header class="flex items-center space-x-4">
       <div>
         <div class="h-8 w-8 bg-cyan-600 flex items-center justify-center rounded-sm">
@@ -81,9 +81,12 @@ const updatePassword = () => {
       </div>
 
       <div class="flex items-center gap-4">
-        <PrimaryButton :disabled="form.processing">
+        <FilledButton
+          color="primary"
+          :disabled="form.processing"
+        >
           {{ $trans('Save') }}
-        </PrimaryButton>
+        </FilledButton>
 
         <Transition
           enter-active-class="transition ease-in-out"

@@ -1,10 +1,9 @@
 <script setup>
 import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
-import Pagination from "@/Components/Pagination/Pagination.vue";
-import UserLayout from "@/Layouts/User/UserLayout.vue";
-import CommentCard from "@/Components/Comment/CommentCard.vue";
-import NavigationSelect from "@/Pages/User/Partials/NavigationSelect.vue";
+import {router, Head} from "@inertiajs/vue3";
+import MenuSelect from "@/Pages/User/Partials/MenuSelect.vue";
+import CommentsList from "@/Components/CommentsList/CommentsList.vue";
+import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 
 const props = defineProps({
   comments: {
@@ -21,41 +20,33 @@ const props = defineProps({
 const currentLink = ref('comments');
 
 const navigation = {
-  articles: route('user.bookmarks.articles', {user: props.user.login}),
-  comments: route('user.bookmarks.comments', {user: props.user.login}),
+  articles: 'user.bookmarks.articles',
+  comments: 'user.bookmarks.comments',
 };
 
 const selectLink = (value) => {
-  router.get(navigation[value]);
+  router.get(route(navigation[value], {
+    user: props.user.login,
+  }));
 };
 </script>
 
 <template>
-  <UserLayout
+  <PageLayout
     current-tab="bookmarks"
     :user="user"
   >
-    <NavigationSelect
-      :navigation="Object.keys(navigation)"
-      :current-link="currentLink"
+    <Head :title="$ucfirst($trans('comments'))"/>
+
+    <MenuSelect
+      :items="Object.keys(navigation)"
+      :selected-item="currentLink"
       @select="selectLink"
-    >
-      <div
-        class="mt-4 space-y-4"
-        v-if="comments.items.length > 0"
-      >
-        <CommentCard
-          v-for="comment in comments.items"
-          :key="comment.id"
-          :comment="comment"
-        />
+    />
 
-        <Pagination :items="comments"/>
-      </div>
-
-      <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">
-        {{ $trans('empty_comments') }}
-      </div>
-    </NavigationSelect>
-  </UserLayout>
+    <CommentsList
+      class="mt-4"
+      :comments="comments"
+    />
+  </PageLayout>
 </template>

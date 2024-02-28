@@ -1,9 +1,9 @@
 <script setup>
 import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
-import UserLayout from "@/Layouts/User/UserLayout.vue";
-import NavigationSelect from "@/Pages/User/Partials/NavigationSelect.vue";
-import ArticlesList from "@/Components/Article/ArticlesList.vue";
+import {router, Head} from "@inertiajs/vue3";
+import ArticlesList from "@/Components/ArticlesList/ArticlesList.vue";
+import MenuSelect from "@/Pages/User/Partials/MenuSelect.vue";
+import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 
 const props = defineProps({
   articles: {
@@ -20,29 +20,33 @@ const props = defineProps({
 const currentLink = ref('articles');
 
 const navigation = {
-  articles: route('user.bookmarks.articles', {user: props.user.login}),
-  comments: route('user.bookmarks.comments', {user: props.user.login}),
+  articles: 'user.bookmarks.articles',
+  comments: 'user.bookmarks.comments',
 };
 
 const selectLink = (value) => {
-  router.get(navigation[value]);
+  router.get(route(navigation[value], {
+    user: props.user.login,
+  }));
 };
 </script>
 
 <template>
-  <UserLayout
+  <PageLayout
     current-tab="bookmarks"
     :user="user"
   >
-    <NavigationSelect
-      :navigation="Object.keys(navigation)"
-      :current-link="currentLink"
+    <Head :title="$ucfirst($trans('articles'))"/>
+
+    <MenuSelect
+      :items="Object.keys(navigation)"
+      :selected-item="currentLink"
       @select="selectLink"
-    >
-      <ArticlesList
-        class="mt-4"
-        :articles="articles"
-      />
-    </NavigationSelect>
-  </UserLayout>
+    />
+
+    <ArticlesList
+      class="mt-4"
+      :articles="articles"
+    />
+  </PageLayout>
 </template>

@@ -1,5 +1,5 @@
 <script setup>
-import InputLabel from "@/Components/InputLabel.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
 
 defineProps({
   lang: {
@@ -17,28 +17,28 @@ defineEmits(['select'])
       <InputLabel :value="$trans('Language')"/>
     </div>
 
-    <div class="inline-flex shrink-0 border border-gray-300 rounded">
+    <div class="inline-flex shrink-0 border border-gray-300 rounded-sm">
       <div
-        class="h-11 w-20 flex justify-center items-center cursor-pointer m-[-1px]"
-        :class="{'border border-sky-600 text-sky-600 rounded-l': lang === 'en'}"
+        class="h-11 w-24 flex justify-center items-center cursor-pointer m-[-1px]"
+        :class="{'border border-sky-675 text-sky-675 rounded-l': lang === 'en'}"
         @click="$emit('select', 'en')"
       >
         <span
           class="text-sm text-gray-500 select-none"
-          :class="{'text-sky-600': lang === 'en'}"
+          :class="{'text-sky-675': lang === 'en'}"
         >
           {{ $trans('English') }}
         </span>
       </div>
 
       <div
-        class="h-11 w-20 flex justify-center items-center cursor-pointer m-[-1px]"
-        :class="{'border border-sky-600 text-sky-600 rounded-r': lang === 'ru'}"
+        class="h-11 w-24 flex justify-center items-center cursor-pointer m-[-1px]"
+        :class="{'border border-sky-675 text-sky-675 rounded-r': lang === 'ru'}"
         @click="$emit('select', 'ru')"
       >
         <span
           class="text-sm text-gray-500 select-none"
-          :class="{'text-sky-600': lang === 'ru'}"
+          :class="{'text-sky-675': lang === 'ru'}"
         >
           {{ $trans('Russian') }}
         </span>

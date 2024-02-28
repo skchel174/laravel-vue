@@ -1,34 +1,50 @@
 <script setup>
-import {Link, usePage} from "@inertiajs/vue3";
-import Avatar from "@/Components/Avatar.vue";
+import {Link} from "@inertiajs/vue3";
+import UserAvatar from "@/Components/UserAvatar.vue";
 
-defineProps({
+const props = defineProps({
+  author: {
+    type: Object,
+    required: true,
+  },
+
+  status: {
+    type: String,
+  },
+
   publishDate: {
     type: String,
   },
 });
-
-const user = usePage().props.auth.user;
 </script>
 
 <template>
   <div class="flex items-center space-x-2">
-    <Link :href="route('user', {user: user.login})">
-      <Avatar
-        :src="user.avatar"
+    <Link :href="route('user', {user: author.login})">
+      <UserAvatar
         size="xs"
+        :src="author.avatar"
       />
     </Link>
 
-    <Link
-      class="text-sm font-bold hover:text-sky-600 transition duration-300"
-      :href="route('user', {user: user.login})"
-    >
-      {{ user.login }}
-    </Link>
+    <div class="flex flex-wrap items-center">
+      <Link
+        class="text-sm text-gray-600 font-semibold !leading-4 mr-2 hover:text-sky-775 transition duration-200"
+        :href="route('user', {user: author.login})"
+      >
+        {{ author.login }}
+      </Link>
 
-    <span class="text-sm text-gray-400 font-bold">
-      {{ publishDate ? $formatDate(publishDate, 'MMM D YYYY [at] kk:mm') : $trans('Never been published') }}
-    </span>
+      <div class="text-xs text-gray-400 font-medium">
+        <span v-if="publishDate">
+          {{ $formatDate(publishDate, 'MMM D YYYY kk:mm') }}
+        </span>
+
+        <span v-else>
+          {{ $trans(status) }}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
+

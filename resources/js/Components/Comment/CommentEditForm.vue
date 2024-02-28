@@ -1,10 +1,11 @@
 <script setup>
 import {inject} from "vue";
-import useComment from "@/Hooks/useComment.js";
-import InputLabel from "@/Components/InputLabel.vue";
+import {useForm} from "@inertiajs/vue3";
+import InputLabel from "@/Components/Form/InputLabel.vue";
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
-import InputError from "@/Components/InputError.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import InputError from "@/Components/Form/InputError.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   articleId: {
@@ -27,7 +28,9 @@ const emit = defineEmits(['close']);
 
 const notify = inject('notify');
 
-const {form, sendForm} = useComment({text: props.text});
+const form = useForm({
+  text: '',
+});
 
 const onSubmit = () => {
   const url = route('articles.comment.update', {
@@ -35,12 +38,13 @@ const onSubmit = () => {
     comment: props.commentId,
   });
 
-  sendForm('patch', url, {
+  form.patch(url, {
+    preserveScroll: true,
     onSuccess: () => {
       notify('success', 'Comment successfully updated');
       emit('close');
       form.reset();
-    }
+    },
   });
 };
 </script>
@@ -51,18 +55,14 @@ const onSubmit = () => {
     @submit.prevent="onSubmit"
   >
     <div class="flex justify-between items-center">
-      <InputLabel
-        class="!font-bold"
-        for="comment_form"
-        value="Edit comment"
-      />
+      <InputLabel value="Edit comment"/>
 
-      <span
-        class="material-icons !text-xl text-gray-400 cursor-pointer"
+      <MaterialIcon
+        class="!text-xl text-gray-400 cursor-pointer"
         @click="$emit('close')"
       >
         close
-      </span>
+      </MaterialIcon>
     </div>
 
     <TextareaInput
@@ -77,11 +77,12 @@ const onSubmit = () => {
       :message="form.errors.text"
     />
 
-    <PrimaryButton
+    <FilledButton
+      color="primary"
       class="mt-4"
       :disabled="form.text.length === 0"
     >
       {{ $trans('Save') }}
-    </PrimaryButton>
+    </FilledButton>
   </form>
 </template>

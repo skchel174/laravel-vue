@@ -1,10 +1,10 @@
 <script setup>
 import {ref} from "vue";
-import Avatar from "@/Components/Avatar.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
-import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
-import DangerOutlineButton from "@/Components/Buttons/DangerOutlineButton.vue";
+import UserAvatar from "@/Components/UserAvatar.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
+import InputError from "@/Components/Form/InputError.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   avatar: {
@@ -59,7 +59,7 @@ const deleteImage = () => {
     <div class="space-y-2 lg:space-y-3 flex flex-col">
       <InputLabel :value="$trans('Avatar')"/>
 
-      <Avatar
+      <UserAvatar
         class="hidden lg:flex"
         ref="avatarEl"
         :src="avatar"
@@ -72,32 +72,37 @@ const deleteImage = () => {
 
       <InputError :message="error"/>
 
-      <NeutralButton
+      <FilledButton
         v-if="isAvatarUpdated"
+        color="light"
         class="w-full flex flex-col space-y-1.5"
         @click.prevent="resetImage"
       >
         {{ $trans('Reset') }}
-      </NeutralButton>
+      </FilledButton>
 
       <div
         v-else
         class="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-1.5"
       >
-        <NeutralButton @click.prevent="triggerInput">
+        <FilledButton
+          color="light"
+          @click.prevent="triggerInput"
+        >
           {{ $trans('Select') }}
-        </NeutralButton>
+        </FilledButton>
 
-        <DangerOutlineButton
+        <OutlineButton
           v-if="avatar"
+          color="danger"
           @click.prevent="deleteImage"
         >
           {{ $trans('Delete') }}
-        </DangerOutlineButton>
+        </OutlineButton>
       </div>
     </div>
 
-    <Avatar
+    <UserAvatar
       class="mt-4 flex lg:hidden"
       ref="avatarEl"
       :src="avatar"

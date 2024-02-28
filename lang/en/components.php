@@ -8,8 +8,7 @@ return [
 
     'empty_articles' => 'Unfortunately there are no articles here yet',
     'empty_comments' => 'Unfortunately there are no comments here yet',
-    'empty_followings' => 'You haven\'t subscribed to anyone yet',
-    'empty_followers' => 'Nobody follows you',
+    'empty_followings' => 'Unfortunately there are no users here yet',
     'empty_request_result' => 'Unfortunately, but there\'s no results for this query',
 
     // Auth

@@ -1,11 +1,11 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
 import InputLength from "@/Components/Form/InputLength.vue";
 import AvatarInput from "@/Pages/Profile/Partials/AvatarInput.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 defineProps({
   status: {
@@ -60,7 +60,7 @@ const submit = () => {
           <div class="flex justify-between items-center">
             <InputLabel
               for="login"
-              :value="$trans('Login')"
+              value="Login"
             />
 
             <InputLength
@@ -137,9 +137,12 @@ const submit = () => {
         </div>
 
         <div class="mt-6 flex items-center">
-          <PrimaryButton :disabled="form.processing">
+          <FilledButton
+            color="primary"
+            :disabled="form.processing"
+          >
             {{ $trans('Save') }}
-          </PrimaryButton>
+          </FilledButton>
 
           <Transition
             enter-from-class="opacity-0"

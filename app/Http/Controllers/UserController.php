@@ -58,13 +58,12 @@ class UserController extends Controller
 
         if (Auth::check()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->whereId(Auth::id()),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId(Auth::id()),
             ]);
         }
 
         $articles = $query->with(['topics'])
-            ->withCount(['likes', 'relatedComments'])
+            ->withCount('relatedComments')
             ->whereStatus($status)
             ->orderBy('id', 'desc')
             ->paginate()
@@ -105,13 +104,12 @@ class UserController extends Controller
 
         if (Auth::check()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->whereId(Auth::id()),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId(Auth::id()),
             ]);
         }
 
         $articles = $query->with(['topics'])
-            ->withCount(['likes', 'relatedComments'])
+            ->withCount('relatedComments')
             ->orderBy('id', 'desc')
             ->paginate();
 

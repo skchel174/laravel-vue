@@ -33,8 +33,6 @@ class ArticleResource extends JsonResource
             'text' => $this->resource->text,
             'views' => $this->resource->views,
             'is_bookmarked' => (bool) $this->resource->is_bookmarked,
-            'is_liked' => (bool) $this->resource->is_liked,
-            'likes_count' => (int) $this->resource->likes_count,
             'comments_count' => (int) $this->resource->related_comments_count,
             'media_id' => $this->resource->article_media_id,
             'image' => $this->resource->feed_image?->getUrl(),

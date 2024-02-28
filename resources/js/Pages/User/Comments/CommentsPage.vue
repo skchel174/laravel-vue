@@ -1,7 +1,7 @@
 <script setup>
-import Pagination from "@/Components/Pagination/Pagination.vue";
-import UserLayout from "@/Layouts/User/UserLayout.vue";
-import CommentCard from "@/Components/Comment/CommentCard.vue";
+import {Head} from "@inertiajs/vue3";
+import CommentsList from "@/Components/CommentsList/CommentsList.vue";
+import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 
 const props = defineProps({
   comments: {
@@ -17,25 +17,15 @@ const props = defineProps({
 </script>
 
 <template>
-  <UserLayout
+  <PageLayout
     current-tab="comments"
     :user="user"
   >
-    <div
-      class="mt-4 space-y-4"
-      v-if="comments.items.length > 0"
-    >
-      <CommentCard
-        v-for="comment in comments.items"
-        :key="comment.id"
-        :comment="comment"
-      />
+    <Head :title="$ucfirst($trans('comments'))"/>
 
-      <Pagination :items="comments"/>
-    </div>
-
-    <div v-else class="mt-16 w-full flex flex-col items-center space-y-8 text-base text-gray-400 font-bold">
-      {{ $trans('empty_comments') }}
-    </div>
-  </UserLayout>
+    <CommentsList
+      class="mt-4"
+      :comments="comments"
+    />
+  </PageLayout>
 </template>

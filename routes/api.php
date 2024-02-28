@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\Articles\BookmarkController as ArticleBookmarkController;
 use App\Http\Controllers\Api\Articles\MediaController;
-use App\Http\Controllers\Api\Articles\LikesController;
 use App\Http\Controllers\Api\Comments\BookmarkController as CommentBookmarkController;
 use App\Http\Controllers\Api\Tags\TagsController;
 use App\Http\Controllers\Api\Topics\SubscriptionController as TopicSubscriptionController;
@@ -36,13 +35,6 @@ Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
             ->group(function () {
                 Route::post('', [ArticleBookmarkController::class, 'make']);
                 Route::delete('', [ArticleBookmarkController::class, 'remove']);
-            });
-
-        Route::prefix('/like')
-            ->name('api.articles.like')
-            ->group(function () {
-                Route::post('', [LikesController::class, 'add']);
-                Route::delete('', [LikesController::class, 'remove']);
             });
 
         Route::prefix('/comments/{comment}/bookmark')

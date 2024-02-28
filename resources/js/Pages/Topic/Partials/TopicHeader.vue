@@ -1,8 +1,11 @@
 <script setup>
-import SuccessButton from "@/Components/Buttons/SuccessButton.vue";
-import SuccessOutlineButton from "@/Components/Buttons/SuccessOutlineButton.vue";
+import useSubscription from "@/Hooks/useSubscription.js";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+import RotateLoader from 'vue-spinner/src/ClipLoader.vue'
 
-defineProps({
+const props = defineProps({
   topic: {
     type: Object,
     required: true,
@@ -13,6 +16,13 @@ defineProps({
     required: true,
   },
 });
+
+const {
+  loading,
+  subscription,
+  subscribe,
+  unsubscribe,
+} = useSubscription(props.subscription);
 </script>
 
 <template>
@@ -49,13 +59,46 @@ defineProps({
       </div>
 
       <div v-if="$page.props.auth.user">
-        <SuccessButton v-if="subscription" class="!px-8">
+        <FilledButton
+          v-if="subscription"
+          color="success"
+          class="sm:ml-2 h-7 w-32"
+          @click="unsubscribe(route('api.topics.subscription', {topic: topic.id}))"
+          :disabled="loading"
+        >
           {{ $trans('Subscribed') }}
-        </SuccessButton>
 
-        <SuccessOutlineButton v-else class="!px-8">
+          <RotateLoader
+            v-if="loading"
+            class="ml-2 flex"
+            size=".85rem"
+            color="#d1d5db"
+          />
+
+          <MaterialIcon
+            v-else
+            class="ml-1.5 !text-lg !leading-none"
+          >
+            close
+          </MaterialIcon>
+        </FilledButton>
+
+        <OutlineButton
+          v-else
+          color="success"
+          class="sm:ml-2 h-7 w-32"
+          @click="subscribe(route('api.topics.subscription', {topic: topic.id}))"
+          :disabled="loading"
+        >
           {{ $trans('Subscribe') }}
-        </SuccessOutlineButton>
+
+          <RotateLoader
+            v-if="loading"
+            class="ml-2 flex"
+            size=".85rem"
+            color="#d1d5db"
+          />
+        </OutlineButton>
       </div>
     </div>
 

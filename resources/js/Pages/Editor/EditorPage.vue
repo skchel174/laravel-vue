@@ -1,15 +1,13 @@
 <script setup>
 import {Head} from "@inertiajs/vue3";
-import {onMounted, provide, ref} from "vue";
-import useForm from "@/Hooks/Article/useForm.js";
+import {onMounted, ref} from "vue";
+import useArticleForm from "@/Hooks/useArticleForm.js";
 import useNotification from "@/Hooks/useNotification.js";
-import AppHeader from "@/Components/AppHeader/AppHeader.vue";
-import MainWrapper from "@/Components/MainWrapper.vue";
-import Editor from "@/Pages/Editor/Partials/Editor.vue";
-import Settings from "@/Pages/Editor/Partials/Settings.vue";
-import Notification from "@/Components/Notification.vue";
+import ArticleEditor from "@/Pages/Editor/Partials/ArticleEditor.vue";
+import ArticleSettings from "@/Pages/Editor/Partials/ArticleSettings.vue";
+import AppNotification from "@/Components/AppNotification.vue";
 import BackupNotice from "@/Pages/Editor/Partials/BackupNotice.vue";
-import PageHeader from "@/Pages/Editor/Partials/PageHeader.vue";
+import BaseLayout from "@/Components/Layouts/BaseLayout.vue";
 
 const props = defineProps({
   article: {
@@ -23,18 +21,18 @@ const props = defineProps({
   },
 });
 
-const tabs = {
-  Editor,
-  Settings,
+const tabs = {ArticleEditor, ArticleSettings};
+
+const currentTab = ref('ArticleEditor');
+
+const changeTab = (tab) => {
+  currentTab.value = tab;
+  window.scrollTo({top: 0, behavior: "smooth"});
 };
 
-const currentTab = ref('Settings');
-
-const {form, backup, update, send, restore} = useForm(props.article);
+const {form, backup, update, send, restore} = useArticleForm(props.article);
 
 const {notice, showNotification} = useNotification();
-
-provide('showNotification', showNotification);
 
 const submit = () => send({
   onSuccess: () => showNotification('success', props.status),
@@ -49,21 +47,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <Head :title="$trans('Article Editor')"/>
+  <BaseLayout>
+    <div class="min-h-full flex flex-col space-y-4">
+      <Head :title="$trans('Article Editor')"/>
 
-  <AppHeader/>
-
-  <MainWrapper>
-    <div class="flex-1 w-full flex flex-col space-y-4">
-      <PageHeader>
-        {{ $trans('Article Editor') }}
-      </PageHeader>
+      <header class="p-4 bg-white">
+        <h1 class="font-semibold text-2xl text-gray-700">
+          {{ $trans('Article Editor') }}
+        </h1>
+      </header>
 
       <BackupNotice
         v-if="backupVisible"
         :backup="backup"
         @restore="restore"
-        @close="() => backupVisible = false"
+        @close="backupVisible = false"
       />
 
       <KeepAlive>
@@ -71,14 +69,14 @@ onMounted(() => {
           :is="tabs[currentTab]"
           :form="form"
           :article="article"
-          @open-tab="tab => currentTab = tab"
+          @open-tab="changeTab"
           @update-form="update"
           @submit="submit"
         />
       </KeepAlive>
     </div>
 
-    <Notification
+    <AppNotification
       :type="notice.type"
       v-model:visible="notice.visible"
     >
@@ -89,6 +87,6 @@ onMounted(() => {
           {{ error }}
         </p>
       </div>
-    </Notification>
-  </MainWrapper>
+    </AppNotification>
+  </BaseLayout>
 </template>

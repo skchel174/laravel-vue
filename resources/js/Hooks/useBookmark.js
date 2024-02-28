@@ -1,25 +1,35 @@
-import {ref} from "vue";
 import axios from "axios";
+import {inject, ref} from "vue";
 import {usePage} from "@inertiajs/vue3";
 
 function useBookmark(state = false) {
   const isBookmarked = ref(state);
 
-  const user = usePage().props.auth.user;
+  const loading = ref(false);
 
-  const toggleBookmark = async (url) => {
-    if (!user) {
-      throw new Error('Login to bookmark');
+  const page = usePage();
+  const notify = inject('notify');
+
+  const toggleBookmark = (url) => {
+    if (!page.props.auth.user) {
+      notify('error', 'Authorization required');
+      return;
     }
 
-    isBookmarked.value = !isBookmarked.value;
+    loading.value = true;
 
-    const method = isBookmarked.value ? 'post' : 'delete';
+    const method = isBookmarked.value ? 'delete' : 'post';
 
-    return axios({method, url});
+    axios({method, url})
+      .then(() => isBookmarked.value = !isBookmarked.value)
+      .finally(() => loading.value = false);
   };
 
-  return {isBookmarked, toggleBookmark}
+  return {
+    loading,
+    isBookmarked,
+    toggleBookmark,
+  };
 }
 
 export default useBookmark;

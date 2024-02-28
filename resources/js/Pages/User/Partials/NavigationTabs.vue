@@ -29,7 +29,7 @@ const visibleTabs = {
 };
 
 const hiddenTabs = {
-  following: 'user.following',
+  followings: 'user.following',
   followers: 'user.followers',
 };
 
@@ -50,10 +50,6 @@ const selectTab = (tab) => {
 const indicators = usePage().props.indicators;
 
 const isHiddenTabsOpen = ref(false);
-
-const toggleHiddenTabs = () => {
-  isHiddenTabsOpen.value = !isHiddenTabsOpen.value;
-}
 </script>
 
 <template>
@@ -62,12 +58,12 @@ const toggleHiddenTabs = () => {
       v-for="(_, tab) in tabs"
       :key="tab"
       :selected="currentTab === tab"
-      @click="() => selectTab(tab)"
+      @click="selectTab(tab)"
     >
       <span>{{ $trans(tab) }}</span>
 
       <span
-        class="ml-1 text-sky-600"
+        class="ml-1 text-sky-675"
         v-if="indicators[tab] && indicators[tab] > 0"
       >
         {{ $formatCount(indicators[tab]) }}
@@ -77,7 +73,7 @@ const toggleHiddenTabs = () => {
     <Tab
       class="relative"
       v-if="!isTablet"
-      @click.stop="toggleHiddenTabs"
+      @click.stop="isHiddenTabsOpen = !isHiddenTabsOpen"
     >
       <ExpandButton
         class="uppercase"
@@ -97,12 +93,12 @@ const toggleHiddenTabs = () => {
             v-for="(_, tab) in hiddenTabs"
             :key="tab"
             :selected="currentTab === tab"
-            @click="() => selectTab(tab)"
+            @click="selectTab(tab)"
           >
             <span>{{ $trans(tab) }}</span>
 
             <span
-              class="ml-2 text-sky-600"
+              class="ml-2 text-sky-675"
               v-if="indicators[tab] && indicators[tab] > 0"
             >
               {{ $formatCount(indicators[tab]) }}

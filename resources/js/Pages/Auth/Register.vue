@@ -1,10 +1,10 @@
 <script setup>
 import {Head, Link, useForm} from '@inertiajs/vue3';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
-import AuthLayout from "@/Layouts/AuthLayout.vue";
-import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
+import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const form = useForm({
   login: '',
@@ -116,13 +116,14 @@ const submit = () => {
         </div>
 
         <div class="flex items-center justify-end !mt-12">
-          <PrimaryButton
+          <FilledButton
+            color="primary"
             class="w-full !py-4 !text-sm"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
             {{ $trans('Register') }}
-          </PrimaryButton>
+          </FilledButton>
         </div>
       </form>
 
@@ -132,7 +133,7 @@ const submit = () => {
 
           <Link
             :href="route('login')"
-            class="ml-1 text-sky-600 hover:text-sky-700 font-semibold transition duration-200 capitalize"
+            class="ml-1 text-sky-675 hover:text-sky-775 font-semibold transition duration-200 capitalize"
           >
             {{ $trans('Login') }}
           </Link>

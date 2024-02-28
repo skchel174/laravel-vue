@@ -30,7 +30,6 @@ class CategoryController extends Controller
 
         if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->whereId($user->id),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId($user->id),
             ]);
         }
@@ -44,15 +43,15 @@ class CategoryController extends Controller
         }
 
         $articles = $query->with(['topics'])
-            ->withCount(['likes', 'relatedComments'])
+            ->withCount('relatedComments')
             ->whereStatus(ArticleStatus::Published)
             ->orderByDesc('id')
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', $category->slug);
+        Inertia::share('nav.location', $category->slug);
 
-        return Inertia::render('Category/Articles/ArticlesPage', [
+        return Inertia::render('Category/ArticlesPage', [
             'category' => new CategoryResource($category),
             'articles' => new ArticlesResource($articles),
         ]);
@@ -70,9 +69,9 @@ class CategoryController extends Controller
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', $category->slug);
+        Inertia::share('nav.location', $category->slug);
 
-        return Inertia::render('Category/Topics/TopicsPage', [
+        return Inertia::render('Category/TopicsPage', [
             'category' => new CategoryResource($category),
             'topics' => new TopicsResource($topics),
             'order' => $order,
@@ -106,9 +105,9 @@ class CategoryController extends Controller
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', $category->slug);
+        Inertia::share('nav.location', $category->slug);
 
-        return Inertia::render('Category/Authors/AuthorsPage', [
+        return Inertia::render('Category/AuthorsPage', [
             'category' => new CategoryResource($category),
             'authors' => new UsersCollection($authors),
             'search' => $search,

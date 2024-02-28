@@ -55,7 +55,6 @@ use Illuminate\Support\Facades\Event;
  * @property-read Collection<Bookmark> $bookmarks
  * @property-read Collection<Article> $bookmarkedArticles
  * @property-read Collection<Comment> $bookmarkedComments
- * @property-read Collection<Article> $likedArticles
  * @property-read Collection<Topic> $topics
  * @property-read Collection<User> $followings
  * @property-read Collection<User> $followers
@@ -295,11 +294,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'author_id');
-    }
-
-    public function likedArticles(): BelongsToMany
-    {
-        return $this->belongsToMany(Article::class, 'liked_articles');
     }
 
     public function bookmarks(): HasMany

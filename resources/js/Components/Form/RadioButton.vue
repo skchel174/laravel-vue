@@ -1,8 +1,18 @@
 <script setup>
-defineProps({
-  selected: {
+import {ref} from "vue";
+
+const props = defineProps({
+  modelValue: {
     type: Boolean,
     required: true,
+  },
+
+  name: {
+    type: String,
+  },
+
+  id: {
+    type: String,
   },
 
   label: {
@@ -10,14 +20,24 @@ defineProps({
   },
 });
 
-defineEmits(['select'])
+const emit = defineEmits(['update:modelValue']);
+
+const inputRef = ref(null);
+
+const triggerRadioButton = () => {
+  inputRef.value.click();
+};
+
+const toggleRadioButton = (event) => {
+  emit('update:modelValue', event.target.value);
+};
 </script>
 
 <template>
   <div class="flex items-center space-x-2">
     <div
       class="h-[1.125rem] w-[1.125rem] flex justify-center items-center border border-gray-300 rounded-full cursor-pointer shrink-0"
-      @click="$emit('select')"
+      @click="triggerRadioButton"
     >
       <Transition
         enter-from-class="scale-0"
@@ -28,18 +48,27 @@ defineEmits(['select'])
         leave-to-class="scale-0"
       >
         <div
-          class="h-2.5 w-2.5 bg-sky-600 rounded-full"
-          v-if="selected"
+          class="h-2.5 w-2.5 bg-sky-675 rounded-full"
+          v-if="modelValue"
         />
       </Transition>
     </div>
 
-    <span
+    <input
+      :id="id"
+      type="radio"
+      class="hidden"
+      ref="inputRef"
+      :checked="modelValue"
+      @input="toggleRadioButton"
+    >
+
+    <label
       class="font-medium text-sm text-gray-700 cursor-pointer select-none"
       v-if="label"
-      @click="$emit('select')"
+      :for="id"
     >
       {{ label }}
-    </span>
+    </label>
   </div>
 </template>

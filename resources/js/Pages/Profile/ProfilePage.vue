@@ -6,7 +6,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileForm from './Partials/UpdateProfileForm.vue';
 import ChangeEmailForm from "@/Pages/Profile/Partials/ChangeEmailForm.vue";
-import SettingsLayout from "@/Layouts/SettingsLayout.vue";
+import BaseLayout from "@/Components/Layouts/BaseLayout.vue";
 
 const props = defineProps({
   status: {
@@ -33,13 +33,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <SettingsLayout>
+  <BaseLayout>
     <Head :title="$trans('Profile Settings')"/>
 
     <div class="space-y-4">
       <header class="p-4 sm:px-8 sm:py-6 bg-white">
         <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
-          {{ $trans('Profile Settings') }}
+          {{ $trans('Profile settings') }}
         </h1>
       </header>
 
@@ -59,5 +59,5 @@ onMounted(() => {
         <DeleteUserForm/>
       </div>
     </div>
-  </SettingsLayout>
+  </BaseLayout>
 </template>

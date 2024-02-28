@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
-import NeutralButton from "@/Components/Buttons/NeutralButton.vue";
-import InputLabel from "@/Components/InputLabel.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   src: {
@@ -64,28 +64,31 @@ const openFullImage = () => {
         >
 
         <div class="flex absolute bottom-3 right-3 z-10 space-x-1">
-          <NeutralButton
+          <FilledButton
+            color="light"
             class="!py-1"
             @click.prevent="triggerInput"
           >
             {{ $trans('Change') }}
-          </NeutralButton>
+          </FilledButton>
 
-          <NeutralButton
+          <FilledButton
             v-if="src"
+            color="light"
             class="!py-1"
             @click.prevent="deleteImage"
           >
             {{ $trans('Delete') }}
-          </NeutralButton>
+          </FilledButton>
 
-          <NeutralButton
+          <FilledButton
             v-else
+            color="light"
             class="!py-1"
             @click.prevent="resetImage"
           >
             {{ $trans('Reset') }}
-          </NeutralButton>
+          </FilledButton>
         </div>
       </div>
 

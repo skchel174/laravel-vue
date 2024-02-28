@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 return [
     'Feed' => 'Лента',
+    'Classic' => 'Классический',
+    'Compact' => 'Компактный',
 
     'Save' => 'Сохранить',
     'Send' => 'Отправить',
@@ -41,7 +43,7 @@ return [
     'Information' => 'Информация',
     'Activity' => 'Активность',
     'Registered' => 'Зарегистрирован',
-    'Contribution to topics' => 'Вклад',
+    'Topic contribution' => 'Вклад',
     'Publications' => 'Публикации',
     'Subscribers' => 'Подписчики',
     'Belongs to topics' => 'Подписан на темы',
@@ -53,9 +55,11 @@ return [
     'authors' => 'авторы',
     'comments' => 'комментарии',
     'bookmarks' => 'закладки',
-    'following' => 'подписки',
+    'followings' => 'подписки',
     'followers' => 'подписчики',
     'Follow' => 'Подписаться',
+    'Following' => 'Подписка',
+    'Subscriptions' => 'Подписки',
     'Subscribed' => 'Подписан',
     'Subscribe' => 'Подписаться',
     'My feed' => 'Моя лента',
@@ -64,12 +68,13 @@ return [
 
     'empty_articles' => 'К сожалению, здесь пока нет статей',
     'empty_comments' => 'К сожалению, здесь пока нет комментариев',
-    'empty_followings' => 'Вы еще ни на кого не подписаны',
-    'empty_followers' => 'На вас никто не подписан',
+    'empty_followings' => 'К сожалению, здесь пока нет пользователей',
     'empty_request_result' => 'К сожалению, по этому запросу нет результатов',
 
     'Unfortunately no topics found' => 'К сожаление тем не найдено',
     'Suggest a new topic' => 'Предложить новую тему',
+
+    'Page settings' => 'Настройки страницы',
 
     // Article
     'Tags' => 'Теги',
@@ -78,7 +83,6 @@ return [
 
     'moderated' => 'Модерация',
     'published' => 'Опубликовано',
-    'deferred' => 'Снято с публикации',
     'draft' => 'Черновик',
     'deleted' => 'Удалено',
 
@@ -87,13 +91,12 @@ return [
     'hard' => 'сложно',
     'Not selected' => 'Не выбрано',
 
-    'Never been published' => 'Никогда не публиковалась',
     'Link was copied' => 'Ссылка скопирована в буфер обмена',
-    'Login to like this article' => 'Для этого действия необходима регистрация',
     'Article added to bookmarks' => 'Статья добавлена в избранное',
 
     'Your comment' => 'Ваш комментарий',
     'Show comments' => 'Показать комментарии',
+    'Authorization required' => 'Требуется авторизация',
     'Comment added to bookmarks' => 'Комментарий добавлен в избранное',
     'Comment successfully created' => 'Комментарий успешно создан',
     'Comment successfully updated' => 'Комментарий успешно обновлен',
@@ -112,6 +115,7 @@ return [
     'Avatar' => 'Аватар',
     'New password' => 'Новый пароль',
     'Current password' => 'Текущий пароль',
+    'Password confirmation' => 'Повторите пароль',
     'Actual name' => 'Настоящее имя',
     'Describe yourself' => 'Опишите себя',
     'Change Email' => 'Изменить email',

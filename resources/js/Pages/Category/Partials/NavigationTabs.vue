@@ -31,16 +31,14 @@ const selectTab = (tab) => {
 </script>
 
 <template>
-  <nav>
-    <Tabs>
-      <Tab
-        v-for="(_, tab) in navigationTabs"
-        :key="tab"
-        :selected="tab === currentTab"
-        @click="selectTab(tab)"
-      >
-        {{ $trans(tab) }}
-      </Tab>
-    </Tabs>
-  </nav>
+  <Tabs>
+    <Tab
+      v-for="(_, tab) in navigationTabs"
+      :key="tab"
+      :selected="tab === currentTab"
+      @click="selectTab(tab)"
+    >
+      {{ $trans(tab) }}
+    </Tab>
+  </Tabs>
 </template>

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Models\Article;
 
 use App\Events\Article\ArticleModerated;
-use App\Exceptions\Article\ArticleAlreadyLiked;
 use App\Exceptions\Article\ArticleAlreadyModerated;
 use App\Exceptions\Article\ArticleNotDeleted;
-use App\Exceptions\Article\ArticleNotLiked;
 use App\Exceptions\Article\ArticlePublished;
 use App\Exceptions\Article\ArticleWasNotModerated;
 use App\Models\Category\Category;
@@ -53,8 +51,6 @@ use Throwable;
  * @property-read ArticleMedia|null $media
  * @property-read int|null $comments_count
  * @property-read int|null $related_comments_count
- * @property-read bool|null $is_liked
- * @property-read int|null $likes_count
  * @property-read bool|null $is_bookmarked
  * @property CarbonImmutable|null $published_at
  * @property-read CarbonImmutable $created_at
@@ -150,31 +146,6 @@ class Article extends Model
         ]);
     }
 
-    public function isLiked(User $user): bool
-    {
-        return $this->likes()
-            ->where('id', $user->id)
-            ->exists();
-    }
-
-    public function addLike(User $user): void
-    {
-        if ($this->isLiked($user)) {
-            throw new ArticleAlreadyLiked();
-        }
-
-        $this->likes()->attach($user);
-    }
-
-    public function removeLike(User $user): void
-    {
-        if (!$this->isLiked($user)) {
-            throw new ArticleNotLiked();
-        }
-
-        $this->likes()->detach($user);
-    }
-
     public function restore(): void
     {
         if (!$this->status->isDeleted()) {
@@ -233,11 +204,6 @@ class Article extends Model
     public function bookmarks(): MorphToMany
     {
         return $this->morphToMany(User::class, 'bookmark', 'bookmarks');
-    }
-
-    public function likes(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'liked_articles');
     }
 
     public function media(): BelongsTo

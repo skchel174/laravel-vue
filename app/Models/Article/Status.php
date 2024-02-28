@@ -12,7 +12,6 @@ enum Status: string implements CastsAttributes
 {
     case Moderated = 'moderated';
     case Published = 'published';
-    case Deferred = 'deferred';
     case Draft = 'draft';
     case Deleted = 'deleted';
 

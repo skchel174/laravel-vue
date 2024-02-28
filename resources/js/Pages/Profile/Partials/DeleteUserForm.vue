@@ -2,11 +2,10 @@
 import {ref} from 'vue';
 import {useForm} from '@inertiajs/vue3';
 import Modal from '@/Components/Modal.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
-import DangerButton from '@/Components/Buttons/DangerButton.vue';
-import SecondaryButton from '@/Components/Buttons/NeutralButton.vue';
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);
@@ -56,9 +55,12 @@ const closeModal = () => {
       </div>
     </header>
 
-    <DangerButton @click="openModal">
+    <FilledButton
+      color="danger"
+      @click="openModal"
+    >
       {{ $trans('Delete Account') }}
-    </DangerButton>
+    </FilledButton>
 
     <Modal v-model:open="confirmingUserDeletion">
       <div class="p-6">
@@ -82,7 +84,7 @@ const closeModal = () => {
             ref="passwordInput"
             type="password"
             class="mt-1 block w-3/4"
-            placeholder="Password"
+            :placeholder="$trans('Password')"
             v-model="form.password"
           />
 
@@ -93,18 +95,22 @@ const closeModal = () => {
         </div>
 
         <div class="mt-6 flex justify-end">
-          <SecondaryButton @click.prevent="closeModal">
+          <FilledButton
+            color="secondary"
+            @click.prevent="closeModal"
+          >
             {{ $trans('Cancel') }}
-          </SecondaryButton>
+          </FilledButton>
 
-          <DangerButton
+          <FilledButton
+            color="danger"
             class="ms-3"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
             @click.prevent="deleteUser"
           >
             {{ $trans('Delete') }}
-          </DangerButton>
+          </FilledButton>
         </div>
       </div>
     </Modal>

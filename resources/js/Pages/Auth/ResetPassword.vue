@@ -1,10 +1,10 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
 import {Head, useForm} from '@inertiajs/vue3';
-import AuthLayout from "@/Layouts/AuthLayout.vue";
+import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
+import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
   token: {
@@ -82,13 +82,14 @@ const submit = () => {
         </div>
 
         <div class="flex items-center justify-end mt-4">
-          <PrimaryButton
+          <FilledButton
+            color="primary"
             class="w-full !py-4 !text-sm"
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
             {{ $trans('Reset password') }}
-          </PrimaryButton>
+          </FilledButton>
         </div>
       </form>
     </div>
