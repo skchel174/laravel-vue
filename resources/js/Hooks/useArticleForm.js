@@ -1,9 +1,9 @@
 import {onMounted, ref} from "vue";
-import {useForm as useInertiaForm} from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import moment from "moment";
 
-function useForm(article = null) {
-  const form = useInertiaForm({
+function useArticleForm(article = null) {
+  const form = useForm({
     text: article?.text ?? '',
     title: article?.title ?? '',
     summary: article?.summary ?? '',
@@ -72,4 +72,4 @@ function useForm(article = null) {
   };
 }
 
-export default useForm;
+export default useArticleForm;

@@ -1,7 +1,7 @@
 <script setup>
 import {Head} from "@inertiajs/vue3";
-import {onMounted, provide, ref} from "vue";
-import useForm from "@/Hooks/Article/useForm.js";
+import {onMounted, ref} from "vue";
+import useArticleForm from "@/Hooks/useArticleForm.js";
 import useNotification from "@/Hooks/useNotification.js";
 import ArticleEditor from "@/Pages/Editor/Partials/ArticleEditor.vue";
 import ArticleSettings from "@/Pages/Editor/Partials/ArticleSettings.vue";
@@ -30,11 +30,9 @@ const changeTab = (tab) => {
   window.scrollTo({top: 0, behavior: "smooth"});
 };
 
-const {form, backup, update, send, restore} = useForm(props.article);
+const {form, backup, update, send, restore} = useArticleForm(props.article);
 
 const {notice, showNotification} = useNotification();
-
-provide('showNotification', showNotification);
 
 const submit = () => send({
   onSuccess: () => showNotification('success', props.status),

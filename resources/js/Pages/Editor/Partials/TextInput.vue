@@ -25,7 +25,7 @@ defineProps({
 
 defineEmits(['update:content', 'focus', 'blur']);
 
-const showNotification = inject('showNotification');
+const notify = inject('notify');
 
 const uploadImage = async (file) => {
   try {
@@ -48,7 +48,7 @@ const uploadImage = async (file) => {
     return response.data.image.md;
   } catch (error) {
     //TODO: added api errors handler
-    showNotification('error', error.message);
+    notify('error', error.message);
   }
 }
 
