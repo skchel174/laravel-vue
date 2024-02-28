@@ -141,6 +141,7 @@ onUnmounted(() => {
       ref="el"
       class="absolute min-w-[10rem] shadow-md rounded border border-gray-200 bg-white z-50"
       v-show="open"
+      @click.stop
     >
       <slot/>
     </div>

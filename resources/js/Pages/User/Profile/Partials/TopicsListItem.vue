@@ -1,10 +1,12 @@
 <script setup>
 import {ref} from "vue";
 import {Link} from "@inertiajs/vue3";
-import Popover from "@/Components/Popover.vue";
+import useSubscription from "@/Hooks/useSubscription.js";
 import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
-import useSubscription from "@/Hooks/Topic/useSubscription.js";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+import RotateLoader from 'vue-spinner/src/ClipLoader.vue'
+import Popover from "@/Components/Popover.vue";
 
 const props = defineProps({
   topic: {
@@ -17,14 +19,19 @@ const topicEl = ref(null);
 
 const isPopoverOpen = ref(false);
 
-const {subscribed, subscribe, unsubscribe} = useSubscription(props.topic.is_subscribed)
+const {
+  loading,
+  subscription,
+  subscribe,
+  unsubscribe,
+} = useSubscription(props.topic.is_subscribed)
 </script>
 
 <template>
   <div
     ref="topicEl"
     class="mb-2 mr-2 px-2 py-0.5 bg-blue-200 rounded-sm cursor-pointer select-none"
-    :class="{'!bg-lime-200': subscribed}"
+    :class="{'!bg-lime-200': subscription}"
     @click="isPopoverOpen = !isPopoverOpen"
   >
     <span class="text-sm text-gray-600 font-medium">
@@ -56,19 +63,43 @@ const {subscribed, subscribe, unsubscribe} = useSubscription(props.topic.is_subs
 
           <div v-if="$page.props.auth.user">
             <FilledButton
-              v-if="subscribed"
+              v-if="subscription"
               color="success"
-              @click="unsubscribe(topic.id)"
+              class="!px-4"
+              @click="unsubscribe(route('api.topics.subscription', {topic: topic.id}))"
+              :disabled="loading"
             >
               {{ $trans('Subscribed') }}
+
+              <RotateLoader
+                v-if="loading"
+                class="ml-1.5 flex"
+                size=".85rem"
+                color="#d1d5db"
+              />
+
+              <MaterialIcon
+                v-else
+                class="ml-1.5 !text-lg !leading-none"
+              >
+                close
+              </MaterialIcon>
             </FilledButton>
 
             <OutlineButton
               v-else
               color="success"
-              @click="subscribe(topic.id)"
+              @click="subscribe(route('api.topics.subscription', {topic: topic.id}))"
+              :disabled="loading"
             >
               {{ $trans('Subscribe') }}
+
+              <RotateLoader
+                v-if="loading"
+                class="ml-1.5 flex"
+                size=".85rem"
+                color="#d1d5db"
+              />
             </OutlineButton>
           </div>
         </div>
