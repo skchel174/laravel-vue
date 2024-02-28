@@ -49,7 +49,7 @@ class CategoryController extends Controller
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', $category->slug);
+        Inertia::share('nav.location', $category->slug);
 
         return Inertia::render('Category/ArticlesPage', [
             'category' => new CategoryResource($category),
@@ -69,7 +69,7 @@ class CategoryController extends Controller
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', $category->slug);
+        Inertia::share('nav.location', $category->slug);
 
         return Inertia::render('Category/TopicsPage', [
             'category' => new CategoryResource($category),
@@ -105,7 +105,7 @@ class CategoryController extends Controller
             ->paginate()
             ->withQueryString();
 
-        Inertia::share('nav_location', $category->slug);
+        Inertia::share('nav.location', $category->slug);
 
         return Inertia::render('Category/AuthorsPage', [
             'category' => new CategoryResource($category),

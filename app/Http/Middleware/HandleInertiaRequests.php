@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Category\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -33,25 +33,21 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
 
-            'locale' => App::getLocale(),
-            'langs' => Session::get('langs', [App::getLocale()]),
-            'view' => Session::get('view', 'classic'),
-
             'app' => [
-                'name' => config('app.name'),
+                'name' =>  config('app.name'),
+                'locale' => App::getLocale(),
+                'langs' => Session::get('langs', [App::getLocale()]),
+                'view' => Session::get('view', 'classic'),
+            ],
+
+            'nav' => [
+              'location' => null,
+              'items' => $this->getNavItems(),
             ],
 
             'auth' => [
-                'user' => $request->user()
-                    ? UserResource::make($request->user())
-                    : null,
+                'user' => $this->getAuthUser(),
             ],
-
-            'nav_location' => null,
-
-            'nav_items' => $this->getNavItems(),
-
-            'categories' => fn() => CategoryResource::collection(Category::all()),
 
             'trans' => fn() => trans('components'),
 
@@ -60,6 +56,15 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
         ];
+    }
+
+    private function getAuthUser(): ?UserResource
+    {
+        if ($user = Auth::user()) {
+            return new UserResource($user);
+        }
+
+        return null;
     }
 
     private function getNavItems(): array

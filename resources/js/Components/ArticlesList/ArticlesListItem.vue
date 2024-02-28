@@ -59,7 +59,7 @@ const openArticle = () => {
     />
 
     <div
-      v-if="$page.props.view === 'classic'"
+      v-if="$page.props.app.view === 'classic'"
       class="mb-6 space-y-4"
     >
       <ArticleTopics :topics="article.topics"/>

@@ -43,13 +43,13 @@ const isMenuOpen = ref(false);
 
         <MenuList>
           <Link
-            v-for="item in $page.props.nav_items"
+            v-for="item in $page.props.nav.items"
             :key="item.id"
             :href="item.url"
           >
             <MenuItem
               class="px-6 py-3.5"
-              :selected="$page.props.nav_location === item.id"
+              :selected="$page.props.nav.location === item.id"
             >
               {{ $trans(item.title) }}
             </MenuItem>

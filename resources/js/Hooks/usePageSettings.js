@@ -4,9 +4,9 @@ import {router, usePage} from "@inertiajs/vue3";
 function usePageSettings() {
   const page = usePage();
 
-  const view = ref(page.props.view);
-  const locale = ref(page.props.locale);
-  const langs = ref(page.props.langs);
+  const view = ref(page.props.app.view);
+  const locale = ref(page.props.app.locale);
+  const langs = ref(page.props.app.langs);
 
   const toggleLang = (locale) => {
     if (langs.value.includes(locale)) {
