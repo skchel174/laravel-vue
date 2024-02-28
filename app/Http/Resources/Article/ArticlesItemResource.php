@@ -31,8 +31,6 @@ class ArticlesItemResource extends JsonResource
             'views' => $this->resource->views,
             'button_text' => $this->resource->button_text,
             'is_bookmarked' => (bool)$this->resource->is_bookmarked,
-            'is_liked' => (bool)$this->resource->is_liked,
-            'likes_count' => (int) $this->resource->likes_count,
             'comments_count' => (int) $this->resource->related_comments_count,
             'image' => $this->resource->feed_image?->getUrl(),
             'publish_date' => $this->resource->published_at?->format('d-m-Y H:i'),

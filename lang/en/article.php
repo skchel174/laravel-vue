@@ -14,6 +14,4 @@ return [
     'already_published' => 'Article already published',
     'not_published' => 'The article not published',
     'not_deleted' => 'Article not deleted',
-    'not_liked' => 'The article was not liked by the user',
-    'already_liked' => 'The article has already been liked by the user',
 ];

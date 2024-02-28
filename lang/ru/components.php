@@ -91,7 +91,6 @@ return [
 
     'Never been published' => 'Никогда не публиковалась',
     'Link was copied' => 'Ссылка скопирована в буфер обмена',
-    'Login to like this article' => 'Для этого действия необходима регистрация',
     'Article added to bookmarks' => 'Статья добавлена в избранное',
 
     'Your comment' => 'Ваш комментарий',

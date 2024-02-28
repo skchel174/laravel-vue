@@ -64,7 +64,6 @@ class ArticleController extends Controller
 
         if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->where('id', $user->id),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->where('id', $user->id),
             ]);
         }
@@ -78,7 +77,7 @@ class ArticleController extends Controller
         }
 
         $articles = $query
-            ->withCount(['likes', 'relatedComments'])
+            ->withCount('relatedComments')
             ->with(['topics'])
             ->orderByDesc('id')
             ->paginate()
@@ -97,7 +96,6 @@ class ArticleController extends Controller
 
         if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->where('id', $user->id),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->where('id', $user->id),
             ]);
 
@@ -109,7 +107,7 @@ class ArticleController extends Controller
         }
 
         $articles = $query
-            ->withCount(['likes', 'relatedComments'])
+            ->withCount('relatedComments')
             ->with(['topics'])
             ->orderByDesc('id')
             ->paginate()
@@ -252,13 +250,12 @@ class ArticleController extends Controller
 
         if (Auth::check()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->whereId(Auth::id()),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId(Auth::id()),
             ]);
         }
 
         return $query->with(['topics', 'tags'])
-            ->withCount('likes', 'bookmarks', 'relatedComments')
+            ->withCount('bookmarks', 'relatedComments')
             ->whereStatus(Status::Published)
             ->findOrFail($articleId);
     }

@@ -30,7 +30,6 @@ class TopicController extends Controller
 
         if ($user = Auth::user()) {
             $query->withExists([
-                'likes as is_liked' => fn(Builder $query) => $query->whereId($user->id),
                 'bookmarks as is_bookmarked' => fn(Builder $query) => $query->whereId($user->id),
             ]);
         }
@@ -44,7 +43,7 @@ class TopicController extends Controller
         }
 
         $articles = $query->with(['topics'])
-            ->withCount(['likes', 'relatedComments'])
+            ->withCount('relatedComments')
             ->whereStatus(ArticleStatus::Published)
             ->orderByDesc('id')
             ->paginate()

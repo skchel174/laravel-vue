@@ -57,11 +57,6 @@ class ArticleFactory extends Factory
         return $this->hasAttached($user, relationship: 'bookmarks');
     }
 
-    public function likedBy(User $user): ArticleFactory
-    {
-        return $this->hasAttached($user, relationship: 'likes');
-    }
-
     public function withTopics(Collection $topics): ArticleFactory
     {
         $categories = $topics->pluck('category_id')->unique();

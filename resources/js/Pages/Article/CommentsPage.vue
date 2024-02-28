@@ -80,8 +80,6 @@ watch(commentable, () => {
 
       <ArticleReaction
         :article-id="article.id"
-        :is-liked="article.is_liked"
-        :likes-count="article.likes_count"
         :is-bookmarked="article.is_bookmarked"
         :comments-count="article.comments_count"
       />
