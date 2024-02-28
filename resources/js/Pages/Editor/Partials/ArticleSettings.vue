@@ -137,7 +137,7 @@ const saveToDrafts = () => {
 
       <span
         class="material-icons absolute top-1 right-2 !text-xl text-gray-600 cursor-pointer"
-        @click="() => isConfirmationOpen = false"
+        @click="isConfirmationOpen = false"
       >
         close
       </span>

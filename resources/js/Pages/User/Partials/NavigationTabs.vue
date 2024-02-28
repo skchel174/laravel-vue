@@ -93,7 +93,7 @@ const isHiddenTabsOpen = ref(false);
             v-for="(_, tab) in hiddenTabs"
             :key="tab"
             :selected="currentTab === tab"
-            @click="() => selectTab(tab)"
+            @click="selectTab(tab)"
           >
             <span>{{ $trans(tab) }}</span>
 
