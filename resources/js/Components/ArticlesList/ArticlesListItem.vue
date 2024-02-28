@@ -16,10 +16,10 @@ const props = defineProps({
   },
 });
 
-const readable = computed(() => props.article.status === 'published');
+const published = computed(() => props.article.status === 'published');
 
 const openArticle = () => {
-  if (readable.value) {
+  if (published.value) {
     router.get(route('article', {article: props.article.id}));
   }
 };
@@ -43,7 +43,7 @@ const openArticle = () => {
 
     <h2
       class="mb-1 text-lg sm:text-xl text-gray-700 font-black"
-      :class="{'hover:text-sky-775 transition duration-200 cursor-pointer': readable}"
+      :class="{'hover:text-sky-775 transition duration-200 cursor-pointer': published}"
       @click="openArticle"
     >
       {{ article.title }}
@@ -64,7 +64,8 @@ const openArticle = () => {
 
       <!--   TODO: remove demo image link  -->
       <img
-        class="w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm cursor-pointer"
+        class="w-full max-w-full max-h-[28rem] aspect-square object-cover rounded-sm"
+        :class="{'cursor-pointer': published}"
         :src="article.image ?? 'https://loremflickr.com/640/480/business?lock=' + article.id"
         alt="img"
         @click="openArticle"
@@ -78,6 +79,7 @@ const openArticle = () => {
       </p>
 
       <OutlineButton
+        v-if="published"
         color="primary"
         class="inline-block !py-1.5"
         @click="openArticle"
@@ -96,6 +98,7 @@ const openArticle = () => {
     </div>
 
     <ArticleReaction
+      v-if="published"
       :article-id="article.id"
       :is-bookmarked="article.is_bookmarked"
       :comments-count="article.comments_count"
