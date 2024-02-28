@@ -10,7 +10,6 @@ import CommentsButton from "@/Pages/Article/Partials/CommentsButton.vue";
 import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
-import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import AuthorWidget from "@/Pages/Article/Partials/AuthorWidget.vue";
 
 const props = defineProps({
@@ -32,12 +31,11 @@ const props = defineProps({
 
     <div class="bg-white">
       <div class="p-4">
-        <ArticleHeader class="mb-2">
-          <ArticleAuthor
-            :author="article.author"
-            :publish-date="article.publish_date"
-          />
-        </ArticleHeader>
+        <ArticleHeader
+          class="mb-2"
+          :author="article.author"
+          :publish-date="article.publish_date"
+        />
 
         <h2 class="mb-1 text-lg sm:text-xl text-gray-700 font-black">
           {{ article.title }}

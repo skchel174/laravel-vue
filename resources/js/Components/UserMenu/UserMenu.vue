@@ -15,7 +15,7 @@ const isTablet = useMedia('(max-width: 1024px)');
 
 const isMenuOpen = ref(false);
 
-const {openLangSettings} = inject('langSettings');
+const {openSettings} = inject('pageSettings');
 </script>
 
 <template>
@@ -30,7 +30,7 @@ const {openLangSettings} = inject('langSettings');
     >
       <MaterialIcon
         class="!text-inherit cursor-pointer"
-        @click="openLangSettings"
+        @click="openSettings"
       >
         preview
       </MaterialIcon>

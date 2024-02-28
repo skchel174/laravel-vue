@@ -5,7 +5,6 @@ import ArticleReaction from "@/Components/Article/ArticleReaction.vue";
 import ArticleInfo from "@/Components/Article/ArticleInfo.vue";
 import ArticleTopics from "@/Components/Article/ArticleTopics.vue";
 import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
-import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import ArticleActions from "@/Components/Article/ArticleActions.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
@@ -28,12 +27,11 @@ const openArticle = () => {
 
 <template>
   <article class="p-4 bg-white flex flex-col items-start">
-    <ArticleHeader class="mb-4">
-      <ArticleAuthor
-        :author="article.author"
-        :publish-date="article.publish_date"
-      />
-
+    <ArticleHeader
+      class="mb-4"
+      :author="article.author"
+      :publish-date="article.publish_date"
+    >
       <template v-slot:actions>
         <ArticleActions
           v-if="article.author.id === $page.props.auth.user?.id"

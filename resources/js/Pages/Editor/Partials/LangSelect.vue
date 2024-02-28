@@ -17,9 +17,9 @@ defineEmits(['select'])
       <InputLabel :value="$trans('Language')"/>
     </div>
 
-    <div class="inline-flex shrink-0 border border-gray-300 rounded">
+    <div class="inline-flex shrink-0 border border-gray-300 rounded-sm">
       <div
-        class="h-11 w-20 flex justify-center items-center cursor-pointer m-[-1px]"
+        class="h-11 w-24 flex justify-center items-center cursor-pointer m-[-1px]"
         :class="{'border border-sky-675 text-sky-675 rounded-l': lang === 'en'}"
         @click="$emit('select', 'en')"
       >
@@ -32,7 +32,7 @@ defineEmits(['select'])
       </div>
 
       <div
-        class="h-11 w-20 flex justify-center items-center cursor-pointer m-[-1px]"
+        class="h-11 w-24 flex justify-center items-center cursor-pointer m-[-1px]"
         :class="{'border border-sky-675 text-sky-675 rounded-r': lang === 'ru'}"
         @click="$emit('select', 'ru')"
       >

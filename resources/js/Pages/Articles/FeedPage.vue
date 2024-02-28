@@ -33,7 +33,7 @@ defineProps({
             settings
           </MaterialIcon>
 
-          <span>Subscriptions</span>
+          <span>{{ $trans('Subscriptions') }}</span>
         </OutlineButton>
       </header>
 

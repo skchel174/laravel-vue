@@ -4,6 +4,7 @@ import Checkbox from "@/Components/Form/Checkbox.vue";
 import RadioButton from "@/Components/Form/RadioButton.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import PageSettingsSection from "@/Components/PageSettings/PageSettingsSection.vue";
 
 const emit = defineEmits(['close']);
 
@@ -19,7 +20,7 @@ const savePreferences = () => {
   <div>
     <header class="px-4 py-6 flex justify-between items-center">
       <h3 class="text-lg text-gray-700 font-semibold">
-        {{ $trans('Language settings') }}
+        {{ $trans('Page settings') }}
       </h3>
 
       <MaterialIcon
@@ -30,13 +31,7 @@ const savePreferences = () => {
       </MaterialIcon>
     </header>
 
-    <div class="px-4 py-2.5 bg-sky-50">
-      <p class="text-gray-500 font-medium">
-        {{ $trans('Interface') }}
-      </p>
-    </div>
-
-    <div class="px-4 py-6 space-y-6">
+    <PageSettingsSection :title="$trans('Interface')">
       <RadioButton
         id="en_loc"
         label="English"
@@ -50,15 +45,9 @@ const savePreferences = () => {
         :model-value="locale === 'ru'"
         @update:model-value="locale = 'ru'"
       />
-    </div>
+    </PageSettingsSection>
 
-    <div class="px-4 py-2.5 bg-sky-50">
-      <p class="text-gray-500 font-medium">
-        {{ $trans('Content') }}
-      </p>
-    </div>
-
-    <div class="px-4 py-6 space-y-6">
+    <PageSettingsSection :title="$trans('Content')">
       <Checkbox
         id="en_cb"
         label="English"
@@ -79,15 +68,9 @@ const savePreferences = () => {
       >
         {{ $trans('language_not_select') }}
       </p>
-    </div>
+    </PageSettingsSection>
 
-    <div class="px-4 py-2.5 bg-sky-50">
-      <p class="text-gray-500 font-medium">
-        {{ $trans('Feed') }}
-      </p>
-    </div>
-
-    <div class="px-4 py-6 space-y-6">
+    <PageSettingsSection :title="$trans('Feed')">
       <RadioButton
         id="classic"
         :label="$trans('Classic')"
@@ -101,7 +84,7 @@ const savePreferences = () => {
         :model-value="view === 'compact'"
         @update:model-value="view = 'compact'"
       />
-    </div>
+    </PageSettingsSection>
 
     <div class="p-4">
       <FilledButton

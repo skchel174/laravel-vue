@@ -39,7 +39,7 @@ onMounted(() => {
     <div class="space-y-4">
       <header class="p-4 sm:px-8 sm:py-6 bg-white">
         <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
-          {{ $trans('Profile Settings') }}
+          {{ $trans('Profile settings') }}
         </h1>
       </header>
 

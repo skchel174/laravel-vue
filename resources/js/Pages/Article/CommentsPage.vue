@@ -9,7 +9,6 @@ import Pagination from "@/Components/Pagination/Pagination.vue";
 import ArticleHeader from "@/Components/Article/ArticleHeader.vue";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
-import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import CommentForm from "@/Components/Comment/CommentForm.vue";
 
 const props = defineProps({
@@ -52,12 +51,11 @@ watch(commentable, () => {
     <Head :title="article.title"/>
 
     <div class="p-4 pb-2 bg-white">
-      <ArticleHeader class="mb-4">
-        <ArticleAuthor
-          :author="article.author"
-          :publish-date="article.publish_date"
-        />
-      </ArticleHeader>
+      <ArticleHeader
+        class="mb-4"
+        :author="article.author"
+        :publish-date="article.publish_date"
+      />
 
       <Link
         class="mb-2 text-lg sm:text-xl text-gray-700 font-black hover:text-sky-775 transition duration-200"
@@ -86,7 +84,7 @@ watch(commentable, () => {
     </div>
 
     <div id="comments" class="mt-4 bg-white">
-      <h3 class="p-4 pb-0 text-lg text-gray-700 font-bold capitalize">
+      <h3 class="p-4 text-lg text-gray-700 font-bold capitalize">
         {{ $trans('comments') }}
 
         <span class="ml-2 text-sky-675">

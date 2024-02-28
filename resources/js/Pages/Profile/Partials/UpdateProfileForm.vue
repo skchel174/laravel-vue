@@ -60,7 +60,7 @@ const submit = () => {
           <div class="flex justify-between items-center">
             <InputLabel
               for="login"
-              :value="$trans('Login')"
+              value="Login"
             />
 
             <InputLength

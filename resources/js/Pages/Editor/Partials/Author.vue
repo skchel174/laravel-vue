@@ -8,8 +8,12 @@ const props = defineProps({
     required: true,
   },
 
+  status: {
+    type: String,
+  },
+
   publishDate: {
-    type: [String, null],
+    type: String,
   },
 });
 </script>
@@ -37,7 +41,7 @@ const props = defineProps({
         </span>
 
         <span v-else>
-          {{ $trans('Never been published') }}
+          {{ $trans(status) }}
         </span>
       </div>
     </div>

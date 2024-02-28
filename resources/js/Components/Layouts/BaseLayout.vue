@@ -6,18 +6,18 @@ import AppHeader from "@/Components/AppHeader.vue";
 import AppNotification from "@/Components/AppNotification.vue";
 import Sidebar from "@/Components/Sidebar.vue";
 import Modal from "@/Components/Modal.vue";
-import LanguageSettings from "@/Components/LanguageSettings.vue";
 import AppNavigation from "@/Components/AppNavigation.vue";
+import PageSettings from "@/Components/PageSettings/PageSettings.vue";
 
 const {notice, showNotification} = useNotification();
 
 provide('notify', showNotification);
 
-const isLangSettingsOpen = ref(false);
-const openLangSettings = () => isLangSettingsOpen.value = true;
-const closeLangSettings = () => isLangSettingsOpen.value = false;
+const isSettingsOpen = ref(false);
+const openSettings = () => isSettingsOpen.value = true;
+const closeSettings = () => isSettingsOpen.value = false;
 
-provide('langSettings', {openLangSettings, closeLangSettings});
+provide('pageSettings', {openSettings, closeSettings});
 
 const isTablet = useMedia('(max-width: 1024px)');
 </script>
@@ -33,18 +33,18 @@ const isTablet = useMedia('(max-width: 1024px)');
 
   <Sidebar
     v-if="isTablet"
-    v-model:open="isLangSettingsOpen"
+    v-model:open="isSettingsOpen"
     side="top"
   >
-    <LanguageSettings @close="closeLangSettings"/>
+    <PageSettings @close="closeSettings"/>
   </Sidebar>
 
   <Modal
     v-else
     max-width="sm"
-    v-model:open="isLangSettingsOpen"
+    v-model:open="isSettingsOpen"
   >
-    <LanguageSettings @close="closeLangSettings"/>
+    <PageSettings @close="closeSettings"/>
   </Modal>
 
   <AppNotification

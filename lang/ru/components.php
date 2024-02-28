@@ -59,6 +59,7 @@ return [
     'followers' => 'подписчики',
     'Follow' => 'Подписаться',
     'Following' => 'Подписка',
+    'Subscriptions' => 'Подписки',
     'Subscribed' => 'Подписан',
     'Subscribe' => 'Подписаться',
     'My feed' => 'Моя лента',
@@ -73,6 +74,8 @@ return [
     'Unfortunately no topics found' => 'К сожаление тем не найдено',
     'Suggest a new topic' => 'Предложить новую тему',
 
+    'Page settings' => 'Настройки страницы',
+
     // Article
     'Tags' => 'Теги',
     'Topics' => 'Темы',
@@ -80,7 +83,6 @@ return [
 
     'moderated' => 'Модерация',
     'published' => 'Опубликовано',
-    'deferred' => 'Снято с публикации',
     'draft' => 'Черновик',
     'deleted' => 'Удалено',
 
@@ -89,7 +91,6 @@ return [
     'hard' => 'сложно',
     'Not selected' => 'Не выбрано',
 
-    'Never been published' => 'Никогда не публиковалась',
     'Link was copied' => 'Ссылка скопирована в буфер обмена',
     'Article added to bookmarks' => 'Статья добавлена в избранное',
 
@@ -114,6 +115,7 @@ return [
     'Avatar' => 'Аватар',
     'New password' => 'Новый пароль',
     'Current password' => 'Текущий пароль',
+    'Password confirmation' => 'Повторите пароль',
     'Actual name' => 'Настоящее имя',
     'Describe yourself' => 'Опишите себя',
     'Change Email' => 'Изменить email',

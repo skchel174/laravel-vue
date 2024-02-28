@@ -8,7 +8,7 @@ import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 const user = usePage().props.auth.user;
 
-const {openLangSettings} = inject('langSettings');
+const {openSettings} = inject('pageSettings');
 </script>
 
 <template>
@@ -89,7 +89,7 @@ const {openLangSettings} = inject('langSettings');
 
       <MenuItem
         class="px-6 py-3.5"
-        @click="openLangSettings"
+        @click="openSettings"
       >
         <MaterialIcon class="!text-inherit">
           preview

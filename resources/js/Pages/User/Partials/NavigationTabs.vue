@@ -29,7 +29,7 @@ const visibleTabs = {
 };
 
 const hiddenTabs = {
-  following: 'user.following',
+  followings: 'user.following',
   followers: 'user.followers',
 };
 

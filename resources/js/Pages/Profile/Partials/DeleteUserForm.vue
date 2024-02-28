@@ -84,7 +84,7 @@ const closeModal = () => {
             ref="passwordInput"
             type="password"
             class="mt-1 block w-3/4"
-            placeholder="Password"
+            :placeholder="$trans('Password')"
             v-model="form.password"
           />
 

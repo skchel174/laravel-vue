@@ -2,8 +2,8 @@
 import {ref} from "vue";
 import TitleInput from "@/Pages/Editor/Partials/TitleInput.vue";
 import TextInput from "@/Pages/Editor/Partials/TextInput.vue";
-import ArticleAuthor from "@/Components/Article/ArticleAuthor.vue";
 import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
+import Author from "@/Pages/Editor/Partials/Author.vue";
 
 const props = defineProps({
   article: {
@@ -25,9 +25,10 @@ const focus = ref(false);
 <template>
   <div class="flex-1 flex flex-col">
     <div class="p-4 flex-1 bg-white">
-      <ArticleAuthor
+      <Author
         class="mb-4"
         :author="$page.props.auth.user"
+        :status="article?.status"
         :publish-date="article?.publish_date"
       />
 

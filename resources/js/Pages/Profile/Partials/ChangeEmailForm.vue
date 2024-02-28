@@ -23,7 +23,7 @@ const updatePassword = () => {
 </script>
 
 <template>
-  <section class="space-y-6">
+  <section class="max-w-2xl space-y-6">
     <header class="flex items-center space-x-4">
       <div>
         <div class="h-8 w-8 bg-cyan-600 flex items-center justify-center rounded-sm">

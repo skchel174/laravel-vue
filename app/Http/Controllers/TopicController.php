@@ -49,6 +49,7 @@ class TopicController extends Controller
             ->paginate()
             ->withQueryString();
 
+
         return Inertia::render('Topic/ArticlesPage', [
             'topic' => new TopicResource($topic),
             'articles' => new ArticlesResource($articles),
