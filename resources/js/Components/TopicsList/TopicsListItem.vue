@@ -7,6 +7,11 @@ defineProps({
     type: Object,
     required: true,
   },
+
+  subscription: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
@@ -22,6 +27,7 @@ defineProps({
       <div class="space-y-1.5">
         <Link
           class="text-base text-gray-700 font-medium cursor-pointer hover:text-sky-775 transition duration-300"
+          :class="{'text-lime-775': subscription}"
           :href="route('topic.articles', {topic: topic.slug})"
         >
           {{ topic.name }}

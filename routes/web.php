@@ -9,7 +9,6 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,12 +115,17 @@ Route::prefix('/categories/{category:slug}')->group(function () {
         ->name('category.authors');
 });
 
-Route::prefix('/topics/{topic:slug}')->group(function () {
-   Route::get('/articles', [TopicController::class, 'articles'])
-        ->name('topic.articles');
+Route::prefix('/topics')->group(function () {
+    Route::get('/', [TopicController::class, 'topics'])
+        ->name('topics');
 
-    Route::get('/authors', [TopicController::class, 'authors'])
-        ->name('topic.authors');
+    Route::prefix('/{topic:slug}')->group(function () {
+        Route::get('/articles', [TopicController::class, 'articles'])
+            ->name('topic.articles');
+
+        Route::get('/authors', [TopicController::class, 'authors'])
+            ->name('topic.authors');
+    });
 });
 
 require __DIR__ . '/auth.php';

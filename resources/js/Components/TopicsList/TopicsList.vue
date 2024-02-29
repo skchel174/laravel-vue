@@ -21,6 +21,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
+
+  subscriptions: {
+    type: Array,
+    default: [],
+  },
 });
 
 const emit = defineEmits(['sort']);
@@ -92,6 +97,7 @@ watch(() => props, () => {
         v-for="topic in topics.items"
         :key="topic.id"
         :topic="topic"
+        :subscription="subscriptions.includes(topic.id)"
       />
     </div>
 

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticlesRequest;
+use App\Http\Requests\Topics\TopicsRequest;
 use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Topic\TopicResource;
+use App\Http\Resources\Topic\TopicsResource;
 use App\Http\Resources\User\UsersCollection;
 use App\Models\Article\Difficulty;
 use App\Models\Article\Period;
@@ -22,6 +24,34 @@ use Inertia\Response;
 
 class TopicController extends Controller
 {
+    public function topics(TopicsRequest $request): Response
+    {
+        $order = $request->order ?? 'desc';
+        $sort = $request->sort ?? 'articles_count';
+
+        $topics = Topic::query()
+            ->withCount(['articles', 'subscribers'])
+            ->with('tags')
+            ->orderBy($sort, $order)
+            ->paginate()
+            ->withQueryString();
+
+        $subscriptions = [];
+        if ($user = Auth::user()) {
+            $subscriptions = $user->topics()->pluck('id');
+        }
+
+        Inertia::share('nav.location', 'articles');
+
+        return Inertia::render('Articles/TopicsPage', [
+            'topics' => new TopicsResource($topics),
+            'subscriptions' => $subscriptions,
+            'order' => $order,
+            'sort' => $sort,
+            'search' => null, // TODO: added topics search (name, description, tags)
+        ]);
+    }
+
     public function articles(ArticlesRequest $request, Topic $topic): Response
     {
         $topic->loadCount(['articles', 'subscribers']);
@@ -48,7 +78,6 @@ class TopicController extends Controller
             ->orderByDesc('id')
             ->paginate()
             ->withQueryString();
-
 
         return Inertia::render('Topic/ArticlesPage', [
             'topic' => new TopicResource($topic),
