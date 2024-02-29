@@ -69,11 +69,17 @@ class CategoryController extends Controller
             ->paginate()
             ->withQueryString();
 
+        $subscriptions = [];
+        if ($user = Auth::user()) {
+            $subscriptions = $user->topics()->pluck('id');
+        }
+
         Inertia::share('nav.location', $category->slug);
 
         return Inertia::render('Category/TopicsPage', [
             'category' => new CategoryResource($category),
             'topics' => new TopicsResource($topics),
+            'subscriptions' => $subscriptions,
             'order' => $order,
             'sort' => $sort,
         ]);

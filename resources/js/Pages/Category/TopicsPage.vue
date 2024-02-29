@@ -18,6 +18,11 @@ const props = defineProps({
     required: true,
   },
 
+  subscriptions: {
+    type: Array,
+    required: true,
+  },
+
   sort: {
     type: String,
     required: true,
@@ -67,6 +72,7 @@ const searchTopics = (value) => {
     <TopicsList
       class="mt-4"
       :topics="topics"
+      :subscriptions="subscriptions"
       :order="order"
       :sort="sort"
       @sort="sortList"
