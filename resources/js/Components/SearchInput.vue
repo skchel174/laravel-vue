@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
@@ -49,6 +49,7 @@ watch(searchInput, () => {
       <TextInput
         class="w-full h-12 lg:h-10 px-4 border-0 lg:border"
         v-model="searchInput"
+        :focus="Boolean(searchInput)"
         :placeholder="$trans(placeholder)"
       />
 
