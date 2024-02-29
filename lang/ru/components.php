@@ -43,7 +43,7 @@ return [
     'Information' => 'Информация',
     'Activity' => 'Активность',
     'Registered' => 'Зарегистрирован',
-    'Topic contribution' => 'Вклад',
+    'Contribution' => 'Вклад',
     'Publications' => 'Публикации',
     'Subscribers' => 'Подписчики',
     'Belongs to topics' => 'Подписан на темы',

@@ -24,7 +24,7 @@ defineProps({
           </div>
 
           <div class="max-w-10 text-sky-675 text-sm">
-            {{ $trans('Topic contribution') }}
+            {{ $trans('Contribution') }}
           </div>
         </div>
 

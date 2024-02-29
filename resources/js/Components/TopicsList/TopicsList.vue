@@ -15,11 +15,13 @@ const props = defineProps({
   sort: {
     type: String,
     required: true,
+    validator: (value) => ['name', 'articles_count', 'subscribers_count'].includes(value),
   },
 
   order: {
     type: String,
     required: true,
+    validator: (value) => ['asc', 'desc'].includes(value),
   },
 
   subscriptions: {
