@@ -1,34 +1,17 @@
 <script setup>
 import {ref} from "vue";
-import {Head, router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
+import AuthorsList from "@/Components/AuthorsList/AuthorsList.vue";
+import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
+import SearchInput from "@/Components/SearchInput.vue";
 import Tabs from "@/Components/Tabs/Tabs.vue";
 import Tab from "@/Components/Tabs/Tab.vue";
-import SearchInput from "@/Components/SearchInput.vue";
-import TopicsList from "@/Components/TopicsList/TopicsList.vue";
-import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
 
-defineProps({
-  topics: {
+const props = defineProps({
+  authors: {
     type: Object,
     required: true,
-  },
-
-  subscriptions: {
-    type: Array,
-    required: true,
-  },
-
-  order: {
-    type: String,
-    required: true,
-    validator: (value) => ['asc', 'desc'].includes(value),
-  },
-
-  sort: {
-    type: String,
-    required: true,
-    validator: (value) => ['name', 'articles_count', 'subscribers_count'].includes(value),
   },
 
   search: {
@@ -37,7 +20,7 @@ defineProps({
   },
 });
 
-const currentTab = ref('topics');
+const currentTab = ref('authors');
 
 const navigationTabs = {
   articles: route('articles'),
@@ -50,14 +33,14 @@ const selectTab = (tab) => {
   router.get(navigationTabs[tab]);
 };
 
-const sortTopics = (sort, order) => {
-  router.get(route('topics', {sort, order}));
+const searchAuthors = (search) => {
+  router.get(route('authors', {search}));
 };
 </script>
 
 <template>
   <MainLayout>
-    <Head :title="$trans('Topics')"/>
+    <Head :title="$trans('Authors')"/>
 
     <header class="w-full p-4 bg-white">
       <h1 class="text-xl text-gray-700 font-semibold">
@@ -76,15 +59,14 @@ const sortTopics = (sort, order) => {
       </Tab>
     </Tabs>
 
-    <SearchInput :value="search"/>
+    <SearchInput
+      :value="search"
+      @search="searchAuthors"
+    />
 
-    <TopicsList
+    <AuthorsList
       class="mt-4"
-      :topics="topics"
-      :subscriptions="subscriptions"
-      :sort="sort"
-      :order="order"
-      @sort="sortTopics"
+      :authors="authors"
     />
 
     <template v-slot:sidebar>

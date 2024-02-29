@@ -17,11 +17,10 @@ defineProps({
 
 const currentTab = ref('articles');
 
-// TODO: add pages for all tabs
 const navigationTabs = {
   articles: route('articles'),
   topics: route('topics'),
-  authors: '#',
+  authors: route('authors'),
 };
 
 const selectTab = (tab) => {

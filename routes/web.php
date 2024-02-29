@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PageController;
@@ -127,6 +128,9 @@ Route::prefix('/topics')->group(function () {
             ->name('topic.authors');
     });
 });
+
+Route::get('/authors', [AuthorController::class, 'authors'])
+    ->name('authors');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/profile.php';

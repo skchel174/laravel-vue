@@ -24,7 +24,7 @@ const props = defineProps({
   },
 });
 
-const searchTopics = (value) => {
+const searchAuthors = (value) => {
   const params = {category: props.category.slug};
 
   if (value) {
@@ -48,7 +48,7 @@ const searchTopics = (value) => {
 
     <SearchInput
       :value="search"
-      @search="searchTopics"
+      @search="searchAuthors"
     />
 
     <AuthorsList
