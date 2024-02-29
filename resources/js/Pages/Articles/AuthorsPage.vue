@@ -1,12 +1,11 @@
 <script setup>
-import {ref} from "vue";
 import {router, Head} from "@inertiajs/vue3";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
 import AuthorsList from "@/Components/AuthorsList/AuthorsList.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
+import PageHeader from "@/Pages/Articles/Partials/PageHeader.vue";
 import SearchInput from "@/Components/SearchInput.vue";
-import Tabs from "@/Components/Tabs/Tabs.vue";
-import Tab from "@/Components/Tabs/Tab.vue";
+import PageNavigation from "@/Pages/Articles/Partials/PageNavigation.vue";
 
 const props = defineProps({
   authors: {
@@ -20,19 +19,6 @@ const props = defineProps({
   },
 });
 
-const currentTab = ref('authors');
-
-const navigationTabs = {
-  articles: route('articles'),
-  topics: route('topics'),
-  authors: route('authors'),
-};
-
-const selectTab = (tab) => {
-  currentTab.value = tab;
-  router.get(navigationTabs[tab]);
-};
-
 const searchAuthors = (search) => {
   router.get(route('authors', {search}));
 };
@@ -42,22 +28,9 @@ const searchAuthors = (search) => {
   <MainLayout>
     <Head :title="$trans('Authors')"/>
 
-    <header class="w-full p-4 bg-white">
-      <h1 class="text-xl text-gray-700 font-semibold">
-        {{ $trans('All categories') }}
-      </h1>
-    </header>
+    <PageHeader/>
 
-    <Tabs>
-      <Tab
-        v-for="(_, tab) in navigationTabs"
-        :key="tab"
-        :selected="tab === currentTab"
-        @click="selectTab(tab)"
-      >
-        {{ $trans(tab) }}
-      </Tab>
-    </Tabs>
+    <PageNavigation current-tab="authors"/>
 
     <SearchInput
       :value="search"

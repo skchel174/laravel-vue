@@ -1,12 +1,11 @@
 <script setup>
-import {ref} from "vue";
 import {Head, router} from "@inertiajs/vue3";
 import MainLayout from "@/Components/Layouts/MainLayout.vue";
-import Tabs from "@/Components/Tabs/Tabs.vue";
-import Tab from "@/Components/Tabs/Tab.vue";
 import SearchInput from "@/Components/SearchInput.vue";
 import TopicsList from "@/Components/TopicsList/TopicsList.vue";
 import AdvertPlaceholder from "@/Components/Advert/AdvertPlaceholder.vue";
+import PageHeader from "@/Pages/Articles/Partials/PageHeader.vue";
+import PageNavigation from "@/Pages/Articles/Partials/PageNavigation.vue";
 
 defineProps({
   topics: {
@@ -22,13 +21,11 @@ defineProps({
   order: {
     type: String,
     required: true,
-    validator: (value) => ['asc', 'desc'].includes(value),
   },
 
   sort: {
     type: String,
     required: true,
-    validator: (value) => ['name', 'articles_count', 'subscribers_count'].includes(value),
   },
 
   search: {
@@ -36,19 +33,6 @@ defineProps({
     required: true,
   },
 });
-
-const currentTab = ref('topics');
-
-const navigationTabs = {
-  articles: route('articles'),
-  topics: route('topics'),
-  authors: route('authors'),
-};
-
-const selectTab = (tab) => {
-  currentTab.value = tab;
-  router.get(navigationTabs[tab]);
-};
 
 const sortTopics = (sort, order) => {
   router.get(route('topics', {sort, order}));
@@ -59,22 +43,9 @@ const sortTopics = (sort, order) => {
   <MainLayout>
     <Head :title="$trans('Topics')"/>
 
-    <header class="w-full p-4 bg-white">
-      <h1 class="text-xl text-gray-700 font-semibold">
-        {{ $trans('All categories') }}
-      </h1>
-    </header>
+    <PageHeader/>
 
-    <Tabs>
-      <Tab
-        v-for="(_, tab) in navigationTabs"
-        :key="tab"
-        :selected="tab === currentTab"
-        @click="selectTab(tab)"
-      >
-        {{ $trans(tab) }}
-      </Tab>
-    </Tabs>
+    <PageNavigation current-tab="topics"/>
 
     <SearchInput :value="search"/>
 
