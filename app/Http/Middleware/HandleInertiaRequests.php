@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Category\Category;
 use Illuminate\Http\Request;
@@ -49,6 +50,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $this->getAuthUser(),
             ],
 
+            'notification' => $this->getNotification(),
+
             'trans' => fn() => trans('components'),
 
             'ziggy' => fn() => [
@@ -62,6 +65,15 @@ class HandleInertiaRequests extends Middleware
     {
         if ($user = Auth::user()) {
             return new UserResource($user);
+        }
+
+        return null;
+    }
+
+    public function getNotification(): ?NotificationResource
+    {
+        if ($notification = session('notification')) {
+            return new NotificationResource($notification);
         }
 
         return null;
