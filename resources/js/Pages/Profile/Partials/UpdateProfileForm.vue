@@ -7,12 +7,6 @@ import InputLength from "@/Components/Form/InputLength.vue";
 import AvatarInput from "@/Pages/Profile/Partials/AvatarInput.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
-defineProps({
-  status: {
-    type: String,
-  },
-});
-
 const user = usePage().props.auth.user;
 
 const form = useForm({
@@ -23,7 +17,7 @@ const form = useForm({
   avatar: undefined,
 });
 
-const submit = () => {
+const updateProfile = () => {
   form.post(route('profile.update'), {
     preserveState: false,
   });
@@ -46,7 +40,7 @@ const submit = () => {
 
     <form
       class="mt-8 flex-1 flex flex-col lg:flex-row"
-      @submit.prevent="submit"
+      @submit.prevent="updateProfile"
     >
       <AvatarInput
         class="max-w-2xl order-1 lg:order-2 lg:ml-16 mb-8"
@@ -58,6 +52,7 @@ const submit = () => {
       <div class="max-w-2xl w-full order-2 lg:order-1 space-y-6">
         <div>
           <div class="flex justify-between items-center">
+            <!--  TODO: translation for login  -->
             <InputLabel
               for="login"
               value="Login"
@@ -136,27 +131,12 @@ const submit = () => {
           />
         </div>
 
-        <div class="mt-6 flex items-center">
-          <FilledButton
-            color="primary"
-            :disabled="form.processing"
-          >
-            {{ $trans('Save') }}
-          </FilledButton>
-
-          <Transition
-            enter-from-class="opacity-0"
-            leave-to-class="opacity-0"
-            class="transition ease-in-out"
-          >
-            <p
-              v-if="form.recentlySuccessful"
-              class="ml-2 text-sm text-gray-600"
-            >
-              {{ $trans('Profile saved') }}
-            </p>
-          </Transition>
-        </div>
+        <FilledButton
+          color="primary"
+          :disabled="form.processing"
+        >
+          {{ $trans('Save') }}
+        </FilledButton>
       </div>
     </form>
   </section>

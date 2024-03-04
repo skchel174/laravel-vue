@@ -12,12 +12,10 @@ const form = useForm({
   password: '',
 });
 
-const updatePassword = () => {
+const changeEmail = () => {
   form.patch(route('profile.email.change'), {
     preserveScroll: true,
-    onFinish: () => {
-      form.reset('password');
-    }
+    onFinish: () => form.reset('password'),
   });
 };
 </script>
@@ -39,8 +37,8 @@ const updatePassword = () => {
     </header>
 
     <form
-      class="mt-8 space-y-6"
-      @submit.prevent="updatePassword"
+      class="space-y-6"
+      @submit.prevent="changeEmail"
     >
       <div>
         <InputLabel
@@ -80,28 +78,12 @@ const updatePassword = () => {
         />
       </div>
 
-      <div class="flex items-center gap-4">
-        <FilledButton
-          color="primary"
-          :disabled="form.processing"
-        >
-          {{ $trans('Save') }}
-        </FilledButton>
-
-        <Transition
-          enter-active-class="transition ease-in-out"
-          enter-from-class="opacity-0"
-          leave-active-class="transition duration-500 delay-1000 ease-in-out"
-          leave-to-class="opacity-0"
-        >
-          <p
-            v-if="form.recentlySuccessful"
-            class="text-sm text-gray-600"
-          >
-            {{ $trans('change_email_notice') }}
-          </p>
-        </Transition>
-      </div>
+      <FilledButton
+        color="primary"
+        :disabled="form.processing"
+      >
+        {{ $trans('Save') }}
+      </FilledButton>
     </form>
   </section>
 </template>

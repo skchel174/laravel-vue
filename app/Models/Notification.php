@@ -12,6 +12,11 @@ class Notification
     ) {
     }
 
+    public static function info(string $message): static
+    {
+        return new static('info', $message);
+    }
+
     public static function success(string $message): static
     {
         return new static('success', $message);

@@ -31,6 +31,7 @@ const isTablet = useMedia('(max-width: 1024px)');
       v-if="isTablet"
       v-model:open="isSettingsOpen"
       side="top"
+      class="!z-[100]"
     >
       <PageSettings @close="closeSettings"/>
     </Sidebar>

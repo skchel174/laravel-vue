@@ -28,7 +28,7 @@ const updatePassword = () => {
 </script>
 
 <template>
-  <section class="max-w-2xl">
+  <section class="max-w-2xl space-y-6">
     <header class="flex items-center space-x-4">
       <div class="h-8 w-8 bg-teal-500 flex items-center justify-center rounded-sm">
         <span class="material-icons !text-sm text-white">
@@ -42,7 +42,7 @@ const updatePassword = () => {
     </header>
 
     <form
-      class="mt-8 space-y-6"
+      class="space-y-6"
       @submit.prevent="updatePassword"
     >
       <div>
@@ -102,28 +102,12 @@ const updatePassword = () => {
         />
       </div>
 
-      <div class="flex items-center gap-4">
-        <FilledButton
-          color="primary"
-          :disabled="form.processing"
-        >
-          {{ $trans('Save') }}
-        </FilledButton>
-
-        <Transition
-          enter-active-class="transition ease-in-out"
-          enter-from-class="opacity-0"
-          leave-active-class="transition ease-in-out"
-          leave-to-class="opacity-0"
-        >
-          <p
-            v-if="form.recentlySuccessful"
-            class="text-sm text-gray-600"
-          >
-            {{ $trans('Password saved') }}
-          </p>
-        </Transition>
-      </div>
+      <FilledButton
+        color="primary"
+        :disabled="form.processing"
+      >
+        {{ $trans('Save') }}
+      </FilledButton>
     </form>
   </section>
 </template>

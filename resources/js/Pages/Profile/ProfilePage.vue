@@ -1,40 +1,15 @@
 <script setup>
-import {onMounted} from "vue";
 import {Head} from '@inertiajs/vue3';
-import useNotification from "@/Hooks/useNotification.js";
-import DeleteUserForm from './Partials/DeleteUserForm.vue';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
-import UpdateProfileForm from './Partials/UpdateProfileForm.vue';
 import ChangeEmailForm from "@/Pages/Profile/Partials/ChangeEmailForm.vue";
 import BaseLayout from "@/Components/Layouts/BaseLayout.vue";
-
-const props = defineProps({
-  status: {
-    type: String,
-  },
-
-  error: {
-    type: String,
-  },
-});
-
-// TODO: where notification component?
-const {notice, showError, showSuccess} = useNotification();
-
-onMounted(() => {
-  if (props.error) {
-    showError(props.error);
-  }
-
-  if (props.status) {
-    showSuccess(props.status);
-  }
-});
+import UpdateProfileForm from "@/Pages/Profile/Partials/UpdateProfileForm.vue";
+import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
+import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
 </script>
 
 <template>
   <BaseLayout>
-    <Head :title="$trans('Profile Settings')"/>
+    <Head :title="$trans('Profile settings')"/>
 
     <div class="space-y-4">
       <header class="p-4 sm:px-8 sm:py-6 bg-white">
@@ -44,7 +19,7 @@ onMounted(() => {
       </header>
 
       <div class="p-4 sm:p-8 bg-white">
-        <UpdateProfileForm :status="status"/>
+        <UpdateProfileForm/>
       </div>
 
       <div class="p-4 sm:p-8 bg-white">

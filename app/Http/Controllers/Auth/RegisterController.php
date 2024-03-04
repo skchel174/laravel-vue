@@ -9,6 +9,7 @@ use App\Exceptions\User\VerificationNotRequested;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Mail\VerifyRegistration;
+use App\Models\Notification;
 use App\Models\User\Password;
 use App\Models\User\User;
 use App\Providers\RouteServiceProvider;
@@ -40,14 +41,13 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('register.prompt');
+        return redirect()->route('register.prompt')
+            ->with('notification', Notification::success(trans('user.verification_sent')));
     }
 
     public function prompt(): Response
     {
-        return Inertia::render('Auth/VerifyEmail', [
-            'status' => session('status'),
-        ]);
+        return Inertia::render('Auth/VerifyEmail');
     }
 
     public function notify(): RedirectResponse
@@ -61,7 +61,7 @@ class RegisterController extends Controller
         Mail::to($user->email)->send(new VerifyRegistration($user));
 
         return redirect()->route('register.prompt')
-            ->with('status', 'verification-link-sent');
+            ->with('notification', Notification::success(trans('user.verification_sent')));
     }
 
     public function verify(Request $request): RedirectResponse
@@ -70,9 +70,9 @@ class RegisterController extends Controller
             Auth::user()->verifyRegistration($request->token);
         } catch (DomainException $e) {
             return redirect()->route('register.prompt')
-                ->with('status', $e->getMessage());
+                ->with('notification', Notification::error($e->getMessage()));
         }
 
-        return redirect(RouteServiceProvider::HOME . '?verified=1');
+        return redirect(RouteServiceProvider::HOME);
     }
 }

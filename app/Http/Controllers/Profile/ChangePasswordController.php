@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\ChangePasswordRequest;
+use App\Models\Notification;
 use App\Models\User\Password;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -15,13 +16,15 @@ class ChangePasswordController extends Controller
 {
     public function __invoke(ChangePasswordRequest $request): RedirectResponse
     {
-        $password = Password::create($request->password);
+        $user = Auth::user();
 
-        Auth::user()->changePassword($password);
+        $user->changePassword(Password::create($request->password));
+
+        Auth::logout();
 
         Session::invalidate();
 
         return redirect()->route('login')
-            ->with('status', trans('user.password_changed'));
+            ->with('notification', Notification::success(trans('user.password_changed')));
     }
 }

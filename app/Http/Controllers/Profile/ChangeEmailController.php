@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\ChangeEmailRequest;
+use App\Models\Notification;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class ChangeEmailController extends Controller
         Auth::user()->changeEmail($request->email);
 
         return redirect()->route('profile')
-            ->with('status', 'verification-link-sent');
+            ->with('notification', Notification::success(trans('user.verification_sent')));
     }
 
     public function verify(Request $request): RedirectResponse
@@ -27,10 +28,10 @@ class ChangeEmailController extends Controller
             Auth::user()->verifyNewEmail($request->token);
         } catch (DomainException $e) {
             return redirect()->route('profile')
-                ->with('error', $e->getMessage());
+                ->with('notification', Notification::error($e->getMessage()));
         }
 
         return redirect()->route('profile')
-            ->with('status', trans('user.email_changed'));
+            ->with('notification', Notification::success(trans('user.email_changed')));
     }
 }

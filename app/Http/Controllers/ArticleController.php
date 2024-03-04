@@ -18,6 +18,7 @@ use App\Models\Article\FeedImage;
 use App\Models\Article\ArticleMedia;
 use App\Models\Article\Period;
 use App\Models\Article\Status;
+use App\Models\Notification;
 use App\Models\Topic\Topic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -106,6 +107,8 @@ class ArticleController extends Controller
             });
         }
 
+        //TODO: query for new use without subscribes
+
         $articles = $query
             ->withCount('relatedComments')
             ->with(['topics'])
@@ -165,13 +168,13 @@ class ArticleController extends Controller
             Event::dispatch(new ArticleModerated($article));
         }
 
-        $status = $article->status->isModerated()
+        $notification = $article->status->isModerated()
             ? trans('article.sent_for_moderation')
             : trans('article.saved_as_draft');
 
         return redirect()
             ->route('article.editor', ['article' => $article->id])
-            ->with('status', $status);
+            ->with('notification', Notification::success($notification));
     }
 
     public function update(SaveArticleRequest $request, Article $article): RedirectResponse
@@ -199,13 +202,13 @@ class ArticleController extends Controller
             Event::dispatch(new ArticleModerated($article));
         }
 
-        $status = $article->status->isModerated()
+        $notification = $article->status->isModerated()
             ? trans('article.sent_for_moderation')
             : trans('article.draft_updated');
 
         return redirect()
             ->route('article.editor', ['article' => $article->id])
-            ->with('status', $status);
+            ->with('notification', Notification::success($notification));
     }
 
     public function delete(Article $article): RedirectResponse
@@ -213,7 +216,7 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->back()
-            ->with('notice', trans('article.deleted'));
+            ->with('notification', Notification::success(trans('article.deleted')));
     }
 
     public function restore(Article $article): RedirectResponse
@@ -221,7 +224,7 @@ class ArticleController extends Controller
         $article->restore();
 
         return redirect()->back()
-            ->with('notice', trans('article.restore'));
+            ->with('success', Notification::success(trans('article.restore')));
     }
 
     public function comments(int $article): Response

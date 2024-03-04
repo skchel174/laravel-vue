@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Notification;
 use App\Models\User\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
@@ -19,10 +20,7 @@ class LoginController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Auth/Login', [
-            'status' => session('status'),
-            'error' => session('error'),
-        ]);
+        return Inertia::render('Auth/Login');
     }
 
     /**
@@ -34,12 +32,14 @@ class LoginController extends Controller
         $user = User::whereLogin($request->login)->firstOrFail();
 
         if (!$user->password->isEquals($request->password)) {
-            throw ValidationException::withMessages(['password' => 'The provided password is incorrect']);
+            throw ValidationException::withMessages([
+                'password' => trans('auth.password'),
+            ]);
         }
 
         if (!$user->status->isActive()) {
             return redirect()->route('login')
-                ->with('error', trans('user.not_active'));
+                ->with('notification', Notification::error(trans('user.not_active')));
         }
 
         Auth::login($user, (bool)$request->remember);

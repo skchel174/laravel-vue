@@ -15,7 +15,6 @@ class PasswordRecoveryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => 'required|string|exists:users,verify_token',
             'password' => 'required|confirmed|min:6',
         ];
     }
