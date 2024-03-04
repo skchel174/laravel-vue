@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Resources\User\UserResource;
 use App\Models\Category\Category;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $this->getAuthUser(),
             ],
 
+            'notification' => $this->getNotification(),
+
             'trans' => fn() => trans('components'),
 
             'ziggy' => fn() => [
@@ -65,6 +68,19 @@ class HandleInertiaRequests extends Middleware
         }
 
         return null;
+    }
+
+    public function getNotification(): ?array
+    {
+        /** @var Notification|null $notification */
+        if (!$notification = session('notification')) {
+            return null;
+        }
+
+        return [
+            'type' => $notification->type,
+            'message' => $notification->message,
+        ];
     }
 
     private function getNavItems(): array

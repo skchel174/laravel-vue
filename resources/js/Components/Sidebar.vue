@@ -1,6 +1,10 @@
 <script setup>
 import {computed, onUnmounted, watch} from "vue";
 
+defineOptions({
+  inheritAttrs: false,
+});
+
 const props = defineProps({
   open: {
     type: Boolean,
@@ -86,6 +90,7 @@ const visibleState = computed(() => {
         v-show="open"
         class="fixed inset-0 overflow-y-auto z-50 flex"
         :class="wrapperClass"
+        v-bind="$attrs"
         scroll-region
       >
         <Transition

@@ -22,6 +22,13 @@ function useBookmark(state = false) {
 
     axios({method, url})
       .then(() => isBookmarked.value = !isBookmarked.value)
+      .catch(error => {
+        const notification = error.response.data.notification;
+
+        if (notification) {
+          notify(notification.type, notification.message);
+        }
+      })
       .finally(() => loading.value = false);
   };
 

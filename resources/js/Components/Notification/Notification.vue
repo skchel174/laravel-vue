@@ -15,7 +15,7 @@ const props = defineProps({
 
   duration: {
     type: [Number, null],
-    default: 10000,
+    default: 30000,
   },
 });
 
@@ -38,7 +38,7 @@ const setNotificationOffset = () => {
 
 watch(() => props.visible, () => {
   if (props.visible && props.duration) {
-    setTimeout(() => emit('update:visible', false), props.duration);
+    // setTimeout(() => emit('update:visible', false), props.duration);
   }
 });
 
@@ -68,16 +68,10 @@ watch(notificationRef, () => {
         class="fixed top-4 px-2 min-w-[24rem] max-w-lg z-50"
       >
         <div
-          class="rounded shadow-md px-6 pt-4 pb-4 text-sm font-medium flex flex-col justify-center items-center"
+          class="rounded shadow-md px-6 pt-4 pb-4 text-sm font-medium flex flex-col justify-center items-center text-center"
           :class="types[type]"
+          @click="$emit('update:visible', false)"
         >
-          <MaterialIcon
-            class="absolute top-0.5 right-2.5 !text-lg !leading-none cursor-pointer"
-            @click="$emit('update:visible', false)"
-          >
-            close
-          </MaterialIcon>
-
           <slot/>
         </div>
       </div>

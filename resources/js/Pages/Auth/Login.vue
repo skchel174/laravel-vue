@@ -7,20 +7,6 @@ import TextInput from '@/Components/Form/TextInput.vue';
 import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
-defineProps({
-  canResetPassword: {
-    type: Boolean,
-  },
-
-  status: {
-    type: String,
-  },
-
-  error: {
-    type: String,
-  },
-});
-
 const form = useForm({
   login: '',
   password: '',
@@ -48,20 +34,6 @@ const submit = () => {
             {{ $trans('Log in') }}
           </h2>
         </header>
-
-        <div
-          v-if="status"
-          class="mb-4 font-medium text-sm text-green-600"
-        >
-          {{ status }}
-        </div>
-
-        <div
-          v-if="error"
-          class="mb-4 font-medium text-sm text-red-600"
-        >
-          {{ status }}
-        </div>
 
         <div class="space-y-0.5">
           <InputLabel

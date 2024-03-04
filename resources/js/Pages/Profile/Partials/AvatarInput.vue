@@ -66,7 +66,7 @@ const deleteImage = () => {
         size="lg"
       />
 
-      <p class="w-36 text-xs text-gray-500 font-medium">
+      <p class="w-44 text-xs text-gray-500 font-medium">
         {{$trans('avatar_rules')}}
       </p>
 

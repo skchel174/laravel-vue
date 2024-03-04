@@ -1,8 +1,8 @@
 <script setup>
+import {Head, useForm} from '@inertiajs/vue3';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
-import {Head, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
@@ -21,7 +21,7 @@ const form = useForm({
 
 const submit = () => {
   form.post(route('password.reset'), {
-    onFinish: () => form.reset('password', 'password_confirmation'),
+    // onFinish: () => form.reset('password', 'password_confirmation'),
   });
 };
 </script>

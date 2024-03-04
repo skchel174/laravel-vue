@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\ProfileDeleteRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
+use App\Models\Notification;
 use App\Models\User\Avatar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +19,7 @@ class ProfileController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Profile/ProfilePage', [
-            'status' => session('status'),
-            'error' => session('error'),
-        ]);
+        return Inertia::render('Profile/ProfilePage');
     }
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
@@ -39,7 +37,7 @@ class ProfileController extends Controller
         ]);
 
         return redirect()->route('profile')
-            ->with('status', trans('profile_updated'));
+            ->with('notification', Notification::success(trans('user.profile_updated')));
     }
 
     public function delete(ProfileDeleteRequest $request): RedirectResponse

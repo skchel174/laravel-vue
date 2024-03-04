@@ -1,16 +1,10 @@
 <script setup>
+import {Head, useForm} from '@inertiajs/vue3';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
-import {Head, useForm} from '@inertiajs/vue3';
 import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
-
-defineProps({
-  status: {
-    type: String,
-  },
-});
 
 const form = useForm({
   email: '',
@@ -32,13 +26,6 @@ const submit = () => {
       >
         <div class="mb-4 text-sm text-gray-600">
           {{ $trans('password_forgot_notice') }}
-        </div>
-
-        <div
-          v-if="status"
-          class="mb-4 font-medium text-sm text-green-600"
-        >
-          {{ status }}
         </div>
 
         <div>

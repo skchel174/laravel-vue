@@ -5,7 +5,7 @@ import useArticleForm from "@/Hooks/useArticleForm.js";
 import useNotification from "@/Hooks/useNotification.js";
 import ArticleEditor from "@/Pages/Editor/Partials/ArticleEditor.vue";
 import ArticleSettings from "@/Pages/Editor/Partials/ArticleSettings.vue";
-import AppNotification from "@/Components/AppNotification.vue";
+import Notification from "@/Components/Notification/Notification.vue";
 import BackupNotice from "@/Pages/Editor/Partials/BackupNotice.vue";
 import BaseLayout from "@/Components/Layouts/BaseLayout.vue";
 
@@ -76,7 +76,7 @@ onMounted(() => {
       </KeepAlive>
     </div>
 
-    <AppNotification
+    <Notification
       :type="notice.type"
       v-model:visible="notice.visible"
     >
@@ -87,6 +87,6 @@ onMounted(() => {
           {{ error }}
         </p>
       </div>
-    </AppNotification>
+    </Notification>
   </BaseLayout>
 </template>
