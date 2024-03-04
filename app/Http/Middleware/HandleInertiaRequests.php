@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Http\Resources\NotificationResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Category\Category;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -70,13 +70,17 @@ class HandleInertiaRequests extends Middleware
         return null;
     }
 
-    public function getNotification(): ?NotificationResource
+    public function getNotification(): ?array
     {
-        if ($notification = session('notification')) {
-            return new NotificationResource($notification);
+        /** @var Notification|null $notification */
+        if (!$notification = session('notification')) {
+            return null;
         }
 
-        return null;
+        return [
+            'type' => $notification->type,
+            'message' => $notification->message,
+        ];
     }
 
     private function getNavItems(): array
