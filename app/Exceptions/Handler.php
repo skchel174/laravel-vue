@@ -26,41 +26,30 @@ class Handler extends ExceptionHandler
 
     public function register(): void
     {
-        $this->renderable(function (DomainException $e, Request $request) {
-            if ($request->is('api/*')) {
-                $data = ['notification' => Notification::error($e->getMessage())];
-                return response()->json($data, Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
+        $this->renderable(function (Throwable $e, Request $request) {
+            //
         });
     }
 
     public function render($request, Throwable $e): Response
     {
+        if ($request->is('api/*')) {
+            $data = ['notification' => Notification::error($e->getMessage())];
+            return response()->json($data, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $response = parent::render($request, $e);
 
         if (app()->hasDebugModeEnabled()) {
             return $response;
         }
 
-        if ($e instanceof DomainException) {
-            $status = Response::HTTP_UNPROCESSABLE_ENTITY;
-            $message = $e->getMessage();
-        } else {
-            $status = $response->status();
-            $message = Response::$statusTexts[$status] ?? Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR];
-        }
-
-        $back = url()->previous() !== url()->current()
-            ? url()->previous()
-            : route('main');
-
-        return Inertia::render(
-            'Error/ErrorPage',
-            compact('status', 'message', 'back'),
-        )
+        return Inertia::render('Error/ErrorPage', [
+            'status' => $response->status(),
+            'message' => Response::$statusTexts[$response->status()] ?? Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR],
+            'back' => (url()->previous() !== url()->current()) ? url()->previous() : route('main'),
+        ])
             ->toResponse($request)
-            ->setStatusCode($status);
+            ->setStatusCode($response->status());
     }
-
-
 }
