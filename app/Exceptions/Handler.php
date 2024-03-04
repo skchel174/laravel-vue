@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
+use App\Models\Notification;
 use DomainException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -18,10 +20,17 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    protected $dontReport = [
+        DomainException::class,
+    ];
+
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (DomainException $e, Request $request) {
+            if ($request->is('api/*')) {
+                $data = ['notification' => Notification::error($e->getMessage())];
+                return response()->json($data, Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
         });
     }
 
@@ -41,10 +50,17 @@ class Handler extends ExceptionHandler
             $message = Response::$statusTexts[$status] ?? Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR];
         }
 
-        $back = url()->previous() === url()->current() ? route('main') : url()->previous();
+        $back = url()->previous() !== url()->current()
+            ? url()->previous()
+            : route('main');
 
-        return Inertia::render('Error/ErrorPage', compact('status', 'message', 'back'))
+        return Inertia::render(
+            'Error/ErrorPage',
+            compact('status', 'message', 'back'),
+        )
             ->toResponse($request)
             ->setStatusCode($status);
     }
+
+
 }
