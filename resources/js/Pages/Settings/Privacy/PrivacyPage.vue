@@ -4,7 +4,7 @@ import SettingsLayout from "@/Components/Layouts/SettingsLayout.vue";
 import PageHeader from "@/Pages/Settings/Partials/PageHeader.vue";
 import NavigationTabs from "@/Pages/Settings/Partials/NavigationTabs.vue";
 import RadioButton from "@/Components/Form/RadioButton.vue";
-import PrivacyRule from "@/Pages/Settings/Privacy/PrivacyRule.vue";
+import PrivacyRule from "@/Pages/Settings/Privacy/Partials/PrivacyRule.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const form = useForm({
