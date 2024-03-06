@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Settings\AccountController;
+use App\Http\Controllers\Settings\PrivacyController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
@@ -157,6 +158,9 @@ Route::prefix('/settings')
 
         Route::delete('/account/delete', [AccountController::class, 'delete'])
             ->name('settings.account.delete');
+
+        Route::get('/privacy', [PrivacyController::class, 'index'])
+            ->name('settings.privacy');
     });
 
 require __DIR__ . '/auth.php';
