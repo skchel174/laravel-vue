@@ -16,6 +16,7 @@ const currentTab = ref(props.currentTab);
 const navigationTabs = {
   profile: 'settings.profile',
   account: 'settings.account',
+  privacy: 'settings.privacy',
 };
 
 const selectTab = (tab) => {

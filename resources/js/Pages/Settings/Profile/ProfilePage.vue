@@ -35,7 +35,7 @@ const updateProfile = () => {
     <NavigationTabs current-tab="profile"/>
 
     <form
-      class="mt-4 p-4 pt-6 bg-white space-y-8"
+      class="mt-4 p-4 sm:p-6 bg-white space-y-6"
       @submit.prevent="updateProfile"
     >
       <AvatarInput

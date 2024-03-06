@@ -35,8 +35,8 @@ const closeModal = () => {
 </script>
 
 <template>
-  <section class="p-4 bg-white space-y-6">
-    <header class="flex space-x-4">
+  <div class="p-4 sm:p-6 bg-white space-y-4 sm:space-y-6">
+    <div class="flex space-x-4">
       <div>
         <div class="h-8 w-8 bg-red-775 flex items-center justify-center rounded-sm">
           <MaterialIcon class="!text-base text-white">
@@ -54,7 +54,7 @@ const closeModal = () => {
           {{ $trans('delete_account_notice') }}
         </p>
       </div>
-    </header>
+    </div>
 
     <FilledButton
       color="danger"
@@ -115,5 +115,5 @@ const closeModal = () => {
         </div>
       </div>
     </Modal>
-  </section>
+  </div>
 </template>

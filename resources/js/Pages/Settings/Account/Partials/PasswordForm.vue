@@ -30,8 +30,11 @@ const updatePassword = () => {
 </script>
 
 <template>
-  <section class="p-4 bg-white space-y-6">
-    <header class="flex items-center space-x-4">
+  <form
+    class="p-4 sm:p-6 bg-white space-y-4 sm:space-y-6"
+    @submit.prevent="updatePassword"
+  >
+    <div class="flex items-center space-x-4">
       <div class="h-8 w-8 bg-teal-500 flex items-center justify-center rounded-sm">
         <MaterialIcon class="!text-sm text-white">
           lock
@@ -41,12 +44,9 @@ const updatePassword = () => {
       <h2 class="text-base font-medium text-gray-700 leading-none">
         {{ $trans('Update Password') }}
       </h2>
-    </header>
+    </div>
 
-    <form
-      class="space-y-6"
-      @submit.prevent="updatePassword"
-    >
+    <div class="space-y-2">
       <div>
         <InputLabel
           for="current_password"
@@ -103,13 +103,13 @@ const updatePassword = () => {
           :message="form.errors.password_confirmation"
         />
       </div>
+    </div>
 
-      <FilledButton
-        color="primary"
-        :disabled="form.processing"
-      >
-        {{ $trans('Save') }}
-      </FilledButton>
-    </form>
-  </section>
+    <FilledButton
+      color="success"
+      :disabled="form.processing"
+    >
+      {{ $trans('Save') }}
+    </FilledButton>
+  </form>
 </template>
