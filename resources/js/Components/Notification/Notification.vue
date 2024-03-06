@@ -15,7 +15,7 @@ const props = defineProps({
 
   duration: {
     type: [Number, null],
-    default: 30000,
+    default: 20000,
   },
 });
 

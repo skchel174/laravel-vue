@@ -77,7 +77,7 @@ const {openSettings} = inject('pageSettings');
 
       <hr class="my-4 w-full bg-gray-200"/>
 
-      <Link :href="route('profile')">
+      <a :href="route('settings.profile')" target="_blank" rel="noopener noreferrer">
         <MenuItem class="px-6 py-3.5">
           <MaterialIcon class="!text-inherit">
             manage_accounts
@@ -85,7 +85,7 @@ const {openSettings} = inject('pageSettings');
 
           <span>{{ $trans('Profile settings') }}</span>
         </MenuItem>
-      </Link>
+      </a>
 
       <MenuItem
         class="px-6 py-3.5"

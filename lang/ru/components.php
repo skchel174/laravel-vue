@@ -8,6 +8,8 @@ return [
     'Compact' => 'Компактный',
 
     'Save' => 'Сохранить',
+    'Save changes' => 'Сохранить изменения',
+
     'Send' => 'Отправить',
     'Reply' => 'Ответить',
     'Edit' => 'Редактировать',
@@ -74,6 +76,9 @@ return [
     'Unfortunately no topics found' => 'К сожаление тем не найдено',
     'Suggest a new topic' => 'Предложить новую тему',
 
+    'Account' => 'Аккаунт',
+
+    'Settings' => 'Настройки',
     'Page settings' => 'Настройки страницы',
 
     // Article

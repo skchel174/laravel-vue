@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\Settings\AccountController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -132,5 +134,29 @@ Route::prefix('/topics')->group(function () {
 Route::get('/authors', [AuthorController::class, 'authors'])
     ->name('authors');
 
+Route::prefix('/settings')
+    ->middleware(['auth', 'auth.session', 'verified'])
+    ->group(function () {
+        Route::get('/profile', [ProfileController::class, 'index'])
+            ->name('settings.profile');
+
+        Route::patch('/profile', [ProfileController::class, 'update'])
+            ->name('settings.profile.update');
+
+        Route::get('/account', [AccountController::class, 'index'])
+            ->name('settings.account');
+
+        Route::patch('/account/email', [AccountController::class, 'changeEmail'])
+            ->name('settings.account.email.change');
+
+        Route::get('/account/email/{token}', [AccountController::class, 'verifyEmail'])
+            ->name('settings.account.email.verify');
+
+        Route::patch('/account/password', [AccountController::class, 'changePassword'])
+            ->name('settings.account.password.change');
+
+        Route::delete('/account/delete', [AccountController::class, 'delete'])
+            ->name('settings.account.delete');
+    });
+
 require __DIR__ . '/auth.php';
-require __DIR__ . '/profile.php';

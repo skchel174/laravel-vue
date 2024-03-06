@@ -28,7 +28,7 @@ class VerifyEmail extends Mailable
 
     public function content(): Content
     {
-        $url = route('profile.email.verify', [
+        $url = route('settings.account.email.verify', [
             'token' => $this->user->verify_token->getValue()
         ]);
 

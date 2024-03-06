@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -26,7 +26,7 @@ onMounted(() => {
 
 <template>
   <input
-    class="border-gray-300 focus:ring-0 focus:border-sky-600/50 rounded-sm transition duration-400 placeholder:text-sm placeholder:text-gray-500/75"
+    class="border-gray-300 focus:ring-0 focus:border-sky-600/50 rounded-sm transition duration-400 text-sm text-gray-600 placeholder:text-sm placeholder:text-gray-500/75"
     ref="inputRef"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"

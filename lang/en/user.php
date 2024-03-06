@@ -19,4 +19,6 @@ return [
     'password_changed' => 'Password successfully changed',
     'email_changed' => 'Email successfully changed',
     'verification_sent' => 'A new verification link has been sent to the email address you provided during registration.',
+
+    'account_deleted' => 'Your account has been successfully deleted',
 ];

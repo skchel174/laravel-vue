@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Profile;
+namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Profile\ProfileDeleteRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
 use App\Models\Notification;
 use App\Models\User\Avatar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,7 +17,7 @@ class ProfileController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Profile/ProfilePage');
+        return Inertia::render('Settings/Profile/ProfilePage');
     }
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
@@ -36,22 +34,7 @@ class ProfileController extends Controller
             'about' => $request->about,
         ]);
 
-        return redirect()->route('profile')
+        return redirect()->route('settings.profile')
             ->with('notification', Notification::success(trans('user.profile_updated')));
-    }
-
-    public function delete(ProfileDeleteRequest $request): RedirectResponse
-    {
-        $user = Auth::user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        Session::invalidate();
-
-        Session::regenerateToken();
-
-        return redirect()->route('main');
     }
 }
