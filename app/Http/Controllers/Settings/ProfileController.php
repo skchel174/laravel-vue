@@ -32,6 +32,8 @@ class ProfileController extends Controller
             'login' => $request->login,
             'name' => $request->name,
             'about' => $request->about,
+            'gender' => $request->gender,
+            'birthday' => $request->birthday,
         ]);
 
         return redirect()->route('settings.profile')

@@ -26,17 +26,17 @@ const form = useForm({
     <form class="mt-4 px-4 sm:px-6 pt-8 pb-4 bg-white space-y-6">
       <PrivacyRule heading="Who can see your contact information">
         <RadioButton
-          id="contacts_followers"
-          :label="$trans('Followers')"
-          :model-value="form.contacts === 'followers'"
-          @update:model-value="form.contacts = 'followers'"
-        />
-
-        <RadioButton
           id="contacts_everyone"
           :label="$trans('Everyone')"
           :model-value="form.contacts === 'everyone'"
           @update:model-value="form.contacts = 'everyone'"
+        />
+
+        <RadioButton
+          id="contacts_followers"
+          :label="$trans('Followers')"
+          :model-value="form.contacts === 'followers'"
+          @update:model-value="form.contacts = 'followers'"
         />
       </PrivacyRule>
 

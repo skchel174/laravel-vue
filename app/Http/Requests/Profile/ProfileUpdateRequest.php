@@ -11,8 +11,10 @@ use Illuminate\Validation\Rule;
 
 /**
  * @property-read string $login
- * @property-read string $name
- * @property-read string $about
+ * @property-read string|null $name
+ * @property-read string|null $about
+ * @property-read string|null $birthday
+ * @property-read string|null $gender
  * @property-read UploadedFile|null $avatar
  * @method User user()
  */
@@ -24,6 +26,9 @@ class ProfileUpdateRequest extends FormRequest
             'name' => 'nullable|string|max:60',
             'about' => 'nullable|string|max:50',
             'avatar' => 'nullable|file|mimes:jpg,bmp,png|max:1024', // max 1MB
+            'birthday' => 'nullable|string|date',
+            'gender' => ['nullable', 'string', Rule::in(['Male', 'Female'])],
+
             'login' => [
                 'required',
                 'string',

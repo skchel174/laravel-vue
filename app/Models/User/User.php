@@ -44,6 +44,8 @@ use Illuminate\Support\Facades\Event;
  * @property string|null $about
  * @property string|null $new_email
  * @property Status $status
+ * @property string|null $gender
+ * @property CarbonImmutable|null $birthday
  * @property Password $password
  * @property Avatar|null $avatar
  * @property string $remember_token
@@ -68,11 +70,22 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     use HasFactory, Authenticatable, Authorizable;
 
     protected $fillable = [
-        'login', 'email', 'name', 'about', 'status', 'password', 'new_email', 'avatar', 'verify_token',
+        'login', 'email', 'name', 'about', 'status', 'gender', 'birthday', 'password', 'new_email', 'avatar', 'verify_token',
     ];
 
     protected $hidden = [
         'password', 'remember_token', 'verify_token',
+    ];
+
+    protected $casts = [
+        'avatar' => Avatar::class,
+        'status' => Status::class,
+        'password' => Password::class,
+        'verify_token' => VerifyToken::class,
+        'created_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'login_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'birthday' => 'immutable_datetime:d-m-Y',
     ];
 
     public static function register(string $login, string $email, Password $password): static
@@ -89,16 +102,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
         return $user;
     }
-
-    protected $casts = [
-        'avatar' => Avatar::class,
-        'status' => Status::class,
-        'password' => Password::class,
-        'verify_token' => VerifyToken::class,
-        'created_at' => 'immutable_datetime:d-m-Y H:i:s',
-        'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
-        'login_at' => 'immutable_datetime:d-m-Y H:i:s',
-    ];
 
     public function verifyRegistration(string $token): void
     {

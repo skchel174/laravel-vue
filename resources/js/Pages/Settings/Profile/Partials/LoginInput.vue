@@ -21,10 +21,9 @@ defineEmits(['update:modelValue']);
 <template>
   <div>
     <div class="flex justify-between items-center">
-      <!--  TODO: translation for login  -->
       <InputLabel
         for="login"
-        value="Login"
+        :value="$trans('Login')"
       />
 
       <InputLength

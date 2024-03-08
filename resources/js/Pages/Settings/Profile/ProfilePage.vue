@@ -8,6 +8,8 @@ import LoginInput from "@/Pages/Settings/Profile/Partials/LoginInput.vue";
 import NameInput from "@/Pages/Settings/Profile/Partials/NameInput.vue";
 import AboutInput from "@/Pages/Settings/Profile/Partials/AboutInput.vue";
 import SettingsLayout from "@/Components/Layouts/SettingsLayout.vue";
+import BirthdayField from "@/Pages/Settings/Profile/Partials/BirthdayField.vue";
+import GenderField from "@/Pages/Settings/Profile/Partials/GenderField.vue";
 
 const user = usePage().props.auth.user;
 
@@ -16,6 +18,8 @@ const form = useForm({
   login: user.login ?? '',
   name: user.name ?? '',
   about: user.about ?? '',
+  gender: user.gender ?? '',
+  birthday: user.birthday ?? '',
   avatar: undefined,
 });
 
@@ -57,6 +61,16 @@ const updateProfile = () => {
       <AboutInput
         v-model="form.about"
         :error="form.errors.about"
+      />
+
+      <GenderField
+        v-model="form.gender"
+        :error="form.errors.gender"
+      />
+
+      <BirthdayField
+        v-model="form.birthday"
+        :error="form.errors.birthday"
       />
 
       <FilledButton

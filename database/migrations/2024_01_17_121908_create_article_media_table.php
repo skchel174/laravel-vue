@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreign('article_media_id')
                 ->references('id')
                 ->on('article_media')
-                ->onDelete('CASCADE');
+                ->onDelete('SET NULL');
         });
     }
 

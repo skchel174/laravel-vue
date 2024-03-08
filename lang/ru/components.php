@@ -77,6 +77,15 @@ return [
     'Suggest a new topic' => 'Предложить новую тему',
 
     'Account' => 'Аккаунт',
+    'account' => 'аккаунт',
+
+    'privacy' => 'приватность',
+    'Nobody' => 'Никто',
+    'Everyone' => 'Все',
+    'Followers' => 'Подписчики',
+    'Who can see your contact information' => 'Кто может видеть вашу контактную информацию',
+    'Who can send you messages' => 'Кто может отправлять вам сообщения',
+    'Who can track your activity' => 'Кто может отслеживать вашу активность',
 
     'Settings' => 'Настройки',
     'Page settings' => 'Настройки страницы',
@@ -143,6 +152,28 @@ return [
     'Save preferences' => 'Сохранить настройки',
     'language_not_select' => 'Вы должны выбрать хотя бы один язык',
 
+    'Gender' => 'Пол',
+    'Not specified' => 'Не указан',
+    'Male' => 'Мужской',
+    'Female' => 'Женский',
+
+    'Birth date' => 'Дата рождения',
+    'Day' => 'День',
+    'Month' => 'Месяц',
+    'Year' => 'Год',
+    'January' => 'Январь',
+    'February' => 'Февраль',
+    'March' => 'Март',
+    'April' => 'Апрель',
+    'May' => 'Май',
+    'June' => 'Июнь',
+    'July' => 'Июль',
+    'August' => 'Август',
+    'September' => 'Сентябрь',
+    'October' => 'Октябрь',
+    'November' => 'Ноябрь',
+    'December' => 'Декабрь',
+
     // Pagination
     'Prev' => 'Назад',
     'Next' => 'Вперед',
@@ -174,7 +205,7 @@ return [
     'article_image_rules' => 'формат: jpg, bmp, png, максимум: 1 Мб',
 
     // Auth
-    'Login' => 'Войти',
+    'Login' => 'Логин',
     'Log in' => 'Вход',
     'Logout' => 'Выйти',
     'Log out' => 'Выход',
