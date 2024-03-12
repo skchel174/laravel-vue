@@ -38,7 +38,7 @@ const setNotificationOffset = () => {
 
 watch(() => props.visible, () => {
   if (props.visible && props.duration) {
-    // setTimeout(() => emit('update:visible', false), props.duration);
+    setTimeout(() => emit('update:visible', false), props.duration);
   }
 });
 

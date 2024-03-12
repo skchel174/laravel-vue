@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
 /**
@@ -60,6 +61,7 @@ use Illuminate\Support\Facades\Event;
  * @property-read Collection<Topic> $topics
  * @property-read Collection<User> $followings
  * @property-read Collection<User> $followers
+ * @property-read Collection<Contact> $contacts
  *
  * @method static Builder whereLogin(string $login)
  * @method static Builder whereEmail(string $email)
@@ -337,6 +339,33 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'follower_id',
             'user_id',
         );
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function syncContacts(Collection $contacts): void
+    {
+        DB::transaction(function () use ($contacts) {
+            $delete = $this->contacts()
+                ->pluck('id')
+                ->diff($contacts->pluck('id'));
+
+            $this->contacts()
+                ->whereIn('id', $delete)
+                ->delete();
+
+            $insert = $contacts->map(fn ($contact) => [
+                'id' => $contact['id'] ?? null,
+                'value' => $contact['value'],
+                'contact_type_id' => $contact['contact_type_id'],
+                'user_id' => $this->id,
+            ])->toArray();
+
+            $this->contacts()->upsert($insert, ['id'], ['value']);
+        });
     }
 
     private function isCommentBookmarked(Comment $comment): bool

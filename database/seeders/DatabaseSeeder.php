@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             ArticlesSeeder::class,
             CommentsSeeder::class,
+            UserContactsSeeder::class,
         ]);
     }
 }

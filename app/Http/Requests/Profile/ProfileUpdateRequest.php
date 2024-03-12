@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
  * @property-read string|null $about
  * @property-read string|null $birthday
  * @property-read string|null $gender
+ * @property-read array $contacts
  * @property-read UploadedFile|null $avatar
  * @method User user()
  */
@@ -37,6 +38,10 @@ class ProfileUpdateRequest extends FormRequest
                 'regex:/^[a-zA-Z0-9]+$/',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+
+            'contacts' => 'array',
+            'contacts.*.contact_id' => 'string',
+            'contacts.*.contact_type_id' => 'integer|exists:user_contact_types,id',
         ];
     }
 

@@ -50,6 +50,7 @@ return [
     'Subscribers' => 'Подписчики',
     'Belongs to topics' => 'Подписан на темы',
     'No subscriptions' => 'Нет подписок на темы',
+    'Contact info' => 'Контактная информация',
 
     'profile' => 'профиль',
     'articles' => 'статьи',
@@ -128,6 +129,7 @@ return [
     // Profile settings
     'Profile settings' => 'Настройки профиля',
     'Avatar' => 'Аватар',
+    'Contacts' => 'Контакты',
     'New password' => 'Новый пароль',
     'Current password' => 'Текущий пароль',
     'Password confirmation' => 'Повторите пароль',
@@ -143,6 +145,7 @@ return [
     'avatar_rules' => 'Формат: JPG, BMP, PNG. Максимальный размер: 1Мб. Разрешение: до 64 пикселей.',
     'delete_account_notice' => 'После удаления вашей учетной записи все ее ресурсы и данные будут удалены без возможности восстановления. Прежде чем удалять свою учетную запись, загрузите все данные или информацию, которую вы хотите сохранить.',
     'delete_account_confirmation' => 'Вы уверены, что хотите удалить свою учетную запись?',
+    'Enter login or ID and we will create the link ourselves.' => 'Укажите логин или ID и мы сами создадим ссылку.',
 
     'English' => 'Английский',
     'Russian' => 'Русский',
