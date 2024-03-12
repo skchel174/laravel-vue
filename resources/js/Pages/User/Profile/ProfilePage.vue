@@ -3,6 +3,7 @@ import {Head} from "@inertiajs/vue3";
 import PageLayout from "@/Pages/User/Partials/PageLayout.vue";
 import TopicsList from "@/Pages/User/Profile/Partials/TopicsList.vue";
 import UserInformation from "@/Pages/User/Profile/Partials/UserInformation.vue";
+import UserContacts from "@/Pages/User/Profile/Partials/UserContacts.vue";
 
 defineProps({
   user: {
@@ -11,6 +12,11 @@ defineProps({
   },
 
   topics: {
+    type: Array,
+    required: true,
+  },
+
+  contacts: {
     type: Array,
     required: true,
   },
@@ -28,6 +34,12 @@ defineProps({
       <UserInformation
         class="mb-4 block lg:hidden"
         :user="user"
+      />
+
+      <UserContacts
+        class="mb-4"
+        v-if="contacts.length > 0"
+        :contacts="contacts"
       />
 
       <TopicsList :topics="topics"/>

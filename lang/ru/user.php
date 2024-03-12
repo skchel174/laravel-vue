@@ -19,4 +19,6 @@ return [
     'password_changed' => 'Password successfully changed',
     'email_changed' => 'Адрес электронной почты успешно изменен',
     'verification_sent' => 'Новая ссылка для подтверждения была отправлена на адрес электронной почты, который вы указали при регистрации.',
+
+    'account_deleted' => 'Ваш аккаунт успешно удален',
 ];

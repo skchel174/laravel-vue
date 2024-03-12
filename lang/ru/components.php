@@ -8,6 +8,8 @@ return [
     'Compact' => 'Компактный',
 
     'Save' => 'Сохранить',
+    'Save changes' => 'Сохранить изменения',
+
     'Send' => 'Отправить',
     'Reply' => 'Ответить',
     'Edit' => 'Редактировать',
@@ -48,6 +50,7 @@ return [
     'Subscribers' => 'Подписчики',
     'Belongs to topics' => 'Подписан на темы',
     'No subscriptions' => 'Нет подписок на темы',
+    'Contact info' => 'Контактная информация',
 
     'profile' => 'профиль',
     'articles' => 'статьи',
@@ -74,6 +77,18 @@ return [
     'Unfortunately no topics found' => 'К сожаление тем не найдено',
     'Suggest a new topic' => 'Предложить новую тему',
 
+    'Account' => 'Аккаунт',
+    'account' => 'аккаунт',
+
+    'privacy' => 'приватность',
+    'Nobody' => 'Никто',
+    'Everyone' => 'Все',
+    'Followers' => 'Подписчики',
+    'Who can see your contact information' => 'Кто может видеть вашу контактную информацию',
+    'Who can send you messages' => 'Кто может отправлять вам сообщения',
+    'Who can track your activity' => 'Кто может отслеживать вашу активность',
+
+    'Settings' => 'Настройки',
     'Page settings' => 'Настройки страницы',
 
     // Article
@@ -114,6 +129,7 @@ return [
     // Profile settings
     'Profile settings' => 'Настройки профиля',
     'Avatar' => 'Аватар',
+    'Contacts' => 'Контакты',
     'New password' => 'Новый пароль',
     'Current password' => 'Текущий пароль',
     'Password confirmation' => 'Повторите пароль',
@@ -129,6 +145,7 @@ return [
     'avatar_rules' => 'Формат: JPG, BMP, PNG. Максимальный размер: 1Мб. Разрешение: до 64 пикселей.',
     'delete_account_notice' => 'После удаления вашей учетной записи все ее ресурсы и данные будут удалены без возможности восстановления. Прежде чем удалять свою учетную запись, загрузите все данные или информацию, которую вы хотите сохранить.',
     'delete_account_confirmation' => 'Вы уверены, что хотите удалить свою учетную запись?',
+    'Enter login or ID and we will create the link ourselves.' => 'Укажите логин или ID и мы сами создадим ссылку.',
 
     'English' => 'Английский',
     'Russian' => 'Русский',
@@ -137,6 +154,28 @@ return [
     'Interface' => 'Интерфейс',
     'Save preferences' => 'Сохранить настройки',
     'language_not_select' => 'Вы должны выбрать хотя бы один язык',
+
+    'Gender' => 'Пол',
+    'Not specified' => 'Не указан',
+    'Male' => 'Мужской',
+    'Female' => 'Женский',
+
+    'Birth date' => 'Дата рождения',
+    'Day' => 'День',
+    'Month' => 'Месяц',
+    'Year' => 'Год',
+    'January' => 'Январь',
+    'February' => 'Февраль',
+    'March' => 'Март',
+    'April' => 'Апрель',
+    'May' => 'Май',
+    'June' => 'Июнь',
+    'July' => 'Июль',
+    'August' => 'Август',
+    'September' => 'Сентябрь',
+    'October' => 'Октябрь',
+    'November' => 'Ноябрь',
+    'December' => 'Декабрь',
 
     // Pagination
     'Prev' => 'Назад',
@@ -169,7 +208,7 @@ return [
     'article_image_rules' => 'формат: jpg, bmp, png, максимум: 1 Мб',
 
     // Auth
-    'Login' => 'Войти',
+    'Login' => 'Логин',
     'Log in' => 'Вход',
     'Logout' => 'Выйти',
     'Log out' => 'Выход',

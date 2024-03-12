@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
 /**
@@ -44,6 +45,8 @@ use Illuminate\Support\Facades\Event;
  * @property string|null $about
  * @property string|null $new_email
  * @property Status $status
+ * @property string|null $gender
+ * @property CarbonImmutable|null $birthday
  * @property Password $password
  * @property Avatar|null $avatar
  * @property string $remember_token
@@ -58,6 +61,7 @@ use Illuminate\Support\Facades\Event;
  * @property-read Collection<Topic> $topics
  * @property-read Collection<User> $followings
  * @property-read Collection<User> $followers
+ * @property-read Collection<Contact> $contacts
  *
  * @method static Builder whereLogin(string $login)
  * @method static Builder whereEmail(string $email)
@@ -68,11 +72,22 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     use HasFactory, Authenticatable, Authorizable;
 
     protected $fillable = [
-        'login', 'email', 'name', 'about', 'status', 'password', 'new_email', 'avatar', 'verify_token',
+        'login', 'email', 'name', 'about', 'status', 'gender', 'birthday', 'password', 'new_email', 'avatar', 'verify_token',
     ];
 
     protected $hidden = [
         'password', 'remember_token', 'verify_token',
+    ];
+
+    protected $casts = [
+        'avatar' => Avatar::class,
+        'status' => Status::class,
+        'password' => Password::class,
+        'verify_token' => VerifyToken::class,
+        'created_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'login_at' => 'immutable_datetime:d-m-Y H:i:s',
+        'birthday' => 'immutable_datetime:d-m-Y',
     ];
 
     public static function register(string $login, string $email, Password $password): static
@@ -89,16 +104,6 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
 
         return $user;
     }
-
-    protected $casts = [
-        'avatar' => Avatar::class,
-        'status' => Status::class,
-        'password' => Password::class,
-        'verify_token' => VerifyToken::class,
-        'created_at' => 'immutable_datetime:d-m-Y H:i:s',
-        'updated_at' => 'immutable_datetime:d-m-Y H:i:s',
-        'login_at' => 'immutable_datetime:d-m-Y H:i:s',
-    ];
 
     public function verifyRegistration(string $token): void
     {
@@ -334,6 +339,33 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'follower_id',
             'user_id',
         );
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function syncContacts(Collection $contacts): void
+    {
+        DB::transaction(function () use ($contacts) {
+            $delete = $this->contacts()
+                ->pluck('id')
+                ->diff($contacts->pluck('id'));
+
+            $this->contacts()
+                ->whereIn('id', $delete)
+                ->delete();
+
+            $insert = $contacts->map(fn ($contact) => [
+                'id' => $contact['id'] ?? null,
+                'value' => $contact['value'],
+                'contact_type_id' => $contact['contact_type_id'],
+                'user_id' => $this->id,
+            ])->toArray();
+
+            $this->contacts()->upsert($insert, ['id'], ['value']);
+        });
     }
 
     private function isCommentBookmarked(Comment $comment): bool

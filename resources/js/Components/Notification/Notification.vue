@@ -15,7 +15,7 @@ const props = defineProps({
 
   duration: {
     type: [Number, null],
-    default: 30000,
+    default: 20000,
   },
 });
 
@@ -38,7 +38,7 @@ const setNotificationOffset = () => {
 
 watch(() => props.visible, () => {
   if (props.visible && props.duration) {
-    // setTimeout(() => emit('update:visible', false), props.duration);
+    setTimeout(() => emit('update:visible', false), props.duration);
   }
 });
 

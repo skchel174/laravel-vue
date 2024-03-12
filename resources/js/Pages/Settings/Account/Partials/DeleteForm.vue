@@ -6,19 +6,20 @@ import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
+
+const passwordInput = ref(null);
 
 const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
 
 const form = useForm({
   password: '',
 });
 
 const deleteUser = () => {
-  form.delete(route('profile.delete'), {
+  form.delete(route('settings.account.delete'), {
     preserveScroll: true,
     onSuccess: () => closeModal(),
-    onError: () => passwordInput.value.focus(),
     onFinish: () => form.reset(),
   });
 };
@@ -34,26 +35,26 @@ const closeModal = () => {
 </script>
 
 <template>
-  <section class="max-w-2xl space-y-6">
-    <header class="flex space-x-4">
+  <div class="p-4 sm:p-6 bg-white space-y-4 sm:space-y-6">
+    <div class="flex space-x-4">
       <div>
-        <div class="h-8 w-8 bg-yellow-700 flex items-center justify-center rounded-sm">
-          <span class="material-icons !text-base text-white">
+        <div class="h-8 w-8 bg-red-775 flex items-center justify-center rounded-sm">
+          <MaterialIcon class="!text-base text-white">
             delete
-          </span>
+          </MaterialIcon>
         </div>
       </div>
 
       <div>
-        <h2 class="text-lg font-medium text-gray-900 leading-none">
+        <h2 class="text-base font-medium text-gray-700 leading-none">
           {{ $trans('Delete Account') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-gray-500">
           {{ $trans('delete_account_notice') }}
         </p>
       </div>
-    </header>
+    </div>
 
     <FilledButton
       color="danger"
@@ -114,5 +115,5 @@ const closeModal = () => {
         </div>
       </div>
     </Modal>
-  </section>
+  </div>
 </template>

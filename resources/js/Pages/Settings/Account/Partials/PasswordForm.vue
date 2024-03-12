@@ -4,6 +4,7 @@ import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 const form = useForm({
   password: '',
@@ -12,13 +13,14 @@ const form = useForm({
 });
 
 const updatePassword = () => {
-  form.patch(route('profile.password.change'), {
+  form.patch(route('settings.account.password.change'), {
     preserveScroll: true,
     onSuccess: () => form.reset(),
     onError: () => {
       if (form.errors.password) {
         form.reset('password', 'password_confirmation');
       }
+
       if (form.errors.current_password) {
         form.reset('current_password');
       }
@@ -28,23 +30,23 @@ const updatePassword = () => {
 </script>
 
 <template>
-  <section class="max-w-2xl space-y-6">
-    <header class="flex items-center space-x-4">
+  <form
+    class="p-4 sm:p-6 bg-white space-y-4 sm:space-y-6"
+    @submit.prevent="updatePassword"
+  >
+    <div class="flex items-center space-x-4">
       <div class="h-8 w-8 bg-teal-500 flex items-center justify-center rounded-sm">
-        <span class="material-icons !text-sm text-white">
+        <MaterialIcon class="!text-sm text-white">
           lock
-        </span>
+        </MaterialIcon>
       </div>
 
-      <h2 class="text-lg font-medium text-gray-900 leading-none">
+      <h2 class="text-base font-medium text-gray-700 leading-none">
         {{ $trans('Update Password') }}
       </h2>
-    </header>
+    </div>
 
-    <form
-      class="space-y-6"
-      @submit.prevent="updatePassword"
-    >
+    <div class="space-y-2">
       <div>
         <InputLabel
           for="current_password"
@@ -101,13 +103,13 @@ const updatePassword = () => {
           :message="form.errors.password_confirmation"
         />
       </div>
+    </div>
 
-      <FilledButton
-        color="primary"
-        :disabled="form.processing"
-      >
-        {{ $trans('Save') }}
-      </FilledButton>
-    </form>
-  </section>
+    <FilledButton
+      color="success"
+      :disabled="form.processing"
+    >
+      {{ $trans('Save') }}
+    </FilledButton>
+  </form>
 </template>

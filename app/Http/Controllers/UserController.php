@@ -10,6 +10,7 @@ use App\Http\Middleware\User\ShareIndicators;
 use App\Http\Resources\Article\ArticlesResource;
 use App\Http\Resources\Comment\CommentCardCollection;
 use App\Http\Resources\Topic\TopicResource;
+use App\Http\Resources\User\UserContactResource;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UsersCollection;
 use App\Models\Article\Status;
@@ -42,9 +43,12 @@ class UserController extends Controller
 
         $topics = $query->get();
 
+        $contacts = $user->contacts->sortBy('contact_type_id');
+
         return Inertia::render('User/Profile/ProfilePage', [
             'user' => new UserResource($user),
             'topics' => TopicResource::collection($topics),
+            'contacts' => UserContactResource::collection($contacts),
         ]);
     }
 

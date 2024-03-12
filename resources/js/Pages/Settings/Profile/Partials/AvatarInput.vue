@@ -55,59 +55,50 @@ const deleteImage = () => {
 </script>
 
 <template>
-  <div class="flex flex-row justify-between lg:flex-col lg:justify-start">
-    <div class="space-y-2 lg:space-y-3 flex flex-col">
-      <InputLabel :value="$trans('Avatar')"/>
+  <div>
+    <InputLabel :value="$trans('Avatar')"/>
+
+    <div class="mt-1 flex justify-between items-start">
+      <div>
+        <InputError :message="error"/>
+
+        <p class="mb-3 w-44 text-xs text-gray-400 font-medium">
+          {{ $trans('avatar_rules') }}
+        </p>
+
+        <FilledButton
+          v-if="isAvatarUpdated"
+          color="light"
+          class="w-36 flex flex-col space-y-1.5"
+          @click.prevent="resetImage"
+        >
+          {{ $trans('Reset') }}
+        </FilledButton>
+
+        <div v-else class="w-36 flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-1.5">
+          <FilledButton
+            color="light"
+            @click.prevent="triggerInput"
+          >
+            {{ $trans('Select') }}
+          </FilledButton>
+
+          <OutlineButton
+            v-if="avatar"
+            color="danger"
+            @click.prevent="deleteImage"
+          >
+            {{ $trans('Delete') }}
+          </OutlineButton>
+        </div>
+      </div>
 
       <UserAvatar
-        class="hidden lg:flex"
         ref="avatarEl"
         :src="avatar"
         size="lg"
       />
-
-      <p class="w-44 text-xs text-gray-500 font-medium">
-        {{$trans('avatar_rules')}}
-      </p>
-
-      <InputError :message="error"/>
-
-      <FilledButton
-        v-if="isAvatarUpdated"
-        color="light"
-        class="w-full flex flex-col space-y-1.5"
-        @click.prevent="resetImage"
-      >
-        {{ $trans('Reset') }}
-      </FilledButton>
-
-      <div
-        v-else
-        class="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-1.5"
-      >
-        <FilledButton
-          color="light"
-          @click.prevent="triggerInput"
-        >
-          {{ $trans('Select') }}
-        </FilledButton>
-
-        <OutlineButton
-          v-if="avatar"
-          color="danger"
-          @click.prevent="deleteImage"
-        >
-          {{ $trans('Delete') }}
-        </OutlineButton>
-      </div>
     </div>
-
-    <UserAvatar
-      class="mt-4 flex lg:hidden"
-      ref="avatarEl"
-      :src="avatar"
-      size="lg"
-    />
 
     <input
       ref="avatarInput"

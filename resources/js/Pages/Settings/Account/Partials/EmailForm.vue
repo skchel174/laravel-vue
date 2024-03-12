@@ -4,6 +4,7 @@ import InputLabel from "@/Components/Form/InputLabel.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import InputError from "@/Components/Form/InputError.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
+import MaterialIcon from "@/Components/Icons/MaterialIcon.vue";
 
 const user = usePage().props.auth.user;
 
@@ -13,7 +14,7 @@ const form = useForm({
 });
 
 const changeEmail = () => {
-  form.patch(route('profile.email.change'), {
+  form.patch(route('settings.account.email.change'), {
     preserveScroll: true,
     onFinish: () => form.reset('password'),
   });
@@ -21,25 +22,25 @@ const changeEmail = () => {
 </script>
 
 <template>
-  <section class="max-w-2xl space-y-6">
-    <header class="flex items-center space-x-4">
+  <form
+    class="p-4 sm:p-6 bg-white space-y-4 sm:space-y-6"
+    @submit.prevent="changeEmail"
+  >
+    <div class="flex items-center space-x-4">
       <div>
-        <div class="h-8 w-8 bg-cyan-600 flex items-center justify-center rounded-sm">
-          <span class="material-icons !text-sm text-white">
+        <div class="h-8 w-8 bg-sky-775 flex items-center justify-center rounded-sm">
+          <MaterialIcon class="!text-sm text-white">
             email
-          </span>
+          </MaterialIcon>
         </div>
       </div>
 
-      <h2 class="text-lg font-medium text-gray-900 leading-none">
+      <h2 class="text-base font-medium text-gray-700 leading-none">
         {{ $trans('Change Email') }}
       </h2>
-    </header>
+    </div>
 
-    <form
-      class="space-y-6"
-      @submit.prevent="changeEmail"
-    >
+    <div class="space-y-2">
       <div>
         <InputLabel
           for="email"
@@ -77,13 +78,14 @@ const changeEmail = () => {
           :message="form.errors.password"
         />
       </div>
+    </div>
 
-      <FilledButton
-        color="primary"
-        :disabled="form.processing"
-      >
-        {{ $trans('Save') }}
-      </FilledButton>
-    </form>
-  </section>
+    <FilledButton
+      color="success"
+      :disabled="form.processing"
+    >
+      {{ $trans('Save') }}
+    </FilledButton>
+  </form>
+
 </template>
