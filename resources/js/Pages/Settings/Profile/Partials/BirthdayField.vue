@@ -7,7 +7,7 @@ import InputError from "@/Components/Form/InputError.vue";
 
 const props = defineProps({
   modelValue: {
-    type: String,
+    type: [String, null],
     required: true,
   },
 
@@ -32,15 +32,15 @@ const month = ref(null);
 
 const months = computed(() => {
   return moment.monthsShort().map((_, key) => ({
-    key: key,
     name: moment().month(key).locale('en').format('MMMM'),
+    key: key + 1,
   }));
 });
 
 const day = ref(null);
 
 const days = computed(() => {
-  return (month.value && year.value)
+  return month.value && year.value
     ? moment(month.value + '-' + year.value, 'MM-YYYY').daysInMonth()
     : [];
 });
@@ -56,9 +56,11 @@ onMounted(() => {
 });
 
 watch([year, month, day], () => {
-  if (year.value && month.value && day.value) {
-    emit('update:modelValue', year.value + '-' + month.value + '-' + day.value);
-  }
+  const date = year.value && month.value && day.value
+    ? `${year.value}-${month.value}-${day.value}`
+    : null;
+
+  emit('update:modelValue', date);
 });
 </script>
 
@@ -79,7 +81,10 @@ watch([year, month, day], () => {
       </option>
     </OptionsList>
 
-    <OptionsList v-model="month">
+    <OptionsList
+      v-model="month"
+      :disabled="!year"
+    >
       <option value="">
         {{ $trans('Month') }}
       </option>
@@ -92,7 +97,10 @@ watch([year, month, day], () => {
       </option>
     </OptionsList>
 
-    <OptionsList v-model="day">
+    <OptionsList
+      v-model="day"
+      :disabled="!year && !month"
+    >
       <option value="">
         {{ $trans('Day') }}
       </option>
