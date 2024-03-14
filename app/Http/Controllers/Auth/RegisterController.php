@@ -32,8 +32,8 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request): RedirectResponse
     {
         $user = User::register(
-            $request->login,
             $request->email,
+            $request->username,
             Password::create($request->password),
         );
 
@@ -41,7 +41,8 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('register.prompt')
+        return redirect()
+            ->route('register.prompt')
             ->with('notification', Notification::success(trans('user.verification_sent')));
     }
 
@@ -60,7 +61,8 @@ class RegisterController extends Controller
 
         Mail::to($user->email)->send(new VerifyRegistration($user));
 
-        return redirect()->route('register.prompt')
+        return redirect()
+            ->route('register.prompt')
             ->with('notification', Notification::success(trans('user.verification_sent')));
     }
 
@@ -69,7 +71,8 @@ class RegisterController extends Controller
         try {
             Auth::user()->verifyRegistration($request->token);
         } catch (DomainException $e) {
-            return redirect()->route('register.prompt')
+            return redirect()
+                ->route('register.prompt')
                 ->with('notification', Notification::error($e->getMessage()));
         }
 

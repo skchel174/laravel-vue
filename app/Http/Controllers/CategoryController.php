@@ -93,8 +93,8 @@ class CategoryController extends Controller
 
         if ($search) {
             $query
-                ->where('login', 'like', "%$search%")
-                ->orWhere('name', 'like', "%$search%");
+                ->where('username', 'like', "%$search%")
+                ->orWhere('fullname', 'like', "%$search%");
         }
 
         $authors = $query

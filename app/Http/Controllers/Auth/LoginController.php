@@ -29,7 +29,7 @@ class LoginController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         /** @var User $user */
-        $user = User::whereLogin($request->login)->firstOrFail();
+        $user = User::whereEmail($request->email)->firstOrFail();
 
         if (!$user->password->isEquals($request->password)) {
             throw ValidationException::withMessages([
@@ -38,7 +38,8 @@ class LoginController extends Controller
         }
 
         if (!$user->status->isActive()) {
-            return redirect()->route('login')
+            return redirect()
+                ->route('login')
                 ->with('notification', Notification::error(trans('user.not_active')));
         }
 

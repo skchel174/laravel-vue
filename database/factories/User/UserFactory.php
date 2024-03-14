@@ -9,7 +9,6 @@ use App\Models\User\Status;
 use App\Models\User\User;
 use App\Models\User\VerifyToken;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
@@ -19,10 +18,10 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'login' => fake()->unique()->word(),
+            'username' => fake()->unique()->word(),
+            'fullname' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => Password::create(self::PASSWORD),
-            'name' => fake()->name(),
             'about' => fake()->text(50),
             'remember_token' => Str::random(10),
             'status' => Status::Active,

@@ -39,9 +39,9 @@ use Illuminate\Support\Facades\Event;
 
 /**
  * @property-read int $id
- * @property string $login
+ * @property string $username
  * @property string $email
- * @property string|null $name
+ * @property string|null $fullname
  * @property string|null $about
  * @property string|null $new_email
  * @property Status $status
@@ -63,7 +63,6 @@ use Illuminate\Support\Facades\Event;
  * @property-read Collection<User> $followers
  * @property-read Collection<Contact> $contacts
  *
- * @method static Builder whereLogin(string $login)
  * @method static Builder whereEmail(string $email)
  * @method static Builder whereVerifyToken(string $token)
  */
@@ -72,11 +71,23 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
     use HasFactory, Authenticatable, Authorizable;
 
     protected $fillable = [
-        'login', 'email', 'name', 'about', 'status', 'gender', 'birthday', 'password', 'new_email', 'avatar', 'verify_token',
+        'username',
+        'fullname',
+        'email',
+        'about',
+        'status',
+        'gender',
+        'birthday',
+        'password',
+        'new_email',
+        'avatar',
+        'verify_token',
     ];
 
     protected $hidden = [
-        'password', 'remember_token', 'verify_token',
+        'password',
+        'remember_token',
+        'verify_token',
     ];
 
     protected $casts = [
@@ -90,11 +101,11 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'birthday' => 'immutable_datetime:d-m-Y',
     ];
 
-    public static function register(string $login, string $email, Password $password): static
+    public static function register(string $email, string $username, Password $password): static
     {
         $user = static::create([
-            'login' => $login,
             'email' => $email,
+            'username' => $username,
             'password' => $password,
             'status' => Status::Wait,
             'verify_token' => VerifyToken::create(),
