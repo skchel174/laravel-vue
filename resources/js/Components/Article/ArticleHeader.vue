@@ -20,7 +20,8 @@ const props = defineProps({
       <Link :href="route('user', {user: author.login})">
         <UserAvatar
           size="xs"
-          :src="author.avatar"
+          :avatar="author.avatar"
+          :username="author.login"
         />
       </Link>
 

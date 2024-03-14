@@ -15,7 +15,10 @@ const {openSettings} = inject('pageSettings');
   <div>
     <div class="py-5 px-6 flex items-center space-x-2 bg-gray-50">
       <Link :href="route('user', {user: user.login})">
-        <UserAvatar :src="user.avatar"/>
+        <UserAvatar
+          :avatar="user.avatar"
+          :username="user.login"
+        />
       </Link>
 
       <div class="text-sm text-gray-700 font-medium">

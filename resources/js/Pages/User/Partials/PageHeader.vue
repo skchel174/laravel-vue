@@ -34,7 +34,8 @@ const {
     <div class="flex-1 mb-2 sm:mb-0">
       <UserAvatar
         size="md"
-        :src="user.avatar"
+        :avatar="user.avatar"
+        :username="user.login"
       />
 
       <h3 class="mt-2 text-base sm:text-lg">

@@ -19,7 +19,8 @@ defineProps({
   <div class="flex items-center space-x-2">
     <UserAvatar
       size="xs"
-      :src="author.avatar"
+      :avatar="author.avatar"
+      :username="author.login"
     />
 
     <div class="mr-4 flex flex-wrap items-center">
