@@ -5,9 +5,9 @@ import PageHeader from "@/Pages/Settings/Partials/PageHeader.vue";
 import NavigationTabs from "@/Pages/Settings/Partials/NavigationTabs.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 import AvatarInput from "@/Pages/Settings/Profile/Partials/AvatarInput.vue";
-import LoginInput from "@/Pages/Settings/Profile/Partials/LoginInput.vue";
-import NameInput from "@/Pages/Settings/Profile/Partials/NameInput.vue";
-import AboutInput from "@/Pages/Settings/Profile/Partials/AboutInput.vue";
+import UsernameField from "@/Pages/Settings/Profile/Partials/UsernameField.vue";
+import FullnameField from "@/Pages/Settings/Profile/Partials/FullnameField.vue";
+import AboutField from "@/Pages/Settings/Profile/Partials/AboutField.vue";
 import SettingsLayout from "@/Components/Layouts/SettingsLayout.vue";
 import BirthdayField from "@/Pages/Settings/Profile/Partials/BirthdayField.vue";
 import GenderField from "@/Pages/Settings/Profile/Partials/GenderField.vue";
@@ -29,8 +29,8 @@ const user = usePage().props.auth.user;
 
 const form = useForm({
   _method: 'patch',
-  login: user.login ?? '',
-  name: user.name ?? '',
+  username: user.username ?? '',
+  fullname: user.fullname ?? '',
   about: user.about ?? '',
   gender: user.gender ?? '',
   birthday: user.birthday ?? '',
@@ -48,7 +48,7 @@ const contactsError = computed(() => {
 
 const updateProfile = () => {
   form.post(route('settings.profile.update'), {
-    preserveState: false,
+    preserveState: 'errors',
   });
 };
 </script>
@@ -68,21 +68,21 @@ const updateProfile = () => {
       <AvatarInput
         v-model="form.avatar"
         :avatar="user.avatar"
-        :username="form.login"
+        :username="form.username"
         :error="form.errors.avatar"
       />
 
-      <LoginInput
-        v-model="form.login"
-        :error="form.errors.login"
+      <UsernameField
+        v-model="form.username"
+        :error="form.errors.username"
       />
 
-      <NameInput
-        v-model="form.name"
-        :error="form.errors.name"
+      <FullnameField
+        v-model="form.fullname"
+        :error="form.errors.fullname"
       />
 
-      <AboutInput
+      <AboutField
         v-model="form.about"
         :error="form.errors.about"
       />
@@ -102,8 +102,6 @@ const updateProfile = () => {
         :contact-types="contactTypes"
         :error="contactsError"
       />
-
-      {{ form.errors.login }}
 
       <FilledButton
         class="!mt-12"

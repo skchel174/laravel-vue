@@ -26,7 +26,7 @@ const navigation = {
 
 const selectLink = (value) => {
   router.get(route(navigation[value], {
-    user: props.user.login,
+    user: props.user.username,
   }));
 };
 </script>

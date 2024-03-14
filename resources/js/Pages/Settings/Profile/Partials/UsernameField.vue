@@ -22,22 +22,23 @@ defineEmits(['update:modelValue']);
   <div>
     <div class="flex justify-between items-center">
       <InputLabel
-        for="name"
-        :value="$trans('Actual name')"
+        for="suername"
+        :value="$trans('Username')"
       />
 
       <InputLength
         :input="modelValue"
-        :max-length="60"
+        :max-length="25"
       />
     </div>
 
     <TextInput
-      id="name"
+      id="username"
       type="text"
       class="mt-1 block w-full"
       :model-value="modelValue"
       @update:model-value="value => $emit('update:modelValue', value)"
+      required
     />
 
     <InputError

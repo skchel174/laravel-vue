@@ -20,15 +20,15 @@ defineProps({
     <UserAvatar
       size="xs"
       :avatar="author.avatar"
-      :username="author.login"
+      :username="author.username"
     />
 
     <div class="mr-4 flex flex-wrap items-center">
       <Link
         class="text-sm text-gray-600 hover:text-sky-775 transition font-semibold mr-2"
-        :href="route('user', {user: author.login})"
+        :href="route('user', {user: author.username})"
       >
-        {{ author.login }}
+        {{ author.username }}
       </Link>
 
       <span class="text-xs text-gray-400 font-medium !leading-none">

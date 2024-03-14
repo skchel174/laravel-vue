@@ -10,8 +10,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
 /**
- * @property-read string $login
- * @property-read string|null $name
+ * @property-read string $username
+ * @property-read string|null $fullname
  * @property-read string|null $about
  * @property-read string|null $birthday
  * @property-read string|null $gender
@@ -24,19 +24,24 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|max:60',
-            'about' => 'nullable|string|max:50',
-            'avatar' => 'nullable|file|mimes:jpg,bmp,png|max:1024', // max 1MB
-            'birthday' => 'nullable|string|date',
-            'gender' => ['nullable', 'string', Rule::in(['Male', 'Female'])],
-
-            'login' => [
+            'username' => [
                 'required',
                 'string',
                 'min:3',
                 'max:25',
                 'regex:/^[a-zA-Z0-9]+$/',
                 Rule::unique(User::class)->ignore($this->user()->id),
+            ],
+
+            'fullname' => 'nullable|string|max:60',
+            'about' => 'nullable|string|max:50',
+            'avatar' => 'nullable|file|mimes:jpg,bmp,png|max:1024', // max 1MB
+            'birthday' => 'nullable|string|date',
+
+            'gender' => [
+                'nullable',
+                'string',
+                Rule::in(['Male', 'Female']),
             ],
 
             'contacts' => 'array',
@@ -48,7 +53,7 @@ class ProfileUpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'regex' => 'Login can only contain letters (A-Z a-z) and numbers (0-9)',
+            'regex' => 'Username can only contain letters (A-Z a-z) and numbers (0-9)',
         ];
     }
 }

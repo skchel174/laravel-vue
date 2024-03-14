@@ -45,8 +45,8 @@ class ProfileController extends Controller
         }
 
         $user->update([
-            'login' => $request->login,
-            'name' => $request->name,
+            'username' => $request->username,
+            'fullname' => $request->fullname,
             'about' => $request->about,
             'gender' => $request->gender,
             'birthday' => $request->birthday,

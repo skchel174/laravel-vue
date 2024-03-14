@@ -8,7 +8,7 @@ import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const form = useForm({
-  login: '',
+  email: '',
   password: '',
   remember: false,
 });
@@ -22,7 +22,7 @@ const submit = () => {
 
 <template>
   <AuthLayout>
-    <Head :title="$trans('Log in')"/>
+    <Head :title="$trans('Login')"/>
 
     <div class="h-full w-full max-w-lg space-y-4 flex flex-col justify-center">
       <form
@@ -31,27 +31,27 @@ const submit = () => {
       >
         <header class="mb-8 sm:mb-4">
           <h2 class="text-xl font-black">
-            {{ $trans('Log in') }}
+            {{ $trans('Login') }}
           </h2>
         </header>
 
         <div class="space-y-0.5">
           <InputLabel
-            for="login"
-            :value="$trans('Login')"
+            for="email"
+            :value="$trans('Email')"
           />
 
           <TextInput
-            id="login"
-            type="text"
+            id="email"
+            type="email"
             class="mt-1 block w-full"
-            v-model="form.login"
+            v-model="form.email"
             required
           />
 
           <InputError
             class="mt-2"
-            :message="form.errors.login"
+            :message="form.errors.email"
           />
         </div>
 
@@ -88,7 +88,7 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            {{ $trans('Login') }}
+            {{ $trans('Log in') }}
           </FilledButton>
 
           <Link

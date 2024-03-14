@@ -21,8 +21,8 @@ class AuthorController extends Controller
 
         if ($search = $request->query('search')) {
             $query
-                ->where('login', 'like', "%$search%")
-                ->orWhere('name', 'like', "%$search%");
+                ->where('username', 'like', "%$search%")
+                ->orWhere('fullname', 'like', "%$search%");
         }
 
         $authors = $query

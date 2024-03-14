@@ -32,7 +32,7 @@ Route::get('/', function () {
 Route::post('/page/settings', PageController::class)
     ->name('page.settings');
 
-Route::prefix('/users/{user:login}')->group(function () {
+Route::prefix('/users/{user:username}')->group(function () {
     Route::get('/', [UserController::class, 'profile'])
         ->name('user');
 

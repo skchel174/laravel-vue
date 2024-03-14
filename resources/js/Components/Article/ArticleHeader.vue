@@ -17,20 +17,20 @@ const props = defineProps({
 <template>
   <header class="w-full flex flex-wrap items-center justify-between">
     <div class="order-2 sm:order-1 flex items-center space-x-2">
-      <Link :href="route('user', {user: author.login})">
+      <Link :href="route('user', {user: author.username})">
         <UserAvatar
           size="xs"
           :avatar="author.avatar"
-          :username="author.login"
+          :username="author.username"
         />
       </Link>
 
       <div class="flex flex-wrap items-end">
         <Link
           class="text-sm text-gray-600 font-semibold !leading-4 mr-2 hover:text-sky-775 transition duration-200"
-          :href="route('user', {user: author.login})"
+          :href="route('user', {user: author.username})"
         >
-          {{ author.login }}
+          {{ author.username }}
         </Link>
 
         <span

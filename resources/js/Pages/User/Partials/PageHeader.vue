@@ -35,22 +35,22 @@ const {
       <UserAvatar
         size="md"
         :avatar="user.avatar"
-        :username="user.login"
+        :username="user.username"
       />
 
       <h3 class="mt-2 text-base sm:text-lg">
         <span
           class="text-gray-800 font-black"
-          v-if="user.name"
+          v-if="user.fullname"
         >
-          {{ user.name }}
+          {{ user.fullname }}
         </span>
 
         <Link
           class="text-sky-675"
-          :href="route('user', {user: user.login})"
+          :href="route('user', {user: user.username})"
         >
-          @{{ user.login }}
+          @{{ user.username }}
         </Link>
       </h3>
 

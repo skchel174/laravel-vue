@@ -44,7 +44,7 @@ const currentTab = ref(props.currentTab);
 const selectTab = (tab) => {
   currentTab.value = tab;
   const routeName = visibleTabs[tab] || hiddenTabs[tab];
-  router.get(route(routeName, {user: props.user.login}));
+  router.get(route(routeName, {user: props.user.username}));
 };
 
 const indicators = usePage().props.indicators;

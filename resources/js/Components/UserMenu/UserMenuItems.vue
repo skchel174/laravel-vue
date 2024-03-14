@@ -14,23 +14,23 @@ const {openSettings} = inject('pageSettings');
 <template>
   <div>
     <div class="py-5 px-6 flex items-center space-x-2 bg-gray-50">
-      <Link :href="route('user', {user: user.login})">
+      <Link :href="route('user', {user: user.username})">
         <UserAvatar
           :avatar="user.avatar"
-          :username="user.login"
+          :username="user.username"
         />
       </Link>
 
       <div class="text-sm text-gray-700 font-medium">
-        <p v-if="user.name">
-          {{ user.name }}
+        <p v-if="user.fullname">
+          {{ user.fullname }}
         </p>
 
         <Link
           class="text-sky-675"
-          :href="route('user', {user: user.login})"
+          :href="route('user', {user: user.username})"
         >
-          @{{ user.login }}
+          @{{ user.username }}
         </Link>
       </div>
     </div>
@@ -48,7 +48,7 @@ const {openSettings} = inject('pageSettings');
         </MenuItem>
       </Link>
 
-      <Link :href="route('user.articles', {user: user.login})">
+      <Link :href="route('user.articles', {user: user.username})">
         <MenuItem class="px-6 py-3.5">
           <MaterialIcon class="!text-inherit">
             article
@@ -58,7 +58,7 @@ const {openSettings} = inject('pageSettings');
         </MenuItem>
       </Link>
 
-      <Link :href="route('user.comments', {user: user.login})">
+      <Link :href="route('user.comments', {user: user.username})">
         <MenuItem class="px-6 py-3.5 capitalize">
           <MaterialIcon class="!text-inherit">
             question_answer
@@ -68,7 +68,7 @@ const {openSettings} = inject('pageSettings');
         </MenuItem>
       </Link>
 
-      <Link :href="route('user.bookmarks.articles', {user: user.login})">
+      <Link :href="route('user.bookmarks.articles', {user: user.username})">
         <MenuItem class="px-6 py-3.5 capitalize">
           <MaterialIcon class="!text-inherit">
             bookmarks

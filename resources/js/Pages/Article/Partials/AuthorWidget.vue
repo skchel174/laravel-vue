@@ -23,22 +23,22 @@ defineProps({
       <UserAvatar
         size="md"
         :avatar="author.avatar"
-        :username="author.login"
+        :username="author.username"
       />
 
       <h3 class="mt-2 text-base sm:text-lg">
         <span
           class="text-gray-800 font-black"
-          v-if="author.name"
+          v-if="author.fullname"
         >
-          {{ author.name }}
+          {{ author.fullname }}
         </span>
 
         <Link
           class="text-sky-675"
-          :href="route('user', {user: author.login})"
+          :href="route('user', {user: author.username})"
         >
-          @{{ author.login }}
+          @{{ author.username }}
         </Link>
       </h3>
 
