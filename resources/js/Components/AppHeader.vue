@@ -29,7 +29,7 @@ const isMenuOpen = ref(false);
         </Link>
       </div>
 
-      <UserMenu class="lg:hidden !text-gray-200 hover:[&_span]:!text-gray-200"/>
+      <UserMenu class="lg:hidden !text-gray-200 [&_.avatar]:!text-gray-200 [&_.avatar]:!border-gray-200"/>
     </div>
 
     <Sidebar

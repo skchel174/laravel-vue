@@ -7,13 +7,17 @@ import OutlineButton from "@/Components/Buttons/OutlineButton.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const props = defineProps({
-  avatar: {
-    type: [String, null],
-    required: true
-  },
-
   modelValue: {
     type: Object,
+  },
+
+  username: {
+    type: String,
+    required: true,
+  },
+
+  avatar: {
+    type: String,
   },
 
   error: {
@@ -23,33 +27,30 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const avatar = ref(props.avatar);
+const model = ref(props.avatar);
+
 const avatarEl = ref(null);
 const avatarInput = ref(null);
-const isAvatarUpdated = ref(false);
 
 const triggerInput = () => {
   avatarInput.value.click();
 };
 
 const selectImage = () => {
-  isAvatarUpdated.value = true;
   const file = avatarInput.value.files[0];
-  avatar.value = URL.createObjectURL(file);
+  model.value = URL.createObjectURL(file);
   emit('update:modelValue', file);
 };
 
 const resetImage = () => {
-  isAvatarUpdated.value = false;
   avatarInput.value.value = '';
-  avatar.value = props.avatar;
+  model.value = props.avatar;
   emit('update:modelValue', undefined);
 };
 
 const deleteImage = () => {
-  isAvatarUpdated.value = true;
   avatarInput.value.value = '';
-  avatar.value = null;
+  model.value = null;
   emit('update:modelValue', null);
 };
 </script>
@@ -67,9 +68,9 @@ const deleteImage = () => {
         </p>
 
         <FilledButton
-          v-if="isAvatarUpdated"
-          color="light"
+          v-if="model !== avatar"
           class="w-36 flex flex-col space-y-1.5"
+          color="light"
           @click.prevent="resetImage"
         >
           {{ $trans('Reset') }}
@@ -84,7 +85,7 @@ const deleteImage = () => {
           </FilledButton>
 
           <OutlineButton
-            v-if="avatar"
+            v-if="model"
             color="danger"
             @click.prevent="deleteImage"
           >
@@ -95,8 +96,9 @@ const deleteImage = () => {
 
       <UserAvatar
         ref="avatarEl"
-        :src="avatar"
         size="lg"
+        :avatar="model"
+        :username="username"
       />
     </div>
 

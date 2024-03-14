@@ -47,7 +47,9 @@ const contactsError = computed(() => {
 });
 
 const updateProfile = () => {
-  form.post(route('settings.profile.update'));
+  form.post(route('settings.profile.update'), {
+    preserveState: false,
+  });
 };
 </script>
 
@@ -66,6 +68,7 @@ const updateProfile = () => {
       <AvatarInput
         v-model="form.avatar"
         :avatar="user.avatar"
+        :username="form.login"
         :error="form.errors.avatar"
       />
 

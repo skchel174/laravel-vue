@@ -16,8 +16,9 @@ defineProps({
     <div class="flex-1 flex space-x-2.5">
       <Link :href="route('user', {user: author.login})">
         <UserAvatar
-          :src="author.avatar"
-          size="md"
+          size="sm"
+          :avatar="author.avatar"
+          :username="author.login"
         />
       </Link>
 

@@ -62,8 +62,9 @@ const {openSettings} = inject('pageSettings');
       <UserAvatar
         class="cursor-pointer"
         v-if="user"
-        :src="user.avatar"
         size="xs"
+        :avatar="user.avatar"
+        :username="user.login"
         @click.stop="isMenuOpen = !isMenuOpen"
       />
 

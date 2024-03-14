@@ -22,7 +22,8 @@ defineProps({
     <div class="flex-1 mb-2 sm:mb-0">
       <UserAvatar
         size="md"
-        :src="author.avatar"
+        :avatar="author.avatar"
+        :username="author.login"
       />
 
       <h3 class="mt-2 text-base sm:text-lg">

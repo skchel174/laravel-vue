@@ -15,7 +15,10 @@ const url = route('user', {user: props.user.login});
 <template>
   <div class="flex items-center space-x-2">
     <Link :href="url">
-      <UserAvatar :src="user.avatar"/>
+      <UserAvatar
+        :avatar="user.avatar"
+        :username="user.login"
+      />
     </Link>
 
     <div class="text-sm font-medium">
