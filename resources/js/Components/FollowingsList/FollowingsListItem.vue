@@ -9,7 +9,7 @@ const props = defineProps({
   },
 });
 
-const url = route('user', {user: props.user.login});
+const url = route('user', {user: props.user.username});
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const url = route('user', {user: props.user.login});
     <Link :href="url">
       <UserAvatar
         :avatar="user.avatar"
-        :username="user.login"
+        :username="user.username"
       />
     </Link>
 
@@ -25,17 +25,17 @@ const url = route('user', {user: props.user.login});
       <p class="space-x-0.5">
         <Link
           class="text-gray-700 hover:text-sky-775 transition duration-200"
-          v-if="user.name"
+          v-if="user.fullname"
           :href="url"
         >
-          {{ user.name }}
+          {{ user.fullname }}
         </Link>
 
         <Link
           class="text-sky-675"
           :href="url"
         >
-          @{{ user.login }}
+          @{{ user.username }}
         </Link>
       </p>
 

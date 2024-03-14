@@ -40,7 +40,8 @@ return [
     'The link was copied to the clipboard' => 'Ссылка скопирована в буфер обмена',
 
     // User info
-    'Name' => 'Имя',
+    'Username' => 'Никнейм',
+    'Fullname' => 'Настоящее имя',
     'User' => 'Пользователь',
     'Information' => 'Информация',
     'Activity' => 'Активность',
@@ -208,10 +209,10 @@ return [
     'article_image_rules' => 'формат: jpg, bmp, png, максимум: 1 Мб',
 
     // Auth
-    'Login' => 'Логин',
-    'Log in' => 'Вход',
-    'Logout' => 'Выйти',
-    'Log out' => 'Выход',
+    'Login' => 'Вход',
+    'Log in' => 'Выйти',
+    'Logout' => 'Выход',
+    'Log out' => 'Выйти',
     'Remember me' => 'Запомнить меня',
     'Registration' => 'Регистрация',
     'Register' => 'Зарегистрироваться',

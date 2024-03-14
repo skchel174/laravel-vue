@@ -7,8 +7,8 @@ import AuthLayout from "@/Components/Layouts/AuthLayout.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 
 const form = useForm({
-  login: '',
   email: '',
+  username: '',
   password: '',
   password_confirmation: '',
 });
@@ -37,21 +37,21 @@ const submit = () => {
 
         <div>
           <InputLabel
-            for="login"
-            :value="$trans('Login')"
+            for="username"
+            :value="$trans('Username')"
           />
 
           <TextInput
-            id="login"
+            id="username"
             type="text"
             class="mt-1 block w-full"
-            v-model="form.login"
+            v-model="form.username"
             required
           />
 
           <InputError
             class="mt-2"
-            :message="form.errors.login"
+            :message="form.errors.username"
           />
         </div>
 

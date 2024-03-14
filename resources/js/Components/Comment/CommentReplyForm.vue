@@ -59,7 +59,7 @@ const onSubmit = () => {
         {{ $trans('Reply') }}
 
         <span class="font-medium text-sky-675">
-          @{{ author.login }}
+          @{{ author.username }}
         </span>
       </InputLabel>
 

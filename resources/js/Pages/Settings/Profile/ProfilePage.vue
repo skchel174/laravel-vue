@@ -29,8 +29,8 @@ const user = usePage().props.auth.user;
 
 const form = useForm({
   _method: 'patch',
-  login: user.login ?? '',
-  name: user.name ?? '',
+  username: user.username ?? '',
+  fullname: user.fullname ?? '',
   about: user.about ?? '',
   gender: user.gender ?? '',
   birthday: user.birthday ?? '',
@@ -48,7 +48,7 @@ const contactsError = computed(() => {
 
 const updateProfile = () => {
   form.post(route('settings.profile.update'), {
-    preserveState: false,
+    preserveState: 'errors',
   });
 };
 </script>
@@ -68,18 +68,18 @@ const updateProfile = () => {
       <AvatarInput
         v-model="form.avatar"
         :avatar="user.avatar"
-        :username="form.login"
+        :username="form.username"
         :error="form.errors.avatar"
       />
 
       <LoginInput
-        v-model="form.login"
-        :error="form.errors.login"
+        v-model="form.username"
+        :error="form.errors.username"
       />
 
       <NameInput
-        v-model="form.name"
-        :error="form.errors.name"
+        v-model="form.fullname"
+        :error="form.errors.fullname"
       />
 
       <AboutInput
@@ -102,8 +102,6 @@ const updateProfile = () => {
         :contact-types="contactTypes"
         :error="contactsError"
       />
-
-      {{ form.errors.login }}
 
       <FilledButton
         class="!mt-12"

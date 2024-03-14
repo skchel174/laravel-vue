@@ -20,20 +20,20 @@ const props = defineProps({
 
 <template>
   <div class="flex items-center space-x-2">
-    <Link :href="route('user', {user: author.login})">
+    <Link :href="route('user', {user: author.username})">
       <UserAvatar
         size="xs"
         :avatar="author.avatar"
-        :username="author.login"
+        :username="author.username"
       />
     </Link>
 
     <div class="flex flex-wrap items-center">
       <Link
         class="text-sm text-gray-600 font-semibold !leading-4 mr-2 hover:text-sky-775 transition duration-200"
-        :href="route('user', {user: author.login})"
+        :href="route('user', {user: author.username})"
       >
-        {{ author.login }}
+        {{ author.username }}
       </Link>
 
       <div class="text-xs text-gray-400 font-medium">

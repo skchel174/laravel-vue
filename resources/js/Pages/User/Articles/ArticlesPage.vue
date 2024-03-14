@@ -37,7 +37,7 @@ const currentLink = ref(props.status);
 
 const selectStatus = (status) => {
   router.get(route('user.articles', {
-    user: props.user.login,
+    user: props.user.username,
     status,
   }));
 };

@@ -64,7 +64,7 @@ const {openSettings} = inject('pageSettings');
         v-if="user"
         size="xs"
         :avatar="user.avatar"
-        :username="user.login"
+        :username="user.username"
         @click.stop="isMenuOpen = !isMenuOpen"
       />
 

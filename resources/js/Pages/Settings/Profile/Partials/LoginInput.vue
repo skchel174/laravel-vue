@@ -22,8 +22,8 @@ defineEmits(['update:modelValue']);
   <div>
     <div class="flex justify-between items-center">
       <InputLabel
-        for="login"
-        :value="$trans('Login')"
+        for="suername"
+        :value="$trans('Username')"
       />
 
       <InputLength
@@ -33,7 +33,7 @@ defineEmits(['update:modelValue']);
     </div>
 
     <TextInput
-      id="login"
+      id="username"
       type="text"
       class="mt-1 block w-full"
       :model-value="modelValue"
