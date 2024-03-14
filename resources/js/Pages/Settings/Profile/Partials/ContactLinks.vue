@@ -94,7 +94,7 @@ const onInput = (key, value) => {
     <InputError :message="error"/>
 
     <OutlineButton
-      class="!mt-4 !px-2 max-w-[5rem]"
+      class="!mt-4 !px-2 max-w-[9rem]"
       color="primary"
       @click.prevent="addRow"
     >
