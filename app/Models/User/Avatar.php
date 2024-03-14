@@ -13,49 +13,62 @@ use InvalidArgumentException;
 
 class Avatar implements CastsAttributes
 {
-    private string $filename;
+    private string $image;
 
-    public static function create(UploadedFile $file): static
+    public static function create(?UploadedFile $file): static
     {
         $avatar = new static();
-        $avatar->filename = Str::uuid() . '.' . $file->guessExtension();
-        Storage::disk('public')->putFileAs('uploads/avatars', $file, $avatar->filename);
+        $avatar->image = sprintf('%s.%s', Str::uuid(), $file->guessExtension());
+        Storage::disk('public')->putFileAs('uploads/avatars', $file, $avatar->image);
 
         return $avatar;
     }
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
-        return Storage::disk('public')->url('uploads/avatars/' . $this->filename);
+        $path = $this->makeImageFilePath($this->image);
+
+        return Storage::disk('public')->url($path);
     }
 
-    public function getFilePath(): string
+    public function getImagePath(): string
     {
-        return Storage::disk('public')->path('uploads/avatars/' . $this->filename);
+        $path = $this->makeImageFilePath($this->image);
+
+        return Storage::disk('public')->path($path);
     }
 
     public function get(Model $model, string $key, mixed $value, array $attributes): ?static
     {
-        if (!isset($attributes['avatar'])) {
+        if (!$attributes['avatar']) {
             return null;
         }
 
-        $instance = new static();
-        $instance->filename = $attributes['avatar'];
+        $avatar = new static();
+        $avatar->image = $attributes['avatar'];
 
-        return $instance;
+        return $avatar;
     }
 
     public function set(Model $model, string $key, mixed $value, array $attributes): array
     {
         if ($value && !$value instanceof Avatar) {
-            throw new InvalidArgumentException('The given value is not an user Avatar instance.');
+            throw new InvalidArgumentException(sprintf(
+                'The given value is not an user %s instance.',
+                static::class,
+            ));
         }
 
-        if (isset($attributes['avatar']) && $attributes['avatar'] !== $value?->filename) {
-            Storage::disk('public')->delete('uploads/avatars/' . $attributes['avatar']);
+        if (isset($attributes['avatar']) && $attributes['avatar'] !== $value?->image) {
+            $path = $this->makeImageFilePath($attributes['avatar']);
+            Storage::disk('public')->delete($path);
         }
 
-        return ['avatar' => $value?->filename];
+        return ['avatar' => $value?->image];
+    }
+
+    private function makeImageFilePath(string $filename): string
+    {
+        return sprintf('uploads/avatars/%s', $filename);
     }
 }
