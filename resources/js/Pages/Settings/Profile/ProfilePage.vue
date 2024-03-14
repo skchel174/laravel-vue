@@ -5,9 +5,9 @@ import PageHeader from "@/Pages/Settings/Partials/PageHeader.vue";
 import NavigationTabs from "@/Pages/Settings/Partials/NavigationTabs.vue";
 import FilledButton from "@/Components/Buttons/FilledButton.vue";
 import AvatarInput from "@/Pages/Settings/Profile/Partials/AvatarInput.vue";
-import LoginInput from "@/Pages/Settings/Profile/Partials/LoginInput.vue";
-import NameInput from "@/Pages/Settings/Profile/Partials/NameInput.vue";
-import AboutInput from "@/Pages/Settings/Profile/Partials/AboutInput.vue";
+import UsernameField from "@/Pages/Settings/Profile/Partials/UsernameField.vue";
+import FullnameField from "@/Pages/Settings/Profile/Partials/FullnameField.vue";
+import AboutField from "@/Pages/Settings/Profile/Partials/AboutField.vue";
 import SettingsLayout from "@/Components/Layouts/SettingsLayout.vue";
 import BirthdayField from "@/Pages/Settings/Profile/Partials/BirthdayField.vue";
 import GenderField from "@/Pages/Settings/Profile/Partials/GenderField.vue";
@@ -72,17 +72,17 @@ const updateProfile = () => {
         :error="form.errors.avatar"
       />
 
-      <LoginInput
+      <UsernameField
         v-model="form.username"
         :error="form.errors.username"
       />
 
-      <NameInput
+      <FullnameField
         v-model="form.fullname"
         :error="form.errors.fullname"
       />
 
-      <AboutInput
+      <AboutField
         v-model="form.about"
         :error="form.errors.about"
       />
