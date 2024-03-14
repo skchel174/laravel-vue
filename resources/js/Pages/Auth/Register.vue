@@ -135,7 +135,7 @@ const submit = () => {
             :href="route('login')"
             class="ml-1 text-sky-675 hover:text-sky-775 font-semibold transition duration-200 capitalize"
           >
-            {{ $trans('Login') }}
+            {{ $trans('Log in') }}
           </Link>
         </p>
       </div>

@@ -211,7 +211,7 @@ return [
 
     // Auth
     'Login' => 'Вход',
-    'Log in' => 'Выйти',
+    'Log in' => 'Войти',
     'Logout' => 'Выход',
     'Log out' => 'Выйти',
     'Remember me' => 'Запомнить меня',

@@ -31,7 +31,7 @@ const submit = () => {
       >
         <header class="mb-8 sm:mb-4">
           <h2 class="text-xl font-black">
-            {{ $trans('Log in') }}
+            {{ $trans('Login') }}
           </h2>
         </header>
 
@@ -88,7 +88,7 @@ const submit = () => {
             :class="{'opacity-25': form.processing}"
             :disabled="form.processing"
           >
-            {{ $trans('Login') }}
+            {{ $trans('Log in') }}
           </FilledButton>
 
           <Link
