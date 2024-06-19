@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Locale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -31,9 +33,25 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+
             'auth' => [
                 'user' => $request->user(),
             ],
+
+            'localization' => [
+                'locale' => App::getLocale(),
+                'langs' => Locale::langsMap(),
+                'dictionary' => $this->getDictionary(),
+            ],
         ];
+    }
+
+    private function getDictionary(): array
+    {
+        $file = base_path(sprintf('lang/%s.json', App::getLocale()));
+
+        return file_exists($file)
+            ? json_decode(file_get_contents($file), true)
+            : [];
     }
 }
