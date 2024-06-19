@@ -11,14 +11,14 @@ const notify = () => {
 
 <template>
   <AuthLayout>
-    <Head title="Verify registration"/>
+    <Head :title="$trans('Verify registration')"/>
 
     <form
       class="max-w-lg w-full bg-white rounded-sm px-6 py-8 space-y-8"
       @submit.prevent="notify"
     >
       <p class="text-sm font-medium text-gray-600">
-        Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
+        {{ $trans('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
       </p>
 
       <div class="flex items-center justify-between">
@@ -27,14 +27,14 @@ const notify = () => {
           :class="{'opacity-25': form.processing}"
           :disabled="form.processing"
         >
-          Resend verification email
+          {{ $trans('Resend verification email') }}
         </button>
 
         <Link
           class="text-sm font-medium link"
           href="#"
         >
-          Log out
+          {{ $trans('Log out') }}
         </Link>
       </div>
     </form>
