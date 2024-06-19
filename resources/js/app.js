@@ -5,6 +5,7 @@ import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy';
+import trans from "@/Plugins/trans.js";
 
 createInertiaApp({
   progress: {
@@ -27,6 +28,7 @@ createInertiaApp({
     return createApp(root)
       .use(plugin)
       .use(ZiggyVue)
+      .use(trans)
       .mount(el);
   },
 });
