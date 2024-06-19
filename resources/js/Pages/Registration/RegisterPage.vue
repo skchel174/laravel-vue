@@ -18,7 +18,7 @@ const register = () => {
 </script>
 
 <template>
-  <Head title="Registration"/>
+  <Head :title="$trans('Registration')"/>
 
   <AuthLayout>
     <form
@@ -26,13 +26,13 @@ const register = () => {
       @submit.prevent="register"
     >
       <h1 class="mb-8 text-3xl text-gray-900 font-normal">
-        Registration
+        {{ $trans('Registration') }}
       </h1>
 
       <div class="space-y-1.5">
         <FormLabel
           for="username"
-          value="Username"
+          :value="$trans('Username')"
         />
 
         <FormInput
@@ -48,7 +48,7 @@ const register = () => {
       <div class="space-y-1.5">
         <FormLabel
           for="email"
-          value="Email"
+          :value="$trans('Email')"
         />
 
         <FormInput
@@ -64,7 +64,7 @@ const register = () => {
       <div class="space-y-1.5">
         <FormLabel
           for="password"
-          value="Password"
+          :value="$trans('Password')"
         />
 
         <FormInput
@@ -80,7 +80,7 @@ const register = () => {
       <div class="space-y-1.5">
         <FormLabel
           for="password_confirmation"
-          value="Password confirmation"
+          :value="$trans('Password confirmation')"
         />
 
         <FormInput
@@ -98,19 +98,21 @@ const register = () => {
         :class="{'opacity-25': form.processing}"
         :disabled="form.processing"
       >
-        Register
+        {{ $trans('Register') }}
       </button>
     </form>
 
     <div class="max-w-lg w-full bg-white rounded-sm p-6">
-      <p class="text-center text-sm text-gray-900 font-medium space-x-1">
-        <span>Already registered?</span>
+      <p class="text-center text-sm text-gray-600 font-medium">
+        <span>
+          {{ $trans('Already registered') }}?
+        </span>
 
         <Link
           class="link font-medium"
           href="#"
         >
-          Log in
+          {{ $trans('Log in') }}
         </Link>
       </p>
     </div>
