@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AppearanceController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::put('/appearance', AppearanceController::class)
+    ->name('appearance');
 
 Route::prefix('/register')->group(function () {
     Route::middleware('guest')->group(function () {
