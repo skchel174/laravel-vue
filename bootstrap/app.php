@@ -5,10 +5,12 @@ declare(strict_types=1);
 use App\Http\Middleware\Auth\UnverifiedAccountsMiddleware;
 use App\Http\Middleware\Auth\VerifiedAccountsMiddleware;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\ResolveLocaleMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Session\Middleware\StartSession;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,8 +20,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
+            ResolveLocaleMiddleware::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+        ]);
+
+        $middleware->priority([
+            StartSession::class,
+            ResolveLocaleMiddleware::class,
         ]);
 
         $middleware->alias([
