@@ -6,6 +6,7 @@ use App\Http\Middleware\Auth\UnverifiedAccountsMiddleware;
 use App\Http\Middleware\Auth\VerifiedAccountsMiddleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\ResolveLocaleMiddleware;
+use App\Services\FlashNotifier;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -36,5 +37,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (DomainException $exception) {
+            app(FlashNotifier::class)->danger(trans($exception->getMessage()));
+
+            return back();
+        });
     })->create();

@@ -27,9 +27,9 @@ readonly class FlashNotifier
         $this->notify('success', $message);
     }
 
-    public function error(string $message): void
+    public function danger(string $message): void
     {
-        $this->notify('error', $message);
+        $this->notify('danger', $message);
     }
 
     private function notify(string $type, string $message): void
