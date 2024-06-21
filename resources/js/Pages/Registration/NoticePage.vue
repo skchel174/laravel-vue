@@ -34,7 +34,7 @@ const notify = () => {
           class="text-sm font-medium text-link"
           href="#"
         >
-          {{ $trans('Log out') }}
+          {{ $trans('Logout') }}
         </Link>
       </div>
     </form>

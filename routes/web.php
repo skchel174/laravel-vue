@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\LocalizationController;
+use App\Http\Controllers\Auth\AuthSessionController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\LocalizationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,3 +43,17 @@ Route::prefix('/register')->group(function () {
             ->name('register.verify');
     });
 });
+
+Route::prefix('/login')
+    ->middleware('guest')
+    ->group(function () {
+        Route::get('/', [AuthSessionController::class, 'index'])
+            ->name('login');
+
+        Route::post('/', [AuthSessionController::class, 'create'])
+            ->name('login');
+    });
+
+Route::get('/logout', [AuthSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');

@@ -8,9 +8,11 @@
     "Password confirmation": "Подтверждение пароля",
     "Register": "Зарегистрироваться",
     "Already registered": "Уже зарегистрированы",
-    "Log in": "Войти",
     "Verify registration":  "Подтвердить регистрацию",
     "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "Спасибо за регистрацию! Прежде чем начать, не могли бы вы подтвердить свой адрес электронной почты, нажав на ссылку, которую мы только что отправили вам по электронной почте? Если вы не получили письмо, мы с радостью отправим вам другое.",
     "Resend verification email": "Выслать повторно письмо для подтверждения",
-    "Log out": "Выйти"
+    "Have no account yet?": "У вас еще нет учетной записи?",
+    "Login": "Войти",
+    "Logout": "Выйти",
+    "Log in": "Вход"
 }

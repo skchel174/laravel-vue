@@ -27,6 +27,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read VerifyToken|null $verifyToken
  *
  * @method static UserFactory factory($count = null, $state = [])
+ * @method static User|null firstWhere(string $string, string $email)
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
