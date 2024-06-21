@@ -10,6 +10,10 @@
   flex-direction: column;
 }
 
+body {
+  margin-bottom: 0 !important;
+}
+
 @layer utilities {
   .flex-center {
     @apply flex justify-center items-center;
