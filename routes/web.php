@@ -49,4 +49,7 @@ Route::prefix('/login')
     ->group(function () {
         Route::get('/', [AuthSessionController::class, 'index'])
             ->name('login');
+
+        Route::post('/', [AuthSessionController::class, 'create'])
+            ->name('login');
     });
