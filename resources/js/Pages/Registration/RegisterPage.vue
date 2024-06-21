@@ -22,7 +22,7 @@ const register = () => {
 
   <AuthLayout>
     <form
-      class="max-w-lg w-full bg-white dark:bg-neutral-900 rounded-sm px-6 py-8 space-y-4"
+      class="max-w-lg w-full bg-color-base rounded-sm px-6 py-8 space-y-4"
       @submit.prevent="register"
     >
       <h1 class="mb-8 text-3xl text-color-dark font-normal">
@@ -112,7 +112,7 @@ const register = () => {
           class="text-link font-medium"
           href="#"
         >
-          {{ $trans('Log in') }}
+          {{ $trans('Login') }}
         </Link>
       </p>
     </div>
