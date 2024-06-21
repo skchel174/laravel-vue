@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\Models\Locale;
+use App\Services\FlashNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
+    public function __construct(private readonly FlashNotifier $notifier)
+    {
+    }
+
     /**
      * The root template that is loaded on the first page visit.
      *
@@ -43,6 +50,8 @@ class HandleInertiaRequests extends Middleware
                 'langs' => Locale::langsMap(),
                 'dictionary' => $this->getDictionary(),
             ],
+
+            'alert' => $this->notifier->getAlert(),
         ];
     }
 

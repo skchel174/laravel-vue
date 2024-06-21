@@ -7,13 +7,18 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User\User;
 use App\Notifications\User\VerifyRegistration;
+use App\Services\FlashNotifier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisterController
+readonly class RegisterController
 {
+    public function __construct(private FlashNotifier $notifier)
+    {
+    }
+
     public function index(): Response
     {
         return Inertia::render('Registration/RegisterPage');
@@ -46,6 +51,8 @@ class RegisterController
         $user->verifyToken->regenerate();
 
         $user->notify(new VerifyRegistration());
+
+        $this->notifier->info(trans('alert.verification_sent'));
 
         return back();
     }
