@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @property-read int $id
@@ -80,6 +81,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getAuthPassword(): string
     {
         return $this->password->getHash();
+    }
+
+    public function resetPassword(string $password, string $token): void
+    {
+        $this->checkVerifyToken($token);
+
+        $this->update(['password' => Password::make($password)]);
+
+        $this->verifyToken->delete();
+
+        unset($this->verifyToken);
     }
 
     public function verifyToken(): HasOne
