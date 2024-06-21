@@ -53,3 +53,7 @@ Route::prefix('/login')
         Route::post('/', [AuthSessionController::class, 'create'])
             ->name('login');
     });
+
+Route::get('/logout', [AuthSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');

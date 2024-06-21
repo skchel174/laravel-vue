@@ -40,4 +40,15 @@ class AuthSessionController
 
         return redirect()->intended();
     }
+
+    public function destroy(): RedirectResponse
+    {
+        Auth::logout();
+
+        Session::invalidate();
+
+        Session::regenerateToken();
+
+        return redirect('/');
+    }
 }
