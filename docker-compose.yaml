@@ -8,16 +8,12 @@ services:
       - ./:/var/www
     ports:
       - "8080:80"
-    links:
-      - php
 
   php:
     build:
       context: docker/php
     volumes:
       - ./:/var/www
-    links:
-      - mysql
 
   mysql:
     image: mysql:8.0
