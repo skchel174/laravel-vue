@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthSessionController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\LocalizationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -57,3 +58,10 @@ Route::prefix('/login')
 Route::get('/logout', [AuthSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+Route::prefix('/reset-password')
+    ->middleware('guest')
+    ->group(function () {
+        Route::get('/', [ResetPasswordController::class, 'notice'])
+            ->name('reset-password.notice');
+    });
