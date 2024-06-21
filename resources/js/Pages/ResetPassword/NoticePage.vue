@@ -10,7 +10,7 @@ const form = useForm({
 });
 
 const notify = () => {
-  form.post(route('reset-password.notify'));
+  form.post(route('password.notify'));
 };
 </script>
 

@@ -59,9 +59,18 @@ Route::get('/logout', [AuthSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::prefix('/reset-password')
+Route::prefix('/password')
     ->middleware('guest')
     ->group(function () {
-        Route::get('/', [ResetPasswordController::class, 'notice'])
-            ->name('reset-password.notice');
+        Route::get('/forgot', [ResetPasswordController::class, 'notice'])
+            ->name('password.forgot');
+
+        Route::post('/notify', [ResetPasswordController::class, 'notify'])
+            ->name('password.notify');
+
+        Route::get('/{user}/{token}', [ResetPasswordController::class, 'form'])
+            ->name('password');
+
+        Route::post('/reset/{user}/{token}', [ResetPasswordController::class, 'reset'])
+            ->name('password.reset');
     });

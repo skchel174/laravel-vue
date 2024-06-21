@@ -54,7 +54,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'status' => Status::Wait,
         ]);
 
-        $user->verifyToken()->save(VerifyToken::generate());
+        $user->generateVerifyToken();
 
         return $user;
     }
@@ -65,20 +65,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             throw new AccountVerifiedException();
         }
 
-        if (!$this->verifyToken) {
-            throw new VerificationNotRequestedException();
-        }
-
-        if (!$this->verifyToken->isEquals($token)) {
-            throw new InvalidVerifyTokenException();
-        }
-
-        if ($this->verifyToken->isExpired(config('auth.verification_timeout'))) {
-            throw new VerificationTokenExpiredException();
-        }
+        $this->checkVerifyToken($token);
 
         $this->update(['status' => Status::Active]);
+
         $this->verifyToken->delete();
+
         unset($this->verifyToken);
     }
 
@@ -93,6 +85,26 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function verifyToken(): HasOne
     {
         return $this->hasOne(VerifyToken::class);
+    }
+
+    public function generateVerifyToken(): void
+    {
+        $this->verifyToken()->save(VerifyToken::generate());
+    }
+
+    public function checkVerifyToken(string $token): void
+    {
+        if (!$this->verifyToken) {
+            throw new VerificationNotRequestedException();
+        }
+
+        if (!$this->verifyToken->isEquals($token)) {
+            throw new InvalidVerifyTokenException();
+        }
+
+        if ($this->verifyToken->isExpired(config('auth.verification_timeout'))) {
+            throw new VerificationTokenExpiredException();
+        }
     }
 
     protected function casts(): array
