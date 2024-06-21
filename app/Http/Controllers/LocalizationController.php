@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateAppearanceRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 
-class AppearanceController
+class LocalizationController
 {
     public function __invoke(UpdateAppearanceRequest $request): RedirectResponse
     {

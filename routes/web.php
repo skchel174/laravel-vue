@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\AppearanceController;
+use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +17,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::put('/appearance', AppearanceController::class)
+Route::put('/appearance', LocalizationController::class)
     ->name('appearance');
 
 Route::prefix('/register')->group(function () {
