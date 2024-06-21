@@ -22,10 +22,10 @@ const register = () => {
 
   <AuthLayout>
     <form
-      class="max-w-lg w-full bg-white rounded-sm px-6 py-8 space-y-4"
+      class="max-w-lg w-full bg-white dark:bg-neutral-900 rounded-sm px-6 py-8 space-y-4"
       @submit.prevent="register"
     >
-      <h1 class="mb-8 text-3xl text-gray-900 font-normal">
+      <h1 class="mb-8 text-3xl text-color-dark font-normal">
         {{ $trans('Registration') }}
       </h1>
 
@@ -102,14 +102,14 @@ const register = () => {
       </button>
     </form>
 
-    <div class="max-w-lg w-full bg-white rounded-sm p-6">
-      <p class="text-center text-sm text-gray-600 font-medium">
+    <div class="max-w-lg w-full bg-color-base rounded-sm p-6">
+      <p class="text-center text-sm text-color-base font-medium">
         <span>
           {{ $trans('Already registered') }}?
         </span>
 
         <Link
-          class="link font-medium"
+          class="text-link font-medium"
           href="#"
         >
           {{ $trans('Log in') }}

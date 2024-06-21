@@ -2,6 +2,7 @@
 import {computed} from "vue";
 import {Link, usePage} from "@inertiajs/vue3";
 import VIcon from "@/Components/VIcon.vue";
+import ThemeWrapper from "@/Components/ThemeWrapper.vue";
 
 const page = usePage();
 
@@ -17,29 +18,31 @@ const lang = computed(() => {
 </script>
 
 <template>
-  <div class="flex-1 flex-center flex-col bg-white sm:bg-gray-100">
-    <div class="flex-1"/>
+  <ThemeWrapper>
+    <div class="flex-1 flex-center flex-col bg-color-base sm:bg-color-dark">
+      <div class="flex-1"/>
 
-    <div class="w-full flex-2 flex-center flex-col space-y-4">
-      <slot/>
+      <div class="w-full flex-2 flex-center flex-col space-y-4">
+        <slot/>
+      </div>
+
+      <div class="flex-1 flex items-center">
+        <Link
+          class="flex-center text-sm text-color-light space-x-1.5"
+          :href="route('appearance', {locale})"
+          method="put"
+          as="button"
+        >
+          <VIcon
+            class="!text-xl"
+            name="language"
+          />
+
+          <span>
+            {{ $trans(lang) }}
+          </span>
+        </Link>
+      </div>
     </div>
-
-    <div class="flex-1 flex items-center">
-      <Link
-        class="flex-center text-sm text-gray-500 space-x-1.5"
-        as="button"
-        :href="route('appearance', {locale})"
-        method="put"
-      >
-        <VIcon
-          class="!text-xl"
-          name="language"
-        />
-
-        <span>
-          {{ $trans(lang) }}
-        </span>
-      </Link>
-    </div>
-  </div>
+  </ThemeWrapper>
 </template>

@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <label class="block font-semibold text-sm text-gray-700">
+  <label class="block font-semibold text-sm text-color-base">
     {{ value }}
   </label>
 </template>

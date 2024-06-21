@@ -9,7 +9,7 @@ defineProps({
 <template>
   <p
     v-show="message"
-    class="block text-sm text-danger"
+    class="block text-sm text-color-danger"
   >
     {{ message }}
   </p>

@@ -14,10 +14,10 @@ const notify = () => {
     <Head :title="$trans('Verify registration')"/>
 
     <form
-      class="max-w-lg w-full bg-white rounded-sm px-6 py-8 space-y-8"
+      class="max-w-lg w-full bg-color-base rounded-sm px-6 py-8 space-y-8"
       @submit.prevent="notify"
     >
-      <p class="text-sm font-medium text-gray-600">
+      <p class="text-sm font-medium text-color-base">
         {{ $trans('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
       </p>
 
@@ -31,7 +31,7 @@ const notify = () => {
         </button>
 
         <Link
-          class="text-sm font-medium link"
+          class="text-sm font-medium text-link"
           href="#"
         >
           {{ $trans('Log out') }}
