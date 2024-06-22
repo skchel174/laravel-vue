@@ -10,6 +10,7 @@ use App\Models\User\Exceptions\VerificationNotRequestedException;
 use App\Models\User\Exceptions\VerificationTokenExpiredException;
 use App\Models\User\Status;
 use App\Models\User\User;
+use App\Models\User\VerifyToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
@@ -25,10 +26,10 @@ class VerifyTest extends TestCase
             ->unverified()
             ->create();
 
-        $user->verify($user->verifyToken->token);
+        $user->verify($user->verify_token->getValue());
 
         $this->assertEquals(Status::Active, $user->status);
-        $this->assertNull($user->verifyToken);
+        $this->assertNull($user->verify_token);
     }
 
     public function testVerifyAlreadyVerifiedUser(): void
@@ -36,11 +37,11 @@ class VerifyTest extends TestCase
         $this->expectException(AccountVerifiedException::class);
 
         /** @var User $user */
-        $user = User::factory()
-            ->withVerifyToken()
-            ->create();
+        $user = User::factory()->create([
+            'verify_token' => VerifyToken::create(),
+        ]);
 
-        $user->verify($user->verifyToken->token);
+        $user->verify($user->verify_token->getValue());
     }
 
     public function testVerifyWhenVerificationNotRequested(): void
@@ -78,6 +79,6 @@ class VerifyTest extends TestCase
             ->unverified()
             ->create();
 
-        $user->verify($user->verifyToken->token);
+        $user->verify($user->verify_token->getValue());
     }
 }

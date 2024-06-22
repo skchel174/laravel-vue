@@ -8,7 +8,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -30,7 +29,7 @@ class AuthSessionController
             throw ValidationException::withMessages(['email' => trans('auth.email')]);
         }
 
-        if (!Hash::check($request->password, $user->password)) {
+        if (!$user->checkPassword($request->password)) {
             throw ValidationException::withMessages(['password' => trans('auth.password')]);
         }
 

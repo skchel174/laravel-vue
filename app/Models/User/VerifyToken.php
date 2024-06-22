@@ -6,66 +6,62 @@ namespace App\Models\User;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Database\Factories\User\VerifyTokenFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
-/**
- * @property-read int $id
- * @property-read User $user
- * @property string $token
- * @property CarbonImmutable $created_at
- *
- * @method static VerifyTokenFactory factory($count = null, $state = [])
- */
-class VerifyToken extends Model
+class VerifyToken implements CastsAttributes
 {
-    use HasFactory;
+    private string $value;
+    private CarbonImmutable $timestamp;
 
-    public $timestamps = false;
-
-    protected $fillable = [
-        'token',
-        'created_at',
-    ];
-
-    public static function generate(): VerifyToken
+    public static function create(): static
     {
-        return static::make([
-            'token' => Str::uuid(),
-            'created_at' => CarbonImmutable::now(),
-        ]);
+        $token = new static();
+        $token->value = Str::uuid()->toString();
+        $token->timestamp = CarbonImmutable::now();
+
+        return $token;
     }
 
-    public function regenerate(): void
+    public function getValue(): string
     {
-        $this->update([
-            'token' => Str::uuid(),
-            'created_at' => CarbonImmutable::now(),
-        ]);
+        return $this->value;
     }
 
     public function isEquals(string $token): bool
     {
-        return $this->token === $token;
+        return $this->value === $token;
     }
 
-    public function isExpired($timeout): bool
+    public function isExpired(int $timeout): bool
     {
-        return Carbon::now() > $this->created_at->addSeconds($timeout);
+        return Carbon::now() > $this->timestamp->addSeconds($timeout);
     }
 
-    public function user(): BelongsTo
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?static
     {
-        return $this->belongsTo(User::class);
+        if (!isset($attributes['verify_token'], $attributes['verify_token_timestamp'])) {
+            return null;
+        }
+
+        $token = new static();
+        $token->value = $attributes['verify_token'];
+        $token->timestamp = new CarbonImmutable($attributes['verify_token_timestamp']);
+
+        return $token;
     }
 
-    protected function casts(): array
+    public function set(Model $model, string $key, mixed $value, array $attributes): array
     {
+        if ($value && !$value instanceof VerifyToken) {
+            throw new InvalidArgumentException(sprintf('The given value is not an %s.', static::class));
+        }
+
         return [
-            'created_at' => 'immutable_datetime',
+            'verify_token' => $value?->value,
+            'verify_token_timestamp' => $value?->timestamp->format('Y-m-d H:i:s'),
         ];
     }
 }

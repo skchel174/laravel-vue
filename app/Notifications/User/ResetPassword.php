@@ -8,9 +8,8 @@ use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Lang;
 
-class VerifyRegistration extends Notification
+class ResetPassword extends Notification
 {
     use Queueable;
 
@@ -21,11 +20,14 @@ class VerifyRegistration extends Notification
 
     public function toMail(User $user): MailMessage
     {
+        $url = route('password', [
+            'user' => $user->id,
+            'token' => $user->verify_token->getValue(),
+        ]);
+
         return (new MailMessage())
-            ->subject(Lang::get('Verify Registration'))
-            ->line(Lang::get('Please click the button below to verify registration.'))
-            ->action(Lang::get('Verify'), route('register.verify', [
-                'token' => $user->verify_token->getValue(),
-            ]));
+            ->subject(trans('Reset Password Notification'))
+            ->line(trans('You are receiving this email because we received a password reset request for your account.'))
+            ->action(trans('Reset Password'), $url);
     }
 }

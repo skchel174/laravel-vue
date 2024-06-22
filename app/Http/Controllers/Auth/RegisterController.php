@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User\User;
+use App\Models\User\VerifyToken;
 use App\Notifications\User\VerifyRegistration;
 use App\Services\FlashNotifier;
 use Illuminate\Http\RedirectResponse;
@@ -48,7 +49,7 @@ readonly class RegisterController
     {
         $user = Auth::user();
 
-        $user->verifyToken->regenerate();
+        $user->update(['verify_token' => VerifyToken::create()]);
 
         $user->notify(new VerifyRegistration());
 

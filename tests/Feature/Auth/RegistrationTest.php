@@ -54,7 +54,6 @@ class RegistrationTest extends TestCase
 
         $response->assertSessionHasNoErrors();
         $response->assertRedirectToRoute('register.notice');
-
         Notification::assertSentTo($user, VerifyRegistration::class);
     }
 
@@ -67,14 +66,13 @@ class RegistrationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->get(route('register.verify', [
-                'token' => $user->verifyToken->token,
+                'token' => $user->verify_token->getValue(),
             ]));
 
         $user->refresh();
 
         $this->assertTrue($user->status->isActive());
-        $this->assertNull($user->verifyToken);
-
+        $this->assertNull($user->verify_token);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/');
     }
