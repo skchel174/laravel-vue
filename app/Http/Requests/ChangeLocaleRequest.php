@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 /**
  * @property-read string $locale
  */
-class UpdateAppearanceRequest extends FormRequest
+class ChangeLocaleRequest extends FormRequest
 {
     public function rules(): array
     {
