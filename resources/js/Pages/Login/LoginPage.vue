@@ -66,6 +66,15 @@ const login = () => {
       >
         {{ $trans('Login') }}
       </button>
+
+      <div>
+        <Link
+          class="text-sm font-medium text-link"
+          :href="route('password.forgot')"
+        >
+          {{ $trans('Forgot password') }}?
+        </Link>
+      </div>
     </form>
 
     <div class="max-w-lg w-full bg-color-base rounded-sm p-6">
@@ -76,7 +85,7 @@ const login = () => {
 
         <Link
           class="text-link font-medium"
-          href="#"
+          :href="route('register')"
         >
           {{ $trans('Register') }}
         </Link>
