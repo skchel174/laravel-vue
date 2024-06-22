@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Hash;
  * @property-read int $id
  * @property string $email
  * @property string $username
- * @property Password $password
+ * @property string $password
  * @property Status $status
  * @property-read VerifyToken|null $verifyToken
  *
@@ -51,7 +51,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $user = static::create([
             'email' => $email,
             'username' => $username,
-            'password' => Password::make($password),
+            'password' => Hash::make($password),
             'status' => Status::Wait,
         ]);
 
@@ -75,19 +75,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         unset($this->verifyToken);
     }
 
-    /**
-     * Need for AuthenticateSession middleware
-     */
-    public function getAuthPassword(): string
+    public function changePassword(string $password): void
     {
-        return $this->password->getHash();
+        $this->update(['password' => Hash::make($password)]);
+    }
+
+    public function checkPassword(string $password): bool
+    {
+        return Hash::check($password, $this->password);
     }
 
     public function resetPassword(string $password, string $token): void
     {
         $this->checkVerifyToken($token);
 
-        $this->update(['password' => Password::make($password)]);
+        $this->update(['password' => Hash::make($password)]);
 
         $this->verifyToken->delete();
 
@@ -123,7 +125,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return [
             'status' => Status::class,
-            'password' => Password::class,
             'created_at' => 'immutable_datetime',
             'updated_at' => 'immutable_datetime',
         ];
