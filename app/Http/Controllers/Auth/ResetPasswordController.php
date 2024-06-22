@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\SendNotificationRequest;
 use App\Models\User\User;
+use App\Models\User\VerifyToken;
 use App\Notifications\User\ResetPassword;
 use App\Services\FlashNotifier;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,7 +37,7 @@ readonly class ResetPasswordController
             throw ValidationException::withMessages(['email' => trans('auth.email')]);
         }
 
-        $user->generateVerifyToken();
+        $user->update(['verify_token' => VerifyToken::create()]);
 
         $user->notify(new ResetPassword());
 
@@ -50,5 +54,23 @@ readonly class ResetPasswordController
             'user' => $user->id,
             'token' => $token,
         ]);
+    }
+
+    /**
+     * @throws AuthenticationException
+     */
+    public function reset(ResetPasswordRequest $request, User $user, string $token): RedirectResponse
+    {
+        $user->resetPassword($request->password, $token);
+
+        Auth::login($user);
+
+        Auth::logoutOtherDevices($request->password);
+
+        Auth::logoutCurrentDevice();
+
+        $this->notifier->success(trans('passwords.reset'));
+
+        return redirect()->route('login');
     }
 }
