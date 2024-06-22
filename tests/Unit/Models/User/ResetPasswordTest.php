@@ -7,10 +7,10 @@ namespace Tests\Unit\Models\User;
 use App\Models\User\Exceptions\VerificationNotRequestedException;
 use App\Models\User\Exceptions\VerificationTokenExpiredException;
 use App\Models\User\User;
+use App\Models\User\VerifyToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ResetPasswordTest extends TestCase
@@ -20,17 +20,17 @@ class ResetPasswordTest extends TestCase
     public function testSuccessfulResetPassword(): void
     {
         /** @var User $user */
-        $user = User::factory()
-            ->withVerifyToken()
-            ->create();
+        $user = User::factory()->create([
+            'verify_token' => $token = VerifyToken::create(),
+        ]);
 
         $user->resetPassword(
             $password = fake()->word(),
-            $user->verifyToken->token,
+            $token->getValue(),
         );
 
-        $this->assertNull($user->verifyToken);
-        $this->assertTrue(Hash::check($password, $user->password));
+        $this->assertTrue($user->checkPassword($password));
+        $this->assertNull($user->verify_token);
     }
 
     public function testResetPasswordWithoutVerifyToken(): void
@@ -50,12 +50,12 @@ class ResetPasswordTest extends TestCase
         Config::set('auth.verification_timeout', 0);
 
         /** @var User $user */
-        $user = User::factory()
-            ->withVerifyToken()
-            ->create();
+        $user = User::factory()->create([
+            'verify_token' => $token = VerifyToken::create(),
+        ]);
 
         Event::shouldReceive('dispatch')->never();
 
-        $user->resetPassword(fake()->word(), $user->verifyToken->token);
+        $user->resetPassword(fake()->word(), $token->getValue());
     }
 }

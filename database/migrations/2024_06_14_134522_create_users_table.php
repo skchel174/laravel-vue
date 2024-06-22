@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('status', array_column(Status::cases(), 'value'));
             $table->rememberToken();
+            $table->string('verify_token', 36)->nullable();
+            $table->timestamp('verify_token_timestamp')->nullable();
             $table->timestamps();
         });
     }

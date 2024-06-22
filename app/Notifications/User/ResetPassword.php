@@ -22,7 +22,7 @@ class ResetPassword extends Notification
     {
         $url = route('password', [
             'user' => $user->id,
-            'token' => $user->verifyToken->token,
+            'token' => $user->verify_token->getValue(),
         ]);
 
         return (new MailMessage())

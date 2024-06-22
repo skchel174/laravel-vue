@@ -14,14 +14,14 @@ class IsExpiredTest extends TestCase
 
     public function testExpiredToken(): void
     {
-        $token = VerifyToken::factory()->create();
+        $token = VerifyToken::create();
 
         $this->assertTrue($token->isExpired(0));
     }
 
     public function testNotExpiredToken(): void
     {
-        $token = VerifyToken::factory()->create();
+        $token = VerifyToken::create();
 
         $this->assertFalse($token->isExpired(1000));
     }

@@ -25,7 +25,7 @@ class VerifyRegistration extends Notification
             ->subject(Lang::get('Verify Registration'))
             ->line(Lang::get('Please click the button below to verify registration.'))
             ->action(Lang::get('Verify'), route('register.verify', [
-                'token' => $user->verifyToken->token,
+                'token' => $user->verify_token->getValue(),
             ]));
     }
 }

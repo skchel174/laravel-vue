@@ -6,7 +6,6 @@ namespace Tests\Unit\Models\User\VerifyToken;
 
 use App\Models\User\VerifyToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class IsEqualsTest extends TestCase
@@ -15,19 +14,17 @@ class IsEqualsTest extends TestCase
 
     public function testEqualsVerifyTokens(): void
     {
-        /** @var VerifyToken $verifyToken */
-        $verifyToken = VerifyToken::factory()->create([
-            'token' => $token = Str::uuid()->toString(),
-        ]);
+        $token = VerifyToken::create();
 
-        $this->assertTrue($verifyToken->isEquals($token));
+        $value = $token->getValue();
+
+        $this->assertTrue($token->isEquals($value));
     }
 
     public function testNotEqualsVerifyTokens(): void
     {
-        /** @var VerifyToken $verifyToken */
-        $verifyToken = VerifyToken::factory()->create();
+        $token = VerifyToken::create();
 
-        $this->assertFalse($verifyToken->isEquals(fake()->word()));
+        $this->assertFalse($token->isEquals(fake()->word()));
     }
 }

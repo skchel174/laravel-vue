@@ -27,13 +27,11 @@ class UserFactory extends Factory
         ];
     }
 
-    public function withVerifyToken(): static
-    {
-        return $this->has(VerifyToken::factory());
-    }
-
     public function unverified(): static
     {
-        return $this->state(['status' => Status::Wait])->withVerifyToken();
+        return $this->state([
+            'status' => Status::Wait,
+            'verify_token' => VerifyToken::create(),
+        ]);
     }
 }

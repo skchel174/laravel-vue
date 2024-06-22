@@ -26,8 +26,7 @@ class RegisterTest extends TestCase
         $this->assertEquals($user->email, $email);
         $this->assertTrue($user->checkPassword($password));
         $this->assertEquals(Status::Wait, $user->status);
-        $this->assertNotNull($user->verifyToken);
-        $this->assertModelExists($user->verifyToken);
+        $this->assertNotNull($user->verify_token);
         $this->assertModelExists($user);
     }
 }

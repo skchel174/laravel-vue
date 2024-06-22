@@ -14,7 +14,6 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +24,7 @@ use Illuminate\Support\Facades\Hash;
  * @property string $username
  * @property string $password
  * @property Status $status
- * @property-read VerifyToken|null $verifyToken
+ * @property-read VerifyToken|null $verify_token
  *
  * @method static UserFactory factory($count = null, $state = [])
  * @method static User|null firstWhere(string $string, string $email)
@@ -39,6 +38,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'username',
         'password',
         'status',
+        'verify_token',
     ];
 
     protected $hidden = [
@@ -48,16 +48,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public static function register(string $email, string $username, string $password): static
     {
-        $user = static::create([
+        return static::create([
             'email' => $email,
             'username' => $username,
             'password' => Hash::make($password),
             'status' => Status::Wait,
+            'verify_token' => VerifyToken::create(),
         ]);
-
-        $user->generateVerifyToken();
-
-        return $user;
     }
 
     public function verify(string $token): void
@@ -68,16 +65,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         $this->checkVerifyToken($token);
 
-        $this->update(['status' => Status::Active]);
-
-        $this->verifyToken->delete();
-
-        unset($this->verifyToken);
-    }
-
-    public function changePassword(string $password): void
-    {
-        $this->update(['password' => Hash::make($password)]);
+        $this->update([
+            'status' => Status::Active,
+            'verify_token' => null,
+        ]);
     }
 
     public function checkPassword(string $password): bool
@@ -89,34 +80,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $this->checkVerifyToken($token);
 
-        $this->update(['password' => Hash::make($password)]);
-
-        $this->verifyToken->delete();
-
-        unset($this->verifyToken);
-    }
-
-    public function verifyToken(): HasOne
-    {
-        return $this->hasOne(VerifyToken::class);
-    }
-
-    public function generateVerifyToken(): void
-    {
-        $this->verifyToken()->save(VerifyToken::generate());
+        $this->update([
+            'password' => Hash::make($password),
+            'verify_token' => null,
+        ]);
     }
 
     public function checkVerifyToken(string $token): void
     {
-        if (!$this->verifyToken) {
+        if (!$this->verify_token) {
             throw new VerificationNotRequestedException();
         }
 
-        if (!$this->verifyToken->isEquals($token)) {
+        if (!$this->verify_token->isEquals($token)) {
             throw new InvalidVerifyTokenException();
         }
 
-        if ($this->verifyToken->isExpired(config('auth.verification_timeout'))) {
+        if ($this->verify_token->isExpired(config('auth.verification_timeout'))) {
             throw new VerificationTokenExpiredException();
         }
     }
@@ -125,6 +105,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return [
             'status' => Status::class,
+            'verify_token' => VerifyToken::class,
             'created_at' => 'immutable_datetime',
             'updated_at' => 'immutable_datetime',
         ];
