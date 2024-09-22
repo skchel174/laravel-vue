@@ -14,3 +14,9 @@ php-cli:
 
 node-cli:
 	docker-compose exec node sh
+
+php-install:
+	docker-compose exec php-cli composer install
+
+node-install:
+	docker-compose exec node npm install
