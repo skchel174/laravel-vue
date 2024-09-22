@@ -20,3 +20,4 @@ services:
       context: docker/php-cli
     volumes:
       - ./:/var/www
+    tty: true
