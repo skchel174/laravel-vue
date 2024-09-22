@@ -1,4 +1,4 @@
-run: down build up
+run: down build up php-install node-install
 
 build:
 	docker-compose build
