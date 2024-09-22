@@ -11,3 +11,6 @@ down:
 
 php-cli:
 	docker-compose exec php-cli sh
+
+node-cli:
+	docker-compose exec node sh
