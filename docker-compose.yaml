@@ -9,9 +9,9 @@ services:
     ports:
       - "8080:80"
 
-  php:
+  php-fpm:
     build:
-      context: docker/php
+      context: docker/php-fpm
     volumes:
       - ./:/var/www
 
