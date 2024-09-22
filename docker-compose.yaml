@@ -21,3 +21,19 @@ services:
     volumes:
       - ./:/var/www
     tty: true
+
+  mysql:
+    image: mysql:8.0
+    platform: linux/x86_64
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_USER: app
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: app
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "33061:3306"
+
+volumes:
+  mysql:
