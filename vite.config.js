@@ -28,6 +28,7 @@ export default ({mode}) => {
             includeAbsolute: false,
           },
         },
-    }),],
+      }),
+    ],
   });
 };
