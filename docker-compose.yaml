@@ -14,12 +14,20 @@ services:
       context: docker/php-fpm
     volumes:
       - ./:/var/www
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
 
   php-cli:
     build:
       context: docker/php-cli
     volumes:
       - ./:/var/www
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
     tty: true
 
   mysql:
@@ -28,19 +36,19 @@ services:
     volumes:
       - mysql:/var/lib/mysql
     environment:
-      MYSQL_USER: app
-      MYSQL_PASSWORD: secret
-      MYSQL_DATABASE: app
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
-      - "33061:3306"
+      - "33061:${DB_PORT}"
 
   node:
     image: node:22-alpine
     volumes:
       - ./:/var/www
     ports:
-      - "3000:3000"
+      - "${VITE_APP_PORT}:${VITE_APP_PORT}"
     working_dir: /var/www
     tty: true
 
