@@ -40,5 +40,14 @@ services:
     ports:
       - "33061:3306"
 
+  node:
+    image: node:22-alpine
+    volumes:
+      - ./:/var/www
+    ports:
+      - "3000:3000"
+    working_dir: /var/www
+    tty: true
+
 volumes:
   mysql:
