@@ -17,6 +17,17 @@ services:
       - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=app
 
+  php-cli:
+    build:
+      context: docker/php-cli
+    volumes:
+      - ./:/var/www
+    environment:
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=app
+    tty: true
+
   mysql:
     image: mysql:8.0
     volumes:
