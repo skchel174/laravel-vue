@@ -30,6 +30,7 @@ services:
 
   mysql:
     image: mysql:8.0
+    platform: linux/amd64
     volumes:
       - mysql:/var/lib/mysql
     environment:
