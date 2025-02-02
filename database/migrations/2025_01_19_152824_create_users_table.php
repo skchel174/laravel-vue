@@ -17,6 +17,7 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
+            $table->string('new_email')->nullable();
             $table->string('password');
             $table->string('username', 25)->unique();
             $table->string('fullname', 60)->nullable();
@@ -25,7 +26,6 @@ return new class extends Migration {
             $table->date('birth_date')->nullable();
             $table->enum('gender', array_column(Gender::cases(), 'value'))->nullable();
             $table->enum('status', array_column(Status::cases(), 'value'));
-            $table->string('avatar');
             $table->rememberToken();
             $table->string('verify_token', 100)->nullable();
             $table->timestamp('verify_token_expires_at')->nullable();
