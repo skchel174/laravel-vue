@@ -21,7 +21,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property-read int $id
- * @property string $email
+ * @property Email $email
  * @property string $username
  * @property string $password
  * @property Status $status

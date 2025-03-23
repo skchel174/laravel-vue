@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bea6f6e4788d936786732332b756d6d4",
+    "content-hash": "0e80745817c890879f356033de36b1a2",
     "packages": [
         {
             "name": "brick/math",
@@ -590,6 +590,56 @@
                 }
             ],
             "time": "2024-12-27T00:36:43+00:00"
+        },
+        {
+            "name": "forxer/gravatar",
+            "version": "5.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/forxer/gravatar.git",
+                "reference": "352f9fe6ef13fcc1a4430f398186b3322a2ee884"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/forxer/gravatar/zipball/352f9fe6ef13fcc1a4430f398186b3322a2ee884",
+                "reference": "352f9fe6ef13fcc1a4430f398186b3322a2ee884",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.21.2",
+                "rector/rector": "^2.0.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gravatar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vincent Garnier",
+                    "email": "forxer@gmail.org"
+                }
+            ],
+            "description": "A library providing easy gravatar integration.",
+            "homepage": "https://github.com/forxer/gravatar",
+            "keywords": [
+                "gravatar",
+                "php"
+            ],
+            "support": {
+                "email": "forxer@gmail.com",
+                "issues": "https://github.com/forxer/gravatar/issues",
+                "source": "https://github.com/forxer/gravatar/tree/5.0.1"
+            },
+            "time": "2025-03-18T10:33:43+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -9312,12 +9362,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }

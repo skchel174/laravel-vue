@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\User;
 
+use Gravatar\Gravatar;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Spatie\Image\Enums\Fit;
@@ -14,9 +15,20 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Avatar
 {
     private const MEDIA_COLLECTION = 'avatar';
+    private const GRAVATAR_TYPE = 'identicon';
 
     public function __construct(private readonly User $user)
     {
+    }
+
+    public function getPlaceholder(): string
+    {
+        $email = $this->user->email->getValue();
+        $gravatar = Gravatar::image($email)
+            ->d(self::GRAVATAR_TYPE)
+            ->url();
+
+        return sprintf('https:%s', $gravatar);
     }
 
     public function getImage(): ?Media
