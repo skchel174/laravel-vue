@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Models\User;
+namespace Tests\Unit\Models\User\Avatar;
 
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class DeleteAvatarTest extends TestCase
+class DeleteImageTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -27,12 +27,12 @@ class DeleteAvatarTest extends TestCase
             ->withAvatar()
             ->create();
 
-        $avatar = $user->getAvatar();
+        $avatar = $user->avatar->getImage();
 
-        $user->deleteAvatar();
+        $user->avatar->deleteImage();
 
-        $this->assertNull($user->getAvatar());
-        $this->assertEmpty($user->media()->get());
+        $this->assertNull($user->avatar->getImage());
+        $this->assertDatabaseCount("media", 0);
         $this->assertFileDoesNotExist($avatar->getPath());
     }
 }

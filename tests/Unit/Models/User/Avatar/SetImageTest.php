@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Models\User;
+namespace Tests\Unit\Models\User\Avatar;
 
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 
-class SetAvatarTest extends TestCase
+class SetImageTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -29,16 +29,14 @@ class SetAvatarTest extends TestCase
 
         $image = UploadedFile::fake()->image('avatar.png');
 
-        $user->setAvatar($image);
+        $user->avatar->setImage($image);
 
-        $avatar = $user->getAvatar();
+        $avatar = $user->avatar->getImage();
 
         $this->assertNotNull($avatar);
         $this->assertInstanceOf(Media::class, $avatar);
         $this->assertModelExists($avatar);
         $this->assertFileExists($image->getPath());
-
-
     }
 
     public function testAvatarHasConversations(): void
@@ -48,30 +46,28 @@ class SetAvatarTest extends TestCase
             ->withAvatar()
             ->create();
 
-        $avatar = $user->getAvatar();
+        $avatar = $user->avatar->getImage();
 
         $this->assertNotEmpty($avatar->getUrl());
-        $this->assertNotEmpty($avatar->getUrl("md"));
-        $this->assertNotEmpty($avatar->getUrl("xs"));
+        $this->assertNotEmpty($avatar->getUrl('md'));
+        $this->assertNotEmpty($avatar->getUrl('xs'));
     }
 
-    public function testNewOldAvatarChanged(): void
+    public function testAvatarChanged(): void
     {
         /** @var User $user */
         $user = User::factory()
             ->withAvatar()
             ->create();
 
-        $oldAvatar = $user->getAvatar();
+        $oldAvatar = $user->avatar->getImage();
 
-        $user->setAvatar(UploadedFile::fake()->image('new-avatar.png'));
+        $user->avatar->setImage(UploadedFile::fake()->image('new-avatar.png'));
 
-        $newAvatar = $user->getAvatar();
+        $newAvatar = $user->avatar->getImage();
 
-        $media = $user->getMedia('avatar');
-        $this->assertCount(1, $media);
         $this->assertDatabaseCount("media", 1);
-        $this->assertEquals($newAvatar->file_name, $media->first()->file_name);
+        $this->assertEquals('new-avatar.png', $newAvatar->name . '.' . $newAvatar->extension);
         $this->assertFileDoesNotExist($oldAvatar->getPath());
         $this->assertFileExists($newAvatar->getPath());
     }

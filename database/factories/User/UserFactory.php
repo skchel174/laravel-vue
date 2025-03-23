@@ -37,7 +37,7 @@ class UserFactory extends Factory
         }
 
         return $this->afterCreating(function (User $user) use ($avatar) {
-            $user->setAvatar($avatar);
+            $user->avatar->setImage($avatar);
         });
     }
 }
