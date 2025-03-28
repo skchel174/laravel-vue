@@ -60,8 +60,6 @@ class SetImageTest extends TestCase
             ->withAvatar()
             ->create();
 
-        dd($user->avatar->getPlaceholder());
-
         $oldAvatar = $user->avatar->getImage();
 
         $user->avatar->setImage(UploadedFile::fake()->image('new-avatar.png'));
