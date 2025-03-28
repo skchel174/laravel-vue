@@ -7,6 +7,10 @@ namespace App\Models\User;
 use App\Models\User\Casts\AvatarCast;
 use App\Models\User\Casts\EmailCast;
 use App\Models\User\Casts\VerifyTokenCast;
+use App\Models\User\Exceptions\AlreadyVerifiedException;
+use App\Models\User\Exceptions\InvalidTokenException;
+use App\Models\User\Exceptions\VerificationExpiredException;
+use App\Models\User\Exceptions\VerificationNotRequestedException;
 use Carbon\CarbonImmutable;
 use Database\Factories\User\UserFactory;
 use Illuminate\Auth\Authenticatable;
@@ -68,6 +72,30 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             'password' => $password,
             'status' => Status::Wait,
             'verify_token' => VerifyToken::generate(config('auth.verification_timeout')),
+        ]);
+    }
+
+    public function verify(string $token): void
+    {
+        if ($this->status->isActive()) {
+            throw new AlreadyVerifiedException();
+        }
+
+        if (!$this->verify_token) {
+            throw new VerificationNotRequestedException();
+        }
+
+        if (!$this->verify_token->isEquals($token)) {
+            throw new InvalidTokenException();
+        }
+
+        if ($this->verify_token->isExpired(CarbonImmutable::now())) {
+            throw new VerificationExpiredException();
+        }
+
+        $this->update([
+            'verify_token' => null,
+            'status' => Status::Active,
         ]);
     }
 
