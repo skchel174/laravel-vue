@@ -9,10 +9,10 @@ use App\Models\User\Casts\EmailCast;
 use App\Models\User\Casts\VerifyTokenCast;
 use Carbon\CarbonImmutable;
 use Database\Factories\User\UserFactory;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
@@ -39,7 +39,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
 {
-    use HasFactory, Authenticatable, Authorizable, Notifiable, InteractsWithMedia;
+    use Authenticatable, Authorizable, HasFactory, InteractsWithMedia, Notifiable;
 
     protected $fillable = [
         'email',
@@ -59,6 +59,17 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'remember_token',
         'verify_token',
     ];
+
+    public static function register(string $email, string $username, string $password): self
+    {
+        return self::create([
+            'email' => new Email($email),
+            'username' => $username,
+            'password' => $password,
+            'status' => Status::Wait,
+            'verify_token' => VerifyToken::generate(config('auth.verification_timeout')),
+        ]);
+    }
 
     public function registerMediaCollections(): void
     {
