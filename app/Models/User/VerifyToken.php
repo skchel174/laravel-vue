@@ -6,7 +6,7 @@ namespace App\Models\User;
 
 use Carbon\CarbonImmutable;
 use DomainException;
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Support\Str;
 
 readonly class VerifyToken
 {
@@ -15,6 +15,14 @@ readonly class VerifyToken
         private CarbonImmutable $expiresAt,
     )
     {
+    }
+
+    public static function generate(int $lifetime): self
+    {
+        return new self(
+            Str::uuid()->toString(),
+            CarbonImmutable::now()->addSeconds($lifetime)
+        );
     }
 
     public function getValue(): string
