@@ -19,5 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
+        dump($exceptions);
+        $exceptions->reportable(function (\Throwable $e) {
+            dd($e->getMessage());
+        });
         //
     })->create();

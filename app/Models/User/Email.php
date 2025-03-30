@@ -13,6 +13,11 @@ class Email
     {
     }
 
+    public function __toString(): string
+    {
+        return $this->email;
+    }
+
     public function getValue(): string
     {
         return $this->email;

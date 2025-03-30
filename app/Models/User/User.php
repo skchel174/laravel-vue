@@ -99,6 +99,11 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         ]);
     }
 
+    public function routeNotificationForMail(): string
+    {
+        return $this->email->getValue();
+    }
+
     public function registerMediaCollections(): void
     {
         $this->avatar->register();
