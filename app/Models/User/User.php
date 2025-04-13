@@ -99,6 +99,17 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         ]);
     }
 
+    public function regenerateVerifyToken(): void
+    {
+        if (!$this->verify_token) {
+            throw new VerificationNotRequestedException();
+        }
+
+        $timeout = config('auth.verification_timeout');
+        $verifyToken = VerifyToken::generate($timeout);
+        $this->update(['verify_token' => $verifyToken]);
+    }
+
     public function routeNotificationForMail(): string
     {
         return $this->email->getValue();
