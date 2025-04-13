@@ -53,6 +53,6 @@ class RegisterTest extends TestCase
             }
         );
 
-        $response->assertRedirect(route('register.resend'));
+        $response->assertRedirect(route('register.report'));
     }
 }
