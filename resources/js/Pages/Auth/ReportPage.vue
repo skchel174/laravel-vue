@@ -30,12 +30,7 @@ const submit = () => {
 
       <CardFooter class="justify-between">
         <Button @click="submit"> Resend verification email</Button>
-        <Link
-          class="text-sm"
-          href="#"
-        >
-          Logout
-        </Link>
+        <Link href="#"> Logout </Link>
       </CardFooter>
     </Card>
   </AuthLayout>
