@@ -30,12 +30,23 @@ class RegisterController
 
         $user->notify(new RegisterVerification());
 
-        return redirect()->route('register.resend');
+        return redirect()->route('register.report');
     }
 
-    public function resend()
+    public function report(): InertiaResponse
     {
-        //
+        return Inertia::render('Auth/ReportPage');
+    }
+
+    public function resend(): RedirectResponse
+    {
+        $user = auth()->user();
+        $user->regenerateVerifyToken();
+        $user->notify(new RegisterVerification());
+
+        return redirect()
+            ->route('register.report')
+            ->with('A new verification link has been sent to the email address you provided during registration.');
     }
 
     public function verify()

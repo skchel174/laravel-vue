@@ -22,6 +22,9 @@ Route::get('/register', [RegisterController::class, 'form'])
 Route::post('/register', [RegisterController::class, 'register'])
     ->name('register');
 
+Route::get('/register/report', [RegisterController::class, 'report'])
+    ->name('register.report');
+
 Route::post('/register/resend', [RegisterController::class, 'resend'])
     ->name('register.resend');
 

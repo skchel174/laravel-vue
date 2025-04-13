@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User\User;
+use App\Models\User\VerifyToken;
 use App\Notifications\RegisterVerification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
@@ -36,6 +37,50 @@ class RegisterTest extends TestCase
 
         $this->assertNotNull($user);
         $this->assertAuthenticatedAs($user);
+
+        Notification::assertSentTo(
+            $user,
+            RegisterVerification::class,
+            static function (RegisterVerification $notification, array $channels, User $notifiable) use ($user) {
+                $sendToUser = $user->is($notifiable);
+                $sendByEmail = in_array('mail', $channels, true);
+                $urlHasToken = str_contains(
+                    $notification->toMail($user)->actionUrl,
+                    route('register.verify', [
+                        'token' => $notifiable->verify_token->getValue()
+                    ])
+                );
+                return $sendToUser && $sendByEmail && $urlHasToken;
+            }
+        );
+
+        $response->assertRedirect(route('register.report'));
+    }
+
+    public function testReportPageCanBeRendered(): void
+    {
+        /** @var User $user */
+        $user = User::factory()
+            ->unverified()
+            ->create();
+
+        $response = $this->actingAs($user)
+            ->get(route('register.report'));
+
+        $response->assertStatus(200);
+    }
+
+    public function testResendRegisterVerificationMail(): void
+    {
+        Notification::fake();
+
+        /** @var User $user */
+        $user = User::factory()->create([
+            'verify_token' => VerifyToken::generate(3600),
+        ]);
+
+        $response = $this->actingAs($user)
+            ->post(route('register.resend'));
 
         Notification::assertSentTo(
             $user,
