@@ -100,4 +100,19 @@ class RegisterTest extends TestCase
 
         $response->assertRedirect(route('register.report'));
     }
+
+    public function testRegistrationCanBeVerified(): void
+    {
+        /** @var User $user */
+        $user = User::factory()
+            ->unverified()
+            ->create();
+
+        $response = $this->actingAs($user)
+            ->get(route('register.verify', [
+                'token' => $user->verify_token->getValue(),
+            ]));
+
+        $response->assertRedirect(route('main'));
+    }
 }

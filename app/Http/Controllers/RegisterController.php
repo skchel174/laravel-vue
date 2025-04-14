@@ -40,17 +40,24 @@ class RegisterController
 
     public function resend(): RedirectResponse
     {
+        /** @var User $user */
         $user = auth()->user();
         $user->regenerateVerifyToken();
         $user->notify(new RegisterVerification());
 
         return redirect()
             ->route('register.report')
-            ->with('A new verification link has been sent to the email address you provided during registration.');
+            ->with('message', 'A new verification link has been sent to the email address you provided during registration.');
     }
 
-    public function verify()
+    public function verify(string $token): RedirectResponse
     {
-        //
+        /** @var User $user */
+        $user = auth()->user();
+        $user->verify($token);
+
+        return redirect()
+            ->route('main')
+            ->with('message', 'Your account has been verified.');
     }
 }
