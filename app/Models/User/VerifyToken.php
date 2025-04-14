@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\User;
 
+use App\Models\User\Exceptions\InvalidTokenException;
+use App\Models\User\Exceptions\VerificationExpiredException;
 use Carbon\CarbonImmutable;
 use DomainException;
 use Illuminate\Support\Str;
@@ -38,11 +40,11 @@ readonly class VerifyToken
     public function validate(string $token, CarbonImmutable $date): void
     {
         if (!$this->isEquals($token)) {
-            throw new DomainException('Verify token is invalid.');
+            throw new InvalidTokenException();
         }
 
         if ($this->isExpired($date)) {
-            throw new DomainException('Verify token is expired.');
+            throw new VerificationExpiredException();
         }
     }
 

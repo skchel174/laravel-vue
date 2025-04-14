@@ -8,8 +8,6 @@ use App\Models\User\Casts\AvatarCast;
 use App\Models\User\Casts\EmailCast;
 use App\Models\User\Casts\VerifyTokenCast;
 use App\Models\User\Exceptions\AlreadyVerifiedException;
-use App\Models\User\Exceptions\InvalidTokenException;
-use App\Models\User\Exceptions\VerificationExpiredException;
 use App\Models\User\Exceptions\VerificationNotRequestedException;
 use Carbon\CarbonImmutable;
 use Database\Factories\User\UserFactory;
@@ -85,13 +83,7 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
             throw new VerificationNotRequestedException();
         }
 
-        if (!$this->verify_token->isEquals($token)) {
-            throw new InvalidTokenException();
-        }
-
-        if ($this->verify_token->isExpired(CarbonImmutable::now())) {
-            throw new VerificationExpiredException();
-        }
+        $this->verify_token->validate($token, CarbonImmutable::now());
 
         $this->update([
             'verify_token' => null,
