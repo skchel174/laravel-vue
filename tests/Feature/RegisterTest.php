@@ -75,9 +75,9 @@ class RegisterTest extends TestCase
         Notification::fake();
 
         /** @var User $user */
-        $user = User::factory()->create([
-            'verify_token' => VerifyToken::generate(3600),
-        ]);
+        $user = User::factory()
+            ->unverified()
+            ->create();
 
         $response = $this->actingAs($user)
             ->post(route('register.resend'));
@@ -113,6 +113,6 @@ class RegisterTest extends TestCase
                 'token' => $user->verify_token->getValue(),
             ]));
 
-        $response->assertRedirect(route('main'));
+        $response->assertRedirect(route('profile'));
     }
 }

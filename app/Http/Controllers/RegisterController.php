@@ -57,7 +57,7 @@ class RegisterController
         $user->verify($token);
 
         return redirect()
-            ->route('main')
+            ->route('profile')
             ->with('message', 'Your account has been verified.');
     }
 }

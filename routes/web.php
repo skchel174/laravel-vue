@@ -16,17 +16,27 @@ Route::get('/', function () {
     ]);
 })->name('main');
 
-Route::get('/register', [RegisterController::class, 'form'])
-    ->name('register.form');
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'form'])
+        ->name('register.form');
 
-Route::post('/register', [RegisterController::class, 'register'])
-    ->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])
+        ->name('register');
+});
 
-Route::get('/register/report', [RegisterController::class, 'report'])
-    ->name('register.report');
+Route::middleware(['auth', 'unverified'])->group(function () {
+    Route::get('/register/report', [RegisterController::class, 'report'])
+        ->name('register.report');
 
-Route::post('/register/resend', [RegisterController::class, 'resend'])
-    ->name('register.resend');
+    Route::post('/register/resend', [RegisterController::class, 'resend'])
+        ->name('register.resend');
 
-Route::get('/register/verify/{token}', [RegisterController::class, 'verify'])
-    ->name('register.verify');
+    Route::get('/register/verify/{token}', [RegisterController::class, 'verify'])
+        ->name('register.verify');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile', function () {
+        return 'Profile page';
+    })->name('profile');
+});
