@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\User\VerifyToken;
 
+use App\Models\User\Exceptions\InvalidTokenException;
+use App\Models\User\Exceptions\VerificationExpiredException;
 use App\Models\User\VerifyToken;
 use Carbon\CarbonImmutable;
-use DomainException;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Tests\TestCase;
 
@@ -30,8 +31,7 @@ class ValidateTest extends TestCase
             $expiresAt = CarbonImmutable::now()
         );
 
-        $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Verify token is invalid.');
+        $this->expectException(InvalidTokenException::class);
 
         $token->validate(fake()->uuid(), $expiresAt);
     }
@@ -43,8 +43,7 @@ class ValidateTest extends TestCase
             $expiresAt = CarbonImmutable::now()
         );
 
-        $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Verify token is expired.');
+        $this->expectException(VerificationExpiredException::class);
 
         $token->validate($value, $expiresAt->addSecond());
     }

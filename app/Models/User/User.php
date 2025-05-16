@@ -7,12 +7,14 @@ namespace App\Models\User;
 use App\Models\User\Casts\AvatarCast;
 use App\Models\User\Casts\EmailCast;
 use App\Models\User\Casts\VerifyTokenCast;
+use App\Models\User\Exceptions\AlreadyVerifiedException;
+use App\Models\User\Exceptions\VerificationNotRequestedException;
 use Carbon\CarbonImmutable;
 use Database\Factories\User\UserFactory;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableInterface;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
@@ -39,7 +41,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class User extends Model implements AuthenticatableInterface, AuthorizableInterface, HasMedia
 {
-    use HasFactory, Authenticatable, Authorizable, Notifiable, InteractsWithMedia;
+    use Authenticatable, Authorizable, HasFactory, InteractsWithMedia, Notifiable;
 
     protected $fillable = [
         'email',
@@ -59,6 +61,51 @@ class User extends Model implements AuthenticatableInterface, AuthorizableInterf
         'remember_token',
         'verify_token',
     ];
+
+    public static function register(string $email, string $username, string $password): self
+    {
+        return self::create([
+            'email' => new Email($email),
+            'username' => $username,
+            'password' => $password,
+            'status' => Status::Wait,
+            'verify_token' => VerifyToken::generate(config('auth.verification_timeout')),
+        ]);
+    }
+
+    public function verify(string $token): void
+    {
+        if ($this->status->isActive()) {
+            throw new AlreadyVerifiedException();
+        }
+
+        if (!$this->verify_token) {
+            throw new VerificationNotRequestedException();
+        }
+
+        $this->verify_token->validate($token, CarbonImmutable::now());
+
+        $this->update([
+            'verify_token' => null,
+            'status' => Status::Active,
+        ]);
+    }
+
+    public function regenerateVerifyToken(): void
+    {
+        if (!$this->verify_token) {
+            throw new VerificationNotRequestedException();
+        }
+
+        $timeout = config('auth.verification_timeout');
+        $verifyToken = VerifyToken::generate($timeout);
+        $this->update(['verify_token' => $verifyToken]);
+    }
+
+    public function routeNotificationForMail(): string
+    {
+        return $this->email->getValue();
+    }
 
     public function registerMediaCollections(): void
     {

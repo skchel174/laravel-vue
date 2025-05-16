@@ -7,6 +7,7 @@ use App\Models\User\Email;
 use App\Models\User\Gender;
 use App\Models\User\Status;
 use App\Models\User\User;
+use App\Models\User\VerifyToken;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -39,5 +40,13 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) use ($avatar) {
             $user->avatar->setImage($avatar);
         });
+    }
+
+    public function unverified(int $lifetime = 60): static
+    {
+        return $this->state([
+           'status' => Status::Wait,
+           'verify_token' => VerifyToken::generate($lifetime),
+        ]);
     }
 }
