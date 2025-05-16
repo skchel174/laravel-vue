@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,10 +25,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'unverified'])->group(function () {
-    Route::get('/register/report', [RegisterController::class, 'report'])
+    Route::get('/register/email', [RegisterController::class, 'report'])
         ->name('register.report');
 
-    Route::post('/register/resend', [RegisterController::class, 'resend'])
+    Route::post('/register/email', [RegisterController::class, 'resend'])
         ->name('register.resend');
 
     Route::get('/register/verify/{token}', [RegisterController::class, 'verify'])
