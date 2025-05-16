@@ -89,7 +89,7 @@ const submit = () => {
       </CardBody>
 
       <CardFooter class="justify-center space-x-2">
-        <CardSubtitle> Already registered?</CardSubtitle>
+        <CardSubtitle>Already registered?</CardSubtitle>
         <Link href="#">Log in</Link>
       </CardFooter>
     </Card>

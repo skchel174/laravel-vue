@@ -9,7 +9,10 @@ defineProps({
 </script>
 
 <template>
-  <component :is="component" class="text-sm text-gray-400 font-light leading-[1.5]">
+  <component
+    :is="component"
+    class="text-sm font-light leading-[1.5] text-gray-500"
+  >
     <slot />
   </component>
 </template>
