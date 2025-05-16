@@ -11,7 +11,7 @@ import Link from '@/Components/Link.vue';
 const form = useForm({});
 
 const submit = () => {
-  form.post(route('register.resend'));
+  form.post(route('verification.send'));
 };
 </script>
 
@@ -29,8 +29,8 @@ const submit = () => {
       </CardBody>
 
       <CardFooter class="justify-between">
-        <Button @click="submit"> Resend verification email</Button>
-        <Link href="#"> Logout </Link>
+        <Button @click="submit">Resend verification email</Button>
+        <Link href="#">Logout</Link>
       </CardFooter>
     </Card>
   </AuthLayout>

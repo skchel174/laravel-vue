@@ -24,11 +24,11 @@ class RegisterVerification extends Notification
 
     public function toMail(User $notifiable): MailMessage
     {
-        $url = route('register.verify', [
+        $url = route('verification.confirm', [
             'token' => $notifiable->verify_token->getValue()
         ]);
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject(sprintf('Welcome to %s!', config('app.name')))
             ->greeting(sprintf('Hello %s!', $notifiable->username))
             ->line('To get started, please verify your email address by clicking the button below:')

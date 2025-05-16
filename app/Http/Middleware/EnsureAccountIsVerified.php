@@ -19,7 +19,7 @@ class EnsureAccountIsVerified
         }
 
         if ($user->status->isWait()) {
-            return redirect()->route('register.report');
+            return redirect()->route('verification');
         }
 
         return $next($request);
