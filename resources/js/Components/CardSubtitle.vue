@@ -11,7 +11,7 @@ defineProps({
 <template>
   <component
     :is="component"
-    class="text-sm font-light leading-[1.5] text-gray-500"
+    class="text-sm font-light text-gray-500"
   >
     <slot />
   </component>

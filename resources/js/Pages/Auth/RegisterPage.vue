@@ -31,9 +31,11 @@ const submit = () => {
   <Head title="Registration" />
 
   <AuthLayout>
-    <Card class="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Registration</CardTitle>
+    <Card class="w-full max-w-sm">
+      <CardHeader class="space-y-4 sm:space-y-1">
+        <CardTitle class="text-3xl sm:text-base">
+          Registration
+        </CardTitle>
         <CardSubtitle>
           Create your account. It's free and only takes a minute.
         </CardSubtitle>
@@ -88,9 +90,9 @@ const submit = () => {
         </form>
       </CardBody>
 
-      <CardFooter class="justify-center space-x-2">
+      <CardFooter class="justify-center space-x-1">
         <CardSubtitle>Already registered?</CardSubtitle>
-        <Link href="#">Log in</Link>
+        <Link :href="route('login')">Log in</Link>
       </CardFooter>
     </Card>
   </AuthLayout>
